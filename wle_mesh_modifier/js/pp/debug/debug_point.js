@@ -2,7 +2,7 @@ PP.DebugPointParams = class DebugPointParams {
 
     constructor() {
         this.myPosition = [0, 0, 0];
-        this.myRadius = 0.1;
+        this.myRadius = 0;
 
         this.myColor = [0.7, 0.7, 0.7, 1];
 

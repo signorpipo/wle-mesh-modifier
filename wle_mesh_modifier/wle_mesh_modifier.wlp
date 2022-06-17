@@ -796,7 +796,7 @@
                 {
                     "type": "mesh",
                     "mesh": {
-                        "mesh": "75",
+                        "mesh": "80",
                         "material": "90"
                     }
                 }
