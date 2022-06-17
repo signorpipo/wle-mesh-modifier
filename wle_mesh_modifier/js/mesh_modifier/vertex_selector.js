@@ -8,25 +8,171 @@ WL.registerComponent('vertex_selector', {
 
     },
     start: function () {
+        this._myVertexDataBackup = [];
+        for (let vertexData of this._mySelectedObject.pp_getComponentHierarchy("mesh").mesh.vertexData) {
+            this._myVertexDataBackup.push(vertexData);
+        }
+
         this._mySelectedVertexes = [];
-        PP.myDebugManager.allocateDraw(PP.DebugDrawObjectType.POINT, 5000);
+        this._myPreviousPointerPosition = null;
+
+        this._myMoveVertexesTimer = new PP.Timer(0);
+
+        //PP.myDebugManager.allocateDraw(PP.DebugDrawObjectType.POINT, 5000);
     },
     update: function (dt) {
-        if (PP.myLeftGamepad.getButtonInfo(PP.ButtonType.SELECT).isPressEnd()) {
-            this._selectVertex(this._mySelectedObject, this._myLeftPointer);
-        }
+        if (PP.myRightGamepad.getButtonInfo(PP.ButtonType.SQUEEZE).isPressed()) {
+            if (this._myPreviousPointerPosition == null) {
+                this._myPreviousPointerPosition = this._myRightPointer.pp_getPosition();
+            } else {
+                this._myMoveVertexesTimer.update(dt);
+                if (this._myMoveVertexesTimer.isDone()) {
+                    this._myMoveVertexesTimer.start();
+                    let currentPointerPosition = this._myRightPointer.pp_getPosition();
 
-        if (PP.myRightGamepad.getButtonInfo(PP.ButtonType.SELECT).isPressEnd()) {
-            this._selectVertex(this._mySelectedObject, this._myRightPointer);
-        }
+                    let direction = currentPointerPosition.vec3_sub(this._myPreviousPointerPosition).vec3_normalize();
+                    let movement = currentPointerPosition.vec3_distance(this._myPreviousPointerPosition);
+                    if (movement > 0.01) {
+                        movement /= 20;
+                        let headRight = PP.myPlayerObjects.myHead.pp_getRight();
+                        if (!direction.vec3_isConcordant(headRight)) {
+                            movement = -movement;
+                        }
 
-        if (PP.myLeftGamepad.getButtonInfo(PP.ButtonType.SQUEEZE).isPressEnd()) {
-            this._mySelectedVertexes = [];
+                        this._moveSelectedVertexesAlongNormals(this._mySelectedObject, movement);
+                    }
+                }
+            }
+        } else if (PP.myRightGamepad.getButtonInfo(PP.ButtonType.BOTTOM_BUTTON).isPressed()) {
+            this._myPreviousPointerPosition = null;
+            this._resetSelectedVertexes(this._mySelectedObject, this._myRightPointer);
+        } else if (PP.myLeftGamepad.getButtonInfo(PP.ButtonType.BOTTOM_BUTTON).isPressEnd()) {
+            this._resetAll(this._mySelectedObject);
+        } else {
+            this._myPreviousPointerPosition = null;
+            this._mySelectedObject.pp_getComponentHierarchy("mesh").active = true;
+
+            if (PP.myRightGamepad.getButtonInfo(PP.ButtonType.SELECT).isPressed()) {
+                this._selectVertex(this._mySelectedObject, this._myRightPointer);
+            }
+
+            if (PP.myRightGamepad.getButtonInfo(PP.ButtonType.TOP_BUTTON).isPressed()) {
+                this._deselectVertex(this._mySelectedObject, this._myRightPointer);
+            }
+
+            if (PP.myLeftGamepad.getButtonInfo(PP.ButtonType.TOP_BUTTON).isPressEnd()) {
+                this._mySelectedVertexes = [];
+            }
         }
 
         this._debugDraw(this._mySelectedObject);
     },
     _selectVertex(meshObject, pointerObject) {
+        let pointerPosition = pointerObject.pp_getPosition();
+
+        let selectedVertexParams = this._getClosestSelectedVertex(meshObject, pointerObject);
+
+        let vertexPositionWorld = selectedVertexParams.getPosition();
+        if (vertexPositionWorld.vec3_distance(pointerPosition) < this._myMinDistanceToSelect) {
+            this._mySelectedVertexes.pp_pushUnique(selectedVertexParams, element => element.equals(selectedVertexParams));
+        }
+    },
+    _deselectVertex(meshObject, pointerObject) {
+        let pointerPosition = pointerObject.pp_getPosition();
+
+        let selectedVertexParams = this._getClosestSelectedVertex(meshObject, pointerObject);
+
+        let vertexPositionWorld = selectedVertexParams.getPosition();
+        if (vertexPositionWorld.vec3_distance(pointerPosition) < this._myMinDistanceToSelect) {
+            this._mySelectedVertexes.pp_removeAll(element => element.equals(selectedVertexParams));
+        }
+    },
+    _resetSelectedVertexes(meshObject, pointerObject) {
+        let meshComponent = meshObject.pp_getComponentHierarchy("mesh");
+        let pointerPosition = pointerObject.pp_getPosition();
+
+        let selectedVertexParams = this._getClosestSelectedVertex(meshObject, pointerObject);
+
+        let vertexPositionWorld = selectedVertexParams.getPosition();
+        if (vertexPositionWorld.vec3_distance(pointerPosition) < this._myMinDistanceToSelect) {
+            let mesh = meshComponent.mesh;
+            let positionAttribute = mesh.attribute(WL.MeshAttribute.Position);
+
+            let vertexDataSize = WL.Mesh.VERTEX_FLOAT_SIZE;
+            for (let index of selectedVertexParams.getIndexes()) {
+                let vertexPositionReset = [
+                    this._myVertexDataBackup[index * vertexDataSize + WL.Mesh.POS.X],
+                    this._myVertexDataBackup[index * vertexDataSize + WL.Mesh.POS.Y],
+                    this._myVertexDataBackup[index * vertexDataSize + WL.Mesh.POS.Z]];
+
+                positionAttribute.set(index, vertexPositionReset);
+
+                mesh.vertexData[index * vertexDataSize + WL.Mesh.POS.X] = vertexPositionReset[0];
+                mesh.vertexData[index * vertexDataSize + WL.Mesh.POS.Y] = vertexPositionReset[1];
+                mesh.vertexData[index * vertexDataSize + WL.Mesh.POS.Z] = vertexPositionReset[2];
+            }
+
+            meshComponent.active = false;
+        } else {
+            meshComponent.active = true;
+        }
+    },
+    _resetAll(meshObject) {
+        let meshComponent = meshObject.pp_getComponentHierarchy("mesh");
+        let mesh = meshComponent.mesh;
+        let positionAttribute = mesh.attribute(WL.MeshAttribute.Position);
+
+        let vertexDataSize = WL.Mesh.VERTEX_FLOAT_SIZE;
+        let vertexCount = this._myVertexDataBackup.length / vertexDataSize;
+        for (let i = 0; i < vertexCount; i++) {
+            let vertexPositionReset = [
+                this._myVertexDataBackup[i * vertexDataSize + WL.Mesh.POS.X],
+                this._myVertexDataBackup[i * vertexDataSize + WL.Mesh.POS.Y],
+                this._myVertexDataBackup[i * vertexDataSize + WL.Mesh.POS.Z]];
+
+            positionAttribute.set(i, vertexPositionReset);
+
+            mesh.vertexData[i * vertexDataSize + WL.Mesh.POS.X] = vertexPositionReset[0];
+            mesh.vertexData[i * vertexDataSize + WL.Mesh.POS.Y] = vertexPositionReset[1];
+            mesh.vertexData[i * vertexDataSize + WL.Mesh.POS.Z] = vertexPositionReset[2];
+        }
+
+        meshComponent.active = false;
+    },
+    _moveSelectedVertexesAlongNormals(meshObject, movement) {
+        if (this._mySelectedVertexes.length == 0) {
+            return;
+        }
+
+        let meshComponent = meshObject.pp_getComponentHierarchy("mesh");
+        let meshTransform = meshComponent.object.pp_getTransform();
+
+        let vertexDataSize = WL.Mesh.VERTEX_FLOAT_SIZE;
+        for (let selectedVertex of this._mySelectedVertexes) {
+            let normal = selectedVertex.getNormal().vec3_convertDirectionToLocal(meshTransform);
+            let movementToApply = normal.vec3_scale(movement);
+
+            let mesh = selectedVertex.getMesh();
+            let indexes = selectedVertex.getIndexes();
+
+            let positionAttribute = mesh.attribute(WL.MeshAttribute.Position);
+
+            let vertexPosition = [0, 0, 0];
+            positionAttribute.get(indexes[0], vertexPosition);
+            vertexPosition.vec3_add(movementToApply, vertexPosition);
+            for (let index of indexes) {
+                positionAttribute.set(index, vertexPosition);
+
+                mesh.vertexData[index * vertexDataSize + WL.Mesh.POS.X] = vertexPosition[0];
+                mesh.vertexData[index * vertexDataSize + WL.Mesh.POS.Y] = vertexPosition[1];
+                mesh.vertexData[index * vertexDataSize + WL.Mesh.POS.Z] = vertexPosition[2];
+            }
+        }
+
+        meshComponent.active = !meshComponent.active;
+
+    },
+    _getClosestSelectedVertex(meshObject, pointerObject) {
         let meshComponent = meshObject.pp_getComponentHierarchy("mesh");
         let meshTransform = meshComponent.object.pp_getTransform();
         let pointerPosition = pointerObject.pp_getPosition();
@@ -34,22 +180,13 @@ WL.registerComponent('vertex_selector', {
         let closestVertexIndex = this._getClosestVertexIndex(meshComponent.mesh, meshTransform, pointerPosition);
         let selectedVertexIndexes = this._getSameVertexIndexes(meshComponent.mesh, closestVertexIndex);
 
-        let selectedVertexParams = new SelectedVertexParams(meshComponent.mesh, selectedVertexIndexes);
-
-        let vertexPositionWorld = selectedVertexParams.getPosition(meshTransform);
-        if (vertexPositionWorld.vec3_distance(pointerPosition) < this._myMinDistanceToSelect) {
-            let vertexAlreadySelectedIndex = this._mySelectedVertexes.findIndex(element => element.equals(selectedVertexParams));
-            if (vertexAlreadySelectedIndex >= 0) {
-                this._mySelectedVertexes.pp_removeIndex(vertexAlreadySelectedIndex);
-            } else {
-                this._mySelectedVertexes.push(selectedVertexParams);
-            }
-        }
+        return new SelectedVertexParams(meshComponent, selectedVertexIndexes);
     },
     _getClosestVertexIndex(mesh, meshTransform, position) {
         let meshVertexes = mesh.vertexData;
 
         let minDistance = -1;
+        let vertexIndex = -1;
         let vertexDataSize = WL.Mesh.VERTEX_FLOAT_SIZE;
         let vertexCount = meshVertexes.length / vertexDataSize;
         for (let i = 0; i < vertexCount; i++) {
@@ -93,23 +230,35 @@ WL.registerComponent('vertex_selector', {
 
         return selectedVertexIndexes;
     },
-    _debugDraw(meshObject) {
-        let meshComponent = meshObject.pp_getComponentHierarchy("mesh");
-        let meshTransform = meshComponent.object.pp_getTransform();
+    _debugDraw() {
         for (let selectedVertex of this._mySelectedVertexes) {
-            selectedVertex.debugDraw(meshTransform);
+            selectedVertex.debugDraw();
         }
     }
 });
 
 class SelectedVertexParams {
-    constructor(mesh, indexes) {
-        this._myMesh = mesh;
+    constructor(meshComponent, indexes) {
+        this._myMeshComponent = meshComponent;
         this._myIndexes = indexes;
     }
 
-    getPosition(meshTransform) {
-        let meshVertexes = this._myMesh.vertexData;
+    getMeshComponent() {
+        return this._myMeshComponent;
+    }
+
+    getMesh() {
+        return this._myMeshComponent.mesh;
+    }
+
+    getIndexes() {
+        return this._myIndexes;
+    }
+
+    getPosition() {
+        let meshVertexes = this._myMeshComponent.mesh.vertexData;
+        let meshTransform = this._myMeshComponent.object.pp_getTransform();
+
         let vertexDataSize = WL.Mesh.VERTEX_FLOAT_SIZE;
         let vertexPosition = [
             meshVertexes[this._myIndexes[0] * vertexDataSize + WL.Mesh.POS.X],
@@ -120,9 +269,10 @@ class SelectedVertexParams {
         return vertexPositionWorld;
     }
 
-    getNormal(meshTransform) {
+    getNormal() {
         let normal = [0, 0, 0];
-        let meshVertexes = this._myMesh.vertexData;
+        let meshVertexes = this._myMeshComponent.mesh.vertexData;
+        let meshTransform = this._myMeshComponent.object.pp_getTransform();
 
         let vertexDataSize = WL.Mesh.VERTEX_FLOAT_SIZE;
         for (let vertexIndex of this._myIndexes) {
@@ -136,15 +286,17 @@ class SelectedVertexParams {
 
         normal.vec3_normalize(normal);
         let normalWorld = normal.vec3_convertDirectionToWorld(meshTransform);
+        normalWorld.vec3_normalize(normalWorld);
 
         return normalWorld;
     }
 
     equals(other) {
-        return this._myMesh._index == other._myMesh._index && this._myIndexes.pp_equals(other._myIndexes);
+        return this._myMeshComponent.mesh._index == other._myMeshComponent.mesh._index && this._myIndexes.pp_equals(other._myIndexes);
     }
 
-    debugDraw(meshTransform, lifetime = 0) {
+    debugDraw(lifetime = 0) {
+        let meshTransform = this._myMeshComponent.object.pp_getTransform();
         let vertexPositionWorld = this.getPosition(meshTransform);
         {
             let debugDrawParams = new PP.DebugPointParams();
