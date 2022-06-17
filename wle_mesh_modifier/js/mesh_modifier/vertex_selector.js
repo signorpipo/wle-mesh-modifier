@@ -38,7 +38,12 @@ WL.registerComponent('vertex_selector', {
 
         let vertexPositionWorld = selectedVertexParams.getPosition(meshTransform);
         if (vertexPositionWorld.vec3_distance(pointerPosition) < this._myMinDistanceToSelect) {
-            this._mySelectedVertexes.push(selectedVertexParams);
+            let vertexAlreadySelectedIndex = this._mySelectedVertexes.findIndex(element => element.equals(selectedVertexParams));
+            if (vertexAlreadySelectedIndex >= 0) {
+                this._mySelectedVertexes.pp_removeIndex(vertexAlreadySelectedIndex);
+            } else {
+                this._mySelectedVertexes.push(selectedVertexParams);
+            }
         }
     },
     _getClosestVertexIndex(mesh, meshTransform, position) {
@@ -135,12 +140,16 @@ class SelectedVertexParams {
         return normalWorld;
     }
 
+    equals(other) {
+        return this._myMesh._index == other._myMesh._index && this._myIndexes.pp_equals(other._myIndexes);
+    }
+
     debugDraw(meshTransform, lifetime = 0) {
         let vertexPositionWorld = this.getPosition(meshTransform);
         {
             let debugDrawParams = new PP.DebugPointParams();
             debugDrawParams.myPosition = vertexPositionWorld;
-            debugDrawParams.myRadius = 0.005;
+            debugDrawParams.myRadius = 0.0035;
             debugDrawParams.myColor = PP.ColorUtils.color255To1([20, 20, 20, 255]);
             PP.myDebugManager.draw(debugDrawParams, lifetime);
         }
@@ -151,7 +160,7 @@ class SelectedVertexParams {
             debugDrawParams.myStart = vertexPositionWorld;
             debugDrawParams.myDirection = vertexNormalWorld;
             debugDrawParams.myLength = 0.05;
-            debugDrawParams.myThickness = 0.001;
+            debugDrawParams.myThickness = 0.0015;
             debugDrawParams.myColor = PP.ColorUtils.color255To1([20, 20, 20, 255]);
             PP.myDebugManager.draw(debugDrawParams, lifetime);
         }
