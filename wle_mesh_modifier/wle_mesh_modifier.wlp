@@ -796,7 +796,7 @@
                 {
                     "type": "mesh",
                     "mesh": {
-                        "mesh": "80",
+                        "mesh": "75",
                         "material": "90"
                     }
                 }
@@ -811,12 +811,12 @@
                 0.0,
                 0.0,
                 0.0,
-                -4.7683663240150057e-8,
-                -0.3999995,
+                0.3999994,
                 0.0,
                 0.0,
-                0.3999999,
-                -4.768371653085524e-8,
+                0.0,
+                0.0,
+                0.3999998,
                 0.0,
                 0.0,
                 0.0,
@@ -857,7 +857,7 @@
                 0.0,
                 2.5331974029541018e-7,
                 0.05,
-                -5.867331864806149e-8,
+                -5.8673318648061497e-8,
                 1.0
             ]
         },
@@ -1223,6 +1223,97 @@
                     }
                 }
             ]
+        },
+        "93": {
+            "link": {
+                "name": "Low Poly Character Flat GLTF",
+                "file": "assets\\models\\low_poly_character_flat_gltf.glb"
+            },
+            "parent": "18",
+            "deleted": true
+        },
+        "94": {
+            "name": "Low Poly Character GLTF",
+            "parent": "72",
+            "transformation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                -0.4,
+                1.0
+            ],
+            "deleted": true
+        },
+        "95": {
+            "name": "Pivot",
+            "parent": "94",
+            "transformation": [
+                0.4,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.3999994,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.3999998,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "deleted": true
+        },
+        "96": {
+            "parent": "95",
+            "transformation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.9999998,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.9999997,
+                0.0,
+                0.0,
+                0.0,
+                1.192092895507813e-7,
+                1.0
+            ],
+            "name": "Mesh",
+            "components": [
+                {
+                    "mesh": {
+                        "material": "35"
+                    }
+                },
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "92",
+                        "material": "90"
+                    }
+                }
+            ],
+            "deleted": true
         }
     },
     "meshes": {
@@ -1357,6 +1448,12 @@
                 "name": "Low Poly Character Flat",
                 "file": "assets\\models\\low_poly_character_flat.fbx"
             }
+        },
+        "92": {
+            "link": {
+                "name": "Low Poly Character Flat GLTF",
+                "file": "assets\\models\\low_poly_character_flat_gltf.glb"
+            }
         }
     },
     "textures": {
@@ -1458,6 +1555,12 @@
                     1.0,
                     0.7843137
                 ]
+            }
+        },
+        "91": {
+            "link": {
+                "name": "Material.001",
+                "file": "assets\\models\\low_poly_character_flat_gltf.glb"
             }
         }
     },
@@ -1646,6 +1749,7 @@
     "files": [
         "assets/models/quest_controllers_credits_Jezza3D.glb",
         "assets/models/low_poly_character_smooth.fbx",
-        "assets/models/low_poly_character_flat.fbx"
+        "assets/models/low_poly_character_flat.fbx",
+        "assets/models/low_poly_character_flat_gltf.glb"
     ]
 }

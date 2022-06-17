@@ -26,14 +26,16 @@ WL.registerComponent('vertex_selector', {
 
         let vertexIndex = -1;
         let vertexDataSize = WL.Mesh.VERTEX_FLOAT_SIZE;
-        for (let i = 0; i < meshVertexes.length / vertexDataSize; i++) {
+        let vertexSize = meshVertexes.length / vertexDataSize;
+        for (let i = 0; i < vertexSize; i++) {
             let vertexPosition = [meshVertexes[i * vertexDataSize + WL.Mesh.POS.X], meshVertexes[i * vertexDataSize + WL.Mesh.POS.Y], meshVertexes[i * vertexDataSize + WL.Mesh.POS.Z]];
 
             let vertexPositionWorld = vertexPosition.vec3_convertPositionToWorld(meshTransform);
 
             let pointParams = new PP.DebugPointParams();
-            pointParams.myPosition = vertexPositionWorld;
-            pointParams.myRadius = 0.01;
+            let randomDisplacement = 0;
+            pointParams.myPosition = vertexPositionWorld.vec3_add([Math.pp_random(-randomDisplacement, randomDisplacement), Math.pp_random(-randomDisplacement, randomDisplacement), Math.pp_random(-randomDisplacement, randomDisplacement)]);
+            pointParams.myRadius = 0.005;
             pointParams.myColor = PP.ColorUtils.color255To1([20, 20, 20, 255]);
             PP.myDebugManager.draw(pointParams, 5);
         }
