@@ -33,7 +33,8 @@
                         "_myEyeLeft": "26",
                         "_myEyeRight": "27",
                         "_myHandLeft": "23",
-                        "_myHandRight": "24"
+                        "_myHandRight": "24",
+                        "_myVRHead": "25"
                     }
                 }
             ]
@@ -169,18 +170,14 @@
             ]
         },
         "25": {
-            "name": "Head",
+            "name": "VR Head",
             "parent": "20",
             "components": [
                 {
-                    "type": "pp-set-head-local-transform"
+                    "type": "pp-set-vr-head-local-transform"
                 },
                 {
-                    "type": "pp-spatial-audio-listener",
-                    "active": true,
-                    "pp-spatial-audio-listener": {
-                        "_myEnabled": "vr"
-                    }
+                    "type": "pp-spatial-audio-listener"
                 }
             ]
         },

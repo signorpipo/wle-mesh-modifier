@@ -145,7 +145,6 @@ WL.registerComponent('vertex_selector', {
         let meshComponent = meshObject.pp_getComponentHierarchy("mesh");
         let meshTransform = meshComponent.object.pp_getTransform();
         let localMovement = movement.vec3_convertDirectionToLocal(meshTransform);
-        console.error(movement.vec3_length().toFixed(5), localMovement.vec3_length().toFixed(5));
         let vertexPosition = [0, 0, 0];
         for (let selectedVertex of this._mySelectedVertexes) {
             let mesh = selectedVertex.getMesh();
