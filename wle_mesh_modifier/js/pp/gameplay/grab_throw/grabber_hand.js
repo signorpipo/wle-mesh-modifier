@@ -15,7 +15,6 @@ WL.registerComponent('pp-grabber-hand', {
 }, {
     init: function () {
         this._myHandPose = new PP.HandPose(PP.InputUtils.getHandednessByIndex(this._myHandedness));
-        this._myHandPose.setReferenceObject(PP.myPlayerObjects.myPlayerPivot);
 
         this._myGrabbables = [];
 
@@ -53,6 +52,7 @@ WL.registerComponent('pp-grabber-hand', {
         this._myPhysX = this.object.pp_getComponent('physx');
         this._myCollisionsCollector = new PP.PhysXCollisionCollector(this._myPhysX, true);
 
+        this._myHandPose.setReferenceObject(PP.myPlayerObjects.myPlayerPivot);
         this._myHandPose.start();
 
         if (this._myDebugActive) {
