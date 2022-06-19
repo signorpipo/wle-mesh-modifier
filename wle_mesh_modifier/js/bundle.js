@@ -1,5 +1,9 @@
 //MESH MODIFIER
+require('./mesh_modifier/mesh_modifier_gateway.js');
 require('./mesh_modifier/vertex_selector.js');
+require('./mesh_modifier/file_manager.js');
+require('./mesh_modifier/test_download.js');
+require('./mesh_modifier/test_loadFile.js');
 
 //WLE
 

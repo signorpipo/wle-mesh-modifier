@@ -36,6 +36,9 @@
                         "_myHandRight": "24",
                         "_myVRHead": "25"
                     }
+                },
+                {
+                    "type": "mesh-modifier-gateway"
                 }
             ]
         },
@@ -1415,6 +1418,36 @@
         "100": {
             "name": "Hands",
             "parent": "20"
+        },
+        "101": {
+            "name": "Test",
+            "components": [
+                {
+                    "type": "pp-set-hierarchy-active",
+                    "active": false,
+                    "pp-set-hierarchy-active": {
+                        "_myHierarchyActive": false
+                    }
+                }
+            ]
+        },
+        "102": {
+            "name": "Download Test",
+            "parent": "101",
+            "components": [
+                {
+                    "type": "test-download"
+                }
+            ]
+        },
+        "103": {
+            "name": "Load JSON test",
+            "parent": "101",
+            "components": [
+                {
+                    "type": "test-loadFile"
+                }
+            ]
         }
     },
     "meshes": {
