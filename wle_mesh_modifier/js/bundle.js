@@ -1,9 +1,18 @@
 //MESH MODIFIER
-require('./mesh_modifier/mesh_modifier_gateway.js');
 require('./mesh_modifier/vertex_selector.js');
 require('./mesh_modifier/file_manager.js');
-require('./mesh_modifier/test_download.js');
-require('./mesh_modifier/test_loadFile.js');
+require('./mesh_modifier/vertex_group_config.js');
+require('./mesh_modifier/vertex_utils.js');
+
+require('./mesh_modifier/test/test_download.js');
+require('./mesh_modifier/test/test_loadFile.js');
+
+require('./mesh_modifier/tool/tool_type.js');
+require('./mesh_modifier/tool/tool_manager.js');
+require('./mesh_modifier/tool/free_edit_tool.js');
+require('./mesh_modifier/tool/dummy_tool.js');
+
+require('./mesh_modifier/mesh_modifier_gateway.js');
 
 //WLE
 

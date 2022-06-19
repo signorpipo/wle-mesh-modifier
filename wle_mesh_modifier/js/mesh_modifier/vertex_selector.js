@@ -1,7 +1,6 @@
 WL.registerComponent('vertex_selector', {
     _mySelectedObject: { type: WL.Type.Object },
-    _myLeftPointer: { type: WL.Type.Object },
-    _myRightPointer: { type: WL.Type.Object },
+    _myPointer: { type: WL.Type.Object },
     _myMinDistanceToSelect: { type: WL.Type.Float, default: 0.025 }
 }, {
     init: function () {
@@ -20,9 +19,9 @@ WL.registerComponent('vertex_selector', {
         let axes = PP.myRightGamepad.getAxesInfo().getAxes();
         if (PP.myRightGamepad.getButtonInfo(PP.ButtonType.SQUEEZE).isPressed()) {
             if (this._myPreviousPointerPosition == null) {
-                this._myPreviousPointerPosition = this._myRightPointer.pp_getPosition();
+                this._myPreviousPointerPosition = this._myPointer.pp_getPosition();
             } else {
-                let currentPointerPosition = this._myRightPointer.pp_getPosition();
+                let currentPointerPosition = this._myPointer.pp_getPosition();
 
                 let difference = currentPointerPosition.vec3_sub(this._myPreviousPointerPosition);
                 let movement = difference.vec3_length();
@@ -42,7 +41,7 @@ WL.registerComponent('vertex_selector', {
             this._moveSelectedVertexesAlongNormals(this._mySelectedObject, movement);
         } else if (PP.myRightGamepad.getButtonInfo(PP.ButtonType.BOTTOM_BUTTON).isPressed()) {
             this._myPreviousPointerPosition = null;
-            this._resetSelectedVertexes(this._mySelectedObject, this._myRightPointer);
+            this._resetSelectedVertexes(this._mySelectedObject, this._myPointer);
         } else if (PP.myLeftGamepad.getButtonInfo(PP.ButtonType.BOTTOM_BUTTON).isPressEnd()) {
             this._myPreviousPointerPosition = null;
             this._resetAll(this._mySelectedObject);
@@ -51,11 +50,11 @@ WL.registerComponent('vertex_selector', {
             this._mySelectedObject.pp_getComponentHierarchy("mesh").active = true;
 
             if (PP.myRightGamepad.getButtonInfo(PP.ButtonType.SELECT).isPressed()) {
-                this._selectVertex(this._mySelectedObject, this._myRightPointer);
+                this._selectVertex(this._mySelectedObject, this._myPointer);
             }
 
             if (PP.myRightGamepad.getButtonInfo(PP.ButtonType.TOP_BUTTON).isPressed()) {
-                this._deselectVertex(this._mySelectedObject, this._myRightPointer);
+                this._deselectVertex(this._mySelectedObject, this._myPointer);
             }
 
             if (PP.myLeftGamepad.getButtonInfo(PP.ButtonType.TOP_BUTTON).isPressEnd()) {

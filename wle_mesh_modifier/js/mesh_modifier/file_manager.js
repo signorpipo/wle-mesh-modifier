@@ -1,4 +1,4 @@
-Global.downloadFileText = function (filename, text) {
+downloadFileText = function (filename, text) {
     var element = document.createElement('a');
     element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
     element.setAttribute('download', filename);
@@ -13,28 +13,28 @@ Global.downloadFileText = function (filename, text) {
     return true;
 };
 
-Global.downloadFileJSON = function (filename, object) {
+downloadFileJSON = function (filename, object) {
     let json = null;
     try {
         json = JSON.stringify(object);
     } catch (error) { }
 
     if (json != null) {
-        return Global.downloadFileText(filename, json);
+        return downloadFileText(filename, json);
     }
 
     return false;
 };
 
-Global.loadFileText = function (filepath, loadCallback, errorCallback) {
-    Global.loadFile("text", filepath, loadCallback, errorCallback);
+loadFileText = function (filepath, loadCallback, errorCallback) {
+    loadFile("text", filepath, loadCallback, errorCallback);
 };
 
-Global.loadFileJSON = function (filepath, loadCallback, errorCallback) {
-    Global.loadFile("json", filepath, loadCallback, errorCallback);
+loadFileJSON = function (filepath, loadCallback, errorCallback) {
+    loadFile("json", filepath, loadCallback, errorCallback);
 };
 
-Global.loadFile = function (responseBodyConversionFunction, filepath, loadCallback, errorCallback) {
+loadFile = function (responseBodyConversionFunction, filepath, loadCallback, errorCallback) {
     fetch(filepath)
         .then(
             function (response) {

@@ -7,7 +7,7 @@ WL.registerComponent("test-loadFile", {
         this._myData = null;
         this._myLogData = true;
 
-        Global.loadFileJSON('test_json.json', data => this._myData = data);
+        loadFileJSON('test_json.json', data => this._myData = data);
     },
     update: function (dt) {
         if (this._myLogData) {

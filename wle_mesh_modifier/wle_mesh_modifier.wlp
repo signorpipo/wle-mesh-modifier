@@ -38,7 +38,12 @@
                     }
                 },
                 {
-                    "type": "mesh-modifier-gateway"
+                    "type": "mesh-modifier-gateway",
+                    "mesh-modifier-gateway": {
+                        "_myMeshObject": "73",
+                        "_myPointer": "82",
+                        "_myToolLabel": "87"
+                    }
                 }
             ]
         },
@@ -1150,7 +1155,7 @@
             ]
         },
         "86": {
-            "name": "Pointer Pivot",
+            "name": "Tool Label Pivot",
             "parent": "23",
             "transformation": [
                 1.0000009,
@@ -1172,25 +1177,33 @@
             ]
         },
         "87": {
-            "name": "Pointer",
+            "name": "Label",
             "parent": "86",
             "transformation": [
-                1.0,
-                -0.0,
-                -0.0,
+                -0.1,
+                1.509959268730654e-8,
+                1.814464667404536e-8,
                 0.0,
                 0.0,
-                1.0000002,
-                6.854534149169922e-7,
+                0.0959067,
+                -0.0283178,
                 0.0,
+                -2.167781509854194e-8,
+                -0.0283178,
+                -0.0959067,
                 0.0,
-                -6.854534149169922e-7,
-                1.0000002,
-                0.0,
-                2.5331974029541018e-7,
-                0.05,
-                -5.8673318648061497e-8,
+                5.21540641784668e-8,
+                0.0400001,
+                -1.541338860988617e-7,
                 1.0
+            ],
+            "components": [
+                {
+                    "type": "text",
+                    "text": {
+                        "text": "Tool\n"
+                    }
+                }
             ]
         },
         "88": {
@@ -1285,7 +1298,8 @@
                 -0.0112016,
                 -6.873160600662231e-7,
                 1.0
-            ]
+            ],
+            "deleted": true
         },
         "89": {
             "name": "Vertex Selector",
@@ -1296,8 +1310,10 @@
                     "vertex_selector": {
                         "_mySelectedObject": "73",
                         "_myLeftPointer": "87",
-                        "_myRightPointer": "82"
-                    }
+                        "_myRightPointer": "82",
+                        "_myPointer": "82"
+                    },
+                    "active": false
                 }
             ]
         },
@@ -1424,7 +1440,7 @@
             "components": [
                 {
                     "type": "pp-set-hierarchy-active",
-                    "active": false,
+                    "active": true,
                     "pp-set-hierarchy-active": {
                         "_myHierarchyActive": false
                     }
@@ -1436,7 +1452,8 @@
             "parent": "101",
             "components": [
                 {
-                    "type": "test-download"
+                    "type": "test-download",
+                    "active": false
                 }
             ]
         },
@@ -1445,7 +1462,8 @@
             "parent": "101",
             "components": [
                 {
-                    "type": "test-loadFile"
+                    "type": "test-loadFile",
+                    "active": false
                 }
             ]
         }
@@ -1611,6 +1629,24 @@
             "link": {
                 "name": "DefaultFontMaterial",
                 "file": "default"
+            },
+            "DistanceFieldVector": {
+                "outlineColor": [
+                    0.0784,
+                    0.0784,
+                    0.0784,
+                    1.0
+                ],
+                "color": [
+                    0.0784,
+                    0.0784,
+                    0.0784,
+                    1.0
+                ],
+                "outlineRange": [
+                    0.4,
+                    0.4
+                ]
             }
         },
         "31": {
@@ -1865,7 +1901,9 @@
                 "js/pp/tool/easy_tune/easy_object_tuners",
                 "js/pp/tool/easy_tune/easy_tune_widgets",
                 "js/pp/tool/widget_frame",
-                "js/mesh_modifier"
+                "js/mesh_modifier",
+                "js/mesh_modifier/tool",
+                "js/mesh_modifier/test"
             ],
             "useInternalBundler": false
         },

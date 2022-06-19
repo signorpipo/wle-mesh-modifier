@@ -1,4 +1,4 @@
-class VertexGroupConfig {
+VertexGroupConfig = class VertexGroupConfig {
     constructor() {
         this._myNextGroupID = 0;
         this._myVertexGroups = new Map();
@@ -36,9 +36,9 @@ class VertexGroupConfig {
             this._myVertexGroups.set(vertexGroup.getID(), vertexGroup);
         }
     }
-}
+};
 
-class VertexGroup {
+VertexGroup = class VertexGroup {
     constructor(id) {
         this._myID = id;
         this._myIndexList = [];
@@ -107,9 +107,9 @@ class VertexGroup {
             this._myVariants.set(variant.getID(), variant);
         }
     }
-}
+};
 
-class VertexGroupVariant {
+VertexGroupVariant = class VertexGroupVariant {
     constructor(id) {
         this._myID = id;
         this._myPositionMap = new Map();
@@ -148,4 +148,4 @@ class VertexGroupVariant {
         this._myID = jsonObject._myID;
         this._myPositionMap = jsonObject._myPositionMap;
     }
-}
+};
