@@ -8,11 +8,6 @@ WL.registerComponent("test-loadFile", {
         this._myLogData = true;
 
         Global.loadFileJSON('test_json.json', data => this._myData = data);
-        /* fetch('test_json.json')
-            .then(response => response.json())
-            .then(data => {
-                this._myData = data;
-            }); */
     },
     update: function (dt) {
         if (this._myLogData) {
