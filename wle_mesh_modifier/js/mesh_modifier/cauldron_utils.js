@@ -12,3 +12,31 @@ randomFromSeed = function (seed) {
     t ^= t + Math.imul(t ^ t >>> 7, t | 61);
     return ((t ^ t >>> 14) >>> 0) / 4294967296;
 };
+
+jsonStringify = function (object) {
+    return JSON.stringify(object, _jsonReplacer);
+};
+
+jsonParse = function (json) {
+    return JSON.parse(json, _jsonReviver);
+};
+
+function _jsonReplacer(key, value) {
+    if (value instanceof Map) {
+        return {
+            dataType: 'Map',
+            value: Array.from(value.entries()), // or with spread: value: [...value]
+        };
+    } else {
+        return value;
+    }
+}
+
+function _jsonReviver(key, value) {
+    if (typeof value === 'object' && value !== null) {
+        if (value.dataType === 'Map') {
+            return new Map(value.value);
+        }
+    }
+    return value;
+}

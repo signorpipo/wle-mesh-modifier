@@ -29,7 +29,7 @@ VertexGroupConfig = class VertexGroupConfig {
     fromJSONObject(jsonObject) {
         this._myNextGroupID = jsonObject._myNextGroupID;
         this._myVertexGroups.clear();
-        for (let jsonVertexGroup of jsonObject._myVertexGroups) {
+        for (let jsonVertexGroup of jsonObject._myVertexGroups.values()) {
             let vertexGroup = new VertexGroup(0);
             vertexGroup.fromJSONObject(jsonVertexGroup);
 
@@ -113,7 +113,7 @@ VertexGroup = class VertexGroup {
         this._myNextVariantID = jsonObject._myNextVariantID;
 
         this._myVariants.clear();
-        for (let jsonVariants of jsonObject._myVariants) {
+        for (let jsonVariants of jsonObject._myVariants.values()) {
             let variant = new VertexGroupVariant(0);
             variant.fromJSONObject(jsonVariants);
 
@@ -140,7 +140,7 @@ VertexGroup = class VertexGroup {
             {
                 let debugDrawParams = new PP.DebugPointParams();
                 debugDrawParams.myPosition = vertexPositionWorld;
-                debugDrawParams.myRadius = 0.002;
+                debugDrawParams.myRadius = 0.0025;
                 debugDrawParams.myColor = color;
                 PP.myDebugManager.draw(debugDrawParams);
             }

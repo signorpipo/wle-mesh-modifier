@@ -45,7 +45,7 @@ ToolManager = class ToolManager {
             }
 
             if (PP.myLeftGamepad.getButtonInfo(PP.ButtonType.THUMBSTICK).isPressEnd(2)) {
-                downloadFileJSON("vertex_group_config.json", this._myVertexGroupConfig);
+                downloadFileText("vertex_group_config.json", jsonStringify(this._myVertexGroupConfig));
 
                 this._myToolLabel.text = "Config Downloaded";
                 this._myResetToolLabelTimer.start();
@@ -78,10 +78,11 @@ ToolManager = class ToolManager {
     }
 
     _loadVertexGroupConfig(vertexGroupConfigPath) {
-        loadFileJSON(vertexGroupConfigPath,
-            function (jsonObject) {
+        loadFileText(vertexGroupConfigPath,
+            function (text) {
                 this._myVertexGroupConfig = new VertexGroupConfig();
                 try {
+                    let jsonObject = jsonParse(text);
                     this._myVertexGroupConfig.fromJSONObject(jsonObject);
                 } catch (error) {
                     this._myVertexGroupConfig = new VertexGroupConfig();
