@@ -36,6 +36,12 @@ VertexGroupConfig = class VertexGroupConfig {
             this._myVertexGroups.set(vertexGroup.getID(), vertexGroup);
         }
     }
+
+    debugDraw(meshComponent) {
+        for (let group of this._myVertexGroups.values()) {
+            group.debugDraw(meshComponent);
+        }
+    }
 };
 
 VertexGroup = class VertexGroup {
@@ -107,6 +113,47 @@ VertexGroup = class VertexGroup {
             this._myVariants.set(variant.getID(), variant);
         }
     }
+
+    debugDraw(meshComponent) {
+        let meshTransform = meshComponent.object.pp_getTransform();
+        let mesh = meshComponent.mesh;
+        let meshVertexes = mesh.vertexData;
+
+        let color = randomColor(this._myID);
+
+        let vertexDataSize = WL.Mesh.VERTEX_FLOAT_SIZE;
+        for (let vertexIndex of this._myIndexList) {
+            let vertexPosition = [
+                meshVertexes[vertexIndex * vertexDataSize + WL.Mesh.POSITION.X],
+                meshVertexes[vertexIndex * vertexDataSize + WL.Mesh.POSITION.Y],
+                meshVertexes[vertexIndex * vertexDataSize + WL.Mesh.POSITION.Z]];
+
+
+            let vertexPositionWorld = vertexPosition.vec3_convertPositionToWorld(meshTransform);
+            {
+                let debugDrawParams = new PP.DebugPointParams();
+                debugDrawParams.myPosition = vertexPositionWorld;
+                debugDrawParams.myRadius = 0.0015;
+                debugDrawParams.myColor = color;
+                PP.myDebugManager.draw(debugDrawParams);
+            }
+        }
+    }
+};
+
+randomColor = function (seed) {
+    let r = randomFromSeed(seed);
+    let g = randomFromSeed(Math.round(r * Number.MAX_SAFE_INTEGER));
+    let b = randomFromSeed(Math.round(g * Number.MAX_SAFE_INTEGER));
+
+    return [r, g, b, 1];
+};
+
+randomFromSeed = function (seed) {
+    var t = seed + 0x6D2B79F5;
+    t = Math.imul(t ^ t >>> 15, t | 1);
+    t ^= t + Math.imul(t ^ t >>> 7, t | 61);
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
 };
 
 VertexGroupVariant = class VertexGroupVariant {
