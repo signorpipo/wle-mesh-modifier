@@ -66,7 +66,11 @@ ManageGroupsTool = class ManageGroupsTool {
     }
 
     _deleteGroup() {
-
+        if (this._mySelectedVertexGroup != null) {
+            this._myVertexGroupConfig.removeGroup(this._mySelectedVertexGroup.getID());
+            this._mySelectedVertexGroup = null;
+            this._mySelectedVertexes = [];
+        }
     }
 
     _selectAllGroupVertex() {
