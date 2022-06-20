@@ -140,7 +140,7 @@ VertexGroup = class VertexGroup {
             {
                 let debugDrawParams = new PP.DebugPointParams();
                 debugDrawParams.myPosition = vertexPositionWorld;
-                debugDrawParams.myRadius = 0.0025;
+                debugDrawParams.myRadius = 0.003;
                 debugDrawParams.myColor = color;
                 PP.myDebugManager.draw(debugDrawParams);
             }

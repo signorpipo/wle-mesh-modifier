@@ -25,7 +25,7 @@ function _jsonReplacer(key, value) {
     if (value instanceof Map) {
         return {
             dataType: 'Map',
-            value: Array.from(value.entries()), // or with spread: value: [...value]
+            value: Array.from(value.entries()),
         };
     } else {
         return value;

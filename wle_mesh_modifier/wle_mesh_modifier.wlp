@@ -20,7 +20,8 @@
                     "active": false
                 },
                 {
-                    "type": "pp-clear-console-on-session"
+                    "type": "pp-clear-console-on-session",
+                    "active": true
                 },
                 {
                     "type": "pp-get-player-objects",

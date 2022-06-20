@@ -165,7 +165,7 @@ PP.ConsoleVRWidgetSetup = class ConsoleVRWidgetSetup {
     }
 
     _initializeRuntimeSetup() {
-        this.myTabString = "    ";
+        this.myTabString = "     ";
         this.myAssertStartString = "Assertion failed:";
 
         this.myMaxCharactersPerLine = 100;
