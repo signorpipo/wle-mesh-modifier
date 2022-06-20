@@ -19,23 +19,47 @@ ToolManager = class ToolManager {
         this._myMeshObject = meshObject;
         this._myPointerObject = pointer;
         this._myToolLabel = toolLabel.pp_getComponent("text");
+        this._myResetToolLabelTimer = new PP.Timer(3, false);
+
+        this._myNextActive = true;
     }
 
     update(dt) {
         if (this._myStarted) {
-            if (PP.myLeftGamepad.getButtonInfo(PP.ButtonType.THUMBSTICK).isPressEnd()) {
-                let newToolIndex = (this._myActiveToolIndex + 1) % this._myToolOrder.length;
+            let axes = PP.myLeftGamepad.getAxesInfo().getAxes();
+            if (Math.abs(axes[0]) > 0.5) {
+                if (this._myNextActive) {
+                    let newToolIndex = (this._myActiveToolIndex + 1 * Math.pp_sign(axes[0])) % this._myToolOrder.length;
 
-                this._myTools[this._myToolOrder[this._myActiveToolIndex]].end();
-                this._myTools[this._myToolOrder[newToolIndex]].start();
+                    this._myTools[this._myToolOrder[this._myActiveToolIndex]].end();
+                    this._myTools[this._myToolOrder[newToolIndex]].start();
 
-                this._myActiveToolIndex = newToolIndex;
+                    this._myActiveToolIndex = newToolIndex;
 
-                this._myToolLabel.text = this._myToolOrder[this._myActiveToolIndex];
+                    this._myToolLabel.text = this._myToolOrder[this._myActiveToolIndex];
+
+                    this._myNextActive = false;
+                }
+            } else {
+                this._myNextActive = true;
+            }
+
+            if (PP.myLeftGamepad.getButtonInfo(PP.ButtonType.THUMBSTICK).isPressEnd(2)) {
+                downloadFileJSON("vertex_group_config.json", this._myVertexGroupConfig);
+
+                this._myToolLabel.text = "Config Downloaded";
+                this._myResetToolLabelTimer.start();
             }
 
             let currentTool = this._myTools[this._myToolOrder[this._myActiveToolIndex]];
             currentTool.update(dt);
+
+            if (this._myResetToolLabelTimer.isRunning()) {
+                this._myResetToolLabelTimer.update(dt);
+                if (this._myResetToolLabelTimer.isDone()) {
+                    this._myToolLabel.text = this._myToolOrder[this._myActiveToolIndex];
+                }
+            }
         }
     }
 
@@ -43,7 +67,7 @@ ToolManager = class ToolManager {
         this._myTools = [];
 
         this._myTools[ToolType.FREE_EDIT] = new FreeEditTool(this._myMeshObject, this._myPointerObject, this._myVertexGroupConfig);
-        this._myTools[ToolType.GROUP_MANAGEMENT] = new DummyTool(this._myMeshObject, this._myPointerObject, this._myVertexGroupConfig);
+        this._myTools[ToolType.GROUP_MANAGEMENT] = new ManageGroupsTool(this._myMeshObject, this._myPointerObject, this._myVertexGroupConfig);
         this._myTools[ToolType.VARIANT_MANAGEMENT] = new DummyTool(this._myMeshObject, this._myPointerObject, this._myVertexGroupConfig);
         this._myTools[ToolType.VARIANT_EDIT] = new DummyTool(this._myMeshObject, this._myPointerObject, this._myVertexGroupConfig);
 

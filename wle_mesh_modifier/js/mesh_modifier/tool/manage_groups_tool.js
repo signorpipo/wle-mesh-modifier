@@ -12,9 +12,10 @@ ManageGroupsTool = class ManageGroupsTool {
         }
 
         this._mySelectedVertexes = [];
-        this._myPreviousPointerPosition = null;
 
         this._myMinDistanceToSelect = 0.025;
+
+        this._mySelectedVertexGroup = null;
     }
 
     start() {
@@ -26,57 +27,20 @@ ManageGroupsTool = class ManageGroupsTool {
     }
 
     update(dt) {
-        let axes = PP.myRightGamepad.getAxesInfo().getAxes();
-        if (PP.myRightGamepad.getButtonInfo(PP.ButtonType.SQUEEZE).isPressed()) {
-            if (this._myPreviousPointerPosition == null) {
-                this._myPreviousPointerPosition = this._myPointerObject.pp_getPosition();
-            } else {
-                let currentPointerPosition = this._myPointerObject.pp_getPosition();
+        if (PP.myRightGamepad.getButtonInfo(PP.ButtonType.SELECT).isPressed()) {
+            this._selectVertex();
+        }
 
-                let difference = currentPointerPosition.vec3_sub(this._myPreviousPointerPosition);
-                let movement = difference.vec3_length();
-                if (movement > 0.00025) {
-                    difference.vec3_normalize(difference);
-                    difference.vec3_scale(movement, difference);
-                    this._moveSelectedVertexes(difference);
-                } else {
-                    this._myMeshComponent.active = true;
-                }
+        if (PP.myRightGamepad.getButtonInfo(PP.ButtonType.TOP_BUTTON).isPressed()) {
+            this._deselectVertex();
+        }
 
-                this._myPreviousPointerPosition = currentPointerPosition;
-            }
-        } else if (Math.abs(axes[0]) > 0.2) {
+        if (PP.myLeftGamepad.getButtonInfo(PP.ButtonType.TOP_BUTTON).isPressEnd()) {
+            this._mySelectedVertexes = [];
+        }
 
-            this._myPreviousPointerPosition = null;
-            let movement = axes[0] * 0.2 * dt;
-            this._moveSelectedVertexesAlongNormals(movement);
-
-        } else if (PP.myRightGamepad.getButtonInfo(PP.ButtonType.BOTTOM_BUTTON).isPressed()) {
-
-            this._myPreviousPointerPosition = null;
-            this._resetSelectedVertexes();
-
-        } else if (PP.myLeftGamepad.getButtonInfo(PP.ButtonType.BOTTOM_BUTTON).isPressEnd()) {
-
-            this._myPreviousPointerPosition = null;
-            VertexUtils.resetMesh(this._myMeshComponent, this._myVertexDataBackup);
-            this._myMeshComponent.active = false;
-
-        } else {
-            this._myPreviousPointerPosition = null;
-            this._myMeshComponent.active = true;
-
-            if (PP.myRightGamepad.getButtonInfo(PP.ButtonType.SELECT).isPressed()) {
-                this._selectVertex();
-            }
-
-            if (PP.myRightGamepad.getButtonInfo(PP.ButtonType.TOP_BUTTON).isPressed()) {
-                this._deselectVertex();
-            }
-
-            if (PP.myLeftGamepad.getButtonInfo(PP.ButtonType.TOP_BUTTON).isPressEnd()) {
-                this._mySelectedVertexes = [];
-            }
+        if (PP.myLeftGamepad.getButtonInfo(PP.ButtonType.BOTTOM_BUTTON).isPressEnd(2)) {
+            this._saveGroup();
         }
 
         this._debugDraw();
@@ -104,41 +68,35 @@ ManageGroupsTool = class ManageGroupsTool {
         }
     }
 
-    _resetSelectedVertexes() {
-        let pointerPosition = this._myPointerObject.pp_getPosition();
-
-        let selectedVertexParams = VertexUtils.getClosestSelectedVertex(this._myMeshObject, this._myPointerObject);
-
-        let vertexPositionWorld = selectedVertexParams.getPosition();
-        if (vertexPositionWorld.vec3_distance(pointerPosition) < this._myMinDistanceToSelect) {
-
-            VertexUtils.resetVertexes(this._myMeshComponent, selectedVertexParams.getIndexes(), this._myVertexDataBackup);
-
-            this._myMeshComponent.active = false;
-        } else {
-            this._myMeshComponent.active = true;
+    _saveGroup() {
+        let indexList = [];
+        for (let selectedVertex of this._mySelectedVertexes) {
+            let selectedIndexList = selectedVertex.getIndexes();
+            indexList.push(...selectedIndexList);
         }
-    }
 
-    _moveSelectedVertexes(movement) {
-        if (this._mySelectedVertexes.length > 0) {
-            VertexUtils.moveSelectedVertexes(this._myMeshObject, this._mySelectedVertexes, movement);
-            this._myMeshComponent.active = !this._myMeshComponent.active;
-        }
-    }
+        if (indexList.length > 0) {
+            if (this._mySelectedVertexGroup == null) {
+                this._mySelectedVertexGroup = this._myVertexGroupConfig.addGroup();
+            }
 
-    _moveSelectedVertexesAlongNormals(movement) {
-        if (this._mySelectedVertexes.length > 0) {
-            VertexUtils.moveSelectedVertexesAlongNormals(this._myMeshObject, this._mySelectedVertexes, movement);
-            this._myMeshComponent.active = !this._myMeshComponent.active;
+            this._mySelectedVertexGroup.setIndexList(indexList);
         }
     }
 
     _debugDraw() {
-        this._myVertexGroupConfig.debugDraw();
+        if (this._mySelectedVertexGroup == null) {
+            this._myVertexGroupConfig.debugDraw(this._myMeshComponent);
+        } else {
+            this._mySelectedVertexGroup.debugDraw(this._myMeshComponent);
+        }
 
+        let color = null;
+        if (this._mySelectedVertexGroup != null) {
+            color = randomColor(this._mySelectedVertexGroup.getID());
+        }
         for (let selectedVertex of this._mySelectedVertexes) {
-            selectedVertex.debugDraw();
+            selectedVertex.debugDraw(color);
         }
     }
 };

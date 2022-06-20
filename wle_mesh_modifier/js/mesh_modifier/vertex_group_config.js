@@ -61,6 +61,13 @@ VertexGroup = class VertexGroup {
         return this._myIndexList;
     }
 
+    setIndexList(indexList) {
+        this._myIndexList = indexList;
+        for (let variant of this._myVariants.values()) {
+            variant.clean(this._myIndexList);
+        }
+    }
+
     getVariantIDs() {
         return this._myVariants.keys();
     }
@@ -124,36 +131,21 @@ VertexGroup = class VertexGroup {
         let vertexDataSize = WL.Mesh.VERTEX_FLOAT_SIZE;
         for (let vertexIndex of this._myIndexList) {
             let vertexPosition = [
-                meshVertexes[vertexIndex * vertexDataSize + WL.Mesh.POSITION.X],
-                meshVertexes[vertexIndex * vertexDataSize + WL.Mesh.POSITION.Y],
-                meshVertexes[vertexIndex * vertexDataSize + WL.Mesh.POSITION.Z]];
+                meshVertexes[vertexIndex * vertexDataSize + WL.Mesh.POS.X],
+                meshVertexes[vertexIndex * vertexDataSize + WL.Mesh.POS.Y],
+                meshVertexes[vertexIndex * vertexDataSize + WL.Mesh.POS.Z]];
 
 
             let vertexPositionWorld = vertexPosition.vec3_convertPositionToWorld(meshTransform);
             {
                 let debugDrawParams = new PP.DebugPointParams();
                 debugDrawParams.myPosition = vertexPositionWorld;
-                debugDrawParams.myRadius = 0.0015;
+                debugDrawParams.myRadius = 0.002;
                 debugDrawParams.myColor = color;
                 PP.myDebugManager.draw(debugDrawParams);
             }
         }
     }
-};
-
-randomColor = function (seed) {
-    let r = randomFromSeed(seed);
-    let g = randomFromSeed(Math.round(r * Number.MAX_SAFE_INTEGER));
-    let b = randomFromSeed(Math.round(g * Number.MAX_SAFE_INTEGER));
-
-    return [r, g, b, 1];
-};
-
-randomFromSeed = function (seed) {
-    var t = seed + 0x6D2B79F5;
-    t = Math.imul(t ^ t >>> 15, t | 1);
-    t ^= t + Math.imul(t ^ t >>> 7, t | 61);
-    return ((t ^ t >>> 14) >>> 0) / 4294967296;
 };
 
 VertexGroupVariant = class VertexGroupVariant {
@@ -164,6 +156,16 @@ VertexGroupVariant = class VertexGroupVariant {
 
     removeIndex(index) {
         this._myPositionMap.delete(index);
+    }
+
+    clean(indexList) {
+        let variantIndexList = this._myPositionMap.keys();
+
+        for (let variantIndex of variantIndexList) {
+            if (!indexList.pp_hasEqual(variantIndex)) {
+                this._myPositionMap.delete(variantIndex);
+            }
+        }
     }
 
     saveVariant(mesh, indexList) {

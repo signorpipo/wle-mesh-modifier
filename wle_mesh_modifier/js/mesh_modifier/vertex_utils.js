@@ -204,15 +204,19 @@ SelectedVertexParams = class SelectedVertexParams {
         return this._myMeshComponent.mesh._index == other._myMeshComponent.mesh._index && this._myIndexes.pp_equals(other._myIndexes);
     }
 
-    debugDraw(lifetime = 0) {
+    debugDraw(color = null) {
         let meshTransform = this._myMeshComponent.object.pp_getTransform();
         let vertexPositionWorld = this.getPosition(meshTransform);
         {
             let debugDrawParams = new PP.DebugPointParams();
             debugDrawParams.myPosition = vertexPositionWorld;
             debugDrawParams.myRadius = 0.0035;
-            debugDrawParams.myColor = PP.ColorUtils.color255To1([20, 20, 20, 255]);
-            PP.myDebugManager.draw(debugDrawParams, lifetime);
+            if (color != null) {
+                debugDrawParams.myColor = color;
+            } else {
+                debugDrawParams.myColor = PP.ColorUtils.color255To1([20, 20, 20, 255]);
+            }
+            PP.myDebugManager.draw(debugDrawParams, 0);
         }
 
         let vertexNormalWorld = this.getNormal(meshTransform);
@@ -222,8 +226,12 @@ SelectedVertexParams = class SelectedVertexParams {
             debugDrawParams.myDirection = vertexNormalWorld;
             debugDrawParams.myLength = 0.05;
             debugDrawParams.myThickness = 0.0015;
-            debugDrawParams.myColor = PP.ColorUtils.color255To1([20, 20, 20, 255]);
-            PP.myDebugManager.draw(debugDrawParams, lifetime);
+            if (color != null) {
+                debugDrawParams.myColor = color;
+            } else {
+                debugDrawParams.myColor = PP.ColorUtils.color255To1([20, 20, 20, 255]);
+            }
+            PP.myDebugManager.draw(debugDrawParams, 0);
         }
     }
 };

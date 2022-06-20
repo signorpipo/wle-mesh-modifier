@@ -1,5 +1,6 @@
 //MESH MODIFIER
 require('./mesh_modifier/vertex_selector.js');
+require('./mesh_modifier/cauldron_utils.js');
 require('./mesh_modifier/file_manager.js');
 require('./mesh_modifier/vertex_group_config.js');
 require('./mesh_modifier/vertex_utils.js');
