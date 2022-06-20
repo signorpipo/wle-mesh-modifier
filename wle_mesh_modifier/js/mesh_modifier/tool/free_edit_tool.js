@@ -84,7 +84,7 @@ FreeEditTool = class FreeEditTool {
     _selectVertex() {
         let pointerPosition = this._myPointerObject.pp_getPosition();
 
-        let selectedVertexParams = VertexUtils.getClosestSelectedVertex(this._myMeshObject, this._myPointerObject);
+        let selectedVertexParams = VertexUtils.getClosestSelectedVertex(this._myMeshObject, pointerPosition);
 
         let vertexPositionWorld = selectedVertexParams.getPosition();
         if (vertexPositionWorld.vec3_distance(pointerPosition) < this._myMinDistanceToSelect) {
@@ -95,7 +95,7 @@ FreeEditTool = class FreeEditTool {
     _deselectVertex() {
         let pointerPosition = this._myPointerObject.pp_getPosition();
 
-        let selectedVertexParams = VertexUtils.getClosestSelectedVertex(this._myMeshObject, this._myPointerObject);
+        let selectedVertexParams = VertexUtils.getClosestSelectedVertex(this._myMeshObject, pointerPosition);
 
         let vertexPositionWorld = selectedVertexParams.getPosition();
         if (vertexPositionWorld.vec3_distance(pointerPosition) < this._myMinDistanceToSelect) {
@@ -106,7 +106,7 @@ FreeEditTool = class FreeEditTool {
     _resetSelectedVertexes() {
         let pointerPosition = this._myPointerObject.pp_getPosition();
 
-        let selectedVertexParams = VertexUtils.getClosestSelectedVertex(this._myMeshObject, this._myPointerObject);
+        let selectedVertexParams = VertexUtils.getClosestSelectedVertex(this._myMeshObject, pointerPosition);
 
         let vertexPositionWorld = selectedVertexParams.getPosition();
         if (vertexPositionWorld.vec3_distance(pointerPosition) < this._myMinDistanceToSelect) {

@@ -16,6 +16,8 @@ ManageGroupsTool = class ManageGroupsTool {
         this._myMinDistanceToSelect = 0.025;
 
         this._mySelectedVertexGroup = null;
+
+        this._myGroupSavedCallbacks = new Map();
     }
 
     start() {
@@ -35,21 +37,80 @@ ManageGroupsTool = class ManageGroupsTool {
             this._deselectVertex();
         }
 
-        if (PP.myLeftGamepad.getButtonInfo(PP.ButtonType.TOP_BUTTON).isPressEnd()) {
+        if (PP.myRightGamepad.getButtonInfo(PP.ButtonType.SQUEEZE).isPressEnd()) {
             this._mySelectedVertexes = [];
+            if (this._mySelectedVertexGroup != null) {
+                this._mySelectedVertexGroup = null;
+            } else {
+                this._selectGroup();
+            }
+        }
+
+        if (PP.myLeftGamepad.getButtonInfo(PP.ButtonType.TOP_BUTTON).isPressEnd()) {
+            if (this._mySelectedVertexes.length > 0) {
+                this._mySelectedVertexes = [];
+            } else {
+                this._selectAllGroupVertex();
+            }
         }
 
         if (PP.myLeftGamepad.getButtonInfo(PP.ButtonType.BOTTOM_BUTTON).isPressEnd(2)) {
             this._saveGroup();
         }
 
+        if (PP.myLeftGamepad.getButtonInfo(PP.ButtonType.SQUEEZE).isPressEnd(2)) {
+            this._deleteGroup();
+        }
+
         this._debugDraw();
+    }
+
+    _deleteGroup() {
+
+    }
+
+    _selectAllGroupVertex() {
+        if (this._mySelectedVertexGroup != null) {
+            this._mySelectedVertexes = [];
+            let meshTransform = this._myMeshComponent.object.pp_getTransform();
+            for (let index of this._mySelectedVertexGroup.getIndexList()) {
+                let vertexPosition = VertexUtils.getVertexPosition(index, this._myMeshComponent.mesh);
+                let vertexPositionWorld = vertexPosition.vec3_convertPositionToWorld(meshTransform);
+
+                let selectedVertexParams = VertexUtils.getClosestSelectedVertex(this._myMeshObject, vertexPositionWorld);
+                this._mySelectedVertexes.pp_pushUnique(selectedVertexParams, element => element.equals(selectedVertexParams));
+            }
+        }
+    }
+
+    _selectGroup() {
+        let pointerPosition = this._myPointerObject.pp_getPosition();
+
+        let selectedVertexParams = VertexUtils.getClosestSelectedVertex(this._myMeshObject, pointerPosition);
+
+        let vertexPositionWorld = selectedVertexParams.getPosition();
+        if (vertexPositionWorld.vec3_distance(pointerPosition) < this._myMinDistanceToSelect * 2) {
+            let vertexIndex = selectedVertexParams.getIndexes()[0];
+            let selectedGroup = null;
+            for (let group of this._myVertexGroupConfig.getGroups()) {
+                let groupIndexList = group.getIndexList();
+                if (groupIndexList.pp_hasEqual(vertexIndex)) {
+                    selectedGroup = group;
+                    break;
+                }
+            }
+
+            if (selectedGroup) {
+                this._mySelectedVertexGroup = selectedGroup;
+                this._selectAllGroupVertex();
+            }
+        }
     }
 
     _selectVertex() {
         let pointerPosition = this._myPointerObject.pp_getPosition();
 
-        let selectedVertexParams = VertexUtils.getClosestSelectedVertex(this._myMeshObject, this._myPointerObject);
+        let selectedVertexParams = VertexUtils.getClosestSelectedVertex(this._myMeshObject, pointerPosition);
 
         let vertexPositionWorld = selectedVertexParams.getPosition();
         if (vertexPositionWorld.vec3_distance(pointerPosition) < this._myMinDistanceToSelect) {
@@ -60,7 +121,7 @@ ManageGroupsTool = class ManageGroupsTool {
     _deselectVertex() {
         let pointerPosition = this._myPointerObject.pp_getPosition();
 
-        let selectedVertexParams = VertexUtils.getClosestSelectedVertex(this._myMeshObject, this._myPointerObject);
+        let selectedVertexParams = VertexUtils.getClosestSelectedVertex(this._myMeshObject, pointerPosition);
 
         let vertexPositionWorld = selectedVertexParams.getPosition();
         if (vertexPositionWorld.vec3_distance(pointerPosition) < this._myMinDistanceToSelect) {
@@ -81,6 +142,8 @@ ManageGroupsTool = class ManageGroupsTool {
             }
 
             this._mySelectedVertexGroup.setIndexList(indexList);
+
+            this._myGroupSavedCallbacks.forEach(function (callback) { callback(); }.bind(this));
         }
     }
 
@@ -98,5 +161,13 @@ ManageGroupsTool = class ManageGroupsTool {
         for (let selectedVertex of this._mySelectedVertexes) {
             selectedVertex.debugDraw(color);
         }
+    }
+
+    registerGroupSavedEventListener(id, callback) {
+        this._myGroupSavedCallbacks.set(id, callback);
+    }
+
+    unregisterGroupSavedEventListener(id) {
+        this._myGroupSavedCallbacks.delete(id);
     }
 };

@@ -1,8 +1,7 @@
 VertexUtils = {
-    getClosestSelectedVertex: function (meshObject, pointerObject) {
+    getClosestSelectedVertex: function (meshObject, pointerPosition) {
         let meshComponent = meshObject.pp_getComponentHierarchy("mesh");
         let meshTransform = meshComponent.object.pp_getTransform();
-        let pointerPosition = pointerObject.pp_getPosition();
 
         let closestVertexIndex = VertexUtils.getClosestVertexIndex(meshComponent.mesh, meshTransform, pointerPosition);
         let selectedVertexIndexes = VertexUtils.getSameVertexIndexes(meshComponent.mesh, closestVertexIndex);
@@ -64,6 +63,16 @@ VertexUtils = {
         mesh.vertexData[vertexIndex * vertexDataSize + WL.Mesh.POS.X] = position[0];
         mesh.vertexData[vertexIndex * vertexDataSize + WL.Mesh.POS.Y] = position[1];
         mesh.vertexData[vertexIndex * vertexDataSize + WL.Mesh.POS.Z] = position[2];
+    },
+    getVertexPosition: function (vertexIndex, mesh) {
+        let position = [0, 0, 0];
+
+        let vertexDataSize = WL.Mesh.VERTEX_FLOAT_SIZE;
+        position[0] = mesh.vertexData[vertexIndex * vertexDataSize + WL.Mesh.POS.X];
+        position[1] = mesh.vertexData[vertexIndex * vertexDataSize + WL.Mesh.POS.Y];
+        position[2] = mesh.vertexData[vertexIndex * vertexDataSize + WL.Mesh.POS.Z];
+
+        return position;
     },
     resetMesh(meshComponent, originalVertexData) {
         let mesh = meshComponent.mesh;

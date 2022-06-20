@@ -19,7 +19,7 @@ ToolManager = class ToolManager {
         this._myMeshObject = meshObject;
         this._myPointerObject = pointer;
         this._myToolLabel = toolLabel.pp_getComponent("text");
-        this._myResetToolLabelTimer = new PP.Timer(3, false);
+        this._myResetToolLabelTimer = new PP.Timer(2, false);
 
         this._myNextActive = true;
     }
@@ -71,6 +71,8 @@ ToolManager = class ToolManager {
         this._myTools[ToolType.VARIANT_MANAGEMENT] = new DummyTool(this._myMeshObject, this._myPointerObject, this._myVertexGroupConfig);
         this._myTools[ToolType.VARIANT_EDIT] = new DummyTool(this._myMeshObject, this._myPointerObject, this._myVertexGroupConfig);
 
+        this._myTools[ToolType.GROUP_MANAGEMENT].registerGroupSavedEventListener(this, this._onGroupSaved.bind(this));
+
         this._myActiveToolIndex = 0;
 
         this._myTools[this._myToolOrder[this._myActiveToolIndex]].start();
@@ -100,5 +102,10 @@ ToolManager = class ToolManager {
                 this._myStarted = true;
             }.bind(this)
         );
+    }
+
+    _onGroupSaved() {
+        this._myToolLabel.text = "Group Saved";
+        this._myResetToolLabelTimer.start();
     }
 };

@@ -23,7 +23,7 @@ VertexGroupConfig = class VertexGroupConfig {
     }
 
     getGroups() {
-        this._myVertexGroups.values();
+        return this._myVertexGroups.values();
     }
 
     fromJSONObject(jsonObject) {
