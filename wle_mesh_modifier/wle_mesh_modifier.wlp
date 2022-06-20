@@ -42,7 +42,8 @@
                     "mesh-modifier-gateway": {
                         "_myMeshObject": "73",
                         "_myPointer": "82",
-                        "_myToolLabel": "87"
+                        "_myToolLabel": "87",
+                        "_myVertexGroupConfigPath": "vertex_group_config.json"
                     }
                 }
             ]

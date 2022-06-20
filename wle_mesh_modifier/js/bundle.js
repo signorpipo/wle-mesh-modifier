@@ -10,6 +10,7 @@ require('./mesh_modifier/test/test_loadFile.js');
 require('./mesh_modifier/tool/tool_type.js');
 require('./mesh_modifier/tool/tool_manager.js');
 require('./mesh_modifier/tool/free_edit_tool.js');
+require('./mesh_modifier/tool/manage_groups_tool.js');
 require('./mesh_modifier/tool/dummy_tool.js');
 
 require('./mesh_modifier/mesh_modifier_gateway.js');

@@ -45,21 +45,21 @@ loadFile = function (responseBodyConversionFunction, filepath, loadCallback, err
                                 loadCallback(data);
                             }
                         },
-                        function () {
+                        function (response) {
                             if (errorCallback != null) {
-                                errorCallback();
+                                errorCallback(response);
                             }
                         }
                     );
                 } else {
                     if (errorCallback != null) {
-                        errorCallback();
+                        errorCallback(response);
                     }
                 }
             },
-            function () {
+            function (response) {
                 if (errorCallback != null) {
-                    errorCallback();
+                    errorCallback(response);
                 }
             }
         );

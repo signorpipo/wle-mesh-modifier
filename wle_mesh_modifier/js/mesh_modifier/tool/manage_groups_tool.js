@@ -1,7 +1,8 @@
-FreeEditTool = class FreeEditTool {
-    constructor(meshObject, pointer) {
+ManageGroupsTool = class ManageGroupsTool {
+    constructor(meshObject, pointer, vertexGroupConfig) {
         this._myMeshObject = meshObject;
         this._myPointerObject = pointer;
+        this._myVertexGroupConfig = vertexGroupConfig;
 
         this._myMeshComponent = this._myMeshObject.pp_getComponentHierarchy("mesh");
 
@@ -134,6 +135,8 @@ FreeEditTool = class FreeEditTool {
     }
 
     _debugDraw() {
+        this._myVertexGroupConfig.debugDraw();
+
         for (let selectedVertex of this._mySelectedVertexes) {
             selectedVertex.debugDraw();
         }
