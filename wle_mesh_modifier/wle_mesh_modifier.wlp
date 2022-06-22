@@ -65,7 +65,7 @@
                         "_myDirectionReferenceObject": "23",
                         "_myMinHeight": -100.0,
                         "_myMaxSpeed": 1.0,
-                        "_myMinAngleToFly": 45.0,
+                        "_myMinAngleToFly": 60.0,
                         "_mySnapTurnAngle": 30.0
                     }
                 }

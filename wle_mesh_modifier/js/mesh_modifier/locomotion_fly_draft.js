@@ -709,9 +709,11 @@ WL.registerComponent('locomotion-fly-draft', {
 
                 this._myPlayerObject.pp_setPosition(newPlayerPosition);
                 this._myCurrentNonVRCameraObject.pp_resetPositionLocal();
+                let currentHeadPosition = this._myCurrentNonVRCameraObject.pp_getPosition();
 
-                let headHeight = this._getHeadHeight(resyncHeadPosition);
-                this._myCurrentNonVRCameraObject.pp_setPosition(playerUp.vec3_scale(headHeight).vec3_add(newPlayerPosition));
+                let resyncHeadHeight = this._getHeadHeight(resyncHeadPosition);
+                let currentHeadHeight = this._getHeadHeight(currentHeadPosition);
+                this._myCurrentNonVRCameraObject.pp_setPosition(playerUp.vec3_scale(resyncHeadHeight - currentHeadHeight).vec3_add(newPlayerPosition));
 
                 let resyncHeadRotation = this._mySessionChangeResyncHeadTransform.quat2_getRotationQuat();
 
