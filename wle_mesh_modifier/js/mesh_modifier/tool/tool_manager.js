@@ -44,17 +44,19 @@ ToolManager = class ToolManager {
 
         this._loadVertexGroupConfig(vertexGroupConfigPath);
 
-        this._myNextActive = true;
+        this._myScrollEnabled = true;
 
         PP.myDebugManager.allocateDraw(PP.DebugDrawObjectType.POINT, 1000);
         PP.myDebugManager.allocateDraw(PP.DebugDrawObjectType.ARROW, 1000);
+
+        this._myEnableMeshCounter = 0;
     }
 
     update(dt) {
         if (this._myStarted) {
             let axes = PP.myLeftGamepad.getAxesInfo().getAxes();
             if (Math.abs(axes[0]) > 0.5) {
-                if (this._myNextActive) {
+                if (this._myScrollEnabled) {
                     let newToolIndex = (this._myActiveToolIndex + 1 * Math.pp_sign(axes[0])) % this._myToolOrder.length;
                     if (newToolIndex < 0) {
                         newToolIndex = this._myToolOrder.length + newToolIndex;
@@ -67,10 +69,10 @@ ToolManager = class ToolManager {
 
                     this._myToolLabel.text = this._myToolOrder[this._myActiveToolIndex];
 
-                    this._myNextActive = false;
+                    this._myScrollEnabled = false;
                 }
             } else {
-                this._myNextActive = true;
+                this._myScrollEnabled = true;
             }
 
             if (PP.myLeftGamepad.getButtonInfo(PP.ButtonType.THUMBSTICK).isPressEnd(2)) {
@@ -89,20 +91,30 @@ ToolManager = class ToolManager {
                     this._myToolLabel.text = this._myToolOrder[this._myActiveToolIndex];
                 }
             }
-        }
 
-        if (this._myToolData.mySelectedVertexGroup != null) {
-            this._myGroupLabel.text = "Group: " + this._myToolData.mySelectedVertexGroup.getID();
-        } else {
-            this._myGroupLabel.text = "Group: None";
-        }
+            if (this._myToolData.mySelectedVertexGroup != null) {
+                this._myGroupLabel.text = "Group: " + this._myToolData.mySelectedVertexGroup.getID();
+            } else {
+                this._myGroupLabel.text = "Group: None";
+            }
 
-        if (this._myToolData.mySelectedVertexVariant != null) {
-            this._myVariantLabel.text = "Variant: " + this._myToolData.mySelectedVertexVariant.getID();
-        } else {
-            this._myVariantLabel.text = "Variant: None";
-        }
+            if (this._myToolData.mySelectedVertexVariant != null) {
+                this._myVariantLabel.text = "Variant: " + this._myToolData.mySelectedVertexVariant.getID();
+            } else {
+                this._myVariantLabel.text = "Variant: None";
+            }
 
+            if (this._myEnableMeshCounter > 0) {
+                this._myEnableMeshCounter--;
+                if (this._myEnableMeshCounter == 0) {
+                    this._myToolData.myMeshComponent.active = true;
+                }
+            }
+
+            if (!this._myToolData.myMeshComponent.active && this._myEnableMeshCounter == 0) {
+                this._myEnableMeshCounter = 2;
+            }
+        }
     }
 
     _initializeTools() {

@@ -111,6 +111,10 @@ VertexGroup = class VertexGroup {
         return values;
     }
 
+    removeVariant(variantID) {
+        this._myVariants.delete(variantID);
+    }
+
     addIndex(index) {
         this._myIndexList.pp_pushUnique(index);
     }
