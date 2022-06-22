@@ -1,11 +1,6 @@
 ManageVariantsTool = class ManageVariantsTool {
-    constructor(tooldata, meshObject, pointer, vertexGroupConfig) {
+    constructor(tooldata) {
         this._myToolData = tooldata;
-        this._myMeshObject = meshObject;
-        this._myPointerObject = pointer;
-        this._myVertexGroupConfig = vertexGroupConfig;
-
-        this._myMeshComponent = this._myMeshObject.pp_getComponentHierarchy("mesh");
 
         this._myMinDistanceToSelect = 0.025;
 
@@ -15,7 +10,7 @@ ManageVariantsTool = class ManageVariantsTool {
     }
 
     start() {
-        this._myMeshComponent.active = true;
+        this._myToolData.myMeshComponent.active = true;
     }
 
     end() {
@@ -29,7 +24,7 @@ ManageVariantsTool = class ManageVariantsTool {
 
                 this._myNextActive = false;
             } else {
-                this._myMeshComponent.active = true;
+                this._myToolData.myMeshComponent.active = true;
             }
         } else if (PP.myRightGamepad.getButtonInfo(PP.ButtonType.SQUEEZE).isPressEnd()) {
             if (this._myToolData.mySelectedVertexGroup != null) {
@@ -49,7 +44,7 @@ ManageVariantsTool = class ManageVariantsTool {
         } else if (PP.myLeftGamepad.getButtonInfo(PP.ButtonType.SQUEEZE).isPressEnd(2)) {
             this._deleteVariant();
         } else {
-            this._myMeshComponent.active = true;
+            this._myToolData.myMeshComponent.active = true;
             this._myNextActive = true;
         }
 
@@ -60,8 +55,8 @@ ManageVariantsTool = class ManageVariantsTool {
         if (this._myToolData.mySelectedVertexGroup != null) {
             this._myToolData.mySelectedVertexVariant = this._myToolData.mySelectedVertexGroup.getNextVariant(this._myToolData.mySelectedVertexVariant, direction);
             if (this._myToolData.mySelectedVertexVariant != null) {
-                this._myToolData.mySelectedVertexVariant.loadVariant(this._myMeshComponent.mesh);
-                this._myMeshComponent.active = false;
+                this._myToolData.mySelectedVertexVariant.loadVariant(this._myToolData.myMeshComponent.mesh);
+                this._myToolData.myMeshComponent.active = false;
             } else {
                 this._resetGroupVertexes();
             }
@@ -83,7 +78,7 @@ ManageVariantsTool = class ManageVariantsTool {
 
     _deleteVariant() {
         if (this._myToolData.mySelectedVertexGroup != null) {
-            this._myVertexGroupConfig.removeGroup(this._myToolData.mySelectedVertexGroup.getID());
+            this._myToolData.myVertexGroupConfig.removeGroup(this._myToolData.mySelectedVertexGroup.getID());
             this._myToolData.mySelectedVertexGroup = null;
         }
     }
@@ -91,27 +86,27 @@ ManageVariantsTool = class ManageVariantsTool {
     _resetGroupVertexes() {
         if (this._myToolData.mySelectedVertexGroup != null) {
             let indexList = this._myToolData.mySelectedVertexGroup.getIndexList();
-            VertexUtils.resetVertexes(this._myMeshComponent, indexList, this._myToolData.myVertexDataBackup);
-            this._myMeshComponent.active = false;
+            VertexUtils.resetVertexes(this._myToolData.myMeshComponent, indexList, this._myToolData.myVertexDataBackup);
+            this._myToolData.myMeshComponent.active = false;
 
         }
     }
 
     _resetAllVertexes() {
-        VertexUtils.resetMesh(this._myMeshComponent, this._myToolData.myVertexDataBackup);
-        this._myMeshComponent.active = false;
+        VertexUtils.resetMesh(this._myToolData.myMeshComponent, this._myToolData.myVertexDataBackup);
+        this._myToolData.myMeshComponent.active = false;
     }
 
     _selectGroup() {
-        let pointerPosition = this._myPointerObject.pp_getPosition();
+        let pointerPosition = this._myToolData.myPointerObject.pp_getPosition();
 
-        let selectedVertexParams = VertexUtils.getClosestSelectedVertex(this._myMeshObject, pointerPosition);
+        let selectedVertexParams = VertexUtils.getClosestSelectedVertex(this._myToolData.myMeshObject, pointerPosition);
 
         let vertexPositionWorld = selectedVertexParams.getPosition();
         if (vertexPositionWorld.vec3_distance(pointerPosition) < this._myMinDistanceToSelect * 2) {
             let vertexIndex = selectedVertexParams.getIndexes()[0];
             let selectedGroup = null;
-            for (let group of this._myVertexGroupConfig.getGroups()) {
+            for (let group of this._myToolData.myVertexGroupConfig.getGroups()) {
                 let groupIndexList = group.getIndexList();
                 if (groupIndexList.pp_hasEqual(vertexIndex)) {
                     selectedGroup = group;
@@ -128,9 +123,9 @@ ManageVariantsTool = class ManageVariantsTool {
 
     _debugDraw() {
         if (this._myToolData.mySelectedVertexGroup == null) {
-            this._myVertexGroupConfig.debugDraw(this._myMeshComponent);
+            this._myToolData.myVertexGroupConfig.debugDraw(this._myToolData.myMeshComponent);
         } else {
-            this._myToolData.mySelectedVertexGroup.debugDraw(this._myMeshComponent);
+            this._myToolData.mySelectedVertexGroup.debugDraw(this._myToolData.myMeshComponent);
         }
     }
 

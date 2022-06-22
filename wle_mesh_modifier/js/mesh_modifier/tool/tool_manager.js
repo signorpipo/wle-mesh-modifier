@@ -1,5 +1,10 @@
 ToolData = class ToolData {
     constructor(mesh) {
+        this.myMeshObject = null;
+        this.myMeshComponent = null;
+        this.myPointerObject = null;
+        this.myVertexGroupConfig = null;
+
         this.mySelectedVertexes = [];
         this.mySelectedVertexGroup = null;
         this.mySelectedVertexVariant = null;
@@ -23,22 +28,21 @@ ToolManager = class ToolManager {
         ];
 
         this._myStarted = false;
-        this._myVertexGroupConfig = null;
-
-        this._loadVertexGroupConfig(vertexGroupConfigPath);
 
         this._myTools = [];
 
-        this._myMeshObject = meshObject;
-        this._myMeshComponent = this._myMeshObject.pp_getComponentHierarchy("mesh");
-        this._myPointerObject = pointer;
         this._myToolLabel = toolLabel.pp_getComponent("text");
-        this._myResetToolLabelTimer = new PP.Timer(2, false);
-
         this._myGroupLabel = groupLabel.pp_getComponent("text");
         this._myVariantLabel = variantLabel.pp_getComponent("text");
+        this._myResetToolLabelTimer = new PP.Timer(2, false);
 
-        this._myToolData = new ToolData(this._myMeshComponent.mesh);
+        let meshComponent = meshObject.pp_getComponentHierarchy("mesh");
+        this._myToolData = new ToolData(meshComponent.mesh);
+        this._myToolData.myMeshObject = meshObject;
+        this._myToolData.myMeshComponent = meshComponent;
+        this._myToolData.myPointerObject = pointer;
+
+        this._loadVertexGroupConfig(vertexGroupConfigPath);
 
         this._myNextActive = true;
 
@@ -70,7 +74,7 @@ ToolManager = class ToolManager {
             }
 
             if (PP.myLeftGamepad.getButtonInfo(PP.ButtonType.THUMBSTICK).isPressEnd(2)) {
-                downloadFileText("vertex_group_config.json", jsonStringify(this._myVertexGroupConfig));
+                downloadFileText("vertex_group_config.json", jsonStringify(this._myToolData.myVertexGroupConfig));
 
                 this._myToolLabel.text = "Config Downloaded";
                 this._myResetToolLabelTimer.start();
@@ -104,10 +108,10 @@ ToolManager = class ToolManager {
     _initializeTools() {
         this._myTools = [];
 
-        this._myTools[ToolType.FREE_EDIT] = new FreeEditTool(this._myToolData, this._myMeshObject, this._myPointerObject, this._myVertexGroupConfig);
-        this._myTools[ToolType.GROUP_MANAGEMENT] = new ManageGroupsTool(this._myToolData, this._myMeshObject, this._myPointerObject, this._myVertexGroupConfig);
-        this._myTools[ToolType.VARIANT_MANAGEMENT] = new ManageVariantsTool(this._myToolData, this._myMeshObject, this._myPointerObject, this._myVertexGroupConfig);
-        this._myTools[ToolType.VARIANT_EDIT] = new EditVariantTool(this._myToolData, this._myMeshObject, this._myPointerObject, this._myVertexGroupConfig);
+        this._myTools[ToolType.FREE_EDIT] = new FreeEditTool(this._myToolData);
+        this._myTools[ToolType.GROUP_MANAGEMENT] = new ManageGroupsTool(this._myToolData);
+        this._myTools[ToolType.VARIANT_MANAGEMENT] = new ManageVariantsTool(this._myToolData);
+        this._myTools[ToolType.VARIANT_EDIT] = new EditVariantTool(this._myToolData);
 
         this._myTools[ToolType.GROUP_MANAGEMENT].registerGroupSavedEventListener(this, this._onGroupSaved.bind(this));
         this._myTools[ToolType.VARIANT_MANAGEMENT].registerEditVariantEventListener(this, this._onEditVariant.bind(this));
@@ -122,12 +126,12 @@ ToolManager = class ToolManager {
     _loadVertexGroupConfig(vertexGroupConfigPath) {
         loadFileText(vertexGroupConfigPath,
             function (text) {
-                this._myVertexGroupConfig = new VertexGroupConfig();
+                this._myToolData.myVertexGroupConfig = new VertexGroupConfig();
                 try {
                     let jsonObject = jsonParse(text);
-                    this._myVertexGroupConfig.fromJSONObject(jsonObject);
+                    this._myToolData.myVertexGroupConfig.fromJSONObject(jsonObject);
                 } catch (error) {
-                    this._myVertexGroupConfig = new VertexGroupConfig();
+                    this._myToolData.myVertexGroupConfig = new VertexGroupConfig();
                 }
 
                 this._initializeTools();
@@ -135,7 +139,7 @@ ToolManager = class ToolManager {
                 this._myStarted = true;
             }.bind(this),
             function (response) {
-                this._myVertexGroupConfig = new VertexGroupConfig();
+                this._myToolData.myVertexGroupConfig = new VertexGroupConfig();
 
                 this._initializeTools();
 
