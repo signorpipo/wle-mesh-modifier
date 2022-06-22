@@ -11,6 +11,7 @@ require('./mesh_modifier/test/test_loadFile.js');
 require('./mesh_modifier/tool/tool_type.js');
 require('./mesh_modifier/tool/tool_manager.js');
 require('./mesh_modifier/tool/vertex_tool.js');
+require('./mesh_modifier/tool/manage_groups_variants_tool.js');
 require('./mesh_modifier/tool/free_edit_tool.js');
 require('./mesh_modifier/tool/manage_groups_tool.js');
 require('./mesh_modifier/tool/manage_variants_tool.js');
