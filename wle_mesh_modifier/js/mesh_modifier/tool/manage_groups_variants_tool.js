@@ -21,7 +21,7 @@ ManageGroupsVariantsTool = class ManageGroupsVariantsTool extends VertexTool {
 
     update(dt) {
         let axes = PP.myRightGamepad.getAxesInfo().getAxes();
-        if (Math.abs(axes[0]) > 0.5) {
+        if (Math.abs(axes[0]) > 0.5 && !PP.myLeftGamepad.getButtonInfo(PP.ButtonType.SQUEEZE).isPressed()) {
             if (this._myScrollEnabled) {
                 this._selectNextVariant(Math.pp_sign(axes[0]));
 

@@ -55,7 +55,7 @@ ToolManager = class ToolManager {
     update(dt) {
         if (this._myStarted) {
             let axes = PP.myLeftGamepad.getAxesInfo().getAxes();
-            if (Math.abs(axes[0]) > 0.5) {
+            if (Math.abs(axes[0]) > 0.5 && !PP.myLeftGamepad.getButtonInfo(PP.ButtonType.SQUEEZE).isPressed()) {
                 if (this._myScrollEnabled) {
                     let newToolIndex = (this._myActiveToolIndex + 1 * Math.pp_sign(axes[0])) % this._myToolOrder.length;
                     if (newToolIndex < 0) {

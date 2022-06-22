@@ -53,7 +53,23 @@
         },
         "19": {
             "name": "Player",
-            "parent": "18"
+            "parent": "18",
+            "components": [
+                {
+                    "type": "locomotion-fly-draft",
+                    "locomotion-fly-draft": {
+                        "_myPlayerObject": "19",
+                        "_myNonVRCameraObject": "21",
+                        "_myNonVRHeadObject": "71",
+                        "_myHeadObject": "25",
+                        "_myDirectionReferenceObject": "23",
+                        "_myMinHeight": -100.0,
+                        "_myMaxSpeed": 1.0,
+                        "_myMinAngleToFly": 45.0,
+                        "_mySnapTurnAngle": 30.0
+                    }
+                }
+            ]
         },
         "20": {
             "name": "Pivot",
@@ -71,6 +87,9 @@
             "components": [
                 {
                     "type": "view"
+                },
+                {
+                    "type": "mouse-look"
                 }
             ],
             "transformation": [
