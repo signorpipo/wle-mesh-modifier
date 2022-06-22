@@ -127,6 +127,19 @@ VertexGroup = class VertexGroup {
         }
     }
 
+    retrieveVariant(mesh) {
+        let currentVariant = null;
+
+        for (let variant of this._myVariants.values()) {
+            if (variant.matchMesh(mesh)) {
+                currentVariant = variant;
+                break;
+            }
+        }
+
+        return currentVariant;
+    }
+
     saveVariant(mesh, variantID = null) {
         let variant = null;
         if (variantID != null) {
@@ -216,6 +229,23 @@ VertexGroupVariant = class VertexGroupVariant {
                 this._myPositionMap.delete(variantIndex);
             }
         }
+    }
+
+    matchMesh(mesh) {
+        let positionAttribute = mesh.attribute(WL.MeshAttribute.Position);
+        let position = [0, 0, 0];
+
+        let match = true;
+
+        for (let [index, vertexPosition] of this._myPositionMap.entries()) {
+            positionAttribute.get(index, position);
+            if (!vertexPosition.pp_equals(position)) {
+                match = false;
+                break;
+            }
+        }
+
+        return match;
     }
 
     saveVariant(mesh, indexList) {

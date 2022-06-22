@@ -120,7 +120,7 @@ VertexTool = class VertexTool {
 
             if (selectedGroup) {
                 this._myToolData.mySelectedVertexGroup = selectedGroup;
-                this._myToolData.mySelectedVertexVariant = null;
+                this._myToolData.mySelectedVertexVariant = this._myToolData.mySelectedVertexGroup.retrieveVariant(this._myToolData.myMeshComponent.mesh);
                 this._selectAllGroupVertex();
             }
         }
