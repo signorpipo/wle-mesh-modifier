@@ -23,7 +23,11 @@ VertexGroupConfig = class VertexGroupConfig {
     }
 
     getGroups() {
-        return this._myVertexGroups.values();
+        let values = [];
+        for (let value of this._myVertexGroups.values()) {
+            values.push(value);
+        }
+        return values;
     }
 
     fromJSONObject(jsonObject) {
@@ -68,8 +72,38 @@ VertexGroup = class VertexGroup {
         }
     }
 
+    getNextVariant(variant, direction) {
+        let nextVariant = null;
+
+        if (variant == null) {
+            if (this._myVariants.size > 0) {
+                return this._myVariants.values().next().value;
+            }
+        } else {
+            let values = [];
+            for (let value of this._myVariants.values()) {
+                values.push(value);
+            }
+
+            let index = values.pp_findIndexEqual(variant);
+            if (index >= 0) {
+                index += direction;
+                if (index >= 0 && index < values.length) {
+
+                    nextVariant = values[index];
+                }
+            }
+        }
+
+        return nextVariant;
+    }
+
     getVariantIDs() {
-        return this._myVariants.keys();
+        let values = [];
+        for (let value of this._myVariants.keys()) {
+            values.push(value);
+        }
+        return values;
     }
 
     addIndex(index) {
@@ -85,8 +119,9 @@ VertexGroup = class VertexGroup {
     }
 
     saveVariant(mesh, variantID = null) {
+        let variant = null;
         if (variantID != null) {
-            let variant = this._myVariants.get(variantID);
+            variant = this._myVariants.get(variantID);
             if (variant) {
                 variant.saveVariant(mesh, this._myIndexList);
             }
@@ -94,10 +129,12 @@ VertexGroup = class VertexGroup {
             let newVariantID = this._myNextVariantID;
             this._myNextVariantID++;
 
-            let variant = new VertexGroupVariant(newVariantID);
+            variant = new VertexGroupVariant(newVariantID);
             variant.saveVariant(mesh, this._myIndexList);
             this._myVariants.set(newVariantID, variant);
         }
+
+        return variant;
     }
 
     loadVariant(mesh, variantID) {
@@ -152,6 +189,10 @@ VertexGroupVariant = class VertexGroupVariant {
     constructor(id) {
         this._myID = id;
         this._myPositionMap = new Map();
+    }
+
+    getID() {
+        return this._myID;
     }
 
     removeIndex(index) {

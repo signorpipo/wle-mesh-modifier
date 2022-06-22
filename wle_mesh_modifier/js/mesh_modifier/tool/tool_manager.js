@@ -33,6 +33,9 @@ ToolManager = class ToolManager {
             if (Math.abs(axes[0]) > 0.5) {
                 if (this._myNextActive) {
                     let newToolIndex = (this._myActiveToolIndex + 1 * Math.pp_sign(axes[0])) % this._myToolOrder.length;
+                    if (newToolIndex < 0) {
+                        newToolIndex = this._myToolOrder.length + newToolIndex;
+                    }
 
                     this._myTools[this._myToolOrder[this._myActiveToolIndex]].end();
                     this._myTools[this._myToolOrder[newToolIndex]].start();
@@ -72,10 +75,11 @@ ToolManager = class ToolManager {
         this._myTools[ToolType.FREE_EDIT] = new FreeEditTool(this._myMeshObject, this._myPointerObject, this._myVertexGroupConfig);
         this._myTools[ToolType.GROUP_MANAGEMENT] = new ManageGroupsTool(this._myMeshObject, this._myPointerObject, this._myVertexGroupConfig);
         this._myTools[ToolType.VARIANT_MANAGEMENT] = new ManageVariantsTool(this._myMeshObject, this._myPointerObject, this._myVertexGroupConfig);
-        this._myTools[ToolType.VARIANT_EDIT] = new DummyTool(this._myMeshObject, this._myPointerObject, this._myVertexGroupConfig);
+        this._myTools[ToolType.VARIANT_EDIT] = new EditVariantTool(this._myMeshObject, this._myPointerObject, this._myVertexGroupConfig);
 
         this._myTools[ToolType.GROUP_MANAGEMENT].registerGroupSavedEventListener(this, this._onGroupSaved.bind(this));
         this._myTools[ToolType.VARIANT_MANAGEMENT].registerEditVariantEventListener(this, this._onEditVariant.bind(this));
+        this._myTools[ToolType.VARIANT_EDIT].registerVariantSavedEventListener(this, this._onVariantSaved.bind(this));
 
         this._myActiveToolIndex = 0;
 
@@ -110,6 +114,11 @@ ToolManager = class ToolManager {
 
     _onGroupSaved() {
         this._myToolLabel.text = "Group Saved";
+        this._myResetToolLabelTimer.start();
+    }
+
+    _onVariantSaved() {
+        this._myToolLabel.text = "Variant Saved";
         this._myResetToolLabelTimer.start();
     }
 

@@ -14,8 +14,11 @@ ManageVariantsTool = class ManageVariantsTool {
         this._myMinDistanceToSelect = 0.025;
 
         this._mySelectedVertexGroup = null;
+        this._mySelectedVertexVariant = null;
 
         this._myEditVariantCallbacks = new Map();
+
+        this._myNextActive = true;
     }
 
     start() {
@@ -29,9 +32,19 @@ ManageVariantsTool = class ManageVariantsTool {
     }
 
     update(dt) {
-        if (PP.myRightGamepad.getButtonInfo(PP.ButtonType.SQUEEZE).isPressEnd()) {
+        let axes = PP.myRightGamepad.getAxesInfo().getAxes();
+        if (Math.abs(axes[0]) > 0.5) {
+            if (this._myNextActive) {
+                this._selectNextVariant(Math.pp_sign(axes[0]));
+
+                this._myNextActive = false;
+            } else {
+                this._myMeshComponent.active = true;
+            }
+        } else if (PP.myRightGamepad.getButtonInfo(PP.ButtonType.SQUEEZE).isPressEnd()) {
             if (this._mySelectedVertexGroup != null) {
                 this._mySelectedVertexGroup = null;
+                this._mySelectedVertexVariant = null;
             } else {
                 this._selectGroup();
             }
@@ -47,12 +60,28 @@ ManageVariantsTool = class ManageVariantsTool {
             this._deleteVariant();
         } else {
             this._myMeshComponent.active = true;
+            this._myNextActive = true;
         }
 
         this._debugDraw();
     }
 
+    _selectNextVariant(direction) {
+        if (this._mySelectedVertexGroup != null) {
+            this._mySelectedVertexVariant = this._mySelectedVertexGroup.getNextVariant(this._mySelectedVertexVariant, direction);
+            if (this._mySelectedVertexVariant != null) {
+                this._mySelectedVertexVariant.loadVariant(this._myMeshComponent.mesh);
+                this._myMeshComponent.active = false;
+            } else {
+                this._resetGroupVertexes();
+            }
+        }
+    }
+
     _editVariant() {
+        if (this._mySelectedVertexGroup != null) {
+            this._myEditVariantCallbacks.forEach(function (callback) { callback(this._mySelectedVertexGroup, this._mySelectedVertexVariant); }.bind(this));
+        }
     }
 
     _createVariant() {
@@ -101,6 +130,7 @@ ManageVariantsTool = class ManageVariantsTool {
 
             if (selectedGroup) {
                 this._mySelectedVertexGroup = selectedGroup;
+                this._mySelectedVertexVariant = null;
             }
         }
     }
