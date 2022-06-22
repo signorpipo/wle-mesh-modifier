@@ -1,20 +1,13 @@
 ManageVariantsTool = class ManageVariantsTool {
-    constructor(meshObject, pointer, vertexGroupConfig) {
+    constructor(tooldata, meshObject, pointer, vertexGroupConfig) {
+        this._myToolData = tooldata;
         this._myMeshObject = meshObject;
         this._myPointerObject = pointer;
         this._myVertexGroupConfig = vertexGroupConfig;
 
         this._myMeshComponent = this._myMeshObject.pp_getComponentHierarchy("mesh");
 
-        this._myVertexDataBackup = [];
-        for (let vertex of this._myMeshComponent.mesh.vertexData) {
-            this._myVertexDataBackup.push(vertex);
-        }
-
         this._myMinDistanceToSelect = 0.025;
-
-        this._mySelectedVertexGroup = null;
-        this._mySelectedVertexVariant = null;
 
         this._myEditVariantCallbacks = new Map();
 
@@ -22,13 +15,10 @@ ManageVariantsTool = class ManageVariantsTool {
     }
 
     start() {
-        this._mySelectedVertexGroup = null;
         this._myMeshComponent.active = true;
     }
 
     end() {
-        this._mySelectedVertexGroup = null;
-        this._myMeshComponent.active = true;
     }
 
     update(dt) {
@@ -42,9 +32,9 @@ ManageVariantsTool = class ManageVariantsTool {
                 this._myMeshComponent.active = true;
             }
         } else if (PP.myRightGamepad.getButtonInfo(PP.ButtonType.SQUEEZE).isPressEnd()) {
-            if (this._mySelectedVertexGroup != null) {
-                this._mySelectedVertexGroup = null;
-                this._mySelectedVertexVariant = null;
+            if (this._myToolData.mySelectedVertexGroup != null) {
+                this._myToolData.mySelectedVertexGroup = null;
+                this._myToolData.mySelectedVertexVariant = null;
             } else {
                 this._selectGroup();
             }
@@ -67,10 +57,10 @@ ManageVariantsTool = class ManageVariantsTool {
     }
 
     _selectNextVariant(direction) {
-        if (this._mySelectedVertexGroup != null) {
-            this._mySelectedVertexVariant = this._mySelectedVertexGroup.getNextVariant(this._mySelectedVertexVariant, direction);
-            if (this._mySelectedVertexVariant != null) {
-                this._mySelectedVertexVariant.loadVariant(this._myMeshComponent.mesh);
+        if (this._myToolData.mySelectedVertexGroup != null) {
+            this._myToolData.mySelectedVertexVariant = this._myToolData.mySelectedVertexGroup.getNextVariant(this._myToolData.mySelectedVertexVariant, direction);
+            if (this._myToolData.mySelectedVertexVariant != null) {
+                this._myToolData.mySelectedVertexVariant.loadVariant(this._myMeshComponent.mesh);
                 this._myMeshComponent.active = false;
             } else {
                 this._resetGroupVertexes();
@@ -79,35 +69,36 @@ ManageVariantsTool = class ManageVariantsTool {
     }
 
     _editVariant() {
-        if (this._mySelectedVertexGroup != null) {
-            this._myEditVariantCallbacks.forEach(function (callback) { callback(this._mySelectedVertexGroup, this._mySelectedVertexVariant); }.bind(this));
+        if (this._myToolData.mySelectedVertexGroup != null) {
+            this._myEditVariantCallbacks.forEach(function (callback) { callback(); }.bind(this));
         }
     }
 
     _createVariant() {
-        if (this._mySelectedVertexGroup != null) {
-            this._myEditVariantCallbacks.forEach(function (callback) { callback(this._mySelectedVertexGroup, null); }.bind(this));
+        if (this._myToolData.mySelectedVertexGroup != null) {
+            this._myToolData.mySelectedVertexVariant = null;
+            this._myEditVariantCallbacks.forEach(function (callback) { callback(); }.bind(this));
         }
     }
 
     _deleteVariant() {
-        if (this._mySelectedVertexGroup != null) {
-            this._myVertexGroupConfig.removeGroup(this._mySelectedVertexGroup.getID());
-            this._mySelectedVertexGroup = null;
+        if (this._myToolData.mySelectedVertexGroup != null) {
+            this._myVertexGroupConfig.removeGroup(this._myToolData.mySelectedVertexGroup.getID());
+            this._myToolData.mySelectedVertexGroup = null;
         }
     }
 
     _resetGroupVertexes() {
-        if (this._mySelectedVertexGroup != null) {
-            let indexList = this._mySelectedVertexGroup.getIndexList();
-            VertexUtils.resetVertexes(this._myMeshComponent, indexList, this._myVertexDataBackup);
+        if (this._myToolData.mySelectedVertexGroup != null) {
+            let indexList = this._myToolData.mySelectedVertexGroup.getIndexList();
+            VertexUtils.resetVertexes(this._myMeshComponent, indexList, this._myToolData.myVertexDataBackup);
             this._myMeshComponent.active = false;
 
         }
     }
 
     _resetAllVertexes() {
-        VertexUtils.resetMesh(this._myMeshComponent, this._myVertexDataBackup);
+        VertexUtils.resetMesh(this._myMeshComponent, this._myToolData.myVertexDataBackup);
         this._myMeshComponent.active = false;
     }
 
@@ -129,17 +120,17 @@ ManageVariantsTool = class ManageVariantsTool {
             }
 
             if (selectedGroup) {
-                this._mySelectedVertexGroup = selectedGroup;
-                this._mySelectedVertexVariant = null;
+                this._myToolData.mySelectedVertexGroup = selectedGroup;
+                this._myToolData.mySelectedVertexVariant = null;
             }
         }
     }
 
     _debugDraw() {
-        if (this._mySelectedVertexGroup == null) {
+        if (this._myToolData.mySelectedVertexGroup == null) {
             this._myVertexGroupConfig.debugDraw(this._myMeshComponent);
         } else {
-            this._mySelectedVertexGroup.debugDraw(this._myMeshComponent);
+            this._myToolData.mySelectedVertexGroup.debugDraw(this._myMeshComponent);
         }
     }
 

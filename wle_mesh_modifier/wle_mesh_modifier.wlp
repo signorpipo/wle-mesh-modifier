@@ -44,7 +44,9 @@
                         "_myMeshObject": "73",
                         "_myPointer": "82",
                         "_myToolLabel": "87",
-                        "_myVertexGroupConfigPath": "vertex_group_config.json"
+                        "_myVertexGroupConfigPath": "vertex_group_config.json",
+                        "_myGroupLabel": "106",
+                        "_myVariantLabel": "108"
                     }
                 }
             ]
@@ -1179,7 +1181,7 @@
             ]
         },
         "87": {
-            "name": "Label",
+            "name": "Tool Label",
             "parent": "86",
             "transformation": [
                 -0.1,
@@ -1466,6 +1468,97 @@
                 {
                     "type": "test-loadFile",
                     "active": false
+                }
+            ]
+        },
+        "106": {
+            "name": "Group Label",
+            "parent": "86",
+            "transformation": [
+                -0.075,
+                1.1324734927598002e-8,
+                1.3607948545768523e-8,
+                0.0,
+                0.0,
+                0.07193,
+                -0.0212383,
+                0.0,
+                -1.6257859059010117e-8,
+                -0.0212383,
+                -0.07193,
+                0.0,
+                0.0000076,
+                0.0581668,
+                -0.0053626,
+                1.0
+            ],
+            "components": [
+                {
+                    "type": "text",
+                    "text": {
+                        "text": "Group: 0\n"
+                    }
+                }
+            ]
+        },
+        "107": {
+            "name": "Variant Label",
+            "parent": "86",
+            "transformation": [
+                -0.1,
+                1.509959268730654e-8,
+                1.814464667404536e-8,
+                0.0,
+                0.0,
+                0.0959067,
+                -0.0283178,
+                0.0,
+                -2.167781509854194e-8,
+                -0.0283178,
+                -0.0959067,
+                0.0,
+                5.21540641784668e-8,
+                0.0400001,
+                -1.541338860988617e-7,
+                1.0
+            ],
+            "components": [
+                {
+                    "type": "text",
+                    "text": {
+                        "text": "Tool\n"
+                    }
+                }
+            ],
+            "deleted": true
+        },
+        "108": {
+            "name": "Variant Label",
+            "parent": "86",
+            "transformation": [
+                -0.0750006,
+                1.1324727822170644e-8,
+                1.3608021376398938e-8,
+                0.0,
+                0.0,
+                0.0719301,
+                -0.0212384,
+                0.0,
+                -1.625790879700162e-8,
+                -0.0212388,
+                -0.0719299,
+                0.0,
+                0.0000076,
+                0.0713533,
+                -0.0092556,
+                1.0
+            ],
+            "components": [
+                {
+                    "type": "text",
+                    "text": {
+                        "text": "Variant: 0\n"
+                    }
                 }
             ]
         }

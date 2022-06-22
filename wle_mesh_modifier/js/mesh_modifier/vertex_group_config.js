@@ -77,7 +77,12 @@ VertexGroup = class VertexGroup {
 
         if (variant == null) {
             if (this._myVariants.size > 0) {
-                return this._myVariants.values().next().value;
+                let values = [];
+                for (let value of this._myVariants.values()) {
+                    values.push(value);
+                }
+
+                return (direction >= 0) ? values[0] : values[values.length - 1];
             }
         } else {
             let values = [];

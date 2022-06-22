@@ -1,49 +1,31 @@
 EditVariantTool = class EditVariantTool {
-    constructor(meshObject, pointer) {
+    constructor(tooldata, meshObject, pointer) {
+        this._myToolData = tooldata;
         this._myMeshObject = meshObject;
         this._myPointerObject = pointer;
 
         this._myMeshComponent = this._myMeshObject.pp_getComponentHierarchy("mesh");
 
-        this._myVertexDataBackup = [];
-        for (let vertex of this._myMeshComponent.mesh.vertexData) {
-            this._myVertexDataBackup.push(vertex);
-        }
-
-        this._mySelectedVertexes = [];
         this._myPreviousPointerPosition = null;
 
         this._myMinDistanceToSelect = 0.025;
 
-        this._mySelectedVertexGroup = null;
-        this._mySelectedVertexVariant = null;
-
         this._myVariantSavedCallbacks = new Map();
     }
 
-    start(group, variant) {
-        this._mySelectedVertexGroup = null;
-        this._mySelectedVertexVariant = null;
-        this._mySelectedVertexes = [];
+    start() {
         this._myMeshComponent.active = true;
 
-        if (group != null) {
-            this._mySelectedVertexGroup = group;
-            if (variant != null && group.getVariantIDs().pp_hasEqual(variant.getID())) {
-                this._mySelectedVertexVariant = variant;
-            }
+        if (this._myToolData.mySelectedVertexGroup != null) {
+            this._selectAllGroupVertex();
         }
     }
 
     end() {
-        this._mySelectedVertexGroup = null;
-        this._mySelectedVertexVariant = null;
-        this._mySelectedVertexes = [];
-        this._myMeshComponent.active = true;
     }
 
     update(dt) {
-        if (this._mySelectedVertexGroup == null) {
+        if (this._myToolData.mySelectedVertexGroup == null) {
             return;
         }
 
@@ -82,7 +64,7 @@ EditVariantTool = class EditVariantTool {
         } else if (PP.myRightGamepad.getButtonInfo(PP.ButtonType.BOTTOM_BUTTON).isPressEnd(3)) {
 
             this._myPreviousPointerPosition = null;
-            VertexUtils.resetMesh(this._myMeshComponent, this._myVertexDataBackup);
+            VertexUtils.resetMesh(this._myMeshComponent, this._myToolData.myVertexDataBackup);
             this._myMeshComponent.active = false;
 
         } else {
@@ -97,8 +79,13 @@ EditVariantTool = class EditVariantTool {
                 this._deselectVertex();
             }
 
-            if (PP.myLeftGamepad.getButtonInfo(PP.ButtonType.TOP_BUTTON).isPressEnd()) {
-                this._mySelectedVertexes = [];
+            if (PP.myRightGamepad.getButtonInfo(PP.ButtonType.TOP_BUTTON).isPressEnd(2)) {
+                if (this._myToolData.mySelectedVertexes.length > 0) {
+                    this._myToolData.mySelectedVertexes = [];
+                } else {
+                    this._selectAllGroupVertex();
+                }
+
             }
 
             if (PP.myLeftGamepad.getButtonInfo(PP.ButtonType.BOTTOM_BUTTON).isPressEnd(2)) {
@@ -109,13 +96,27 @@ EditVariantTool = class EditVariantTool {
         this._debugDraw();
     }
 
+    _selectAllGroupVertex() {
+        if (this._myToolData.mySelectedVertexGroup != null) {
+            this._myToolData.mySelectedVertexes = [];
+            let meshTransform = this._myMeshComponent.object.pp_getTransform();
+            for (let index of this._myToolData.mySelectedVertexGroup.getIndexList()) {
+                let vertexPosition = VertexUtils.getVertexPosition(index, this._myMeshComponent.mesh);
+                let vertexPositionWorld = vertexPosition.vec3_convertPositionToWorld(meshTransform);
+
+                let selectedVertexParams = VertexUtils.getClosestSelectedVertex(this._myMeshObject, vertexPositionWorld);
+                this._myToolData.mySelectedVertexes.pp_pushUnique(selectedVertexParams, element => element.equals(selectedVertexParams));
+            }
+        }
+    }
+
     _saveVariant() {
         let variantID = null;
-        if (this._mySelectedVertexVariant != null) {
-            variantID = this._mySelectedVertexVariant.getID();
+        if (this._myToolData.mySelectedVertexVariant != null) {
+            variantID = this._myToolData.mySelectedVertexVariant.getID();
         }
 
-        this._mySelectedVertexVariant = this._mySelectedVertexGroup.saveVariant(this._myMeshComponent.mesh, variantID);
+        this._myToolData.mySelectedVertexVariant = this._myToolData.mySelectedVertexGroup.saveVariant(this._myMeshComponent.mesh, variantID);
 
         this._myVariantSavedCallbacks.forEach(function (callback) { callback(); }.bind(this));
     }
@@ -128,8 +129,8 @@ EditVariantTool = class EditVariantTool {
         let vertexPositionWorld = selectedVertexParams.getPosition();
         if (vertexPositionWorld.vec3_distance(pointerPosition) < this._myMinDistanceToSelect) {
             let selectedIndex = selectedVertexParams.getIndexes()[0];
-            if (this._mySelectedVertexGroup.getIndexList().pp_hasEqual(selectedIndex)) {
-                this._mySelectedVertexes.pp_pushUnique(selectedVertexParams, element => element.equals(selectedVertexParams));
+            if (this._myToolData.mySelectedVertexGroup.getIndexList().pp_hasEqual(selectedIndex)) {
+                this._myToolData.mySelectedVertexes.pp_pushUnique(selectedVertexParams, element => element.equals(selectedVertexParams));
             }
         }
     }
@@ -141,14 +142,14 @@ EditVariantTool = class EditVariantTool {
 
         let vertexPositionWorld = selectedVertexParams.getPosition();
         if (vertexPositionWorld.vec3_distance(pointerPosition) < this._myMinDistanceToSelect) {
-            this._mySelectedVertexes.pp_removeAll(element => element.equals(selectedVertexParams));
+            this._myToolData.mySelectedVertexes.pp_removeAll(element => element.equals(selectedVertexParams));
         }
     }
 
     _resetGroupVertexes() {
-        if (this._mySelectedVertexGroup != null) {
-            let indexList = this._mySelectedVertexGroup.getIndexList();
-            VertexUtils.resetVertexes(this._myMeshComponent, indexList, this._myVertexDataBackup);
+        if (this._myToolData.mySelectedVertexGroup != null) {
+            let indexList = this._myToolData.mySelectedVertexGroup.getIndexList();
+            VertexUtils.resetVertexes(this._myMeshComponent, indexList, this._myToolData.myVertexDataBackup);
             this._myMeshComponent.active = false;
 
         }
@@ -162,7 +163,7 @@ EditVariantTool = class EditVariantTool {
         let vertexPositionWorld = selectedVertexParams.getPosition();
         if (vertexPositionWorld.vec3_distance(pointerPosition) < this._myMinDistanceToSelect) {
 
-            VertexUtils.resetVertexes(this._myMeshComponent, selectedVertexParams.getIndexes(), this._myVertexDataBackup);
+            VertexUtils.resetVertexes(this._myMeshComponent, selectedVertexParams.getIndexes(), this._myToolData.myVertexDataBackup);
 
             this._myMeshComponent.active = false;
         } else {
@@ -171,31 +172,31 @@ EditVariantTool = class EditVariantTool {
     }
 
     _moveSelectedVertexes(movement) {
-        if (this._mySelectedVertexes.length > 0) {
-            VertexUtils.moveSelectedVertexes(this._myMeshObject, this._mySelectedVertexes, movement);
+        if (this._myToolData.mySelectedVertexes.length > 0) {
+            VertexUtils.moveSelectedVertexes(this._myMeshObject, this._myToolData.mySelectedVertexes, movement);
             this._myMeshComponent.active = !this._myMeshComponent.active;
         }
     }
 
     _moveSelectedVertexesAlongNormals(movement) {
-        if (this._mySelectedVertexes.length > 0) {
-            VertexUtils.moveSelectedVertexesAlongNormals(this._myMeshObject, this._mySelectedVertexes, movement);
+        if (this._myToolData.mySelectedVertexes.length > 0) {
+            VertexUtils.moveSelectedVertexesAlongNormals(this._myMeshObject, this._myToolData.mySelectedVertexes, movement);
             this._myMeshComponent.active = !this._myMeshComponent.active;
         }
     }
 
     _debugDraw() {
-        if (this._mySelectedVertexGroup == null) {
+        if (this._myToolData.mySelectedVertexGroup == null) {
             this._myVertexGroupConfig.debugDraw(this._myMeshComponent);
         } else {
-            this._mySelectedVertexGroup.debugDraw(this._myMeshComponent);
+            this._myToolData.mySelectedVertexGroup.debugDraw(this._myMeshComponent);
         }
 
         let color = null;
-        if (this._mySelectedVertexGroup != null) {
-            color = randomColor(this._mySelectedVertexGroup.getID());
+        if (this._myToolData.mySelectedVertexGroup != null) {
+            color = randomColor(this._myToolData.mySelectedVertexGroup.getID());
         }
-        for (let selectedVertex of this._mySelectedVertexes) {
+        for (let selectedVertex of this._myToolData.mySelectedVertexes) {
             selectedVertex.debugDraw(color);
         }
     }

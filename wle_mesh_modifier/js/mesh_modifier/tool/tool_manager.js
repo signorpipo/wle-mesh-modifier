@@ -1,5 +1,18 @@
+ToolData = class ToolData {
+    constructor(mesh) {
+        this.mySelectedVertexes = [];
+        this.mySelectedVertexGroup = null;
+        this.mySelectedVertexVariant = null;
+        this.myVertexDataBackup = [];
+        for (let vertex of mesh.vertexData) {
+            this.myVertexDataBackup.push(vertex);
+        }
+
+    }
+};
+
 ToolManager = class ToolManager {
-    constructor(meshObject, pointer, toolLabel, vertexGroupConfigPath) {
+    constructor(meshObject, pointer, toolLabel, groupLabel, variantLabel, vertexGroupConfigPath) {
         this._myActiveToolIndex = 0;
 
         this._myToolOrder = [
@@ -17,9 +30,15 @@ ToolManager = class ToolManager {
         this._myTools = [];
 
         this._myMeshObject = meshObject;
+        this._myMeshComponent = this._myMeshObject.pp_getComponentHierarchy("mesh");
         this._myPointerObject = pointer;
         this._myToolLabel = toolLabel.pp_getComponent("text");
         this._myResetToolLabelTimer = new PP.Timer(2, false);
+
+        this._myGroupLabel = groupLabel.pp_getComponent("text");
+        this._myVariantLabel = variantLabel.pp_getComponent("text");
+
+        this._myToolData = new ToolData(this._myMeshComponent.mesh);
 
         this._myNextActive = true;
 
@@ -67,15 +86,28 @@ ToolManager = class ToolManager {
                 }
             }
         }
+
+        if (this._myToolData.mySelectedVertexGroup != null) {
+            this._myGroupLabel.text = "Group: " + this._myToolData.mySelectedVertexGroup.getID();
+        } else {
+            this._myGroupLabel.text = "Group: None";
+        }
+
+        if (this._myToolData.mySelectedVertexVariant != null) {
+            this._myVariantLabel.text = "Variant: " + this._myToolData.mySelectedVertexVariant.getID();
+        } else {
+            this._myVariantLabel.text = "Variant: None";
+        }
+
     }
 
     _initializeTools() {
         this._myTools = [];
 
-        this._myTools[ToolType.FREE_EDIT] = new FreeEditTool(this._myMeshObject, this._myPointerObject, this._myVertexGroupConfig);
-        this._myTools[ToolType.GROUP_MANAGEMENT] = new ManageGroupsTool(this._myMeshObject, this._myPointerObject, this._myVertexGroupConfig);
-        this._myTools[ToolType.VARIANT_MANAGEMENT] = new ManageVariantsTool(this._myMeshObject, this._myPointerObject, this._myVertexGroupConfig);
-        this._myTools[ToolType.VARIANT_EDIT] = new EditVariantTool(this._myMeshObject, this._myPointerObject, this._myVertexGroupConfig);
+        this._myTools[ToolType.FREE_EDIT] = new FreeEditTool(this._myToolData, this._myMeshObject, this._myPointerObject, this._myVertexGroupConfig);
+        this._myTools[ToolType.GROUP_MANAGEMENT] = new ManageGroupsTool(this._myToolData, this._myMeshObject, this._myPointerObject, this._myVertexGroupConfig);
+        this._myTools[ToolType.VARIANT_MANAGEMENT] = new ManageVariantsTool(this._myToolData, this._myMeshObject, this._myPointerObject, this._myVertexGroupConfig);
+        this._myTools[ToolType.VARIANT_EDIT] = new EditVariantTool(this._myToolData, this._myMeshObject, this._myPointerObject, this._myVertexGroupConfig);
 
         this._myTools[ToolType.GROUP_MANAGEMENT].registerGroupSavedEventListener(this, this._onGroupSaved.bind(this));
         this._myTools[ToolType.VARIANT_MANAGEMENT].registerEditVariantEventListener(this, this._onEditVariant.bind(this));
@@ -122,10 +154,10 @@ ToolManager = class ToolManager {
         this._myResetToolLabelTimer.start();
     }
 
-    _onEditVariant(group, variant) {
+    _onEditVariant() {
         this._myActiveToolIndex = this._myToolOrder.pp_findIndexEqual(ToolType.VARIANT_EDIT);
 
-        this._myTools[this._myToolOrder[this._myActiveToolIndex]].start(group, variant);
+        this._myTools[this._myToolOrder[this._myActiveToolIndex]].start();
         this._myToolLabel.text = this._myToolOrder[this._myActiveToolIndex];
     }
 };

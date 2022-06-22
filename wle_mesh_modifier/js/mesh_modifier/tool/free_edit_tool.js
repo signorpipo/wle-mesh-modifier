@@ -1,29 +1,21 @@
 FreeEditTool = class FreeEditTool {
-    constructor(meshObject, pointer) {
+    constructor(tooldata, meshObject, pointer) {
+        this._myToolData = tooldata;
         this._myMeshObject = meshObject;
         this._myPointerObject = pointer;
 
         this._myMeshComponent = this._myMeshObject.pp_getComponentHierarchy("mesh");
 
-        this._myVertexDataBackup = [];
-        for (let vertex of this._myMeshComponent.mesh.vertexData) {
-            this._myVertexDataBackup.push(vertex);
-        }
-
-        this._mySelectedVertexes = [];
         this._myPreviousPointerPosition = null;
 
         this._myMinDistanceToSelect = 0.025;
     }
 
     start() {
-        this._mySelectedVertexes = [];
         this._myMeshComponent.active = true;
     }
 
     end() {
-        this._mySelectedVertexes = [];
-        this._myMeshComponent.active = true;
     }
 
     update(dt) {
@@ -60,7 +52,7 @@ FreeEditTool = class FreeEditTool {
         } else if (PP.myRightGamepad.getButtonInfo(PP.ButtonType.BOTTOM_BUTTON).isPressEnd(2)) {
 
             this._myPreviousPointerPosition = null;
-            VertexUtils.resetMesh(this._myMeshComponent, this._myVertexDataBackup);
+            VertexUtils.resetMesh(this._myMeshComponent, this._myToolData.myVertexDataBackup);
             this._myMeshComponent.active = false;
 
         } else {
@@ -75,8 +67,8 @@ FreeEditTool = class FreeEditTool {
                 this._deselectVertex();
             }
 
-            if (PP.myLeftGamepad.getButtonInfo(PP.ButtonType.TOP_BUTTON).isPressEnd()) {
-                this._mySelectedVertexes = [];
+            if (PP.myRightGamepad.getButtonInfo(PP.ButtonType.TOP_BUTTON).isPressEnd(2)) {
+                this._myToolData.mySelectedVertexes = [];
             }
         }
 
@@ -90,7 +82,7 @@ FreeEditTool = class FreeEditTool {
 
         let vertexPositionWorld = selectedVertexParams.getPosition();
         if (vertexPositionWorld.vec3_distance(pointerPosition) < this._myMinDistanceToSelect) {
-            this._mySelectedVertexes.pp_pushUnique(selectedVertexParams, element => element.equals(selectedVertexParams));
+            this._myToolData.mySelectedVertexes.pp_pushUnique(selectedVertexParams, element => element.equals(selectedVertexParams));
         }
     }
 
@@ -101,7 +93,7 @@ FreeEditTool = class FreeEditTool {
 
         let vertexPositionWorld = selectedVertexParams.getPosition();
         if (vertexPositionWorld.vec3_distance(pointerPosition) < this._myMinDistanceToSelect) {
-            this._mySelectedVertexes.pp_removeAll(element => element.equals(selectedVertexParams));
+            this._myToolData.mySelectedVertexes.pp_removeAll(element => element.equals(selectedVertexParams));
         }
     }
 
@@ -113,7 +105,7 @@ FreeEditTool = class FreeEditTool {
         let vertexPositionWorld = selectedVertexParams.getPosition();
         if (vertexPositionWorld.vec3_distance(pointerPosition) < this._myMinDistanceToSelect) {
 
-            VertexUtils.resetVertexes(this._myMeshComponent, selectedVertexParams.getIndexes(), this._myVertexDataBackup);
+            VertexUtils.resetVertexes(this._myMeshComponent, selectedVertexParams.getIndexes(), this._myToolData.myVertexDataBackup);
 
             this._myMeshComponent.active = false;
         } else {
@@ -122,21 +114,21 @@ FreeEditTool = class FreeEditTool {
     }
 
     _moveSelectedVertexes(movement) {
-        if (this._mySelectedVertexes.length > 0) {
-            VertexUtils.moveSelectedVertexes(this._myMeshObject, this._mySelectedVertexes, movement);
+        if (this._myToolData.mySelectedVertexes.length > 0) {
+            VertexUtils.moveSelectedVertexes(this._myMeshObject, this._myToolData.mySelectedVertexes, movement);
             this._myMeshComponent.active = !this._myMeshComponent.active;
         }
     }
 
     _moveSelectedVertexesAlongNormals(movement) {
-        if (this._mySelectedVertexes.length > 0) {
-            VertexUtils.moveSelectedVertexesAlongNormals(this._myMeshObject, this._mySelectedVertexes, movement);
+        if (this._myToolData.mySelectedVertexes.length > 0) {
+            VertexUtils.moveSelectedVertexesAlongNormals(this._myMeshObject, this._myToolData.mySelectedVertexes, movement);
             this._myMeshComponent.active = !this._myMeshComponent.active;
         }
     }
 
     _debugDraw() {
-        for (let selectedVertex of this._mySelectedVertexes) {
+        for (let selectedVertex of this._myToolData.mySelectedVertexes) {
             selectedVertex.debugDraw();
         }
     }
