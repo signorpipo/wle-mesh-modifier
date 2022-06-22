@@ -22,10 +22,14 @@ ManageGroupsTool = class ManageGroupsTool {
 
     start() {
         this._mySelectedVertexes = [];
+        this._mySelectedVertexGroup = null;
+        this._myMeshComponent.active = true;
     }
 
     end() {
         this._mySelectedVertexes = [];
+        this._mySelectedVertexGroup = null;
+        this._myMeshComponent.active = true;
     }
 
     update(dt) {

@@ -18,10 +18,12 @@ FreeEditTool = class FreeEditTool {
 
     start() {
         this._mySelectedVertexes = [];
+        this._myMeshComponent.active = true;
     }
 
     end() {
         this._mySelectedVertexes = [];
+        this._myMeshComponent.active = true;
     }
 
     update(dt) {
@@ -55,7 +57,7 @@ FreeEditTool = class FreeEditTool {
             this._myPreviousPointerPosition = null;
             this._resetSelectedVertexes();
 
-        } else if (PP.myLeftGamepad.getButtonInfo(PP.ButtonType.BOTTOM_BUTTON).isPressEnd()) {
+        } else if (PP.myLeftGamepad.getButtonInfo(PP.ButtonType.BOTTOM_BUTTON).isPressEnd(2)) {
 
             this._myPreviousPointerPosition = null;
             VertexUtils.resetMesh(this._myMeshComponent, this._myVertexDataBackup);

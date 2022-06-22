@@ -22,6 +22,9 @@ ToolManager = class ToolManager {
         this._myResetToolLabelTimer = new PP.Timer(2, false);
 
         this._myNextActive = true;
+
+        PP.myDebugManager.allocateDraw(PP.DebugDrawObjectType.POINT, 1000);
+        PP.myDebugManager.allocateDraw(PP.DebugDrawObjectType.ARROW, 1000);
     }
 
     update(dt) {
@@ -68,10 +71,11 @@ ToolManager = class ToolManager {
 
         this._myTools[ToolType.FREE_EDIT] = new FreeEditTool(this._myMeshObject, this._myPointerObject, this._myVertexGroupConfig);
         this._myTools[ToolType.GROUP_MANAGEMENT] = new ManageGroupsTool(this._myMeshObject, this._myPointerObject, this._myVertexGroupConfig);
-        this._myTools[ToolType.VARIANT_MANAGEMENT] = new DummyTool(this._myMeshObject, this._myPointerObject, this._myVertexGroupConfig);
+        this._myTools[ToolType.VARIANT_MANAGEMENT] = new ManageVariantsTool(this._myMeshObject, this._myPointerObject, this._myVertexGroupConfig);
         this._myTools[ToolType.VARIANT_EDIT] = new DummyTool(this._myMeshObject, this._myPointerObject, this._myVertexGroupConfig);
 
         this._myTools[ToolType.GROUP_MANAGEMENT].registerGroupSavedEventListener(this, this._onGroupSaved.bind(this));
+        this._myTools[ToolType.VARIANT_MANAGEMENT].registerEditVariantEventListener(this, this._onEditVariant.bind(this));
 
         this._myActiveToolIndex = 0;
 
@@ -107,5 +111,12 @@ ToolManager = class ToolManager {
     _onGroupSaved() {
         this._myToolLabel.text = "Group Saved";
         this._myResetToolLabelTimer.start();
+    }
+
+    _onEditVariant(group, variant) {
+        this._myActiveToolIndex = this._myToolOrder.pp_findIndexEqual(ToolType.VARIANT_EDIT);
+
+        this._myTools[this._myToolOrder[this._myActiveToolIndex]].start(group, variant);
+        this._myToolLabel.text = this._myToolOrder[this._myActiveToolIndex];
     }
 };
