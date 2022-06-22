@@ -39,11 +39,11 @@ ManageVariantsTool = class ManageVariantsTool extends VertexTool {
         }
 
         if (PP.myLeftGamepad.getButtonInfo(PP.ButtonType.TOP_BUTTON).isPressEnd(2)) {
-            this._editVariant();
+            this._goToEditVariant();
         }
 
         if (PP.myLeftGamepad.getButtonInfo(PP.ButtonType.BOTTOM_BUTTON).isPressEnd(2)) {
-            this._createVariant();
+            this._goToCreateVariant();
         }
 
         if (PP.myLeftGamepad.getButtonInfo(PP.ButtonType.SQUEEZE).isPressEnd(2)) {

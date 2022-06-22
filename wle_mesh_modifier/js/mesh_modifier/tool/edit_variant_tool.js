@@ -2,7 +2,8 @@ EditVariantTool = class EditVariantTool extends FreeEditTool {
     constructor(toolData) {
         super(toolData);
 
-        this._myVariantSavedCallbacks = new Map();
+        this._myVariantCreatedCallbacks = new Map();
+        this._myVariantEditedCallbacks = new Map();
     }
 
     start() {
@@ -19,7 +20,11 @@ EditVariantTool = class EditVariantTool extends FreeEditTool {
         }
 
         if (PP.myLeftGamepad.getButtonInfo(PP.ButtonType.BOTTOM_BUTTON).isPressEnd(2)) {
-            this._saveVariant();
+            this._createVariant();
+        }
+
+        if (PP.myLeftGamepad.getButtonInfo(PP.ButtonType.TOP_BUTTON).isPressEnd(2)) {
+            this._editVariant();
         }
 
         super.update(dt);
@@ -28,6 +33,14 @@ EditVariantTool = class EditVariantTool extends FreeEditTool {
     _isSelectedVertexValid(selectedVertexParams) {
         let selectedIndex = selectedVertexParams.getIndexes()[0];
         return this._myToolData.mySelectedVertexGroup.getIndexList().pp_hasEqual(selectedIndex);
+    }
+
+    _deselectAll() {
+        if (this._myToolData.mySelectedVertexes.length > 0) {
+            this._myToolData.mySelectedVertexes = [];
+        } else {
+            this._selectAllGroupVertex();
+        }
     }
 
     _debugDraw() {
@@ -46,11 +59,19 @@ EditVariantTool = class EditVariantTool extends FreeEditTool {
         }
     }
 
-    registerVariantSavedEventListener(id, callback) {
-        this._myVariantSavedCallbacks.set(id, callback);
+    registerVariantCreatedEventListener(id, callback) {
+        this._myVariantCreatedCallbacks.set(id, callback);
     }
 
-    unregisterVariantSavedEventListener(id) {
-        this._myVariantSavedCallbacks.delete(id);
+    unregisterVariantCreatedEventListener(id) {
+        this._myVariantCreatedCallbacks.delete(id);
+    }
+
+    registerVariantEditedEventListener(id, callback) {
+        this._myVariantEditedCallbacks.set(id, callback);
+    }
+
+    unregisterVariantEditedEventListener(id) {
+        this._myVariantEditedCallbacks.delete(id);
     }
 };

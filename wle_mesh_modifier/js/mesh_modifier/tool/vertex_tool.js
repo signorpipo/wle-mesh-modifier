@@ -154,15 +154,22 @@ VertexTool = class VertexTool {
     }
 
     // Variant
-    _saveVariant() {
-        let variantID = null;
-        if (this._myToolData.mySelectedVertexVariant != null) {
-            variantID = this._myToolData.mySelectedVertexVariant.getID();
+    _createVariant() {
+        this._myToolData.mySelectedVertexVariant = this._myToolData.mySelectedVertexGroup.saveVariant(this._myToolData.myMeshComponent.mesh, null);
+
+        this._myVariantCreatedCallbacks.forEach(function (callback) { callback(); }.bind(this));
+    }
+
+    _editVariant() {
+        if (this._myToolData.mySelectedVertexVariant == null) {
+            return;
+
         }
 
+        let variantID = this._myToolData.mySelectedVertexVariant.getID();
         this._myToolData.mySelectedVertexVariant = this._myToolData.mySelectedVertexGroup.saveVariant(this._myToolData.myMeshComponent.mesh, variantID);
 
-        this._myVariantSavedCallbacks.forEach(function (callback) { callback(); }.bind(this));
+        this._myVariantEditedCallbacks.forEach(function (callback) { callback(); }.bind(this));
     }
 
     _selectNextVariant(direction) {
@@ -177,13 +184,13 @@ VertexTool = class VertexTool {
         }
     }
 
-    _editVariant() {
+    _goToEditVariant() {
         if (this._myToolData.mySelectedVertexGroup != null) {
             this._myEditVariantCallbacks.forEach(function (callback) { callback(); }.bind(this));
         }
     }
 
-    _createVariant() {
+    _goToCreateVariant() {
         if (this._myToolData.mySelectedVertexGroup != null) {
             this._myToolData.mySelectedVertexVariant = null;
             this._myEditVariantCallbacks.forEach(function (callback) { callback(); }.bind(this));
@@ -192,8 +199,9 @@ VertexTool = class VertexTool {
 
     _deleteVariant() {
         if (this._myToolData.mySelectedVertexGroup != null && this._myToolData.mySelectedVertexVariant != null) {
-            this._myToolData.mySelectedVertexGroup.removeVariant(this._myToolData.mySelectedVertexVariant.getID());
-            this._myToolData.mySelectedVertexVariant = null;
+            let variantToDelete = this._myToolData.mySelectedVertexVariant;
+            this._selectNextVariant(1);
+            this._myToolData.mySelectedVertexGroup.removeVariant(variantToDelete.getID());
         }
     }
 };

@@ -9,11 +9,11 @@ WL.registerComponent("test-download", {
     },
     update: function (dt) {
         if (PP.myRightGamepad.getButtonInfo(PP.ButtonType.SELECT).isPressEnd()) {
-            downloadFileText("test.txt", "Provissima perché si");
+            downloadFileText("./tests/test.txt", "Super Attempt Because Yes");
         }
 
         if (PP.myLeftGamepad.getButtonInfo(PP.ButtonType.SELECT).isPressEnd()) {
-            downloadFileJSON("test.json", this);
+            downloadFileJSON("./tests/test.json", this);
         }
     },
 });

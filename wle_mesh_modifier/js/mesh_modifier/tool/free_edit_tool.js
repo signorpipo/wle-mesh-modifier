@@ -49,10 +49,14 @@ FreeEditTool = class FreeEditTool extends VertexTool {
         }
 
         if (PP.myRightGamepad.getButtonInfo(PP.ButtonType.TOP_BUTTON).isPressEnd(2)) {
-            this._myToolData.mySelectedVertexes = [];
+            this._deselectAll();
         }
 
         this._debugDraw();
+    }
+
+    _deselectAll() {
+        this._myToolData.mySelectedVertexes = [];
     }
 
     _debugDraw() {

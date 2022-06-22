@@ -76,7 +76,11 @@ ToolManager = class ToolManager {
             }
 
             if (PP.myLeftGamepad.getButtonInfo(PP.ButtonType.THUMBSTICK).isPressEnd(2)) {
+                let configText = jsonStringify(this._myToolData.myVertexGroupConfig);
                 downloadFileText("vertex_group_config.json", jsonStringify(this._myToolData.myVertexGroupConfig));
+
+                console.log("Vertex Group Config:");
+                console.log(configText);
 
                 this._myToolLabel.text = "Config Downloaded";
                 this._myResetToolLabelTimer.start();
@@ -127,7 +131,8 @@ ToolManager = class ToolManager {
 
         this._myTools[ToolType.GROUP_MANAGEMENT].registerGroupSavedEventListener(this, this._onGroupSaved.bind(this));
         this._myTools[ToolType.VARIANT_MANAGEMENT].registerEditVariantEventListener(this, this._onEditVariant.bind(this));
-        this._myTools[ToolType.VARIANT_EDIT].registerVariantSavedEventListener(this, this._onVariantSaved.bind(this));
+        this._myTools[ToolType.VARIANT_EDIT].registerVariantCreatedEventListener(this, this._onVariantCreated.bind(this));
+        this._myTools[ToolType.VARIANT_EDIT].registerVariantEditedEventListener(this, this._onVariantEdited.bind(this));
 
         this._myActiveToolIndex = 0;
 
@@ -165,8 +170,13 @@ ToolManager = class ToolManager {
         this._myResetToolLabelTimer.start();
     }
 
-    _onVariantSaved() {
-        this._myToolLabel.text = "Variant Saved";
+    _onVariantCreated() {
+        this._myToolLabel.text = "Variant Created";
+        this._myResetToolLabelTimer.start();
+    }
+
+    _onVariantEdited() {
+        this._myToolLabel.text = "Variant Edited";
         this._myResetToolLabelTimer.start();
     }
 
