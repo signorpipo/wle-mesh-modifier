@@ -114,10 +114,10 @@ require('./pp/input/pose/components/copy_hand_transform.js');
 require('./pp/input/pose/components/copy_head_transform.js');
 
 //	PLUGIN
-require('./pp/plugin/component_mods/clone_mod.js');
-require('./pp/plugin/component_mods/cursor_mod.js');
-require('./pp/plugin/component_mods/cursor_target_mod.js');
-require('./pp/plugin/component_mods/mouse_look_mod.js');
+require('./pp/plugin/component_mods/clone_component_mod.js');
+require('./pp/plugin/component_mods/cursor_component_mod.js');
+require('./pp/plugin/component_mods/cursor_target_component_mod.js');
+require('./pp/plugin/component_mods/mouse_look_component_mod.js');
 
 require('./pp/plugin/extensions/object_extension.js');
 require('./pp/plugin/extensions/array_extension.js');

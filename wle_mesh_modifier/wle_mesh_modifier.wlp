@@ -1734,6 +1734,18 @@
                 "name": "Material.001",
                 "file": "assets\\models\\low_poly_character_flat_gltf.glb"
             }
+        },
+        "104": {
+            "link": {
+                "name": "Material.003",
+                "file": "assets\\models\\low_poly_character_flat.fbx"
+            }
+        },
+        "105": {
+            "link": {
+                "name": "Material.003",
+                "file": "assets\\models\\low_poly_character_smooth.fbx"
+            }
         }
     },
     "shaders": {
