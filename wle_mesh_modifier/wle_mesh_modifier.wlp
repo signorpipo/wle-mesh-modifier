@@ -182,6 +182,25 @@
                         "_myThumbstick": "57",
                         "_myBottomButton": "53",
                         "_myTopButton": "58"
+                    },
+                    "active": true
+                },
+                {
+                    "type": "pp-gamepad-control-scheme",
+                    "pp-gamepad-control-scheme": {
+                        "_mySelect": "55",
+                        "_mySqueeze": "56",
+                        "_myThumbstick": "57",
+                        "_myBottomButton": "53",
+                        "_myTopButton": "58",
+                        "_myCubeMesh": "p1",
+                        "_myTextMaterial": "111",
+                        "_myFlatMaterial": "112",
+                        "_mySelectText": "Select Text",
+                        "_mySqueezeText": "Squeeze Text",
+                        "_myThumbstickText": "Thumbstick Text",
+                        "_myBottomButtonText": "Bottom Button Text",
+                        "_myTopButtonText": "Top Button Text"
                     }
                 }
             ]
@@ -214,7 +233,28 @@
                         "_myThumbstick": "65",
                         "_myBottomButton": "61",
                         "_myTopButton": "66"
-                    }
+                    },
+                    "active": true
+                },
+                {
+                    "type": "pp-gamepad-control-scheme",
+                    "pp-gamepad-control-scheme": {
+                        "_mySelect": "63",
+                        "_mySqueeze": "64",
+                        "_myThumbstick": "65",
+                        "_myBottomButton": "61",
+                        "_myTopButton": "66",
+                        "_myCubeMesh": "p1",
+                        "_myTextMaterial": "111",
+                        "_myFlatMaterial": "112",
+                        "_mySelectText": "Select Text",
+                        "_mySqueezeText": "Squeeze Text",
+                        "_myThumbstickText": "Thumbstick Text",
+                        "_myBottomButtonText": "Bottom Button Text",
+                        "_myTopButtonText": "Top Button Text",
+                        "_myHandedness": "right"
+                    },
+                    "active": true
                 }
             ],
             "transformation": [
@@ -435,6 +475,9 @@
                 0.000123,
                 -0.0252592,
                 1.0
+            ],
+            "components": [
+                null
             ]
         },
         "54": {
@@ -636,6 +679,9 @@
                 0.000123,
                 -0.0252592,
                 1.0
+            ],
+            "components": [
+                null
             ]
         },
         "62": {
@@ -736,6 +782,9 @@
                 -0.0037003,
                 -0.039634,
                 1.0
+            ],
+            "components": [
+                null
             ]
         },
         "66": {
@@ -1495,7 +1544,7 @@
             "parent": "86",
             "transformation": [
                 -0.0749999,
-                1.1324813087298935e-8,
+                1.1324813087298937e-8,
                 1.3607872162424428e-8,
                 0.0,
                 0.0,
@@ -1563,7 +1612,7 @@
                 0.0719306,
                 -0.0212383,
                 0.0,
-                -1.625779155745022e-8,
+                -1.6257791557450226e-8,
                 -0.0212385,
                 -0.0719297,
                 0.0,
@@ -1593,7 +1642,7 @@
                 0.0719301,
                 -0.0212384,
                 0.0,
-                -1.6257908797001623e-8,
+                -1.625790879700163e-8,
                 -0.0212388,
                 -0.0719299,
                 0.0,
@@ -1919,6 +1968,43 @@
             "link": {
                 "name": "Material.003",
                 "file": "assets\\models\\low_poly_character_smooth.fbx"
+            }
+        },
+        "111": {
+            "link": {
+                "name": "DefaultFontMaterial",
+                "file": "default"
+            },
+            "DistanceFieldVector": {
+                "outlineColor": [
+                    0.0784,
+                    0.0784,
+                    0.0784,
+                    1.0
+                ],
+                "color": [
+                    0.0784,
+                    0.0784,
+                    0.0784,
+                    1.0
+                ],
+                "outlineRange": [
+                    0.4,
+                    0.4
+                ]
+            },
+            "name": "Control Scheme Font"
+        },
+        "112": {
+            "name": "Control Scheme Flat",
+            "pipeline": "7",
+            "Flat": {
+                "color": [
+                    0.0784,
+                    0.0784,
+                    0.0784,
+                    1.0
+                ]
             }
         }
     },

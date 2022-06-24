@@ -106,6 +106,7 @@ require('./pp/input/gamepad/gamepad_manager_component.js');
 require('./pp/input/gamepad/gamepad_manager.js');
 require('./pp/input/gamepad/gamepad_utils.js');
 require('./pp/input/gamepad/gamepad.js');
+require('./pp/input/gamepad/gamepad_control_scheme.js');
 
 require('./pp/input/pose/hand_pose.js');
 require('./pp/input/pose/head_pose.js');
