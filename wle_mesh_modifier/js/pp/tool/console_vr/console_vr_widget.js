@@ -268,7 +268,11 @@ PP.ConsoleVRWidget = class ConsoleVRWidget {
     _formatArgs(...args) {
         let stringifiedArgs = [];
         for (let i = 0; i < args.length; i++) {
-            stringifiedArgs.push(this._stringifyItem(args[i]));
+            if (args[i] === undefined) {
+                stringifiedArgs.push("undefined");
+            } else {
+                stringifiedArgs.push(this._stringifyItem(args[i]));
+            }
         }
 
         let formattedString = stringifiedArgs.join(" ");

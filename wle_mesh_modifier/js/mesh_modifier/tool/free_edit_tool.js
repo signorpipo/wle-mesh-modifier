@@ -6,6 +6,8 @@ FreeEditTool = class FreeEditTool extends VertexTool {
     }
 
     update(dt) {
+        super.update(dt);
+
         if (PP.myRightGamepad.getButtonInfo(PP.ButtonType.SQUEEZE).isPressed()) {
             if (this._myPreviousPointerPosition == null) {
                 this._myPreviousPointerPosition = this._myToolData.myPointerObject.pp_getPosition();
@@ -37,7 +39,7 @@ FreeEditTool = class FreeEditTool extends VertexTool {
         }
 
         if (PP.myRightGamepad.getButtonInfo(PP.ButtonType.BOTTOM_BUTTON).isPressEnd(2)) {
-            this._resetAllVertexes();
+            this._resetAll();
         }
 
         if (PP.myRightGamepad.getButtonInfo(PP.ButtonType.SELECT).isPressed()) {
@@ -57,6 +59,26 @@ FreeEditTool = class FreeEditTool extends VertexTool {
 
     _deselectAll() {
         this._myToolData.mySelectedVertexes = [];
+    }
+
+    _resetAll() {
+        this._resetAllVertexes();
+    }
+
+    _setupControlScheme() {
+        let leftScheme = this._myToolData.myLeftControlScheme;
+        leftScheme.setSelectText("");
+        leftScheme.setSqueezeText("Hold: Enable Locomotion");
+        leftScheme.setThumbstickText("x2: Download Configuration\nLeft/Right: Change Tool");
+        leftScheme.setBottomButtonText("");
+        leftScheme.setTopButtonText("");
+
+        let rightScheme = this._myToolData.myRightControlScheme;
+        rightScheme.setSelectText("Select Vertex");
+        rightScheme.setSqueezeText("Move Vertex Free");
+        rightScheme.setThumbstickText("x1: Toggle Control Scheme\nLeft/Right: Move Vertex Along Normal");
+        rightScheme.setBottomButtonText("x1: Reset Vertex\n x2: Reset All Vertexes");
+        rightScheme.setTopButtonText("x1: Deselect Vertex\n x2: Deselect All Vertexes");
     }
 
     _debugDraw() {

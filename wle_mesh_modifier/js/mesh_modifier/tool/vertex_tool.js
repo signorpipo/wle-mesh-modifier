@@ -7,9 +7,21 @@ VertexTool = class VertexTool {
 
     start() {
         this._myToolData.myMeshComponent.active = true;
+        this._setupControlScheme();
     }
 
     end() { }
+
+    update(dt) {
+        if (PP.myRightGamepad.getButtonInfo(PP.ButtonType.THUMBSTICK).isPressEnd()) {
+            this._myToolData.myLeftControlScheme.setVisible(!this._myToolData.myLeftControlScheme.isVisible());
+            this._myToolData.myRightControlScheme.setVisible(!this._myToolData.myRightControlScheme.isVisible());
+        }
+    }
+
+    _setupControlScheme() {
+
+    }
 
     // Selection
     _selectVertex() {

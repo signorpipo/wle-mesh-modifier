@@ -46,7 +46,10 @@
                         "_myToolLabel": "87",
                         "_myVertexGroupConfigPath": "vertex_group_config.json",
                         "_myGroupLabel": "106",
-                        "_myVariantLabel": "108"
+                        "_myVariantLabel": "108",
+                        "_myLeftControlScheme": "23",
+                        "_myRightControlScheme": "24",
+                        "_myPointerObject": "82"
                     }
                 }
             ]
@@ -200,7 +203,8 @@
                         "_mySqueezeText": "Squeeze Text",
                         "_myThumbstickText": "Thumbstick Text",
                         "_myBottomButtonText": "Bottom Button Text",
-                        "_myTopButtonText": "Top Button Text"
+                        "_myTopButtonText": "Top Button Text",
+                        "_myLineLength": 0.125
                     }
                 }
             ]
@@ -252,7 +256,9 @@
                         "_myThumbstickText": "Thumbstick Text",
                         "_myBottomButtonText": "Bottom Button Text",
                         "_myTopButtonText": "Top Button Text",
-                        "_myHandedness": "right"
+                        "_myHandedness": "right",
+                        "_myVisible": true,
+                        "_myLineLength": 0.125
                     },
                     "active": true
                 }
@@ -1642,7 +1648,7 @@
                 0.0719301,
                 -0.0212384,
                 0.0,
-                -1.625790879700163e-8,
+                -1.6257908797001633e-8,
                 -0.0212388,
                 -0.0719299,
                 0.0,
@@ -1666,7 +1672,7 @@
             "parent": "86",
             "transformation": [
                 -0.0749999,
-                1.132473581577642e-8,
+                1.1324735815776421e-8,
                 1.3607948545768524e-8,
                 0.0,
                 0.0,

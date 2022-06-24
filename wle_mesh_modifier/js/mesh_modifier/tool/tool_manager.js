@@ -13,11 +13,26 @@ ToolData = class ToolData {
             this.myVertexDataBackup.push(vertex);
         }
 
+        this.myLeftControlScheme = null;
+        this.myRightControlScheme = null;
+    }
+};
+
+ToolManagerParams = class ToolManagerParams {
+    constructor() {
+        this.myMeshObject = null;
+        this.myPointerObject = null;
+        this.myToolLabel = null;
+        this.myGroupLabel = null;
+        this.myVariantLabel = null;
+        this.myVariantGroupCongigPath = null;
+        this.myLeftControlScheme = null;
+        this.myRightControlScheme = null;
     }
 };
 
 ToolManager = class ToolManager {
-    constructor(meshObject, pointer, toolLabel, groupLabel, variantLabel, vertexGroupConfigPath) {
+    constructor(params) {
         this._myActiveToolIndex = 0;
 
         this._myToolOrder = [
@@ -31,18 +46,20 @@ ToolManager = class ToolManager {
 
         this._myTools = [];
 
-        this._myToolLabel = toolLabel.pp_getComponent("text");
-        this._myGroupLabel = groupLabel.pp_getComponent("text");
-        this._myVariantLabel = variantLabel.pp_getComponent("text");
+        this._myToolLabel = params.myToolLabel.pp_getComponent("text");
+        this._myGroupLabel = params.myGroupLabel.pp_getComponent("text");
+        this._myVariantLabel = params.myVariantLabel.pp_getComponent("text");
         this._myResetToolLabelTimer = new PP.Timer(2, false);
 
-        let meshComponent = meshObject.pp_getComponentHierarchy("mesh");
+        let meshComponent = params.myMeshObject.pp_getComponentHierarchy("mesh");
         this._myToolData = new ToolData(meshComponent.mesh);
-        this._myToolData.myMeshObject = meshObject;
+        this._myToolData.myMeshObject = params.myMeshObject;
         this._myToolData.myMeshComponent = meshComponent;
-        this._myToolData.myPointerObject = pointer;
+        this._myToolData.myPointerObject = params.myPointerObject;
+        this._myToolData.myLeftControlScheme = params.myLeftControlScheme;
+        this._myToolData.myRightControlScheme = params.myRightControlScheme;
 
-        this._loadVertexGroupConfig(vertexGroupConfigPath);
+        this._loadVertexGroupConfig(params.myVariantGroupCongigPath);
 
         this._myScrollEnabled = true;
 

@@ -1,5 +1,9 @@
 WL.registerComponent('pp-gamepad-control-scheme', {
+    _myVisible: { type: WL.Type.Bool, default: true },
+
     _myHandedness: { type: WL.Type.Enum, values: ['left', 'right'], default: 'left' },
+
+    _myLineLength: { type: WL.Type.Float, default: 0.085 },
 
     _mySelectText: { type: WL.Type.String, default: "" },
     _mySqueezeText: { type: WL.Type.String, default: "" },
@@ -27,8 +31,44 @@ WL.registerComponent('pp-gamepad-control-scheme', {
         this._myControlSchemeDirection = (this._myHandednessType == PP.Handedness.LEFT) ? 1 : -1;
 
         this._createControlScheme();
+        this.setVisible(this._myVisible);
     },
     update: function (dt) {
+    },
+    isVisible() {
+        return this._myVisible;
+    },
+    setVisible(visible) {
+        this._myVisible = visible;
+        this._myRootObject.pp_setActive(this._myVisible);
+        if (this._myVisible) {
+            this._hideEmptySchemes();
+        }
+    },
+    setSelectText(text) {
+        this._mySelectText = text;
+        this._mySelectTextComponent.text = this._mySelectText;
+        this.setVisible(this._myVisible);
+    },
+    setSqueezeText(text) {
+        this._mySqueezeText = text;
+        this._mySqueezeTextComponent.text = this._mySqueezeText;
+        this.setVisible(this._myVisible);
+    },
+    setThumbstickText(text) {
+        this._myThumbstickText = text;
+        this._myThumbstickTextComponent.text = this._myThumbstickText;
+        this.setVisible(this._myVisible);
+    },
+    setBottomButtonText(text) {
+        this._myBottomButtonText = text;
+        this._myBottomButtonTextComponent.text = this._myBottomButtonText;
+        this.setVisible(this._myVisible);
+    },
+    setTopButtonText(text) {
+        this._myTopButtonText = text;
+        this._myTopButtonTextComponent.text = this._myTopButtonText;
+        this.setVisible(this._myVisible);
     },
     _createControlScheme() {
         this._myRootObject = this.object.pp_addObject();
@@ -37,29 +77,43 @@ WL.registerComponent('pp-gamepad-control-scheme', {
         this.object.pp_resetScale();
 
         let distanceFromButton = 0.015;
-        let lineLength = 0.11;
+        let lineLength = this._myLineLength;
 
         let referenceObject = this._myThumbstick;
 
         this._mySelectObject = this._myRootObject.pp_addObject();
-        this._mySelectTextComponent = this._addScheme(this._mySelect, referenceObject, [0, distanceFromButton, 0], [lineLength * this._myControlSchemeDirection, 0, 0], this._mySelectObject);
+        this._mySelectTextComponent = this._addScheme(this._mySelect, referenceObject,
+            [0, distanceFromButton, 0],
+            [lineLength * this._myControlSchemeDirection, 0, 0],
+            this._mySelectObject);
         this._mySelectTextComponent.text = this._mySelectText;
 
         this._mySqueezeObject = this._myRootObject.pp_addObject();
-        this._mySqueezeTextComponent = this._addScheme(this._mySqueeze, referenceObject, [distanceFromButton * this._myControlSchemeDirection, 0, 0], [lineLength * this._myControlSchemeDirection, 0, 0], this._mySqueezeObject);
+        this._mySqueezeTextComponent = this._addScheme(this._mySqueeze, referenceObject,
+            [distanceFromButton * this._myControlSchemeDirection, 0, 0],
+            [lineLength * this._myControlSchemeDirection, 0, 0],
+            this._mySqueezeObject);
         this._mySqueezeTextComponent.text = this._mySqueezeText;
 
         this._myThumbstickObject = this._myRootObject.pp_addObject();
-        this._myThumbstickTextComponent = this._addScheme(this._myThumbstick, referenceObject, [0, 0, -distanceFromButton], [-lineLength * this._myControlSchemeDirection, 0, 0], this._myThumbstickObject);
+        this._myThumbstickTextComponent = this._addScheme(this._myThumbstick, referenceObject,
+            [0, 0, -distanceFromButton],
+            [-lineLength * this._myControlSchemeDirection, 0, 0],
+            this._myThumbstickObject);
         this._myThumbstickTextComponent.text = this._myThumbstickText;
 
         this._myBottomButtonObject = this._myRootObject.pp_addObject();
-        this._myBottomButtonTextComponent = this._addScheme(this._myBottomButton, referenceObject, [0, 0, -distanceFromButton], [0, -lineLength, 0], this._myBottomButtonObject);
+        this._myBottomButtonTextComponent = this._addScheme(this._myBottomButton, referenceObject,
+            [0, 0, -distanceFromButton],
+            [0, -lineLength, 0],
+            this._myBottomButtonObject);
         this._myBottomButtonTextComponent.text = this._myBottomButtonText;
 
         this._myTopButtonObject = this._myRootObject.pp_addObject();
-        let topButtonEndOffset = [-lineLength * this._myControlSchemeDirection, 0, 0].vec3_rotateAxis(-45, [0, 0, 1]);
-        this._myTopButtonTextComponent = this._addScheme(this._myTopButton, referenceObject, [0, 0, -distanceFromButton], topButtonEndOffset, this._myTopButtonObject);
+        this._myTopButtonTextComponent = this._addScheme(this._myTopButton, referenceObject,
+            [0, 0, -distanceFromButton],
+            [-lineLength * this._myControlSchemeDirection, 0, 0].vec3_rotateAxis(45 * this._myControlSchemeDirection, [0, 0, 1]),
+            this._myTopButtonObject);
         this._myTopButtonTextComponent.text = this._myTopButtonText;
 
         this.object.pp_setScale(objectScale);
@@ -111,7 +165,7 @@ WL.registerComponent('pp-gamepad-control-scheme', {
         let textObject = parentObject.pp_addObject();
         textObject.pp_setPosition(position);
         textObject.pp_lookTo(forward.vec3_negate(), up);
-        textObject.pp_scaleObject(0.08);
+        textObject.pp_scaleObject(0.075);
 
         let textComponent = textObject.pp_addComponent("text");
         textComponent.alignment = WL.Alignment.Center;
@@ -119,5 +173,22 @@ WL.registerComponent('pp-gamepad-control-scheme', {
         textComponent.material = this._myTextMaterial;
 
         return textComponent;
+    },
+    _hideEmptySchemes() {
+        if (this._mySelectText.length == 0) {
+            this._mySelectObject.pp_setActive(false);
+        }
+        if (this._mySqueezeText.length == 0) {
+            this._mySqueezeObject.pp_setActive(false);
+        }
+        if (this._myThumbstickText.length == 0) {
+            this._myThumbstickObject.pp_setActive(false);
+        }
+        if (this._myBottomButtonText.length == 0) {
+            this._myBottomButtonObject.pp_setActive(false);
+        }
+        if (this._myTopButtonText.length == 0) {
+            this._myTopButtonObject.pp_setActive(false);
+        }
     }
 });

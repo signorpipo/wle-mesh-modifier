@@ -27,6 +27,10 @@ EditVariantTool = class EditVariantTool extends FreeEditTool {
             this._editVariant();
         }
 
+        if (PP.myRightGamepad.getButtonInfo(PP.ButtonType.BOTTOM_BUTTON).isPressEnd(3)) {
+            this._resetAllVertexes();
+        }
+
         super.update(dt);
     }
 
@@ -35,12 +39,27 @@ EditVariantTool = class EditVariantTool extends FreeEditTool {
         return this._myToolData.mySelectedVertexGroup.getIndexList().pp_hasEqual(selectedIndex);
     }
 
+    _resetAll() {
+        this._resetGroupVertexes();
+    }
+
     _deselectAll() {
         if (this._myToolData.mySelectedVertexes.length > 0) {
             this._myToolData.mySelectedVertexes = [];
         } else {
             this._selectAllGroupVertex();
         }
+    }
+
+    _setupControlScheme() {
+        super._setupControlScheme();
+        let leftScheme = this._myToolData.myLeftControlScheme;
+        leftScheme.setBottomButtonText("x2: Save Current Variant");
+        leftScheme.setTopButtonText("x2: Save As New Variant");
+
+        let rightScheme = this._myToolData.myRightControlScheme;
+        rightScheme.setBottomButtonText("x1: Reset Vertex\n x2: Reset Group Vertexes\n x3: Reset All Vertexes");
+        rightScheme.setTopButtonText("x1: Deselect Vertex\n x2: Select/Deselect Group Vertexes");
     }
 
     _debugDraw() {
