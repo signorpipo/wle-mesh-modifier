@@ -83,7 +83,7 @@ WL.registerComponent('pp-gamepad-control-scheme', {
 
         this._mySelectObject = this._myRootObject.pp_addObject();
         this._mySelectTextComponent = this._addScheme(this._mySelect, referenceObject,
-            [0, distanceFromButton, 0],
+            [0, 0, distanceFromButton],
             [lineLength * this._myControlSchemeDirection, 0, 0],
             this._mySelectObject);
         this._mySelectTextComponent.text = this._mySelectText;
@@ -97,22 +97,22 @@ WL.registerComponent('pp-gamepad-control-scheme', {
 
         this._myThumbstickObject = this._myRootObject.pp_addObject();
         this._myThumbstickTextComponent = this._addScheme(this._myThumbstick, referenceObject,
-            [0, 0, -distanceFromButton],
+            [0, distanceFromButton, 0],
             [-lineLength * this._myControlSchemeDirection, 0, 0],
             this._myThumbstickObject);
         this._myThumbstickTextComponent.text = this._myThumbstickText;
 
         this._myBottomButtonObject = this._myRootObject.pp_addObject();
         this._myBottomButtonTextComponent = this._addScheme(this._myBottomButton, referenceObject,
-            [0, 0, -distanceFromButton],
-            [0, -lineLength, 0],
+            [0, distanceFromButton, 0],
+            [0, 0, -lineLength],
             this._myBottomButtonObject);
         this._myBottomButtonTextComponent.text = this._myBottomButtonText;
 
         this._myTopButtonObject = this._myRootObject.pp_addObject();
         this._myTopButtonTextComponent = this._addScheme(this._myTopButton, referenceObject,
-            [0, 0, -distanceFromButton],
-            [-lineLength * this._myControlSchemeDirection, 0, 0].vec3_rotateAxis(45 * this._myControlSchemeDirection, [0, 0, 1]),
+            [0, distanceFromButton, 0],
+            [-lineLength * this._myControlSchemeDirection, 0, 0].vec3_rotateAxis(-45 * this._myControlSchemeDirection, [0, 1, 0]),
             this._myTopButtonObject);
         this._myTopButtonTextComponent.text = this._myTopButtonText;
 
@@ -120,26 +120,25 @@ WL.registerComponent('pp-gamepad-control-scheme', {
     },
     _addScheme(buttonObject, referenceObject, startOffset, endOffset, parentObject) {
         let buttonPosition = buttonObject.pp_getPosition();
-        let buttonForward = referenceObject.pp_getForward();
-        let buttonRight = referenceObject.pp_getRight();
-        let buttonUp = referenceObject.pp_getUp();
+        let referenceForward = referenceObject.pp_getForward();
+        let referenceRight = referenceObject.pp_getRight();
+        let referenceUp = referenceObject.pp_getUp();
 
-        let lineStart = buttonPosition.vec3_add(buttonRight.vec3_scale(startOffset[0]));
-        lineStart.vec3_add(buttonUp.vec3_scale(startOffset[1]), lineStart);
-        lineStart.vec3_add(buttonForward.vec3_scale(startOffset[2]), lineStart);
+        let lineStart = buttonPosition.vec3_add(referenceRight.vec3_scale(startOffset[0]));
+        lineStart.vec3_add(referenceUp.vec3_scale(startOffset[1]), lineStart);
+        lineStart.vec3_add(referenceForward.vec3_scale(startOffset[2]), lineStart);
 
-        let lineEnd = lineStart.vec3_add(buttonRight.vec3_scale(endOffset[0]));
-        lineEnd.vec3_add(buttonUp.vec3_scale(endOffset[1]), lineEnd);
-        lineEnd.vec3_add(buttonForward.vec3_scale(endOffset[2]), lineEnd);
+        let lineEnd = lineStart.vec3_add(referenceRight.vec3_scale(endOffset[0]));
+        lineEnd.vec3_add(referenceUp.vec3_scale(endOffset[1]), lineEnd);
+        lineEnd.vec3_add(referenceForward.vec3_scale(endOffset[2]), lineEnd);
 
         let textOffset = 0.01;
-        let textPosition = lineEnd.vec3_add(buttonUp.vec3_scale(-textOffset));
+        let textPosition = lineEnd.vec3_add(referenceForward.vec3_scale(-textOffset));
 
         this._addLine(lineStart, lineEnd, parentObject);
-        let textComponent = this._addText(textPosition, buttonForward, buttonUp, parentObject);
+        let textComponent = this._addText(textPosition, referenceForward, referenceUp, parentObject);
 
         return textComponent;
-
     },
     _addLine(start, end, parentObject) {
         let lineDirection = end.vec3_sub(start);
@@ -164,7 +163,7 @@ WL.registerComponent('pp-gamepad-control-scheme', {
     _addText(position, forward, up, parentObject) {
         let textObject = parentObject.pp_addObject();
         textObject.pp_setPosition(position);
-        textObject.pp_lookTo(forward.vec3_negate(), up);
+        textObject.pp_lookTo(up, forward);
         textObject.pp_scaleObject(0.075);
 
         let textComponent = textObject.pp_addComponent("text");
