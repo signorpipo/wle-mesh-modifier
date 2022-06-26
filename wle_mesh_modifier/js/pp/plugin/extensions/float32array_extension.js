@@ -1440,6 +1440,7 @@ Float32Array.prototype.mat3_toRadians = function () {
 
 Float32Array.prototype.mat3_toQuat = function (out = glMatrix.quat.create()) {
     glMatrix.quat.fromMat3(out, this);
+    out.quat_normalize(out);
     return out;
 };
 

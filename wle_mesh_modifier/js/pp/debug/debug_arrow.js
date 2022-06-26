@@ -10,6 +10,8 @@ PP.DebugArrow = class DebugArrow {
 
     constructor(params = new PP.DebugArrowParams()) {
         this._myParams = params;
+        this._myParams.myDirection.vec3_normalize(this._myParams.myDirection);
+
         this._myDebugLine = new PP.DebugLine();
         this._myDebugLine.setAutoRefresh(false);
 
@@ -45,6 +47,7 @@ PP.DebugArrow = class DebugArrow {
 
     setParams(params) {
         this._myParams = params;
+        this._myParams.myDirection.vec3_normalize(this._myParams.myDirection);
         this._markDirty();
     }
 
@@ -56,6 +59,7 @@ PP.DebugArrow = class DebugArrow {
     setStartDirectionLength(start, direction, length) {
         this._myParams.myStart = start;
         this._myParams.myDirection = direction;
+        this._myParams.myDirection.vec3_normalize(this._myParams.myDirection);
         this._myParams.myLength = length;
 
         this._markDirty();

@@ -26,6 +26,7 @@ PP.DebugLine = class DebugLine {
 
     constructor(params = new PP.DebugLineParams()) {
         this._myParams = params;
+        this._myParams.myDirection.vec3_normalize(this._myParams.myDirection);
 
         this._myLineRootObject = null;
 
@@ -55,6 +56,7 @@ PP.DebugLine = class DebugLine {
 
     setParams(params) {
         this._myParams = params;
+        this._myParams.myDirection.vec3_normalize(this._myParams.myDirection);
         this._markDirty();
     }
 
@@ -66,6 +68,7 @@ PP.DebugLine = class DebugLine {
     setStartDirectionLength(start, direction, length) {
         this._myParams.myStart = start;
         this._myParams.myDirection = direction;
+        this._myParams.myDirection.vec3_normalize(this._myParams.myDirection);
         this._myParams.myLength = length;
 
         this._markDirty();

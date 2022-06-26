@@ -8,6 +8,7 @@ require('./mesh_modifier/vertex_utils.js');
 
 require('./mesh_modifier/test/test_download.js');
 require('./mesh_modifier/test/test_loadFile.js');
+require('./mesh_modifier/test/test_set_axis');
 
 require('./mesh_modifier/tool/tool_type.js');
 require('./mesh_modifier/tool/tool_manager.js');

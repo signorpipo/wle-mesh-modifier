@@ -42,9 +42,9 @@
         - pp_getScale       / pp_setScale       (u can specify a single number instead of a vector to uniform scale easily) / pp_resetScale 
         - pp_getTransform   / pp_setTransform   / pp_resetTransform
 
-        - pp_getLeft        / pp_getRight
-        - pp_getUp          / pp_getDown
-        - pp_getForward     / pp_getBackward
+        - pp_getLeft        / pp_getRight       / pp_setLeft        / pp_setRight
+        - pp_getUp          / pp_getDown        / pp_setUp          / pp_setDown
+        - pp_getForward     / pp_getBackward    / pp_setForward     / pp_setBackward
 
         - pp_translate      / pp_translateAxis
         - pp_rotate         / pp_rotateAxis     / pp_rotateAround    / pp_rotateAroundAxis
@@ -575,6 +575,102 @@ if (WL && WL.Object) {
                 glMatrix.vec3.set(vector, scale, scale, scale);
                 this.scalingLocal = vector;
             }
+        };
+    }();
+
+    WL.Object.prototype.pp_setForward = function (forward, up, left) {
+        this.pp_setForwardWorld(forward, up, left);
+    };
+
+    WL.Object.prototype.pp_setForwardWorld = function (forward, up = null, left = null) {
+        this._pp_setAxes([left, up, forward], [2, 1, 0], false);
+    };
+
+    WL.Object.prototype.pp_setForwardLocal = function (forward, up = null, left = null) {
+        this._pp_setAxes([left, up, forward], [2, 1, 0], true);
+    };
+
+    WL.Object.prototype.pp_setBackward = function (backward, up, left) {
+        this.pp_setBackwardWorld(backward, up, left);
+    };
+
+    WL.Object.prototype.pp_setBackwardWorld = function () {
+        let forward = glMatrix.vec3.create();
+        return function (backward, up = null, left = null) {
+            glMatrix.vec3.negate(forward, backward);
+            this._pp_setAxes([left, up, forward], [2, 1, 0], false);
+        };
+    }();
+
+    WL.Object.prototype.pp_setBackwardLocal = function () {
+        let forward = glMatrix.vec3.create();
+        return function (backward, up = null, left = null) {
+            glMatrix.vec3.negate(forward, backward);
+            this._pp_setAxes([left, up, forward], [2, 1, 0], true);
+        };
+    }();
+
+    WL.Object.prototype.pp_setUp = function (up, forward, left) {
+        this.pp_setUpWorld(up, forward, left);
+    };
+
+    WL.Object.prototype.pp_setUpWorld = function (up, forward = null, left = null) {
+        this._pp_setAxes([left, up, forward], [1, 2, 0], false);
+    };
+
+    WL.Object.prototype.pp_setUpLocal = function (up, forward = null, left = null) {
+        this._pp_setAxes([left, up, forward], [1, 2, 0], true);
+    };
+
+    WL.Object.prototype.pp_setDown = function (down, forward, left) {
+        this.pp_setDownWorld(down, forward, left);
+    };
+
+    WL.Object.prototype.pp_setDownWorld = function () {
+        let up = glMatrix.vec3.create();
+        return function (down, forward = null, left = null) {
+            glMatrix.vec3.negate(up, down);
+            this._pp_setAxes([left, up, forward], [1, 2, 0], false);
+        };
+    }();
+
+    WL.Object.prototype.pp_setDownLocal = function () {
+        let up = glMatrix.vec3.create();
+        return function (down, forward = null, left = null) {
+            glMatrix.vec3.negate(up, down);
+            this._pp_setAxes([left, up, forward], [1, 2, 0], true);
+        };
+    }();
+
+    WL.Object.prototype.pp_setLeft = function (left, up, forward) {
+        this.pp_setLeftWorld(left, up, forward);
+    };
+
+    WL.Object.prototype.pp_setLeftWorld = function (left, up = null, forward = null) {
+        this._pp_setAxes([left, up, forward], [0, 1, 2], false);
+    };
+
+    WL.Object.prototype.pp_setLeftLocal = function (left, up = null, forward = null) {
+        this._pp_setAxes([left, up, forward], [0, 1, 2], true);
+    };
+
+    WL.Object.prototype.pp_setRight = function (right, up, forward) {
+        this.pp_setRightWorld(right, up, forward);
+    };
+
+    WL.Object.prototype.pp_setRightWorld = function () {
+        let left = glMatrix.vec3.create();
+        return function (right, up = null, forward = null) {
+            glMatrix.vec3.negate(left, right);
+            this._pp_setAxes([left, up, forward], [0, 1, 2], false);
+        };
+    }();
+
+    WL.Object.prototype.pp_setRightLocal = function () {
+        let left = glMatrix.vec3.create();
+        return function (right, up = null, forward = null) {
+            glMatrix.vec3.negate(left, right);
+            this._pp_setAxes([left, up, forward], [0, 1, 2], true);
         };
     }();
 
@@ -2237,6 +2333,126 @@ if (WL && WL.Object) {
 
         WL.scene.reserveObjects(objectsToReserve, componentsToReserve);
     };
+
+    WL.Object.prototype._pp_setAxes = function () {
+        let fixedAxes = [glMatrix.vec3.create(), glMatrix.vec3.create(), glMatrix.vec3.create()];
+
+        let fixedAxesFixSignMap = [
+            [1, -1, 1],
+            [1, 1, -1],
+            [-1, 1, -1]
+        ];
+
+        let fixedLeft = glMatrix.vec3.create();
+        let fixedUp = glMatrix.vec3.create();
+        let fixedForward = glMatrix.vec3.create();
+
+        let currentAxis = glMatrix.vec3.create();
+
+        let rotationAxis = glMatrix.vec3.create();
+        let rotationMat = glMatrix.mat3.create();
+        let rotationQuat = glMatrix.quat.create();
+        return function (axes, priority, isLocal) {
+            let firstAxis = axes[priority[0]];
+            let secondAxis = axes[priority[1]];
+            let thirdAxis = axes[priority[2]];
+
+            let secondAxisValid = false;
+            if (secondAxis != null) {
+                let angleBetween = glMatrix.vec3.angle(firstAxis, secondAxis);
+                if (angleBetween > this._pp_epsilon) {
+                    secondAxisValid = true;
+                }
+            }
+
+            let thirdAxisValid = false;
+            if (thirdAxis != null) {
+                let angleBetween = glMatrix.vec3.angle(firstAxis, thirdAxis);
+                if (angleBetween > this._pp_epsilon) {
+                    thirdAxisValid = true;
+                }
+            }
+
+            if (secondAxisValid || thirdAxisValid) {
+
+                let crossAxis = null;
+                let secondAxisIndex = null;
+                let thirdAxisIndex = null;
+                if (secondAxisValid) {
+                    crossAxis = secondAxis;
+                    secondAxisIndex = 1;
+                    thirdAxisIndex = 2;
+                } else {
+                    crossAxis = thirdAxis;
+                    secondAxisIndex = 2;
+                    thirdAxisIndex = 1;
+                }
+
+                let fixSignMap = fixedAxesFixSignMap[priority[0]];
+
+                glMatrix.vec3.cross(fixedAxes[thirdAxisIndex], firstAxis, crossAxis);
+                glMatrix.vec3.scale(fixedAxes[thirdAxisIndex], fixedAxes[thirdAxisIndex], fixSignMap[priority[thirdAxisIndex]]);
+
+                glMatrix.vec3.cross(fixedAxes[secondAxisIndex], firstAxis, fixedAxes[thirdAxisIndex]);
+                glMatrix.vec3.scale(fixedAxes[secondAxisIndex], fixedAxes[secondAxisIndex], fixSignMap[priority[secondAxisIndex]]);
+
+                glMatrix.vec3.cross(fixedAxes[0], fixedAxes[1], fixedAxes[2]);
+                glMatrix.vec3.scale(fixedAxes[0], fixedAxes[0], fixSignMap[priority[0]]);
+
+                glMatrix.vec3.normalize(fixedLeft, fixedAxes[priority.pp_findIndexEqual(0)]);
+                glMatrix.vec3.normalize(fixedUp, fixedAxes[priority.pp_findIndexEqual(1)]);
+                glMatrix.vec3.normalize(fixedForward, fixedAxes[priority.pp_findIndexEqual(2)]);
+
+                glMatrix.mat3.set(rotationMat,
+                    fixedLeft[0], fixedLeft[1], fixedLeft[2],
+                    fixedUp[0], fixedUp[1], fixedUp[2],
+                    fixedForward[0], fixedForward[1], fixedForward[2]
+                );
+
+                glMatrix.quat.fromMat3(rotationQuat, rotationMat);
+                glMatrix.quat.normalize(rotationQuat, rotationQuat);
+
+                if (isLocal) {
+                    this.pp_setRotationLocalQuat(rotationQuat);
+                } else {
+                    this.pp_setRotationWorldQuat(rotationQuat);
+                }
+            } else {
+                if (priority[0] == 0) {
+                    if (isLocal) {
+                        this.pp_getLeftLocal(currentAxis);
+                    } else {
+                        this.pp_getLeftWorld(currentAxis);
+                    }
+                } else if (priority[0] == 1) {
+                    if (isLocal) {
+                        this.pp_getUpLocal(currentAxis);
+                    } else {
+                        this.pp_getUpWorld(currentAxis);
+                    }
+                } else {
+                    if (isLocal) {
+                        this.pp_getForwardLocal(currentAxis);
+                    } else {
+                        this.pp_getForwardWorld(currentAxis);
+                    }
+                }
+
+                let angle = glMatrix.vec3.angle(firstAxis, currentAxis);
+                if (angle != 0) {
+                    glMatrix.vec3.cross(rotationAxis, currentAxis, firstAxis);
+                    glMatrix.vec3.normalize(rotationAxis, rotationAxis);
+                    glMatrix.quat.setAxisAngle(rotationQuat, rotationAxis, angle);
+
+                    if (isLocal) {
+                        this.pp_rotateLocalQuat(rotationQuat);
+                    } else {
+                        this.pp_rotateWorldQuat(rotationQuat);
+                    }
+                }
+            }
+        };
+    }();
 
     for (let key in WL.Object.prototype) {
         let prefixes = ["pp_", "_pp_"];

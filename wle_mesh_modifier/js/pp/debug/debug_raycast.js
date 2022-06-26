@@ -58,7 +58,7 @@ PP.DebugRaycast = class DebugRaycast {
         this._markDirty();
     }
 
-    setRaycastSetup(origin, direction, distance) {
+    setRaycastParams(origin, direction, distance) {
         this._myParams.myOrigin = origin;
         this._myParams.myDirection = direction;
         this._myParams.myDistance = distance;
