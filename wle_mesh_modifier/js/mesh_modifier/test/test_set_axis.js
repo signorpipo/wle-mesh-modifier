@@ -21,6 +21,7 @@ WL.registerComponent("test-set-axis", {
             PP.myDebugManager.draw(debugDrawParams, 1);
 
             this.object.pp_setForwardWorld(direction, [0, 1, 0], [-1, 0, 0]);
+            this.object.pp_setAxesWorld(this.object.pp_getLeftWorld(), this.object.pp_getUpWorld(), this.object.pp_getForwardWorld());
         }
     },
 });

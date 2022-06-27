@@ -1269,7 +1269,7 @@
             "components": [
                 {
                     "type": "pp-set-hierarchy-active",
-                    "active": true,
+                    "active": false,
                     "pp-set-hierarchy-active": {
                         "_myHierarchyActive": false
                     }
@@ -1423,7 +1423,7 @@
             "parent": "86",
             "transformation": [
                 -0.0749999,
-                1.132473581577642e-8,
+                1.1324735815776421e-8,
                 1.3607948545768524e-8,
                 0.0,
                 0.0,
@@ -1455,7 +1455,7 @@
             "components": [
                 {
                     "type": "test-set-axis",
-                    "active": false
+                    "active": true
                 }
             ],
             "transformation": [
@@ -1557,7 +1557,8 @@
                         "_myHandedness": "right"
                     }
                 }
-            ]
+            ],
+            "deleted": true
         },
         "115": {
             "name": "Local Space",
@@ -1575,7 +1576,7 @@
                 0.643851,
                 0.6888294,
                 0.0,
-                2.9802322387695315e-8,
+                2.980232238769532e-8,
                 1.0000017,
                 -0.3000005,
                 1.0
