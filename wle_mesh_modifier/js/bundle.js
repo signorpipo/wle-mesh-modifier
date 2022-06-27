@@ -128,7 +128,6 @@ require('./pp/plugin/component_mods/mouse_look_component_mod.js');
 
 require('./pp/plugin/extensions/object_extension.js');
 require('./pp/plugin/extensions/array_extension.js');
-require('./pp/plugin/extensions/float32array_extension.js');
 require('./pp/plugin/extensions/math_extension.js');
 
 //	TOOL

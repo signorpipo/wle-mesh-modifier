@@ -302,10 +302,10 @@ PP.ConsoleVRWidget = class ConsoleVRWidget {
                 }.bind(this), linesBetweenItems);
             }
 
-            stringifiedItem = stringifiedItem.replace('"[', '[');
-            stringifiedItem = stringifiedItem.replace("'[", "[");
-            stringifiedItem = stringifiedItem.replace(']"', ']');
-            stringifiedItem = stringifiedItem.replace("]'", "]");
+            stringifiedItem = stringifiedItem.replaceAll('"[', '[');
+            stringifiedItem = stringifiedItem.replaceAll("'[", "[");
+            stringifiedItem = stringifiedItem.replaceAll(']"', ']');
+            stringifiedItem = stringifiedItem.replaceAll("]'", "]");
 
             return stringifiedItem;
         }

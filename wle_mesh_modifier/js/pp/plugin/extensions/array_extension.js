@@ -50,8 +50,8 @@
 
         ARRAY:
             - pp_has        / pp_hasEqual
-            - pp_find       / pp_findAll        / pp_findEqual / pp_findAllEqual    / pp_findIndexEqual
-            ○ pp_remove     / pp_removeIndex    / pp_removeAll  / pp_removeEqual    / pp_removeAllEqual
+            - pp_find       / pp_findAll        / pp_findAllIndexes / pp_findEqual      / pp_findAllEqual   / pp_findIndexEqual / pp_findAllIndexesEqual
+            ○ pp_remove     / pp_removeIndex    / pp_removeAll      / pp_removeEqual    / pp_removeAllEqual
             ○ pp_pushUnique / pp_unshiftUnique
             ○ pp_copy    
             - pp_clone      
@@ -163,6 +163,17 @@ Array.prototype.pp_findAll = function (callback) {
     return elementsFound;
 };
 
+Array.prototype.pp_findAllIndexes = function (callback) {
+    let indexes = [];
+    for (let i = 0; i < this.length; i++) {
+        let element = this[i];
+        if (callback(element)) {
+            indexes.push(i);
+        }
+    }
+    return indexes;
+};
+
 Array.prototype.pp_findEqual = function (elementToFind) {
     return this.pp_find(element => element === elementToFind);
 };
@@ -173,6 +184,10 @@ Array.prototype.pp_findAllEqual = function (elementToFind) {
 
 Array.prototype.pp_findIndexEqual = function (elementToFind) {
     return this.findIndex(element => element === elementToFind);
+};
+
+Array.prototype.pp_findAllIndexesEqual = function (elementToFind) {
+    return this.pp_findAllIndexes(element => element === elementToFind);
 };
 
 Array.prototype.pp_removeIndex = function (index) {
@@ -2066,5 +2081,14 @@ for (let key in Array.prototype) {
 
     if (found) {
         Object.defineProperty(Array.prototype, key, { enumerable: false });
+
+        Uint32Array.prototype[key] = Array.prototype[key];
+        Object.defineProperty(Uint32Array.prototype, key, { enumerable: false });
+
+        Int32Array.prototype[key] = Array.prototype[key];
+        Object.defineProperty(Int32Array.prototype, key, { enumerable: false });
+
+        Float32Array.prototype[key] = Array.prototype[key];
+        Object.defineProperty(Float32Array.prototype, key, { enumerable: false });
     }
 }
