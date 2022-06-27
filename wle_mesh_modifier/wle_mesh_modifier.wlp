@@ -1269,7 +1269,7 @@
             "components": [
                 {
                     "type": "pp-set-hierarchy-active",
-                    "active": false,
+                    "active": true,
                     "pp-set-hierarchy-active": {
                         "_myHierarchyActive": false
                     }
@@ -1455,7 +1455,7 @@
             "components": [
                 {
                     "type": "test-set-axis",
-                    "active": true
+                    "active": false
                 }
             ],
             "transformation": [
@@ -1580,6 +1580,119 @@
                 1.0000017,
                 -0.3000005,
                 1.0
+            ]
+        },
+        "116": {
+            "name": "Grabbable",
+            "parent": "119",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "p1",
+                        "material": "35"
+                    }
+                },
+                {
+                    "type": "physx",
+                    "physx": {
+                        "shape": "box",
+                        "box": {
+                            "extents": [
+                                0.05,
+                                0.05,
+                                0.05
+                            ]
+                        },
+                        "kinematic": true
+                    }
+                },
+                {
+                    "type": "pp-grabbable"
+                }
+            ],
+            "transformation": [
+                0.05,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.05,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.05,
+                0.0,
+                0.0,
+                1.0,
+                -0.3,
+                1.0
+            ]
+        },
+        "117": {
+            "name": "Empty.000",
+            "parent": "24",
+            "deleted": true
+        },
+        "118": {
+            "name": "Grabber Hand",
+            "parent": "119",
+            "components": [
+                {
+                    "type": "pp-grabber-hand",
+                    "pp-grabber-hand": {
+                        "_myHandedness": "right"
+                    }
+                },
+                {
+                    "type": "pp-copy-hand-transform",
+                    "pp-copy-hand-transform": {
+                        "_myHandedness": "right"
+                    }
+                },
+                {
+                    "type": "physx",
+                    "physx": {
+                        "sphere": {
+                            "radius": 0.05
+                        },
+                        "kinematic": true,
+                        "gravity": false,
+                        "trigger": true,
+                        "allowSimulation": false
+                    }
+                }
+            ],
+            "transformation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ]
+        },
+        "119": {
+            "name": "Grab Test",
+            "parent": "101",
+            "components": [
+                {
+                    "type": "pp-set-hierarchy-active",
+                    "pp-set-hierarchy-active": {
+                        "_myHierarchyActive": false
+                    }
+                }
             ]
         }
     },
@@ -2090,6 +2203,9 @@
                 "near": 0.0099999,
                 "far": 10000.0
             }
+        },
+        "physx": {
+            "enable": true
         }
     },
     "files": [

@@ -3,7 +3,8 @@ WL.registerComponent('pp-set-head-local-transform', {
     _myFixForward: { type: WL.Type.Bool, default: true }
 }, {
     init: function () {
-        this._myHeadPose = new PP.HeadPose(this._myFixForward);
+        this._myHeadPose = new PP.HeadPose();
+        this._myHeadPose.setFixForward(this._myFixForward);
     },
     start: function () {
         this._myHeadPose.start();

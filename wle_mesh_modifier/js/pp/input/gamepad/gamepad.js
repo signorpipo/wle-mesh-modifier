@@ -188,7 +188,7 @@ PP.Gamepad = class Gamepad {
     /**
      * @param {PP.Handedness} handedness specifies which controller this gamepad will represent, left or right
      */
-    constructor(handedness, fixForward = true, forceEmulatedVelocities = false) {
+    constructor(handedness, handPoseParams = new PP.HandPoseParams()) {
         this._myHandedness = handedness;
 
         this._myButtonInfos = [];
@@ -222,7 +222,7 @@ PP.Gamepad = class Gamepad {
 
         this._myPulseInfo = new PP.PulseInfo();
 
-        this._myHandPose = new PP.HandPose(this._myHandedness, fixForward, forceEmulatedVelocities);
+        this._myHandPose = new PP.HandPose(this._myHandedness, handPoseParams);
 
         //Setup
         this._myMultiplePressMaxDelay = 0.3;
@@ -241,6 +241,10 @@ PP.Gamepad = class Gamepad {
      */
     getHandPose() {
         return this._myHandPose;
+    }
+
+    setHandPoseParams(handPoseParams) {
+        this._myHandPose.setHandPoseParams(handPoseParams);
     }
 
     /**

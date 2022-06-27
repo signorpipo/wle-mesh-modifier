@@ -14,8 +14,6 @@ WL.registerComponent('pp-grabber-hand', {
     _myThrowLinearVelocityBoostMaxSpeedThreshold: { type: WL.Type.Float, default: 2.5 },   // 100% boost is applied if plain throw speed is over this value
 }, {
     init: function () {
-        this._myHandPose = new PP.HandPose(PP.InputUtils.getHandednessByIndex(this._myHandedness));
-
         this._myGrabbables = [];
 
         this._myGamepad = null;
@@ -52,8 +50,7 @@ WL.registerComponent('pp-grabber-hand', {
         this._myPhysX = this.object.pp_getComponent('physx');
         this._myCollisionsCollector = new PP.PhysXCollisionCollector(this._myPhysX, true);
 
-        this._myHandPose.setReferenceObject(PP.myPlayerObjects.myPlayerPivot);
-        this._myHandPose.start();
+        this._myHandPose = this._myGamepad.getHandPose();
 
         if (this._myDebugActive) {
             for (let i = 0; i < this._myLinearVelocityHistorySize; i++) {
@@ -64,7 +61,6 @@ WL.registerComponent('pp-grabber-hand', {
     },
     update: function (dt) {
         this._myCollisionsCollector.update(dt);
-        this._myHandPose.update(dt);
 
         if (this._myGrabbables.length > 0) {
             this._updateLinearVelocityHistory();
@@ -90,6 +86,10 @@ WL.registerComponent('pp-grabber-hand', {
         this._myThrowCallbacks.delete(id);
     },
     onActivate() {
+        if (this._myGamepad == null) {
+            return;
+        }
+
         if (this._myGrabButton == 0) {
             this._myGamepad.registerButtonEventListener(PP.ButtonType.SELECT, PP.ButtonEvent.PRESS_START, this, this._grab.bind(this, PP.ButtonType.SELECT));
             this._myGamepad.registerButtonEventListener(PP.ButtonType.SELECT, PP.ButtonEvent.PRESS_END, this, this._throw.bind(this, PP.ButtonType.SELECT));
@@ -105,6 +105,10 @@ WL.registerComponent('pp-grabber-hand', {
         }
     },
     onDeactivate() {
+        if (this._myGamepad == null) {
+            return;
+        }
+
         if (this._myGrabButton == 0) {
             this._myGamepad.unregisterButtonEventListener(PP.ButtonType.SELECT, PP.ButtonEvent.PRESS_START, this);
             this._myGamepad.unregisterButtonEventListener(PP.ButtonType.SELECT, PP.ButtonEvent.PRESS_END, this);
