@@ -608,7 +608,7 @@ WL.registerComponent('locomotion-fly-draft', {
         let headForward = headTransform.quat2_getAxes()[2];
         let headForwardNegated = headForward.vec3_negate(); // the head is rotated 180 degrees from the player for rendering reasons
 
-        let rotationToPerform = playerForward.vec3_lookToPivotedQuat(headForwardNegated, playerUp);
+        let rotationToPerform = playerForward.vec3_rotationToPivotedQuat(headForwardNegated, playerUp);
 
         this._myPlayerObject.pp_rotateQuat(rotationToPerform);
     },
@@ -626,7 +626,7 @@ WL.registerComponent('locomotion-fly-draft', {
         let headForward = this._myCurrentHeadObject.pp_getForward();
         let headForwardNegated = headForward.vec3_negate(); // the head is rotated 180 degrees from the player for rendering reasons
 
-        let rotationToPerform = headForwardNegated.vec3_lookToPivotedQuat(playerForward, playerUp);
+        let rotationToPerform = headForwardNegated.vec3_rotationToPivotedQuat(playerForward, playerUp);
         this._rotateHead(rotationToPerform);
     },
     _blurEndResync() {
@@ -641,7 +641,7 @@ WL.registerComponent('locomotion-fly-draft', {
 
                 let recoverHeadForward = this._myBlurRecoverHeadTransform.quat2_getAxes()[2];
                 let currentHeadForward = this._myCurrentHeadObject.pp_getForward();
-                let rotationToPerform = currentHeadForward.vec3_lookToPivotedQuat(recoverHeadForward, playerUp);
+                let rotationToPerform = currentHeadForward.vec3_rotationToPivotedQuat(recoverHeadForward, playerUp);
 
                 this._teleportHeadPosition(newHeadPosition);
                 this._rotateHead(rotationToPerform);
@@ -693,9 +693,9 @@ WL.registerComponent('locomotion-fly-draft', {
                 }
 
                 if (!resyncHeadUp.vec3_isConcordant(playerUp)) {
-                    rotationToPerform = currentHeadForward.vec3_lookToPivotedQuat(fixedResyncForward.vec3_negate(), playerUp);
+                    rotationToPerform = currentHeadForward.vec3_rotationToPivotedQuat(fixedResyncForward.vec3_negate(), playerUp);
                 } else {
-                    rotationToPerform = currentHeadForward.vec3_lookToPivotedQuat(fixedResyncForward, playerUp);
+                    rotationToPerform = currentHeadForward.vec3_rotationToPivotedQuat(fixedResyncForward, playerUp);
                 }
 
                 this._rotateHead(rotationToPerform);
