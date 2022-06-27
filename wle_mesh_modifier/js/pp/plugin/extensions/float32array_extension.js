@@ -94,8 +94,9 @@
             - quat_isNormalized
             - quat_length
             - quat_mul
-            - quat_getAxis          /  quat_getAngle
-            - quat_getAxes          / quat_getRight    / quat_getUp   / quat_getForward  / quat_getLeft    / quat_getDown   / quat_getBackward
+            - quat_getAxis          / quat_getAngle
+            - quat_getAxes          / quat_getRight         / quat_getUp    / quat_getForward   / quat_getLeft  / quat_getDown  / quat_getBackward
+            ○ quat_setAxes          / quat_setRight         / quat_setUp    / quat_setForward   / quat_setLeft  / quat_setDown  / quat_setBackward
             - quat_toWorld          / quat_toLocal
             ○ quat_fromRadians      / quat_fromDegrees      / quat_fromAxis / quat_fromAxes
             - quat_toRadians        / quat_toDegrees        / quat_toMatrix
@@ -1057,6 +1058,52 @@ Float32Array.prototype.quat_getDown = function (out) {
     return out;
 };
 
+Float32Array.prototype.quat_setAxes = function (left, up, forward) {
+    if (forward != null) {
+        this.quat_setForward(forward, up, left);
+    } else if (up != null) {
+        this.quat_setUp(up, forward, left);
+    } else {
+        this.quat_setLeft(left, up, forward);
+    }
+};
+
+Float32Array.prototype.quat_setForward = function (forward, up = null, left = null) {
+    this._quat_setAxes([left, up, forward], [2, 1, 0]);
+};
+
+Float32Array.prototype.quat_setBackward = function () {
+    let forward = glMatrix.vec3.create();
+    return function (backward, up = null, left = null) {
+        backward.vec3_negate(forward);
+        this._quat_setAxes([left, up, forward], [2, 1, 0]);
+    };
+}();
+
+Float32Array.prototype.quat_setUp = function (up, forward = null, left = null) {
+    this._quat_setAxes([left, up, forward], [1, 2, 0]);
+};
+
+Float32Array.prototype.quat_setDown = function () {
+    let up = glMatrix.vec3.create();
+    return function (down, forward = null, left = null) {
+        down.vec3_negate(up);
+        this._quat_setAxes([left, up, forward], [1, 2, 0]);
+    };
+}();
+
+Float32Array.prototype.quat_setLeft = function (left, up = null, forward = null) {
+    this._quat_setAxes([left, up, forward], [0, 1, 2]);
+};
+
+Float32Array.prototype.quat_setRight = function () {
+    let left = glMatrix.vec3.create();
+    return function (right, up = null, forward = null) {
+        right.vec3_negate(left);
+        this._quat_setAxes([left, up, forward], [0, 1, 2]);
+    };
+}();
+
 Float32Array.prototype.quat_toWorld = function (parentQuat, out = glMatrix.quat.create()) {
     glMatrix.quat.mul(out, parentQuat, this);
     return out;
@@ -1891,6 +1938,111 @@ Float32Array.prototype._vec_prepareOut = function (out) {
 
     return out;
 };
+
+
+Float32Array.prototype._quat_setAxes = function () {
+    let fixedAxes = [glMatrix.vec3.create(), glMatrix.vec3.create(), glMatrix.vec3.create()];
+
+    let fixedAxesFixSignMap = [
+        [1, -1, 1],
+        [1, 1, -1],
+        [-1, 1, -1]
+    ];
+
+    let fixedLeft = glMatrix.vec3.create();
+    let fixedUp = glMatrix.vec3.create();
+    let fixedForward = glMatrix.vec3.create();
+
+    let currentAxis = glMatrix.vec3.create();
+
+    let rotationAxis = glMatrix.vec3.create();
+    let rotationMat = glMatrix.mat3.create();
+    let rotationQuat = glMatrix.quat.create();
+    return function (axes, priority, isLocal) {
+        let firstAxis = axes[priority[0]];
+        let secondAxis = axes[priority[1]];
+        let thirdAxis = axes[priority[2]];
+
+        if (firstAxis == null) {
+            return;
+        }
+
+        let secondAxisValid = false;
+        if (secondAxis != null) {
+            let angleBetween = glMatrix.vec3.angle(firstAxis, secondAxis);
+            if (angleBetween > this._pp_epsilon) {
+                secondAxisValid = true;
+            }
+        }
+
+        let thirdAxisValid = false;
+        if (thirdAxis != null) {
+            let angleBetween = glMatrix.vec3.angle(firstAxis, thirdAxis);
+            if (angleBetween > this._pp_epsilon) {
+                thirdAxisValid = true;
+            }
+        }
+
+        if (secondAxisValid || thirdAxisValid) {
+
+            let crossAxis = null;
+            let secondAxisIndex = null;
+            let thirdAxisIndex = null;
+            if (secondAxisValid) {
+                crossAxis = secondAxis;
+                secondAxisIndex = 1;
+                thirdAxisIndex = 2;
+            } else {
+                crossAxis = thirdAxis;
+                secondAxisIndex = 2;
+                thirdAxisIndex = 1;
+            }
+
+            let fixSignMap = fixedAxesFixSignMap[priority[0]];
+
+            glMatrix.vec3.cross(fixedAxes[thirdAxisIndex], firstAxis, crossAxis);
+            glMatrix.vec3.scale(fixedAxes[thirdAxisIndex], fixedAxes[thirdAxisIndex], fixSignMap[priority[thirdAxisIndex]]);
+
+            glMatrix.vec3.cross(fixedAxes[secondAxisIndex], firstAxis, fixedAxes[thirdAxisIndex]);
+            glMatrix.vec3.scale(fixedAxes[secondAxisIndex], fixedAxes[secondAxisIndex], fixSignMap[priority[secondAxisIndex]]);
+
+            glMatrix.vec3.cross(fixedAxes[0], fixedAxes[1], fixedAxes[2]);
+            glMatrix.vec3.scale(fixedAxes[0], fixedAxes[0], fixSignMap[priority[0]]);
+
+            glMatrix.vec3.normalize(fixedLeft, fixedAxes[priority.pp_findIndexEqual(0)]);
+            glMatrix.vec3.normalize(fixedUp, fixedAxes[priority.pp_findIndexEqual(1)]);
+            glMatrix.vec3.normalize(fixedForward, fixedAxes[priority.pp_findIndexEqual(2)]);
+
+            glMatrix.mat3.set(rotationMat,
+                fixedLeft[0], fixedLeft[1], fixedLeft[2],
+                fixedUp[0], fixedUp[1], fixedUp[2],
+                fixedForward[0], fixedForward[1], fixedForward[2]
+            );
+
+            glMatrix.quat.fromMat3(rotationQuat, rotationMat);
+            glMatrix.quat.normalize(rotationQuat, rotationQuat);
+
+            this.quat_copy(rotationQuat);
+        } else {
+            if (priority[0] == 0) {
+                this.quat_getLeft(currentAxis);
+            } else if (priority[0] == 1) {
+                this.quat_getUp(currentAxis);
+            } else {
+                this.quat_getForward(currentAxis);
+            }
+
+            let angle = glMatrix.vec3.angle(firstAxis, currentAxis);
+            if (angle != 0) {
+                glMatrix.vec3.cross(rotationAxis, currentAxis, firstAxis);
+                glMatrix.vec3.normalize(rotationAxis, rotationAxis);
+                glMatrix.quat.setAxisAngle(rotationQuat, rotationAxis, angle);
+
+                this.quat_rotateQuat(rotationQuat, this);
+            }
+        }
+    };
+}();
 
 for (let key in Float32Array.prototype) {
     let prefixes = ["pp_", "vec_", "vec3_", "vec4_", "quat_", "quat2_", "mat3_", "mat4_", "_pp_", "_vec_",];
