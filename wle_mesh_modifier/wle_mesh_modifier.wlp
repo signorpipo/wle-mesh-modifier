@@ -708,8 +708,8 @@
                 {
                     "type": "mesh",
                     "mesh": {
-                        "mesh": "75",
-                        "material": "90"
+                        "mesh": "123",
+                        "material": "125"
                     }
                 }
             ]
@@ -1275,6 +1275,24 @@
                         "_myHierarchyActive": false
                     }
                 }
+            ],
+            "transformation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                10000.0,
+                0.0,
+                1.0
             ]
         },
         "102": {
@@ -1695,6 +1713,13 @@
                     }
                 }
             ]
+        },
+        "124": {
+            "link": {
+                "name": "Low Poly Character Smooth Textured",
+                "file": "assets\\models\\low_poly_character_smooth_textured.fbx"
+            },
+            "deleted": true
         }
     },
     "meshes": {
@@ -1835,6 +1860,12 @@
                 "name": "Low Poly Character Flat GLTF",
                 "file": "assets\\models\\low_poly_character_flat_gltf.glb"
             }
+        },
+        "123": {
+            "link": {
+                "name": "Low Poly Character Smooth Textured",
+                "file": "assets\\models\\low_poly_character_smooth_textured.fbx"
+            }
         }
     },
     "textures": {
@@ -1842,6 +1873,18 @@
             "link": {
                 "name": "DefaultFont",
                 "file": "default"
+            }
+        },
+        "121": {
+            "link": {
+                "name": "texture_0",
+                "file": "assets\\models\\low_poly_character_smooth_textured.fbx"
+            }
+        },
+        "127": {
+            "link": {
+                "name": "low_poly_character_smooth_texture.png",
+                "file": "assets\\textures\\low_poly_character_smooth_texture.png"
             }
         }
     },
@@ -1851,6 +1894,13 @@
                 "name": "DefaultFontImage",
                 "file": "default"
             }
+        },
+        "126": {
+            "link": {
+                "name": "low_poly_character_smooth_texture.png",
+                "file": "assets\\textures\\low_poly_character_smooth_texture.png"
+            },
+            "compress": false
         }
     },
     "materials": {
@@ -2026,6 +2076,37 @@
                 "name": "Material.003",
                 "file": "assets\\models\\low_poly_character_flat_gltf.glb"
             }
+        },
+        "122": {
+            "link": {
+                "name": "Material.003",
+                "file": "assets\\models\\low_poly_character_smooth_textured.fbx"
+            }
+        },
+        "125": {
+            "link": {
+                "name": "Lambert_Body",
+                "file": "assets\\models\\quest_controllers_credits_Jezza3D.fbx"
+            },
+            "name": "Low Poly Character Textured",
+            "Phong": {
+                "diffuseColor": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "ambientFactor": 0.5,
+                "specularColor": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    0.7843137
+                ],
+                "diffuseTexture": "127",
+                "shininess": 2
+            },
+            "pipeline": "14"
         }
     },
     "shaders": {
@@ -2219,6 +2300,8 @@
         "assets/models/quest_controllers_credits_Jezza3D.fbx",
         "assets/models/low_poly_character_smooth.fbx",
         "assets/models/low_poly_character_flat.fbx",
-        "assets/models/low_poly_character_flat_gltf.glb"
+        "assets/models/low_poly_character_flat_gltf.glb",
+        "assets/models/low_poly_character_smooth_textured.fbx",
+        "assets/textures/low_poly_character_smooth_texture.png"
     ]
 }
