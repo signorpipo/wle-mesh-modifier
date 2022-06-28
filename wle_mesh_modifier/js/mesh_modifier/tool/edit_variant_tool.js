@@ -54,8 +54,8 @@ EditVariantTool = class EditVariantTool extends FreeEditTool {
     _setupControlScheme() {
         super._setupControlScheme();
         let leftScheme = this._myToolData.myLeftControlScheme;
-        leftScheme.setBottomButtonText("x2: Save Current Variant");
-        leftScheme.setTopButtonText("x2: Save As New Variant");
+        leftScheme.setTopButtonText("x2: Save Current Variant");
+        leftScheme.setBottomButtonText("x2: Save As New Variant");
 
         let rightScheme = this._myToolData.myRightControlScheme;
         rightScheme.setBottomButtonText("x1: Reset Vertex\n x2: Reset Group Vertexes\n x3: Reset All Vertexes");

@@ -159,10 +159,10 @@ VertexGroup = class VertexGroup {
         return variant;
     }
 
-    loadVariant(mesh, variantID) {
+    loadVariant(mesh, variantID, isFlatShading) {
         let variant = this._myVariants.get(variantID);
         if (variant) {
-            variant.loadVariant(mesh);
+            variant.loadVariant(mesh, isFlatShading);
         }
     }
 
@@ -260,9 +260,10 @@ VertexGroupVariant = class VertexGroupVariant {
         }
     }
 
-    loadVariant(mesh) {
+    loadVariant(mesh, isFlatShading) {
         let positionAttribute = mesh.attribute(WL.MeshAttribute.Position);
 
+        let vertexIndexList = [];
         for (let [index, vertexPosition] of this._myPositionMap.entries()) {
             positionAttribute.set(index, vertexPosition);
 
@@ -270,6 +271,10 @@ VertexGroupVariant = class VertexGroupVariant {
             mesh.vertexData[index * vertexDataSize + WL.Mesh.POS.X] = vertexPosition[0];
             mesh.vertexData[index * vertexDataSize + WL.Mesh.POS.Y] = vertexPosition[1];
             mesh.vertexData[index * vertexDataSize + WL.Mesh.POS.Z] = vertexPosition[2];
+
+            vertexIndexList.push(index);
+
+            VertexUtils.updateVertexNormals(index, mesh, isFlatShading);
         }
     }
 

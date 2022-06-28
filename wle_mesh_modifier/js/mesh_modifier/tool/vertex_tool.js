@@ -83,7 +83,7 @@ VertexTool = class VertexTool {
     _updateNormals() {
         if (this._myToolData.mySelectedVertexes.length > 0) {
             for (let selectedVertex of this._myToolData.mySelectedVertexes) {
-                VertexUtils.updateSelectedVertexesNormals(selectedVertex, this._myToolData.myMeshComponent.mesh, this._myToolData.myIsFlatShading);
+                VertexUtils.updateVertexNormals(selectedVertex.getIndexes()[0], this._myToolData.myMeshComponent.mesh, this._myToolData.myIsFlatShading);
             }
             this._myToolData.myMeshComponent.active = false;
         }
@@ -196,7 +196,7 @@ VertexTool = class VertexTool {
         if (this._myToolData.mySelectedVertexGroup != null) {
             this._myToolData.mySelectedVertexVariant = this._myToolData.mySelectedVertexGroup.getNextVariant(this._myToolData.mySelectedVertexVariant, direction);
             if (this._myToolData.mySelectedVertexVariant != null) {
-                this._myToolData.mySelectedVertexVariant.loadVariant(this._myToolData.myMeshComponent.mesh);
+                this._myToolData.mySelectedVertexVariant.loadVariant(this._myToolData.myMeshComponent.mesh, this._myToolData.myIsFlatShading);
                 this._myToolData.myMeshComponent.active = false;
             } else {
                 this._resetGroupVertexes();

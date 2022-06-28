@@ -116,14 +116,8 @@ VertexUtils = {
                 originalVertexData[index * vertexDataSize + WL.Mesh.POS.Z]];
 
             VertexUtils.setVertexPosition(vertexPositionReset, index, mesh, positionAttribute);
-        }
 
-        if (isFlatShading) {
-            for (let vertexIndex of vertexIndexList) {
-                VertexUtils.updateVertexNormalFlat(vertexIndex, mesh);
-            }
-        } else {
-            VertexUtils.updateVertexNormalSmooth(vertexIndexList[0], mesh, true);
+            VertexUtils.updateVertexNormals(index, mesh, isFlatShading);
         }
     },
     moveSelectedVertexes(meshObject, selectedVertexes, movement) {
@@ -180,14 +174,14 @@ VertexUtils = {
             }
         }
     },
-    updateSelectedVertexesNormals(selectedVertexes, mesh, isFlatShading) {
-        let vertexIndexList = selectedVertexes.getIndexes();
+    updateVertexNormals(vertexIndex, mesh, isFlatShading) {
         if (isFlatShading) {
-            for (let vertexIndex of vertexIndexList) {
+            let sameVertexIndex = VertexUtils.getSameVertexIndexes(mesh, vertexIndex);
+            for (let vertexIndex of sameVertexIndex) {
                 VertexUtils.updateVertexNormalFlat(vertexIndex, mesh);
             }
         } else {
-            VertexUtils.updateVertexNormalSmooth(vertexIndexList[0], mesh, true);
+            VertexUtils.updateVertexNormalSmooth(vertexIndex, mesh, true);
         }
     },
     updateVertexNormalFlat: function (vertexIndex, mesh) {
@@ -384,7 +378,7 @@ SelectedVertexParams = class SelectedVertexParams {
             PP.myDebugManager.draw(debugDrawParams, 0);
         }
 
-        let vertexNormalWorld = this.getNormal(meshTransform);
+        let vertexNormalWorld = this.getOriginalNormal(meshTransform);
         {
             let debugDrawParams = new PP.DebugArrowParams();
             debugDrawParams.myStart = vertexPositionWorld;

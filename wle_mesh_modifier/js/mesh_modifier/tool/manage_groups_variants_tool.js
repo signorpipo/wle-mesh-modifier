@@ -47,10 +47,12 @@ ManageGroupsVariantsTool = class ManageGroupsVariantsTool extends VertexTool {
 
         if (PP.myRightGamepad.getButtonInfo(PP.ButtonType.BOTTOM_BUTTON).isPressEnd(2)) {
             this._resetGroupVertexes();
+            this._myToolData.mySelectedVertexVariant = null;
         }
 
         if (PP.myRightGamepad.getButtonInfo(PP.ButtonType.BOTTOM_BUTTON).isPressEnd(3)) {
             this._resetAllVertexes();
+            this._myToolData.mySelectedVertexVariant = null;
         }
 
 
