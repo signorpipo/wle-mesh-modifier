@@ -3,6 +3,8 @@ FreeEditTool = class FreeEditTool extends VertexTool {
         super(toolData);
 
         this._myPreviousPointerPosition = null;
+        this._myHasMovedVertexes = false;
+        this._myHasMovedVertexesAlongNormals = false;
     }
 
     update(dt) {
@@ -20,18 +22,27 @@ FreeEditTool = class FreeEditTool extends VertexTool {
                     movement.vec3_normalize(movement);
                     movement.vec3_scale(movementIntensity, movement);
                     this._moveSelectedVertexes(movement);
+                    this._myHasMovedVertexes = true;
                 }
 
                 this._myPreviousPointerPosition = currentPointerPosition;
             }
         } else {
             this._myPreviousPointerPosition = null;
+            if (this._myHasMovedVertexes) {
+                this._myHasMovedVertexes = false;
+                this._updateNormals();
+            }
         }
 
         let axes = PP.myRightGamepad.getAxesInfo().getAxes();
         if (Math.abs(axes[0]) > 0.2) {
             let movement = axes[0] * 0.2 * dt;
             this._moveSelectedVertexesAlongNormals(movement);
+            this._myHasMovedVertexesAlongNormals = true;
+        } else if (this._myHasMovedVertexesAlongNormals) {
+            this._myHasMovedVertexesAlongNormals = false;
+            this._updateNormals();
         }
 
         if (PP.myRightGamepad.getButtonInfo(PP.ButtonType.BOTTOM_BUTTON).isPressed()) {

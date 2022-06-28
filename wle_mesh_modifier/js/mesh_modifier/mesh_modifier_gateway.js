@@ -1,6 +1,7 @@
 WL.registerComponent("mesh-modifier-gateway", {
     _myVertexGroupConfigPath: { type: WL.Type.String },
     _myMeshObject: { type: WL.Type.Object },
+    _myShadeType: { type: WL.Type.Enum, values: ['flat', 'smooth'], default: 'flat' },
     _myPointerObject: { type: WL.Type.Object },
     _myToolLabel: { type: WL.Type.Object },
     _myGroupLabel: { type: WL.Type.Object },
@@ -15,6 +16,7 @@ WL.registerComponent("mesh-modifier-gateway", {
         let params = new ToolManagerParams();
 
         params.myMeshObject = this._myMeshObject;
+        params.myIsFlatShading = this._myShadeType == 0;
         params.myPointerObject = this._myPointerObject;
         params.myToolLabel = this._myToolLabel;
         params.myGroupLabel = this._myGroupLabel;

@@ -49,7 +49,8 @@
                         "_myVariantLabel": "108",
                         "_myLeftControlScheme": "23",
                         "_myRightControlScheme": "24",
-                        "_myPointerObject": "82"
+                        "_myPointerObject": "82",
+                        "_myShadeType": "flat"
                     }
                 }
             ]
@@ -1423,7 +1424,7 @@
             "parent": "86",
             "transformation": [
                 -0.0749999,
-                1.1324735815776421e-8,
+                1.132473581577642e-8,
                 1.3607948545768524e-8,
                 0.0,
                 0.0,
@@ -1576,7 +1577,7 @@
                 0.643851,
                 0.6888294,
                 0.0,
-                2.980232238769532e-8,
+                2.9802322387695329e-8,
                 1.0000017,
                 -0.3000005,
                 1.0
@@ -2018,6 +2019,12 @@
                     0.0784,
                     1.0
                 ]
+            }
+        },
+        "120": {
+            "link": {
+                "name": "Material.003",
+                "file": "assets\\models\\low_poly_character_flat_gltf.glb"
             }
         }
     },

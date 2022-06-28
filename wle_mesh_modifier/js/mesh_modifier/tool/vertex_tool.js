@@ -8,6 +8,7 @@ VertexTool = class VertexTool {
     start() {
         this._myToolData.myMeshComponent.active = true;
         this._setupControlScheme();
+        this._updateNormals();
     }
 
     end() { }
@@ -27,7 +28,7 @@ VertexTool = class VertexTool {
     _selectVertex() {
         let pointerPosition = this._myToolData.myPointerObject.pp_getPosition();
 
-        let selectedVertexParams = VertexUtils.getClosestSelectedVertex(this._myToolData.myMeshObject, pointerPosition);
+        let selectedVertexParams = VertexUtils.getClosestSelectedVertex(this._myToolData.myMeshObject, pointerPosition, this._myToolData.myVertexDataBackup);
 
         let vertexPositionWorld = selectedVertexParams.getPosition();
         if (vertexPositionWorld.vec3_distance(pointerPosition) < this._myMinDistanceToSelect) {
@@ -44,7 +45,7 @@ VertexTool = class VertexTool {
     _deselectVertex() {
         let pointerPosition = this._myToolData.myPointerObject.pp_getPosition();
 
-        let selectedVertexParams = VertexUtils.getClosestSelectedVertex(this._myToolData.myMeshObject, pointerPosition);
+        let selectedVertexParams = VertexUtils.getClosestSelectedVertex(this._myToolData.myMeshObject, pointerPosition, this._myToolData.myVertexDataBackup);
 
         let vertexPositionWorld = selectedVertexParams.getPosition();
         if (vertexPositionWorld.vec3_distance(pointerPosition) < this._myMinDistanceToSelect) {
@@ -60,7 +61,7 @@ VertexTool = class VertexTool {
                 let vertexPosition = VertexUtils.getVertexPosition(index, this._myToolData.myMeshComponent.mesh);
                 let vertexPositionWorld = vertexPosition.vec3_convertPositionToWorld(meshTransform);
 
-                let selectedVertexParams = VertexUtils.getClosestSelectedVertex(this._myToolData.myMeshObject, vertexPositionWorld);
+                let selectedVertexParams = VertexUtils.getClosestSelectedVertex(this._myToolData.myMeshObject, vertexPositionWorld, this._myToolData.myVertexDataBackup);
                 this._myToolData.mySelectedVertexes.pp_pushUnique(selectedVertexParams, element => element.equals(selectedVertexParams));
             }
         }
@@ -76,8 +77,17 @@ VertexTool = class VertexTool {
 
     _moveSelectedVertexesAlongNormals(movement) {
         if (this._myToolData.mySelectedVertexes.length > 0) {
-            VertexUtils.moveSelectedVertexesAlongNormals(this._myToolData.myMeshObject, this._myToolData.mySelectedVertexes, movement);
+            VertexUtils.moveSelectedVertexesAlongNormals(this._myToolData.myMeshObject, this._myToolData.mySelectedVertexes, movement, true);
             this._myToolData.myMeshComponent.active = !this._myToolData.myMeshComponent.active;
+        }
+    }
+
+    _updateNormals() {
+        if (this._myToolData.mySelectedVertexes.length > 0) {
+            for (let selectedVertex of this._myToolData.mySelectedVertexes) {
+                VertexUtils.updateSelectedVertexesNormals(selectedVertex, this._myToolData.myMeshComponent.mesh, this._myToolData.myIsFlatShading);
+            }
+            this._myToolData.myMeshComponent.active = false;
         }
     }
 
@@ -85,7 +95,7 @@ VertexTool = class VertexTool {
     _resetSelectedVertexes() {
         let pointerPosition = this._myToolData.myPointerObject.pp_getPosition();
 
-        let selectedVertexParams = VertexUtils.getClosestSelectedVertex(this._myToolData.myMeshObject, pointerPosition);
+        let selectedVertexParams = VertexUtils.getClosestSelectedVertex(this._myToolData.myMeshObject, pointerPosition, this._myToolData.myVertexDataBackup);
 
         let vertexPositionWorld = selectedVertexParams.getPosition();
         if (vertexPositionWorld.vec3_distance(pointerPosition) < this._myMinDistanceToSelect) {
@@ -116,7 +126,7 @@ VertexTool = class VertexTool {
     _selectGroup() {
         let pointerPosition = this._myToolData.myPointerObject.pp_getPosition();
 
-        let selectedVertexParams = VertexUtils.getClosestSelectedVertex(this._myToolData.myMeshObject, pointerPosition);
+        let selectedVertexParams = VertexUtils.getClosestSelectedVertex(this._myToolData.myMeshObject, pointerPosition, this._myToolData.myVertexDataBackup);
 
         let vertexPositionWorld = selectedVertexParams.getPosition();
         if (vertexPositionWorld.vec3_distance(pointerPosition) < this._myMinDistanceToSelect * 2) {
