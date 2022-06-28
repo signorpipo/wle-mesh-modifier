@@ -6,9 +6,7 @@ VertexTool = class VertexTool {
     }
 
     start() {
-        this._myToolData.myMeshComponent.active = true;
         this._setupControlScheme();
-        this._updateNormals();
     }
 
     end() { }
@@ -100,7 +98,7 @@ VertexTool = class VertexTool {
         let vertexPositionWorld = selectedVertexParams.getPosition();
         if (vertexPositionWorld.vec3_distance(pointerPosition) < this._myMinDistanceToSelect) {
 
-            VertexUtils.resetVertexes(this._myToolData.myMeshComponent, selectedVertexParams.getIndexes(), this._myToolData.myVertexDataBackup);
+            VertexUtils.resetVertexes(this._myToolData.myMeshComponent, selectedVertexParams.getIndexes(), this._myToolData.myVertexDataBackup, this._myToolData.myIsFlatShading);
 
             this._myToolData.myMeshComponent.active = false;
         } else {
@@ -111,7 +109,7 @@ VertexTool = class VertexTool {
     _resetGroupVertexes() {
         if (this._myToolData.mySelectedVertexGroup != null) {
             let indexList = this._myToolData.mySelectedVertexGroup.getIndexList();
-            VertexUtils.resetVertexes(this._myToolData.myMeshComponent, indexList, this._myToolData.myVertexDataBackup);
+            VertexUtils.resetVertexes(this._myToolData.myMeshComponent, indexList, this._myToolData.myVertexDataBackup, this._myToolData.myIsFlatShading);
             this._myToolData.myMeshComponent.active = false;
 
         }

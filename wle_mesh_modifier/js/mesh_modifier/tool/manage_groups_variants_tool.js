@@ -39,6 +39,7 @@ ManageGroupsVariantsTool = class ManageGroupsVariantsTool extends VertexTool {
             this._myToolData.mySelectedVertexes = [];
             if (this._myToolData.mySelectedVertexGroup != null) {
                 this._myToolData.mySelectedVertexGroup = null;
+                this._myToolData.mySelectedVertexVariant = null;
             } else {
                 this._selectGroup();
             }

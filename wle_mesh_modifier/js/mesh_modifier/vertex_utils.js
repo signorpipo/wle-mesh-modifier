@@ -104,10 +104,9 @@ VertexUtils = {
             VertexUtils.setVertexNormal(vertexNormalReset, index, mesh, normalAttribute);
         }
     },
-    resetVertexes(meshComponent, vertexIndexList, originalVertexData) {
+    resetVertexes(meshComponent, vertexIndexList, originalVertexData, isFlatShading) {
         let mesh = meshComponent.mesh;
         let positionAttribute = mesh.attribute(WL.MeshAttribute.Position);
-        let normalAttribute = mesh.attribute(WL.MeshAttribute.Normal);
 
         let vertexDataSize = WL.Mesh.VERTEX_FLOAT_SIZE;
         for (let index of vertexIndexList) {
@@ -116,13 +115,15 @@ VertexUtils = {
                 originalVertexData[index * vertexDataSize + WL.Mesh.POS.Y],
                 originalVertexData[index * vertexDataSize + WL.Mesh.POS.Z]];
 
-            let vertexNormalReset = [
-                originalVertexData[index * vertexDataSize + WL.Mesh.NORMAL.X],
-                originalVertexData[index * vertexDataSize + WL.Mesh.NORMAL.Y],
-                originalVertexData[index * vertexDataSize + WL.Mesh.NORMAL.Z]];
-
             VertexUtils.setVertexPosition(vertexPositionReset, index, mesh, positionAttribute);
-            VertexUtils.setVertexNormal(vertexNormalReset, index, mesh, normalAttribute);
+        }
+
+        if (isFlatShading) {
+            for (let vertexIndex of vertexIndexList) {
+                VertexUtils.updateVertexNormalFlat(vertexIndex, mesh);
+            }
+        } else {
+            VertexUtils.updateVertexNormalSmooth(vertexIndexList[0], mesh, true);
         }
     },
     moveSelectedVertexes(meshObject, selectedVertexes, movement) {
