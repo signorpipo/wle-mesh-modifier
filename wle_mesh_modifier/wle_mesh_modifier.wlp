@@ -44,13 +44,13 @@
                         "_myMeshObject": "73",
                         "_myPointer": "82",
                         "_myToolLabel": "87",
-                        "_myVertexGroupConfigPath": "vertex_group_config.json",
+                        "_myVertexGroupConfigPath": "low_poly_character_smooth_config.json",
                         "_myGroupLabel": "106",
                         "_myVariantLabel": "108",
                         "_myLeftControlScheme": "23",
                         "_myRightControlScheme": "24",
                         "_myPointerObject": "82",
-                        "_myShadeType": "flat"
+                        "_myShadeType": "smooth"
                     }
                 }
             ]
@@ -708,7 +708,7 @@
                 {
                     "type": "mesh",
                     "mesh": {
-                        "mesh": "80",
+                        "mesh": "75",
                         "material": "90"
                     }
                 }
