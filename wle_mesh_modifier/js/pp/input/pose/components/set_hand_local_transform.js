@@ -9,8 +9,11 @@ WL.registerComponent('pp-set-hand-local-transform', {
     start: function () {
         this._myHandPose.start();
     },
-    update: function (dt) {
-        this._myHandPose.update(dt);
-        this.object.pp_setTransformLocalQuat(this._myHandPose.getTransformQuat());
-    },
+    update: function () {
+        let handPoseTransform = PP.quat2_create();
+        return function update(dt) {
+            this._myHandPose.update(dt);
+            this.object.pp_setTransformLocalQuat(this._myHandPose.getTransformQuat(handPoseTransform));
+        };
+    }(),
 });

@@ -12,7 +12,9 @@
                         "_myCubeMesh": "p1",
                         "_myFlatMaterial": "31",
                         "_myConeMesh": "p3",
-                        "_mySphereMesh": "p2"
+                        "_mySphereMesh": "p2",
+                        "_myDebugMaterial": "31",
+                        "_myTextMaterial": "33"
                     }
                 },
                 {
@@ -60,17 +62,9 @@
             "parent": "18",
             "components": [
                 {
-                    "type": "locomotion-fly-draft",
-                    "locomotion-fly-draft": {
-                        "_myPlayerObject": "19",
-                        "_myNonVRCameraObject": "21",
-                        "_myNonVRHeadObject": "71",
-                        "_myHeadObject": "25",
-                        "_myDirectionReferenceObject": "23",
-                        "_myMinHeight": -100.0,
-                        "_myMaxSpeed": 1.0,
-                        "_myMinAngleToFly": 60.0,
-                        "_mySnapTurnAngle": 30.0
+                    "type": "locomotion",
+                    "locomotion": {
+                        "_myMaxSpeed": 1.0
                     }
                 }
             ]
@@ -1145,7 +1139,8 @@
                     },
                     "active": false
                 }
-            ]
+            ],
+            "deleted": true
         },
         "93": {
             "link": {
@@ -1269,10 +1264,9 @@
             "name": "Test",
             "components": [
                 {
-                    "type": "pp-set-hierarchy-active",
-                    "active": true,
-                    "pp-set-hierarchy-active": {
-                        "_myHierarchyActive": false
+                    "type": "pp-set-active",
+                    "pp-set-active": {
+                        "_myActive": false
                     }
                 }
             ],
@@ -1442,7 +1436,7 @@
             "parent": "86",
             "transformation": [
                 -0.0749999,
-                1.1324735815776421e-8,
+                1.132473581577642e-8,
                 1.3607948545768524e-8,
                 0.0,
                 0.0,
@@ -1707,9 +1701,9 @@
             "parent": "101",
             "components": [
                 {
-                    "type": "pp-set-hierarchy-active",
-                    "pp-set-hierarchy-active": {
-                        "_myHierarchyActive": false
+                    "type": "pp-set-active",
+                    "pp-set-active": {
+                        "_myActive": false
                     }
                 }
             ]
@@ -2026,9 +2020,9 @@
             ],
             "components": [
                 {
-                    "type": "pp-set-hierarchy-active",
-                    "pp-set-hierarchy-active": {
-                        "_myHierarchyActive": false
+                    "type": "pp-set-active",
+                    "pp-set-active": {
+                        "_myActive": false
                     }
                 }
             ]
@@ -2776,9 +2770,9 @@
             ],
             "components": [
                 {
-                    "type": "pp-set-hierarchy-active",
-                    "pp-set-hierarchy-active": {
-                        "_myHierarchyActive": false
+                    "type": "pp-set-active",
+                    "pp-set-active": {
+                        "_myActive": false
                     }
                 }
             ]

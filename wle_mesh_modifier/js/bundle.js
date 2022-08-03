@@ -1,27 +1,3 @@
-//MESH MODIFIER
-require('./mesh_modifier/vertex_selector.js');
-require('./mesh_modifier/cauldron_utils.js');
-require('./mesh_modifier/file_manager.js');
-require('./mesh_modifier/vertex_group_config.js');
-require('./mesh_modifier/locomotion_fly_draft.js');
-require('./mesh_modifier/vertex_utils.js');
-
-require('./mesh_modifier/test/test_download.js');
-require('./mesh_modifier/test/test_loadFile.js');
-require('./mesh_modifier/test/test_set_axis');
-
-require('./mesh_modifier/tool/tool_type.js');
-require('./mesh_modifier/tool/tool_manager.js');
-require('./mesh_modifier/tool/vertex_tool.js');
-require('./mesh_modifier/tool/manage_groups_variants_tool.js');
-require('./mesh_modifier/tool/free_edit_tool.js');
-require('./mesh_modifier/tool/manage_groups_tool.js');
-require('./mesh_modifier/tool/manage_variants_tool.js');
-require('./mesh_modifier/tool/edit_variant_tool.js');
-require('./mesh_modifier/tool/dummy_tool.js');
-
-require('./mesh_modifier/mesh_modifier_gateway.js');
-
 //WLE
 
 require('@wonderlandengine/components/8thwall-camera');
@@ -50,6 +26,16 @@ require('@wonderlandengine/components/wonderleap-ad');
 
 require('./pp/pp.js');
 
+//	PLUGIN
+require('./pp/plugin/component_mods/clone_component_mod.js');
+require('./pp/plugin/component_mods/cursor_component_mod.js');
+require('./pp/plugin/component_mods/cursor_target_component_mod.js');
+require('./pp/plugin/component_mods/mouse_look_component_mod.js');
+
+require('./pp/plugin/extensions/array_extension.js');
+require('./pp/plugin/extensions/object_extension.js');
+require('./pp/plugin/extensions/math_extension.js');
+
 //	AUDIO
 require('./pp/audio/spatial_audio_listener.js');
 require('./pp/audio/audio_manager_component.js');
@@ -69,7 +55,8 @@ require('./pp/cauldron/cauldron/save_manager.js');
 require('./pp/cauldron/cauldron/timer.js');
 
 require('./pp/cauldron/components/clear_console_on_session.js');
-require('./pp/cauldron/components/set_hierarchy_active.js');
+require('./pp/cauldron/components/set_active.js');
+require('./pp/cauldron/components/adjust_physx_scale.js');
 
 require('./pp/cauldron/fsm/fsm.js');
 require('./pp/cauldron/fsm/state.js');
@@ -83,6 +70,10 @@ require('./pp/cauldron/utils/save_utils.js');
 require('./pp/cauldron/utils/text_utils.js');
 require('./pp/cauldron/utils/xr_utils.js');
 
+require('./pp/cauldron/physics/physics_utils.js');
+require('./pp/cauldron/physics/physics_raycast_data.js');
+require('./pp/cauldron/physics/physics_layer_flags.js');
+
 //	DEBUG
 require('./pp/debug/debug_manager.js');
 require('./pp/debug/debug_transform.js');
@@ -90,6 +81,7 @@ require('./pp/debug/debug_line.js');
 require('./pp/debug/debug_arrow.js');
 require('./pp/debug/debug_point.js');
 require('./pp/debug/debug_raycast.js');
+require('./pp/debug/debug_text.js');
 require('./pp/debug/components/debug_transform_component.js');
 require('./pp/debug/components/debug_manager_component.js');
 
@@ -101,13 +93,19 @@ require('./pp/gameplay/grab_throw/grabber_hand.js');
 require('./pp/input/cauldron/finger_cursor.js');
 require('./pp/input/cauldron/input_types.js');
 require('./pp/input/cauldron/input_utils.js');
+require('./pp/input/cauldron/keyboard.js');
 
-require('./pp/input/gamepad/gamepad_animator.js');
-require('./pp/input/gamepad/gamepad_manager_component.js');
-require('./pp/input/gamepad/gamepad_manager.js');
-require('./pp/input/gamepad/gamepad_utils.js');
-require('./pp/input/gamepad/gamepad.js');
-require('./pp/input/gamepad/gamepad_control_scheme.js');
+require('./pp/input/gamepad/gamepad_buttons.js');
+require('./pp/input/gamepad/base_gamepad.js');
+require('./pp/input/gamepad/universal_gamepad.js');
+require('./pp/input/gamepad/gamepad_cores/gamepad_core.js');
+require('./pp/input/gamepad/gamepad_cores/xr_gamepad_core.js');
+require('./pp/input/gamepad/gamepad_cores/keyboard_gamepad_core.js');
+require('./pp/input/gamepad/cauldron/gamepad_animator.js');
+require('./pp/input/gamepad/cauldron/gamepad_manager_component.js');
+require('./pp/input/gamepad/cauldron/gamepad_manager.js');
+require('./pp/input/gamepad/cauldron/gamepad_utils.js');
+require('./pp/input/gamepad/cauldron/gamepad_control_scheme.js');
 
 require('./pp/input/pose/hand_pose.js');
 require('./pp/input/pose/head_pose.js');
@@ -119,16 +117,6 @@ require('./pp/input/pose/components/set_non_vr_head_local_transform.js');
 require('./pp/input/pose/components/get_player_objects.js');
 require('./pp/input/pose/components/copy_hand_transform.js');
 require('./pp/input/pose/components/copy_head_transform.js');
-
-//	PLUGIN
-require('./pp/plugin/component_mods/clone_component_mod.js');
-require('./pp/plugin/component_mods/cursor_component_mod.js');
-require('./pp/plugin/component_mods/cursor_target_component_mod.js');
-require('./pp/plugin/component_mods/mouse_look_component_mod.js');
-
-require('./pp/plugin/extensions/object_extension.js');
-require('./pp/plugin/extensions/array_extension.js');
-require('./pp/plugin/extensions/math_extension.js');
 
 //	TOOL
 require('./pp/tool/cauldron/cauldron/tool_types.js');
@@ -171,3 +159,29 @@ require('./pp/tool/easy_tune/easy_tune.js');
 require('./pp/tool/widget_frame/widget_frame_setup.js');
 require('./pp/tool/widget_frame/widget_frame_ui.js');
 require('./pp/tool/widget_frame/widget_frame.js');
+
+//MESH MODIFIER
+require('./mesh_modifier/vertex_selector.js');
+require('./mesh_modifier/cauldron_utils.js');
+require('./mesh_modifier/file_manager.js');
+require('./mesh_modifier/vertex_group_config.js');
+require('./mesh_modifier/locomotion_fly_draft.js');
+require('./mesh_modifier/direction_2D_to_3D_converter.js');
+require('./mesh_modifier/locomotion.js');
+require('./mesh_modifier/vertex_utils.js');
+
+require('./mesh_modifier/test/test_download.js');
+require('./mesh_modifier/test/test_loadFile.js');
+require('./mesh_modifier/test/test_set_axis');
+
+require('./mesh_modifier/tool/tool_type.js');
+require('./mesh_modifier/tool/tool_manager.js');
+require('./mesh_modifier/tool/vertex_tool.js');
+require('./mesh_modifier/tool/manage_groups_variants_tool.js');
+require('./mesh_modifier/tool/free_edit_tool.js');
+require('./mesh_modifier/tool/manage_groups_tool.js');
+require('./mesh_modifier/tool/manage_variants_tool.js');
+require('./mesh_modifier/tool/edit_variant_tool.js');
+require('./mesh_modifier/tool/dummy_tool.js');
+
+require('./mesh_modifier/mesh_modifier_gateway.js');
