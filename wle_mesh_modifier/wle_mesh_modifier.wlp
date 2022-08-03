@@ -608,7 +608,7 @@
                 0.0,
                 1.0000003,
                 0.0,
-                2.2351741790771489e-8,
+                2.2351741790771488e-8,
                 -0.0,
                 0.0,
                 1.0
@@ -767,9 +767,9 @@
                 -6.854534149169922e-7,
                 1.0000002,
                 0.0,
-                2.5331974029541018e-7,
+                2.5331974029541016e-7,
                 0.05,
-                -5.8673318648061497e-8,
+                -5.8673318648061494e-8,
                 1.0
             ]
         },
@@ -974,7 +974,7 @@
                 -0.5109161,
                 0.8596305,
                 0.0,
-                3.0485455937423476e-8,
+                3.0485455937423473e-8,
                 -0.8596305,
                 -0.5109161,
                 0.0,
@@ -992,7 +992,7 @@
                 1.509960156909074e-7,
                 -8.742289026031359e-8,
                 0.0,
-                1.5229656469273329e-7,
+                1.5229656469273328e-7,
                 -0.5109128,
                 0.8596251,
                 0.0,
@@ -1388,7 +1388,7 @@
                 0.0719306,
                 -0.0212383,
                 0.0,
-                -1.6257791557450226e-8,
+                -1.6257791557450225e-8,
                 -0.0212385,
                 -0.0719297,
                 0.0,
@@ -1411,14 +1411,14 @@
             "parent": "86",
             "transformation": [
                 -0.0750006,
-                1.1324726045813805e-8,
+                1.1324726045813804e-8,
                 1.3608024040934197e-8,
                 0.0,
                 0.0,
                 0.0719301,
                 -0.0212384,
                 0.0,
-                -1.6257908797001633e-8,
+                -1.6257908797001632e-8,
                 -0.0212388,
                 -0.0719299,
                 0.0,
@@ -1442,7 +1442,7 @@
             "parent": "86",
             "transformation": [
                 -0.0749999,
-                1.132473581577642e-8,
+                1.1324735815776421e-8,
                 1.3607948545768524e-8,
                 0.0,
                 0.0,
@@ -1595,7 +1595,7 @@
                 0.643851,
                 0.6888294,
                 0.0,
-                2.9802322387695329e-8,
+                2.9802322387695326e-8,
                 1.0000017,
                 -0.3000005,
                 1.0
@@ -1720,6 +1720,1257 @@
                 "file": "assets\\models\\low_poly_character_smooth_textured.fbx"
             },
             "deleted": true
+        },
+        "128": {
+            "name": "Empty.001",
+            "deleted": true
+        },
+        "143": {
+            "link": {
+                "name": "Hair",
+                "file": "assets\\models\\low_poly_skinned_character_flat.fbx"
+            },
+            "parent": "154",
+            "transformation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                -1.1920931797249068e-7,
+                1.0000001,
+                0.0,
+                0.0,
+                -1.0000002,
+                -1.192093321833454e-7,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ]
+        },
+        "144": {
+            "link": {
+                "name": "Belt",
+                "file": "assets\\models\\low_poly_skinned_character_flat.fbx"
+            },
+            "parent": "154",
+            "transformation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                -1.1920928955078125e-7,
+                1.0000001,
+                0.0,
+                0.0,
+                -1.0000002,
+                -1.1920930376163597e-7,
+                0.0,
+                -0.0007805,
+                -0.0737461,
+                0.6365308,
+                1.0
+            ]
+        },
+        "145": {
+            "link": {
+                "name": "Strap",
+                "file": "assets\\models\\low_poly_skinned_character_flat.fbx"
+            },
+            "parent": "154",
+            "transformation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                -1.1920931797249068e-7,
+                1.0000001,
+                0.0,
+                0.0,
+                -1.0000002,
+                -1.192093321833454e-7,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ]
+        },
+        "146": {
+            "link": {
+                "name": "Nose",
+                "file": "assets\\models\\low_poly_skinned_character_flat.fbx"
+            },
+            "parent": "154",
+            "transformation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                -1.1920931797249068e-7,
+                1.0000001,
+                0.0,
+                0.0,
+                -1.0000002,
+                -1.192093321833454e-7,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ]
+        },
+        "147": {
+            "link": {
+                "name": "Truncheon",
+                "file": "assets\\models\\low_poly_skinned_character_flat.fbx"
+            },
+            "parent": "154",
+            "transformation": [
+                -0.8755424,
+                -0.0290591,
+                0.4822667,
+                0.0,
+                0.4830485,
+                -0.0330854,
+                0.8749682,
+                0.0,
+                -0.0094698,
+                0.9990302,
+                0.0430046,
+                0.0,
+                -0.3744554,
+                -0.0852164,
+                0.698678,
+                1.0
+            ]
+        },
+        "148": {
+            "link": {
+                "name": "Body",
+                "file": "assets\\models\\low_poly_skinned_character_flat.fbx"
+            },
+            "parent": "154",
+            "transformation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                -1.1920931797249068e-7,
+                1.0000001,
+                0.0,
+                0.0,
+                -1.0000002,
+                -1.192093321833454e-7,
+                0.0,
+                -0.0001355,
+                -0.0278484,
+                0.5880213,
+                1.0
+            ]
+        },
+        "149": {
+            "link": {
+                "name": "Eyes",
+                "file": "assets\\models\\low_poly_skinned_character_flat.fbx"
+            },
+            "parent": "154",
+            "transformation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                -1.1920931797249068e-7,
+                1.0000001,
+                0.0,
+                0.0,
+                -1.0000002,
+                -1.192093321833454e-7,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ]
+        },
+        "150": {
+            "link": {
+                "name": "Hat",
+                "file": "assets\\models\\low_poly_skinned_character_flat.fbx"
+            },
+            "parent": "154",
+            "transformation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                -1.1920931797249068e-7,
+                1.0000001,
+                0.0,
+                0.0,
+                -1.0000002,
+                -1.192093321833454e-7,
+                0.0,
+                -0.0001179,
+                -0.0,
+                -0.0,
+                1.0
+            ]
+        },
+        "151": {
+            "link": {
+                "name": "Badge",
+                "file": "assets\\models\\low_poly_skinned_character_flat.fbx"
+            },
+            "parent": "154",
+            "transformation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                -1.1920931797249068e-7,
+                1.0000001,
+                0.0,
+                0.0,
+                -1.0000002,
+                -1.192093321833454e-7,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ]
+        },
+        "152": {
+            "link": {
+                "name": "Ears",
+                "file": "assets\\models\\low_poly_skinned_character_flat.fbx"
+            },
+            "parent": "154",
+            "transformation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                -1.1920931797249068e-7,
+                1.0000001,
+                0.0,
+                0.0,
+                -1.0000002,
+                -1.192093321833454e-7,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ]
+        },
+        "153": {
+            "link": {
+                "name": "Mouth",
+                "file": "assets\\models\\low_poly_skinned_character_flat.fbx"
+            },
+            "parent": "154",
+            "transformation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                -1.1920931797249068e-7,
+                1.0000001,
+                0.0,
+                0.0,
+                -1.0000002,
+                -1.192093321833454e-7,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ]
+        },
+        "154": {
+            "link": {
+                "name": "Low Poly Skinned Character Flat",
+                "file": "assets\\models\\low_poly_skinned_character_flat.fbx"
+            },
+            "parent": "72",
+            "transformation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                -1.1920888454142189e-7,
+                -0.9999965,
+                0.0,
+                0.0,
+                0.9999965,
+                -1.1920888454142189e-7,
+                0.0,
+                0.0,
+                0.25,
+                -0.4999997,
+                1.0
+            ],
+            "components": [
+                {
+                    "type": "pp-set-hierarchy-active",
+                    "pp-set-hierarchy-active": {
+                        "_myHierarchyActive": false
+                    }
+                }
+            ]
+        },
+        "155": {
+            "link": {
+                "name": "Armature<Low Poly Skinned Character Flat",
+                "file": "assets\\models\\low_poly_skinned_character_flat.fbx"
+            },
+            "parent": "154"
+        },
+        "156": {
+            "link": {
+                "name": "hips<Armature<Low Poly Skinned Character Flat",
+                "file": "assets\\models\\low_poly_skinned_character_flat.fbx"
+            },
+            "parent": "155"
+        },
+        "157": {
+            "link": {
+                "name": "lower_chest<hips<Armature<Low Poly Skinned Character Flat",
+                "file": "assets\\models\\low_poly_skinned_character_flat.fbx"
+            },
+            "parent": "156"
+        },
+        "158": {
+            "link": {
+                "name": "upper_chest<lower_chest<hips<Armature<Low Poly Skinned Character Flat",
+                "file": "assets\\models\\low_poly_skinned_character_flat.fbx"
+            },
+            "parent": "157"
+        },
+        "159": {
+            "link": {
+                "name": "neck<upper_chest<lower_chest<hips<Armature<Low Poly Skinned Character Flat",
+                "file": "assets\\models\\low_poly_skinned_character_flat.fbx"
+            },
+            "parent": "158"
+        },
+        "160": {
+            "link": {
+                "name": "head<neck<upper_chest<lower_chest<hips<Armature<Low Poly Skinned Character Flat",
+                "file": "assets\\models\\low_poly_skinned_character_flat.fbx"
+            },
+            "parent": "159"
+        },
+        "161": {
+            "link": {
+                "name": "head_end<head<neck<upper_chest<lower_chest<hips<Armature<Low Poly Skinned Character Flat",
+                "file": "assets\\models\\low_poly_skinned_character_flat.fbx"
+            },
+            "parent": "160"
+        },
+        "162": {
+            "link": {
+                "name": "shoulder.L<upper_chest<lower_chest<hips<Armature<Low Poly Skinned Character Flat",
+                "file": "assets\\models\\low_poly_skinned_character_flat.fbx"
+            },
+            "parent": "158"
+        },
+        "163": {
+            "link": {
+                "name": "upper_arm.L<shoulder.L<upper_chest<lower_chest<hips<Armature<Low Poly Skinned Character Flat",
+                "file": "assets\\models\\low_poly_skinned_character_flat.fbx"
+            },
+            "parent": "162"
+        },
+        "164": {
+            "link": {
+                "name": "average_arm.L<upper_arm.L<shoulder.L<upper_chest<lower_chest<hips<Armature<Low Poly Skinned Character Flat",
+                "file": "assets\\models\\low_poly_skinned_character_flat.fbx"
+            },
+            "parent": "163"
+        },
+        "165": {
+            "link": {
+                "name": "lower_arm.L<average_arm.L<upper_arm.L<shoulder.L<upper_chest<lower_chest<hips<Armature<Low Poly Skinned Character Flat",
+                "file": "assets\\models\\low_poly_skinned_character_flat.fbx"
+            },
+            "parent": "164"
+        },
+        "166": {
+            "link": {
+                "name": "hand.L<lower_arm.L<average_arm.L<upper_arm.L<shoulder.L<upper_chest<lower_chest<hips<Armature<Low Poly Skinned Character Flat",
+                "file": "assets\\models\\low_poly_skinned_character_flat.fbx"
+            },
+            "parent": "165"
+        },
+        "167": {
+            "link": {
+                "name": "hand.L_end<hand.L<lower_arm.L<average_arm.L<upper_arm.L<shoulder.L<upper_chest<lower_chest<hips<Armature<Low Poly Skinned Character Flat",
+                "file": "assets\\models\\low_poly_skinned_character_flat.fbx"
+            },
+            "parent": "166"
+        },
+        "168": {
+            "link": {
+                "name": "shoulder.R<upper_chest<lower_chest<hips<Armature<Low Poly Skinned Character Flat",
+                "file": "assets\\models\\low_poly_skinned_character_flat.fbx"
+            },
+            "parent": "158"
+        },
+        "169": {
+            "link": {
+                "name": "upper_arm.R<shoulder.R<upper_chest<lower_chest<hips<Armature<Low Poly Skinned Character Flat",
+                "file": "assets\\models\\low_poly_skinned_character_flat.fbx"
+            },
+            "parent": "168"
+        },
+        "170": {
+            "link": {
+                "name": "average_arm.R<upper_arm.R<shoulder.R<upper_chest<lower_chest<hips<Armature<Low Poly Skinned Character Flat",
+                "file": "assets\\models\\low_poly_skinned_character_flat.fbx"
+            },
+            "parent": "169"
+        },
+        "171": {
+            "link": {
+                "name": "lower_arm.R<average_arm.R<upper_arm.R<shoulder.R<upper_chest<lower_chest<hips<Armature<Low Poly Skinned Character Flat",
+                "file": "assets\\models\\low_poly_skinned_character_flat.fbx"
+            },
+            "parent": "170"
+        },
+        "172": {
+            "link": {
+                "name": "hand.R<lower_arm.R<average_arm.R<upper_arm.R<shoulder.R<upper_chest<lower_chest<hips<Armature<Low Poly Skinned Character Flat",
+                "file": "assets\\models\\low_poly_skinned_character_flat.fbx"
+            },
+            "parent": "171"
+        },
+        "173": {
+            "link": {
+                "name": "hand.R_end<hand.R<lower_arm.R<average_arm.R<upper_arm.R<shoulder.R<upper_chest<lower_chest<hips<Armature<Low Poly Skinned Character Flat",
+                "file": "assets\\models\\low_poly_skinned_character_flat.fbx"
+            },
+            "parent": "172"
+        },
+        "174": {
+            "link": {
+                "name": "upper_leg.L<hips<Armature<Low Poly Skinned Character Flat",
+                "file": "assets\\models\\low_poly_skinned_character_flat.fbx"
+            },
+            "parent": "156"
+        },
+        "175": {
+            "link": {
+                "name": "lower_leg.L<upper_leg.L<hips<Armature<Low Poly Skinned Character Flat",
+                "file": "assets\\models\\low_poly_skinned_character_flat.fbx"
+            },
+            "parent": "174"
+        },
+        "176": {
+            "link": {
+                "name": "foot.L<lower_leg.L<upper_leg.L<hips<Armature<Low Poly Skinned Character Flat",
+                "file": "assets\\models\\low_poly_skinned_character_flat.fbx"
+            },
+            "parent": "175"
+        },
+        "177": {
+            "link": {
+                "name": "foot.L_end<foot.L<lower_leg.L<upper_leg.L<hips<Armature<Low Poly Skinned Character Flat",
+                "file": "assets\\models\\low_poly_skinned_character_flat.fbx"
+            },
+            "parent": "176"
+        },
+        "178": {
+            "link": {
+                "name": "upper_leg.R<hips<Armature<Low Poly Skinned Character Flat",
+                "file": "assets\\models\\low_poly_skinned_character_flat.fbx"
+            },
+            "parent": "156"
+        },
+        "179": {
+            "link": {
+                "name": "lower_leg.R<upper_leg.R<hips<Armature<Low Poly Skinned Character Flat",
+                "file": "assets\\models\\low_poly_skinned_character_flat.fbx"
+            },
+            "parent": "178"
+        },
+        "180": {
+            "link": {
+                "name": "foot.R<lower_leg.R<upper_leg.R<hips<Armature<Low Poly Skinned Character Flat",
+                "file": "assets\\models\\low_poly_skinned_character_flat.fbx"
+            },
+            "parent": "179"
+        },
+        "181": {
+            "link": {
+                "name": "foot.R_end<foot.R<lower_leg.R<upper_leg.R<hips<Armature<Low Poly Skinned Character Flat",
+                "file": "assets\\models\\low_poly_skinned_character_flat.fbx"
+            },
+            "parent": "180"
+        },
+        "201": {
+            "link": {
+                "name": "Hair",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            },
+            "parent": "244",
+            "transformation": [
+                0.0099999,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                -0.0,
+                0.01,
+                0.0,
+                0.0,
+                -0.01,
+                -0.0,
+                0.0,
+                0.0,
+                0.0049999,
+                0.0025,
+                1.0
+            ]
+        },
+        "202": {
+            "link": {
+                "name": "Belt",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            },
+            "parent": "244",
+            "transformation": [
+                0.0099999,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                -0.0,
+                0.01,
+                0.0,
+                0.0,
+                -0.01,
+                -0.0,
+                0.0,
+                -0.0000078,
+                0.0042625,
+                0.0088653,
+                1.0
+            ]
+        },
+        "203": {
+            "link": {
+                "name": "Strap",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            },
+            "parent": "244",
+            "transformation": [
+                0.0099999,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                -0.0,
+                0.01,
+                0.0,
+                0.0,
+                -0.01,
+                -0.0,
+                0.0,
+                0.0,
+                0.0049999,
+                0.0025,
+                1.0
+            ]
+        },
+        "204": {
+            "link": {
+                "name": "Nose",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            },
+            "parent": "244",
+            "transformation": [
+                0.0099999,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                -0.0,
+                0.01,
+                0.0,
+                0.0,
+                -0.01,
+                -0.0,
+                0.0,
+                0.0,
+                0.0049999,
+                0.0025,
+                1.0
+            ]
+        },
+        "205": {
+            "link": {
+                "name": "Truncheon",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            },
+            "parent": "244",
+            "transformation": [
+                -0.0087554,
+                -0.0002905,
+                0.0048226,
+                0.0,
+                0.0048304,
+                -0.0003308,
+                0.0087496,
+                0.0,
+                -0.0000946,
+                0.0099903,
+                0.00043,
+                0.0,
+                -0.0037445,
+                0.0041478,
+                0.0094867,
+                1.0
+            ]
+        },
+        "206": {
+            "link": {
+                "name": "Body",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            },
+            "parent": "244",
+            "transformation": [
+                0.0099999,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                -0.0,
+                0.01,
+                0.0,
+                0.0,
+                -0.01,
+                -0.0,
+                0.0,
+                -0.0000013,
+                0.0047215,
+                0.0083802,
+                1.0
+            ]
+        },
+        "207": {
+            "link": {
+                "name": "Eyes",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            },
+            "parent": "244",
+            "transformation": [
+                0.0099999,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                -0.0,
+                0.01,
+                0.0,
+                0.0,
+                -0.01,
+                -0.0,
+                0.0,
+                0.0,
+                0.0049999,
+                0.0025,
+                1.0
+            ]
+        },
+        "208": {
+            "link": {
+                "name": "Hat",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            },
+            "parent": "244",
+            "transformation": [
+                0.0099999,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                -0.0,
+                0.01,
+                0.0,
+                0.0,
+                -0.01,
+                -0.0,
+                0.0,
+                -0.0000011,
+                0.0049999,
+                0.0025,
+                1.0
+            ]
+        },
+        "209": {
+            "link": {
+                "name": "Badge",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            },
+            "parent": "244",
+            "transformation": [
+                0.0099999,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                -0.0,
+                0.01,
+                0.0,
+                0.0,
+                -0.01,
+                -0.0,
+                0.0,
+                0.0,
+                0.0049999,
+                0.0025,
+                1.0
+            ]
+        },
+        "210": {
+            "link": {
+                "name": "Ears",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            },
+            "parent": "244",
+            "transformation": [
+                0.0099999,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                -0.0,
+                0.01,
+                0.0,
+                0.0,
+                -0.01,
+                -0.0,
+                0.0,
+                0.0,
+                0.0049999,
+                0.0025,
+                1.0
+            ]
+        },
+        "211": {
+            "link": {
+                "name": "Mouth",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            },
+            "parent": "244",
+            "transformation": [
+                0.0099999,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                -0.0,
+                0.01,
+                0.0,
+                0.0,
+                -0.01,
+                -0.0,
+                0.0,
+                0.0,
+                0.0049999,
+                0.0025,
+                1.0
+            ],
+            "components": [
+                {
+                    "mesh": {
+                        "material": "188"
+                    }
+                }
+            ]
+        },
+        "212": {
+            "link": {
+                "name": "Low Poly Skinned Character Flat",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            },
+            "parent": "72",
+            "transformation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                -1.192089129631313e-7,
+                -0.9999967,
+                0.0,
+                0.0,
+                0.9999967,
+                -1.192089129631313e-7,
+                0.0,
+                0.0,
+                0.25,
+                -0.4999999,
+                1.0
+            ],
+            "deleted": true
+        },
+        "213": {
+            "link": {
+                "name": "Armature<Low Poly Skinned Character Flat",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            },
+            "parent": "212",
+            "deleted": true
+        },
+        "214": {
+            "link": {
+                "name": "hips<Armature<Low Poly Skinned Character Flat",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            },
+            "parent": "213",
+            "deleted": true
+        },
+        "215": {
+            "link": {
+                "name": "lower_chest<hips<Armature<Low Poly Skinned Character Flat",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            },
+            "parent": "214",
+            "deleted": true
+        },
+        "216": {
+            "link": {
+                "name": "upper_chest<lower_chest<hips<Armature<Low Poly Skinned Character Flat",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            },
+            "parent": "215",
+            "deleted": true
+        },
+        "217": {
+            "link": {
+                "name": "neck<upper_chest<lower_chest<hips<Armature<Low Poly Skinned Character Flat",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            },
+            "parent": "216",
+            "deleted": true
+        },
+        "218": {
+            "link": {
+                "name": "head<neck<upper_chest<lower_chest<hips<Armature<Low Poly Skinned Character Flat",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            },
+            "parent": "217",
+            "deleted": true
+        },
+        "219": {
+            "link": {
+                "name": "head_end<head<neck<upper_chest<lower_chest<hips<Armature<Low Poly Skinned Character Flat",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            },
+            "parent": "218",
+            "deleted": true
+        },
+        "220": {
+            "link": {
+                "name": "shoulder.L<upper_chest<lower_chest<hips<Armature<Low Poly Skinned Character Flat",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            },
+            "parent": "216",
+            "deleted": true
+        },
+        "221": {
+            "link": {
+                "name": "upper_arm.L<shoulder.L<upper_chest<lower_chest<hips<Armature<Low Poly Skinned Character Flat",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            },
+            "parent": "220",
+            "deleted": true
+        },
+        "222": {
+            "link": {
+                "name": "average_arm.L<upper_arm.L<shoulder.L<upper_chest<lower_chest<hips<Armature<Low Poly Skinned Character Flat",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            },
+            "parent": "221",
+            "deleted": true
+        },
+        "223": {
+            "link": {
+                "name": "lower_arm.L<average_arm.L<upper_arm.L<shoulder.L<upper_chest<lower_chest<hips<Armature<Low Poly Skinned Character Flat",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            },
+            "parent": "222",
+            "deleted": true
+        },
+        "224": {
+            "link": {
+                "name": "hand.L<lower_arm.L<average_arm.L<upper_arm.L<shoulder.L<upper_chest<lower_chest<hips<Armature<Low Poly Skinned Character Flat",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            },
+            "parent": "223",
+            "deleted": true
+        },
+        "225": {
+            "link": {
+                "name": "hand.L_end<hand.L<lower_arm.L<average_arm.L<upper_arm.L<shoulder.L<upper_chest<lower_chest<hips<Armature<Low Poly Skinned Character Flat",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            },
+            "parent": "224",
+            "deleted": true
+        },
+        "226": {
+            "link": {
+                "name": "shoulder.R<upper_chest<lower_chest<hips<Armature<Low Poly Skinned Character Flat",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            },
+            "parent": "216",
+            "deleted": true
+        },
+        "227": {
+            "link": {
+                "name": "upper_arm.R<shoulder.R<upper_chest<lower_chest<hips<Armature<Low Poly Skinned Character Flat",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            },
+            "parent": "226",
+            "deleted": true
+        },
+        "228": {
+            "link": {
+                "name": "average_arm.R<upper_arm.R<shoulder.R<upper_chest<lower_chest<hips<Armature<Low Poly Skinned Character Flat",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            },
+            "parent": "227",
+            "deleted": true
+        },
+        "229": {
+            "link": {
+                "name": "lower_arm.R<average_arm.R<upper_arm.R<shoulder.R<upper_chest<lower_chest<hips<Armature<Low Poly Skinned Character Flat",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            },
+            "parent": "228",
+            "deleted": true
+        },
+        "230": {
+            "link": {
+                "name": "hand.R<lower_arm.R<average_arm.R<upper_arm.R<shoulder.R<upper_chest<lower_chest<hips<Armature<Low Poly Skinned Character Flat",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            },
+            "parent": "229",
+            "deleted": true
+        },
+        "231": {
+            "link": {
+                "name": "hand.R_end<hand.R<lower_arm.R<average_arm.R<upper_arm.R<shoulder.R<upper_chest<lower_chest<hips<Armature<Low Poly Skinned Character Flat",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            },
+            "parent": "230",
+            "deleted": true
+        },
+        "232": {
+            "link": {
+                "name": "upper_leg.L<hips<Armature<Low Poly Skinned Character Flat",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            },
+            "parent": "214",
+            "deleted": true
+        },
+        "233": {
+            "link": {
+                "name": "lower_leg.L<upper_leg.L<hips<Armature<Low Poly Skinned Character Flat",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            },
+            "parent": "232",
+            "deleted": true
+        },
+        "234": {
+            "link": {
+                "name": "foot.L<lower_leg.L<upper_leg.L<hips<Armature<Low Poly Skinned Character Flat",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            },
+            "parent": "233",
+            "deleted": true
+        },
+        "235": {
+            "link": {
+                "name": "foot.L_end<foot.L<lower_leg.L<upper_leg.L<hips<Armature<Low Poly Skinned Character Flat",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            },
+            "parent": "234",
+            "deleted": true
+        },
+        "236": {
+            "link": {
+                "name": "upper_leg.R<hips<Armature<Low Poly Skinned Character Flat",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            },
+            "parent": "214",
+            "deleted": true
+        },
+        "237": {
+            "link": {
+                "name": "lower_leg.R<upper_leg.R<hips<Armature<Low Poly Skinned Character Flat",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            },
+            "parent": "236",
+            "deleted": true
+        },
+        "238": {
+            "link": {
+                "name": "foot.R<lower_leg.R<upper_leg.R<hips<Armature<Low Poly Skinned Character Flat",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            },
+            "parent": "237",
+            "deleted": true
+        },
+        "239": {
+            "link": {
+                "name": "foot.R_end<foot.R<lower_leg.R<upper_leg.R<hips<Armature<Low Poly Skinned Character Flat",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            },
+            "parent": "238",
+            "deleted": true
+        },
+        "243": {
+            "name": "Empty.002",
+            "deleted": true
+        },
+        "244": {
+            "link": {
+                "name": "Low Poly Skinned Character Smooth",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            },
+            "parent": "72",
+            "transformation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                -1.1920853637548134e-7,
+                -0.9999936,
+                0.0,
+                0.0,
+                0.9999936,
+                -1.1920853637548134e-7,
+                0.0,
+                0.0,
+                0.25,
+                -0.4999999,
+                1.0
+            ],
+            "components": [
+                {
+                    "type": "pp-set-hierarchy-active",
+                    "pp-set-hierarchy-active": {
+                        "_myHierarchyActive": false
+                    }
+                }
+            ]
+        },
+        "245": {
+            "link": {
+                "name": "Armature<Low Poly Skinned Character Smooth",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            },
+            "parent": "244"
+        },
+        "246": {
+            "link": {
+                "name": "hips<Armature<Low Poly Skinned Character Smooth",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            },
+            "parent": "245"
+        },
+        "247": {
+            "link": {
+                "name": "lower_chest<hips<Armature<Low Poly Skinned Character Smooth",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            },
+            "parent": "246"
+        },
+        "248": {
+            "link": {
+                "name": "upper_chest<lower_chest<hips<Armature<Low Poly Skinned Character Smooth",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            },
+            "parent": "247"
+        },
+        "249": {
+            "link": {
+                "name": "neck<upper_chest<lower_chest<hips<Armature<Low Poly Skinned Character Smooth",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            },
+            "parent": "248"
+        },
+        "250": {
+            "link": {
+                "name": "head<neck<upper_chest<lower_chest<hips<Armature<Low Poly Skinned Character Smooth",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            },
+            "parent": "249"
+        },
+        "251": {
+            "link": {
+                "name": "head_end<head<neck<upper_chest<lower_chest<hips<Armature<Low Poly Skinned Character Smooth",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            },
+            "parent": "250"
+        },
+        "252": {
+            "link": {
+                "name": "shoulder.L<upper_chest<lower_chest<hips<Armature<Low Poly Skinned Character Smooth",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            },
+            "parent": "248"
+        },
+        "253": {
+            "link": {
+                "name": "upper_arm.L<shoulder.L<upper_chest<lower_chest<hips<Armature<Low Poly Skinned Character Smooth",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            },
+            "parent": "252"
+        },
+        "254": {
+            "link": {
+                "name": "average_arm.L<upper_arm.L<shoulder.L<upper_chest<lower_chest<hips<Armature<Low Poly Skinned Character Smooth",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            },
+            "parent": "253"
+        },
+        "255": {
+            "link": {
+                "name": "lower_arm.L<average_arm.L<upper_arm.L<shoulder.L<upper_chest<lower_chest<hips<Armature<Low Poly Skinned Character Smooth",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            },
+            "parent": "254"
+        },
+        "256": {
+            "link": {
+                "name": "hand.L<lower_arm.L<average_arm.L<upper_arm.L<shoulder.L<upper_chest<lower_chest<hips<Armature<Low Poly Skinned Character Smooth",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            },
+            "parent": "255"
+        },
+        "257": {
+            "link": {
+                "name": "hand.L_end<hand.L<lower_arm.L<average_arm.L<upper_arm.L<shoulder.L<upper_chest<lower_chest<hips<Armature<Low Poly Skinned Character Smooth",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            },
+            "parent": "256"
+        },
+        "258": {
+            "link": {
+                "name": "shoulder.R<upper_chest<lower_chest<hips<Armature<Low Poly Skinned Character Smooth",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            },
+            "parent": "248"
+        },
+        "259": {
+            "link": {
+                "name": "upper_arm.R<shoulder.R<upper_chest<lower_chest<hips<Armature<Low Poly Skinned Character Smooth",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            },
+            "parent": "258"
+        },
+        "260": {
+            "link": {
+                "name": "average_arm.R<upper_arm.R<shoulder.R<upper_chest<lower_chest<hips<Armature<Low Poly Skinned Character Smooth",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            },
+            "parent": "259"
+        },
+        "261": {
+            "link": {
+                "name": "lower_arm.R<average_arm.R<upper_arm.R<shoulder.R<upper_chest<lower_chest<hips<Armature<Low Poly Skinned Character Smooth",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            },
+            "parent": "260"
+        },
+        "262": {
+            "link": {
+                "name": "hand.R<lower_arm.R<average_arm.R<upper_arm.R<shoulder.R<upper_chest<lower_chest<hips<Armature<Low Poly Skinned Character Smooth",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            },
+            "parent": "261"
+        },
+        "263": {
+            "link": {
+                "name": "hand.R_end<hand.R<lower_arm.R<average_arm.R<upper_arm.R<shoulder.R<upper_chest<lower_chest<hips<Armature<Low Poly Skinned Character Smooth",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            },
+            "parent": "262"
+        },
+        "264": {
+            "link": {
+                "name": "upper_leg.L<hips<Armature<Low Poly Skinned Character Smooth",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            },
+            "parent": "246"
+        },
+        "265": {
+            "link": {
+                "name": "lower_leg.L<upper_leg.L<hips<Armature<Low Poly Skinned Character Smooth",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            },
+            "parent": "264"
+        },
+        "266": {
+            "link": {
+                "name": "foot.L<lower_leg.L<upper_leg.L<hips<Armature<Low Poly Skinned Character Smooth",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            },
+            "parent": "265"
+        },
+        "267": {
+            "link": {
+                "name": "foot.L_end<foot.L<lower_leg.L<upper_leg.L<hips<Armature<Low Poly Skinned Character Smooth",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            },
+            "parent": "266"
+        },
+        "268": {
+            "link": {
+                "name": "upper_leg.R<hips<Armature<Low Poly Skinned Character Smooth",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            },
+            "parent": "246"
+        },
+        "269": {
+            "link": {
+                "name": "lower_leg.R<upper_leg.R<hips<Armature<Low Poly Skinned Character Smooth",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            },
+            "parent": "268"
+        },
+        "270": {
+            "link": {
+                "name": "foot.R<lower_leg.R<upper_leg.R<hips<Armature<Low Poly Skinned Character Smooth",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            },
+            "parent": "269"
+        },
+        "271": {
+            "link": {
+                "name": "foot.R_end<foot.R<lower_leg.R<upper_leg.R<hips<Armature<Low Poly Skinned Character Smooth",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            },
+            "parent": "270"
         }
     },
     "meshes": {
@@ -1866,6 +3117,138 @@
                 "name": "Low Poly Character Smooth Textured",
                 "file": "assets\\models\\low_poly_character_smooth_textured.fbx"
             }
+        },
+        "131": {
+            "link": {
+                "name": "Hair",
+                "file": "assets\\models\\low_poly_skinned_character_flat.fbx"
+            }
+        },
+        "132": {
+            "link": {
+                "name": "Belt",
+                "file": "assets\\models\\low_poly_skinned_character_flat.fbx"
+            }
+        },
+        "133": {
+            "link": {
+                "name": "Strap",
+                "file": "assets\\models\\low_poly_skinned_character_flat.fbx"
+            }
+        },
+        "134": {
+            "link": {
+                "name": "Nose",
+                "file": "assets\\models\\low_poly_skinned_character_flat.fbx"
+            }
+        },
+        "135": {
+            "link": {
+                "name": "Truncheon",
+                "file": "assets\\models\\low_poly_skinned_character_flat.fbx"
+            }
+        },
+        "136": {
+            "link": {
+                "name": "Body",
+                "file": "assets\\models\\low_poly_skinned_character_flat.fbx"
+            }
+        },
+        "137": {
+            "link": {
+                "name": "Eyes",
+                "file": "assets\\models\\low_poly_skinned_character_flat.fbx"
+            }
+        },
+        "138": {
+            "link": {
+                "name": "Hat",
+                "file": "assets\\models\\low_poly_skinned_character_flat.fbx"
+            }
+        },
+        "139": {
+            "link": {
+                "name": "Badge",
+                "file": "assets\\models\\low_poly_skinned_character_flat.fbx"
+            }
+        },
+        "140": {
+            "link": {
+                "name": "Ears",
+                "file": "assets\\models\\low_poly_skinned_character_flat.fbx"
+            }
+        },
+        "141": {
+            "link": {
+                "name": "Mouth",
+                "file": "assets\\models\\low_poly_skinned_character_flat.fbx"
+            }
+        },
+        "189": {
+            "link": {
+                "name": "Hair",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            }
+        },
+        "190": {
+            "link": {
+                "name": "Belt",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            }
+        },
+        "191": {
+            "link": {
+                "name": "Strap",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            }
+        },
+        "192": {
+            "link": {
+                "name": "Nose",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            }
+        },
+        "193": {
+            "link": {
+                "name": "Truncheon",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            }
+        },
+        "194": {
+            "link": {
+                "name": "Body",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            }
+        },
+        "195": {
+            "link": {
+                "name": "Eyes",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            }
+        },
+        "196": {
+            "link": {
+                "name": "Hat",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            }
+        },
+        "197": {
+            "link": {
+                "name": "Badge",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            }
+        },
+        "198": {
+            "link": {
+                "name": "Ears",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            }
+        },
+        "199": {
+            "link": {
+                "name": "Mouth",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            }
         }
     },
     "textures": {
@@ -1886,6 +3269,24 @@
                 "name": "low_poly_character_smooth_texture.png",
                 "file": "assets\\textures\\low_poly_character_smooth_texture.png"
             }
+        },
+        "129": {
+            "link": {
+                "name": "texture_0",
+                "file": "assets\\models\\low_poly_skinned_character_flat.fbx"
+            }
+        },
+        "186": {
+            "link": {
+                "name": "low_poly_skinned_character_texture.png",
+                "file": "assets\\textures\\low_poly_skinned_character_texture.png"
+            }
+        },
+        "187": {
+            "link": {
+                "name": "texture_0",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            }
         }
     },
     "images": {
@@ -1901,6 +3302,12 @@
                 "file": "assets\\textures\\low_poly_character_smooth_texture.png"
             },
             "compress": false
+        },
+        "185": {
+            "link": {
+                "name": "low_poly_skinned_character_texture.png",
+                "file": "assets\\textures\\low_poly_skinned_character_texture.png"
+            }
         }
     },
     "materials": {
@@ -2107,6 +3514,52 @@
                 "shininess": 2
             },
             "pipeline": "14"
+        },
+        "130": {
+            "link": {
+                "name": "Low Poly Skinned Character Textured",
+                "file": "assets\\models\\low_poly_skinned_character_flat.fbx"
+            },
+            "Phong": {
+                "shininess": 2,
+                "ambientFactor": 0.5,
+                "diffuseTexture": "186",
+                "diffuseColor": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "specularColor": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    0.1960784
+                ]
+            }
+        },
+        "188": {
+            "link": {
+                "name": "Low Poly Skinned Character Textured",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            },
+            "Phong": {
+                "diffuseTexture": "186",
+                "diffuseColor": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "shininess": 2,
+                "ambientFactor": 0.5,
+                "specularColor": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    0.1960784
+                ]
+            }
         }
     },
     "shaders": {
@@ -2159,8 +3612,58 @@
             }
         }
     },
-    "animations": {},
-    "skins": {},
+    "animations": {
+        "182": {
+            "link": {
+                "name": "Armature|Armature|Armature|A pose|Armature|A pose",
+                "file": "assets\\models\\low_poly_skinned_character_flat.fbx"
+            }
+        },
+        "183": {
+            "link": {
+                "name": "Armature|Armature|Armature|Action|Armature|Action",
+                "file": "assets\\models\\low_poly_skinned_character_flat.fbx"
+            }
+        },
+        "184": {
+            "link": {
+                "name": "Armature|Armature|Armature|Walk|Armature|Walk",
+                "file": "assets\\models\\low_poly_skinned_character_flat.fbx"
+            }
+        },
+        "240": {
+            "link": {
+                "name": "Armature|Armature|Armature|A pose|Armature|A pose",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            }
+        },
+        "241": {
+            "link": {
+                "name": "Armature|Armature|Armature|Action|Armature|Action",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            }
+        },
+        "242": {
+            "link": {
+                "name": "Armature|Armature|Armature|Walk|Armature|Walk",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            }
+        }
+    },
+    "skins": {
+        "142": {
+            "link": {
+                "name": "skin_6",
+                "file": "assets\\models\\low_poly_skinned_character_flat.fbx"
+            }
+        },
+        "200": {
+            "link": {
+                "name": "skin_7",
+                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            }
+        }
+    },
     "pipelines": {
         "2": {
             "link": {
@@ -2302,6 +3805,9 @@
         "assets/models/low_poly_character_flat.fbx",
         "assets/models/low_poly_character_flat_gltf.glb",
         "assets/models/low_poly_character_smooth_textured.fbx",
-        "assets/textures/low_poly_character_smooth_texture.png"
+        "assets/textures/low_poly_character_smooth_texture.png",
+        "assets/models/low_poly_skinned_character_flat.fbx",
+        "assets/textures/low_poly_skinned_character_texture.png",
+        "assets/models/low_poly_skinned_character_smooth.fbx"
     ]
 }
