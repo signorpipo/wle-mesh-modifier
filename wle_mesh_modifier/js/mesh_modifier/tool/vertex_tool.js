@@ -16,6 +16,18 @@ VertexTool = class VertexTool {
             this._myToolData.myLeftControlScheme.setVisible(!this._myToolData.myLeftControlScheme.isVisible());
             this._myToolData.myRightControlScheme.setVisible(!this._myToolData.myRightControlScheme.isVisible());
         }
+
+        if (PP.myLeftGamepad.getButtonInfo(PP.ButtonType.SQUEEZE).isPressEnd(2)) {
+            let animationComponent = this._myToolData.myMeshAnimationObject.pp_getComponentHierarchy("animation");
+            animationComponent.stop();
+            if (this._myToolData.myIsPlayingAnimation) {
+                animationComponent.animation = this._myToolData.myAPoseAnimation;
+            } else {
+                animationComponent.animation = this._myToolData.myAnimationToPlay;
+            }
+            animationComponent.play();
+            this._myToolData.myIsPlayingAnimation = !this._myToolData.myIsPlayingAnimation;
+        }
     }
 
     _setupControlScheme() {

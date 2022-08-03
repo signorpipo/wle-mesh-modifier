@@ -2,9 +2,16 @@ ToolData = class ToolData {
     constructor(mesh) {
         this.myMeshObject = null;
         this.myIsFlatShading = true;
+
         this.myMeshComponent = null;
+        this.myMeshAnimationObject = null;
+        this.myAnimationToPlay = null;
+        this.myAPoseAnimation = null;
+
         this.myPointerObject = null;
         this.myVertexGroupConfig = null;
+
+        this.myIsPlayingAnimation = false;
 
         this.mySelectedVertexes = [];
         this.mySelectedVertexGroup = null;
@@ -22,6 +29,10 @@ ToolData = class ToolData {
 ToolManagerParams = class ToolManagerParams {
     constructor() {
         this.myMeshObject = null;
+        this.myMeshAnimationObject = null;
+        this.myAnimationToPlay = null;
+        this.myAPoseAnimation = null;
+
         this.myIsFlatShading = true;
         this.myPointerObject = null;
         this.myToolLabel = null;
@@ -56,6 +67,9 @@ ToolManager = class ToolManager {
         let meshComponent = params.myMeshObject.pp_getComponentHierarchy("mesh");
         this._myToolData = new ToolData(meshComponent.mesh);
         this._myToolData.myMeshObject = params.myMeshObject;
+        this._myToolData.myMeshAnimationObject = params.myMeshAnimationObject;
+        this._myToolData.myAnimationToPlay = params.myAnimationToPlay;
+        this._myToolData.myAPoseAnimation = params.myAPoseAnimation;
         this._myToolData.myIsFlatShading = params.myIsFlatShading;
         this._myToolData.myMeshComponent = meshComponent;
         this._myToolData.myPointerObject = params.myPointerObject;

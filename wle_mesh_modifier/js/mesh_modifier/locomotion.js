@@ -92,7 +92,7 @@ WL.registerComponent('locomotion', {
             }
         }
 
-        let skipLocomotion = this._myDelaySessionChangeResyncCounter > 0 || this._myDelayBlurEndResyncCounter > 0 || this._myDelayBlurEndResyncTimer.isRunning();
+        let skipLocomotion = this._myDelaySessionChangeResyncCounter > 0 || this._myDelayBlurEndResyncCounter > 0 || this._myDelayBlurEndResyncTimer.isRunning() || !PP.myLeftGamepad.getButtonInfo(PP.ButtonType.SQUEEZE).isPressed();
         if (!skipLocomotion) {
             let playerUp = PP.myPlayerObjects.myPlayer.pp_getUp();
 
@@ -104,7 +104,7 @@ WL.registerComponent('locomotion', {
                 axes[0] = Math.abs(axes[0]) > minIntensityThreshold ? axes[0] : 0;
                 axes[1] = Math.abs(axes[1]) > minIntensityThreshold ? axes[1] : 0;
 
-                if (!axes.vec2_isZero() && PP.myLeftGamepad.getButtonInfo(PP.ButtonType.SQUEEZE).isPressed()) {
+                if (!axes.vec2_isZero()) {
                     this._myStickIdleTimer.start();
 
                     let direction = null;

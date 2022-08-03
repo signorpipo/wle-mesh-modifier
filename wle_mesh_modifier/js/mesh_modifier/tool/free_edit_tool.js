@@ -83,7 +83,7 @@ FreeEditTool = class FreeEditTool extends VertexTool {
     _setupControlScheme() {
         let leftScheme = this._myToolData.myLeftControlScheme;
         leftScheme.setSelectText("");
-        leftScheme.setSqueezeText("Hold: Enable Locomotion");
+        leftScheme.setSqueezeText("x2: Play/Stop Animation\nHold: Enable Locomotion");
         leftScheme.setThumbstickText("x2: Download Configuration\nLeft/Right: Change Tool");
         leftScheme.setBottomButtonText("");
         leftScheme.setTopButtonText("");

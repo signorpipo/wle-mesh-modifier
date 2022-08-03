@@ -103,7 +103,7 @@ ManageGroupsVariantsTool = class ManageGroupsVariantsTool extends VertexTool {
         let leftScheme = this._myToolData.myLeftControlScheme;
         let rightScheme = this._myToolData.myRightControlScheme;
 
-        leftScheme.setSqueezeText("Hold: Enable Locomotion");
+        leftScheme.setSqueezeText("x2: Play/Stop Animation\nHold: Enable Locomotion");
         leftScheme.setThumbstickText("x2: Download Configuration\nLeft/Right: Change Tool");
 
         rightScheme.setSqueezeText("Select/Deselect Group");
