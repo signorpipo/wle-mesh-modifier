@@ -57,6 +57,10 @@ FreeEditTool = class FreeEditTool extends VertexTool {
             this._selectVertex();
         }
 
+        if (PP.myRightGamepad.getButtonInfo(PP.ButtonType.SELECT).isPressEnd(2)) {
+            this._selectAll();
+        }
+
         if (PP.myRightGamepad.getButtonInfo(PP.ButtonType.TOP_BUTTON).isPressed()) {
             this._deselectVertex();
         }
@@ -85,7 +89,7 @@ FreeEditTool = class FreeEditTool extends VertexTool {
         leftScheme.setTopButtonText("");
 
         let rightScheme = this._myToolData.myRightControlScheme;
-        rightScheme.setSelectText("Select Vertex");
+        rightScheme.setSelectText("x1: Select Vertex\n x2: Select All Vertexes");
         rightScheme.setSqueezeText("Move Vertex Free");
         rightScheme.setThumbstickText("x1: Toggle Control Scheme\nLeft/Right: Move Vertex Along Normal");
         rightScheme.setBottomButtonText("x1: Reset Vertex\n x2: Reset All Vertexes");

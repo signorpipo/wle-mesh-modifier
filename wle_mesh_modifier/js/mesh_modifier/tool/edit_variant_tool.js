@@ -43,12 +43,8 @@ EditVariantTool = class EditVariantTool extends FreeEditTool {
         this._resetGroupVertexes();
     }
 
-    _deselectAll() {
-        if (this._myToolData.mySelectedVertexes.length > 0) {
-            this._myToolData.mySelectedVertexes = [];
-        } else {
-            this._selectAllGroupVertex();
-        }
+    _selectAll() {
+        this._selectAllGroupVertex();
     }
 
     _setupControlScheme() {
@@ -58,8 +54,9 @@ EditVariantTool = class EditVariantTool extends FreeEditTool {
         leftScheme.setBottomButtonText("x2: Save As New Variant");
 
         let rightScheme = this._myToolData.myRightControlScheme;
-        rightScheme.setBottomButtonText("x1: Reset Vertex\n x2: Reset Group Vertexes\n x3: Reset All Vertexes");
-        rightScheme.setTopButtonText("x1: Deselect Vertex\n x2: Select/Deselect Group Vertexes");
+        rightScheme.setSelectText("x1: Select Vertex\n x2: Select All Group Vertexes");
+        rightScheme.setBottomButtonText("x1: Reset Vertex\n x2: Reset All Group Vertexes\n x3: Reset All Vertexes");
+        rightScheme.setTopButtonText("x1: Deselect Vertex\n x2: Deselect All Group Vertexes");
     }
 
     _debugDraw() {

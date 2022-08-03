@@ -61,16 +61,16 @@ ManageGroupsVariantsTool = class ManageGroupsVariantsTool extends VertexTool {
                 this._selectVertex();
             }
 
+            if (PP.myRightGamepad.getButtonInfo(PP.ButtonType.SELECT).isPressed(2)) {
+                this._selectAllGroupVertex();
+            }
+
             if (PP.myRightGamepad.getButtonInfo(PP.ButtonType.TOP_BUTTON).isPressed()) {
                 this._deselectVertex();
             }
 
             if (PP.myRightGamepad.getButtonInfo(PP.ButtonType.TOP_BUTTON).isPressEnd(2)) {
-                if (this._myToolData.mySelectedVertexes.length > 0) {
-                    this._myToolData.mySelectedVertexes = [];
-                } else {
-                    this._selectAllGroupVertex();
-                }
+                this._myToolData.mySelectedVertexes = [];
             }
 
             if (PP.myLeftGamepad.getButtonInfo(PP.ButtonType.BOTTOM_BUTTON).isPressEnd(2)) {
@@ -116,7 +116,7 @@ ManageGroupsVariantsTool = class ManageGroupsVariantsTool extends VertexTool {
 
             rightScheme.setSelectText("");
             rightScheme.setTopButtonText("");
-            rightScheme.setBottomButtonText("x2: Reset Group Vertexes\n x3: Reset All Vertexes");
+            rightScheme.setBottomButtonText("x2: Reset All Group Vertexes\n x3: Reset All Vertexes");
         }
 
         if (this._myManageGroups) {
@@ -124,9 +124,9 @@ ManageGroupsVariantsTool = class ManageGroupsVariantsTool extends VertexTool {
             leftScheme.setBottomButtonText("x2 Save Group");
             leftScheme.setTopButtonText("");
 
-            rightScheme.setSelectText("Select Vertex");
-            rightScheme.setTopButtonText("x1: Deselect Vertex\n x2: Select/Deselect Group Vertexes");
-            rightScheme.setBottomButtonText("x1: Reset Vertex\n x2: Reset Group Vertexes\n x3: Reset All Vertexes");
+            rightScheme.setSelectText("x1: Select Vertex\n x2: Select All Group Vertexes");
+            rightScheme.setTopButtonText("x1: Deselect Vertex\n x2: Deselect All Group Vertexes");
+            rightScheme.setBottomButtonText("x1: Reset Vertex\n x2: Reset All Group Vertexes\n x3: Reset All Vertexes");
         }
     }
 

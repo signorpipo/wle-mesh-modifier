@@ -51,6 +51,22 @@ VertexTool = class VertexTool {
         }
     }
 
+    _selectAll() {
+        this._myToolData.mySelectedVertexes = [];
+        let meshTransform = this._myToolData.myMeshComponent.object.pp_getTransform();
+
+        let vertexDataSize = WL.Mesh.VERTEX_FLOAT_SIZE;
+        let vertexCount = this._myToolData.myMeshComponent.mesh.vertexData.length / vertexDataSize;
+
+        for (let i = 0; i < vertexCount; i++) {
+            let vertexPosition = VertexUtils.getVertexPosition(i, this._myToolData.myMeshComponent.mesh);
+            let vertexPositionWorld = vertexPosition.vec3_convertPositionToWorld(meshTransform);
+
+            let selectedVertexParams = VertexUtils.getClosestSelectedVertex(this._myToolData.myMeshObject, vertexPositionWorld, this._myToolData.myVertexDataBackup);
+            this._myToolData.mySelectedVertexes.pp_pushUnique(selectedVertexParams, element => element.equals(selectedVertexParams));
+        }
+    }
+
     _selectAllGroupVertex() {
         if (this._myToolData.mySelectedVertexGroup != null) {
             this._myToolData.mySelectedVertexes = [];
