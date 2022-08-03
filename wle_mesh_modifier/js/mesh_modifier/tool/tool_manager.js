@@ -82,8 +82,6 @@ ToolManager = class ToolManager {
 
         PP.myDebugManager.allocateDraw(PP.DebugDrawObjectType.POINT, 1000);
         PP.myDebugManager.allocateDraw(PP.DebugDrawObjectType.ARROW, 1000);
-
-        this._myEnableMeshCounter = 0;
     }
 
     update(dt) {
@@ -140,19 +138,6 @@ ToolManager = class ToolManager {
                 this._myVariantLabel.text = "Variant: " + this._myToolData.mySelectedVertexVariant.getID();
             } else {
                 this._myVariantLabel.text = "Variant: None";
-            }
-
-            if (this._myEnableMeshCounter > 0) {
-                this._myEnableMeshCounter--;
-                if (this._myEnableMeshCounter == 0) {
-                    this._myToolData.myMeshComponent.active = true;
-                }
-            }
-
-            if (!this._myToolData.myMeshComponent.active && this._myEnableMeshCounter == 0) {
-                this._myEnableMeshCounter = 2;
-            } else if (this._myToolData.myMeshComponent.active) {
-                this._myEnableMeshCounter = 0;
             }
         }
     }

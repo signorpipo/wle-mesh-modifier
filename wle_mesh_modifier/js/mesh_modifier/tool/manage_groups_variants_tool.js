@@ -28,8 +28,6 @@ ManageGroupsVariantsTool = class ManageGroupsVariantsTool extends VertexTool {
                 this._selectNextVariant(Math.pp_sign(axes[0]));
 
                 this._myScrollEnabled = false;
-            } else {
-                this._myToolData.myMeshComponent.active = true;
             }
         } else {
             this._myScrollEnabled = true;

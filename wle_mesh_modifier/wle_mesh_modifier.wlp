@@ -46,7 +46,7 @@
                         "_myMeshObject": "277",
                         "_myPointer": "82",
                         "_myToolLabel": "87",
-                        "_myVertexGroupConfigPath": "low_poly_character_smooth_config.json",
+                        "_myVertexGroupConfigPath": "low_poly_skinned_character_smooth_joined_config.json",
                         "_myGroupLabel": "106",
                         "_myVariantLabel": "108",
                         "_myLeftControlScheme": "23",

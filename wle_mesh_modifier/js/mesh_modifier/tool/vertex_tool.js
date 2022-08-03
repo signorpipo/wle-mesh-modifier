@@ -97,14 +97,12 @@ VertexTool = class VertexTool {
     _moveSelectedVertexes(movement) {
         if (this._myToolData.mySelectedVertexes.length > 0) {
             VertexUtils.moveSelectedVertexes(this._myToolData.myMeshObject, this._myToolData.mySelectedVertexes, movement);
-            this._myToolData.myMeshComponent.active = !this._myToolData.myMeshComponent.active;
         }
     }
 
     _moveSelectedVertexesAlongNormals(movement) {
         if (this._myToolData.mySelectedVertexes.length > 0) {
             VertexUtils.moveSelectedVertexesAlongNormals(this._myToolData.myMeshObject, this._myToolData.mySelectedVertexes, movement, true);
-            this._myToolData.myMeshComponent.active = !this._myToolData.myMeshComponent.active;
         }
     }
 
@@ -113,7 +111,6 @@ VertexTool = class VertexTool {
             for (let selectedVertex of this._myToolData.mySelectedVertexes) {
                 VertexUtils.updateVertexNormals(selectedVertex.getIndexes()[0], this._myToolData.myMeshComponent.mesh, this._myToolData.myIsFlatShading);
             }
-            this._myToolData.myMeshComponent.active = false;
         }
     }
 
@@ -127,10 +124,6 @@ VertexTool = class VertexTool {
         if (vertexPositionWorld.vec3_distance(pointerPosition) < this._myMinDistanceToSelect) {
 
             VertexUtils.resetVertexes(this._myToolData.myMeshComponent, selectedVertexParams.getIndexes(), this._myToolData.myVertexDataBackup, this._myToolData.myIsFlatShading);
-
-            this._myToolData.myMeshComponent.active = false;
-        } else {
-            this._myToolData.myMeshComponent.active = true;
         }
     }
 
@@ -138,14 +131,12 @@ VertexTool = class VertexTool {
         if (this._myToolData.mySelectedVertexGroup != null) {
             let indexList = this._myToolData.mySelectedVertexGroup.getIndexList();
             VertexUtils.resetVertexes(this._myToolData.myMeshComponent, indexList, this._myToolData.myVertexDataBackup, this._myToolData.myIsFlatShading);
-            this._myToolData.myMeshComponent.active = false;
 
         }
     }
 
     _resetAllVertexes() {
         VertexUtils.resetMesh(this._myToolData.myMeshComponent, this._myToolData.myVertexDataBackup);
-        this._myToolData.myMeshComponent.active = false;
     }
 
     // Group
@@ -225,7 +216,6 @@ VertexTool = class VertexTool {
             this._myToolData.mySelectedVertexVariant = this._myToolData.mySelectedVertexGroup.getNextVariant(this._myToolData.mySelectedVertexVariant, direction);
             if (this._myToolData.mySelectedVertexVariant != null) {
                 this._myToolData.mySelectedVertexVariant.loadVariant(this._myToolData.myMeshComponent.mesh, this._myToolData.myIsFlatShading);
-                this._myToolData.myMeshComponent.active = false;
             } else {
                 this._resetGroupVertexes();
             }
