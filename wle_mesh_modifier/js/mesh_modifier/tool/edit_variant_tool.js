@@ -56,10 +56,12 @@ EditVariantTool = class EditVariantTool extends FreeEditTool {
         let rightScheme = this._myToolData.myRightControlScheme;
         rightScheme.setSelectText("x1: Select Vertex\n x2: Select All Group Vertexes");
         rightScheme.setBottomButtonText("x1: Reset Vertex\n x2: Reset All Group Vertexes\n x3: Reset All Vertexes");
-        rightScheme.setTopButtonText("x1: Deselect Vertex\n x2: Deselect All Group Vertexes");
+        rightScheme.setTopButtonText("x1: Deselect Vertex\n x2: Deselect All Vertexes");
     }
 
     _debugDraw() {
+        if (this._myToolData.myIsPlayingAnimation) return;
+
         if (this._myToolData.mySelectedVertexGroup == null) {
             this._myToolData.myVertexGroupConfig.debugDraw(this._myToolData.myMeshComponent);
         } else {

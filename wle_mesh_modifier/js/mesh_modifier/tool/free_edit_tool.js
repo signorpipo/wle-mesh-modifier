@@ -97,6 +97,8 @@ FreeEditTool = class FreeEditTool extends VertexTool {
     }
 
     _debugDraw() {
+        if (this._myToolData.myIsPlayingAnimation) return;
+
         for (let selectedVertex of this._myToolData.mySelectedVertexes) {
             selectedVertex.debugDraw();
         }

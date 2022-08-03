@@ -59,8 +59,12 @@ ManageGroupsVariantsTool = class ManageGroupsVariantsTool extends VertexTool {
                 this._selectVertex();
             }
 
-            if (PP.myRightGamepad.getButtonInfo(PP.ButtonType.SELECT).isPressed(2)) {
+            if (PP.myRightGamepad.getButtonInfo(PP.ButtonType.SELECT).isPressEnd(2)) {
                 this._selectAllGroupVertex();
+            }
+
+            if (PP.myRightGamepad.getButtonInfo(PP.ButtonType.SELECT).isPressEnd(3)) {
+                this._selectAll();
             }
 
             if (PP.myRightGamepad.getButtonInfo(PP.ButtonType.TOP_BUTTON).isPressed()) {
@@ -122,13 +126,15 @@ ManageGroupsVariantsTool = class ManageGroupsVariantsTool extends VertexTool {
             leftScheme.setBottomButtonText("x2 Save Group");
             leftScheme.setTopButtonText("");
 
-            rightScheme.setSelectText("x1: Select Vertex\n x2: Select All Group Vertexes");
-            rightScheme.setTopButtonText("x1: Deselect Vertex\n x2: Deselect All Group Vertexes");
+            rightScheme.setSelectText("x1: Select Vertex\n x2: Select All Group Vertexes\n x3: Select All Vertexes");
+            rightScheme.setTopButtonText("x1: Deselect Vertex\n x2: Deselect All Vertexes");
             rightScheme.setBottomButtonText("x1: Reset Vertex\n x2: Reset All Group Vertexes\n x3: Reset All Vertexes");
         }
     }
 
     _debugDraw() {
+        if (this._myToolData.myIsPlayingAnimation) return;
+
         if (this._myToolData.mySelectedVertexGroup == null) {
             this._myToolData.myVertexGroupConfig.debugDraw(this._myToolData.myMeshComponent);
         } else {

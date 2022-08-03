@@ -67,7 +67,7 @@
                 {
                     "type": "locomotion",
                     "locomotion": {
-                        "_myMaxSpeed": 1.0
+                        "_myMaxSpeed": 0.25
                     }
                 }
             ]
