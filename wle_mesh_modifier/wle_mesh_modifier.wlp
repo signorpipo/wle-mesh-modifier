@@ -43,7 +43,7 @@
                 {
                     "type": "mesh-modifier-gateway",
                     "mesh-modifier-gateway": {
-                        "_myMeshObject": "73",
+                        "_myMeshObject": "277",
                         "_myPointer": "82",
                         "_myToolLabel": "87",
                         "_myVertexGroupConfigPath": "low_poly_character_smooth_config.json",
@@ -670,6 +670,15 @@
                 0.0,
                 -0.5,
                 1.0
+            ],
+            "components": [
+                {
+                    "type": "pp-set-active",
+                    "active": true,
+                    "pp-set-active": {
+                        "_myActive": false
+                    }
+                }
             ]
         },
         "76": {
@@ -1436,7 +1445,7 @@
             "parent": "86",
             "transformation": [
                 -0.0749999,
-                1.132473581577642e-8,
+                1.1324735815776421e-8,
                 1.3607948545768524e-8,
                 0.0,
                 0.0,
@@ -2965,6 +2974,302 @@
                 "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
             },
             "parent": "270"
+        },
+        "276": {
+            "link": {
+                "name": "Low Poly Skinned Character Smooth Joined Body",
+                "file": "assets\\models\\low_poly_skinned_character_smooth_joined.fbx"
+            },
+            "parent": "277",
+            "transformation": [
+                0.9999998,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                -1.1920930376163597e-7,
+                1.0000001,
+                0.0,
+                0.0,
+                -1.0000002,
+                -1.192093321833454e-7,
+                0.0,
+                -0.0001355,
+                -0.0278483,
+                0.5880214,
+                1.0
+            ]
+        },
+        "277": {
+            "link": {
+                "name": "Low Poly Skinned Character Smooth Joined",
+                "file": "assets\\models\\low_poly_skinned_character_smooth_joined.fbx"
+            },
+            "transformation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                -1.1920879217086622e-7,
+                -0.9999957,
+                0.0,
+                0.0,
+                0.9999957,
+                -1.1920879217086622e-7,
+                0.0,
+                0.0,
+                0.2499999,
+                -0.4999999,
+                1.0
+            ],
+            "parent": "72",
+            "components": [
+                {
+                    "type": "pp-set-active",
+                    "pp-set-active": {
+                        "_myActive": false
+                    },
+                    "active": false
+                }
+            ]
+        },
+        "278": {
+            "link": {
+                "name": "Armature<Low Poly Skinned Character Smooth Joined",
+                "file": "assets\\models\\low_poly_skinned_character_smooth_joined.fbx"
+            },
+            "parent": "277",
+            "components": [
+                {
+                    "animation": {
+                        "preview": false
+                    }
+                },
+                null,
+                {
+                    "animation": {
+                        "preview": false
+                    }
+                }
+            ]
+        },
+        "279": {
+            "link": {
+                "name": "hips<Armature<Low Poly Skinned Character Smooth Joined",
+                "file": "assets\\models\\low_poly_skinned_character_smooth_joined.fbx"
+            },
+            "parent": "278"
+        },
+        "280": {
+            "link": {
+                "name": "lower_chest<hips<Armature<Low Poly Skinned Character Smooth Joined",
+                "file": "assets\\models\\low_poly_skinned_character_smooth_joined.fbx"
+            },
+            "parent": "279"
+        },
+        "281": {
+            "link": {
+                "name": "upper_chest<lower_chest<hips<Armature<Low Poly Skinned Character Smooth Joined",
+                "file": "assets\\models\\low_poly_skinned_character_smooth_joined.fbx"
+            },
+            "parent": "280"
+        },
+        "282": {
+            "link": {
+                "name": "neck<upper_chest<lower_chest<hips<Armature<Low Poly Skinned Character Smooth Joined",
+                "file": "assets\\models\\low_poly_skinned_character_smooth_joined.fbx"
+            },
+            "parent": "281"
+        },
+        "283": {
+            "link": {
+                "name": "head<neck<upper_chest<lower_chest<hips<Armature<Low Poly Skinned Character Smooth Joined",
+                "file": "assets\\models\\low_poly_skinned_character_smooth_joined.fbx"
+            },
+            "parent": "282"
+        },
+        "284": {
+            "link": {
+                "name": "head_end<head<neck<upper_chest<lower_chest<hips<Armature<Low Poly Skinned Character Smooth Joined",
+                "file": "assets\\models\\low_poly_skinned_character_smooth_joined.fbx"
+            },
+            "parent": "283"
+        },
+        "285": {
+            "link": {
+                "name": "head_end_end<head_end<head<neck<upper_chest<lower_chest<hips<Armature<Low Poly Skinned Character Smooth Joined",
+                "file": "assets\\models\\low_poly_skinned_character_smooth_joined.fbx"
+            },
+            "parent": "284"
+        },
+        "286": {
+            "link": {
+                "name": "shoulder.L<upper_chest<lower_chest<hips<Armature<Low Poly Skinned Character Smooth Joined",
+                "file": "assets\\models\\low_poly_skinned_character_smooth_joined.fbx"
+            },
+            "parent": "281"
+        },
+        "287": {
+            "link": {
+                "name": "upper_arm.L<shoulder.L<upper_chest<lower_chest<hips<Armature<Low Poly Skinned Character Smooth Joined",
+                "file": "assets\\models\\low_poly_skinned_character_smooth_joined.fbx"
+            },
+            "parent": "286"
+        },
+        "288": {
+            "link": {
+                "name": "average_arm.L<upper_arm.L<shoulder.L<upper_chest<lower_chest<hips<Armature<Low Poly Skinned Character Smooth Joined",
+                "file": "assets\\models\\low_poly_skinned_character_smooth_joined.fbx"
+            },
+            "parent": "287"
+        },
+        "289": {
+            "link": {
+                "name": "lower_arm.L<average_arm.L<upper_arm.L<shoulder.L<upper_chest<lower_chest<hips<Armature<Low Poly Skinned Character Smooth Joined",
+                "file": "assets\\models\\low_poly_skinned_character_smooth_joined.fbx"
+            },
+            "parent": "288"
+        },
+        "290": {
+            "link": {
+                "name": "hand.L<lower_arm.L<average_arm.L<upper_arm.L<shoulder.L<upper_chest<lower_chest<hips<Armature<Low Poly Skinned Character Smooth Joined",
+                "file": "assets\\models\\low_poly_skinned_character_smooth_joined.fbx"
+            },
+            "parent": "289"
+        },
+        "291": {
+            "link": {
+                "name": "hand.L_end<hand.L<lower_arm.L<average_arm.L<upper_arm.L<shoulder.L<upper_chest<lower_chest<hips<Armature<Low Poly Skinned Character Smooth Joined",
+                "file": "assets\\models\\low_poly_skinned_character_smooth_joined.fbx"
+            },
+            "parent": "290"
+        },
+        "292": {
+            "link": {
+                "name": "hand.L_end_end<hand.L_end<hand.L<lower_arm.L<average_arm.L<upper_arm.L<shoulder.L<upper_chest<lower_chest<hips<Armature<Low Poly Skinned Character Smooth Joined",
+                "file": "assets\\models\\low_poly_skinned_character_smooth_joined.fbx"
+            },
+            "parent": "291"
+        },
+        "293": {
+            "link": {
+                "name": "shoulder.R<upper_chest<lower_chest<hips<Armature<Low Poly Skinned Character Smooth Joined",
+                "file": "assets\\models\\low_poly_skinned_character_smooth_joined.fbx"
+            },
+            "parent": "281"
+        },
+        "294": {
+            "link": {
+                "name": "upper_arm.R<shoulder.R<upper_chest<lower_chest<hips<Armature<Low Poly Skinned Character Smooth Joined",
+                "file": "assets\\models\\low_poly_skinned_character_smooth_joined.fbx"
+            },
+            "parent": "293"
+        },
+        "295": {
+            "link": {
+                "name": "average_arm.R<upper_arm.R<shoulder.R<upper_chest<lower_chest<hips<Armature<Low Poly Skinned Character Smooth Joined",
+                "file": "assets\\models\\low_poly_skinned_character_smooth_joined.fbx"
+            },
+            "parent": "294"
+        },
+        "296": {
+            "link": {
+                "name": "lower_arm.R<average_arm.R<upper_arm.R<shoulder.R<upper_chest<lower_chest<hips<Armature<Low Poly Skinned Character Smooth Joined",
+                "file": "assets\\models\\low_poly_skinned_character_smooth_joined.fbx"
+            },
+            "parent": "295"
+        },
+        "297": {
+            "link": {
+                "name": "hand.R<lower_arm.R<average_arm.R<upper_arm.R<shoulder.R<upper_chest<lower_chest<hips<Armature<Low Poly Skinned Character Smooth Joined",
+                "file": "assets\\models\\low_poly_skinned_character_smooth_joined.fbx"
+            },
+            "parent": "296"
+        },
+        "298": {
+            "link": {
+                "name": "hand.R_end<hand.R<lower_arm.R<average_arm.R<upper_arm.R<shoulder.R<upper_chest<lower_chest<hips<Armature<Low Poly Skinned Character Smooth Joined",
+                "file": "assets\\models\\low_poly_skinned_character_smooth_joined.fbx"
+            },
+            "parent": "297"
+        },
+        "299": {
+            "link": {
+                "name": "hand.R_end_end<hand.R_end<hand.R<lower_arm.R<average_arm.R<upper_arm.R<shoulder.R<upper_chest<lower_chest<hips<Armature<Low Poly Skinned Character Smooth Joined",
+                "file": "assets\\models\\low_poly_skinned_character_smooth_joined.fbx"
+            },
+            "parent": "298"
+        },
+        "300": {
+            "link": {
+                "name": "upper_leg.L<hips<Armature<Low Poly Skinned Character Smooth Joined",
+                "file": "assets\\models\\low_poly_skinned_character_smooth_joined.fbx"
+            },
+            "parent": "279"
+        },
+        "301": {
+            "link": {
+                "name": "lower_leg.L<upper_leg.L<hips<Armature<Low Poly Skinned Character Smooth Joined",
+                "file": "assets\\models\\low_poly_skinned_character_smooth_joined.fbx"
+            },
+            "parent": "300"
+        },
+        "302": {
+            "link": {
+                "name": "foot.L<lower_leg.L<upper_leg.L<hips<Armature<Low Poly Skinned Character Smooth Joined",
+                "file": "assets\\models\\low_poly_skinned_character_smooth_joined.fbx"
+            },
+            "parent": "301"
+        },
+        "303": {
+            "link": {
+                "name": "foot.L_end<foot.L<lower_leg.L<upper_leg.L<hips<Armature<Low Poly Skinned Character Smooth Joined",
+                "file": "assets\\models\\low_poly_skinned_character_smooth_joined.fbx"
+            },
+            "parent": "302"
+        },
+        "304": {
+            "link": {
+                "name": "foot.L_end_end<foot.L_end<foot.L<lower_leg.L<upper_leg.L<hips<Armature<Low Poly Skinned Character Smooth Joined",
+                "file": "assets\\models\\low_poly_skinned_character_smooth_joined.fbx"
+            },
+            "parent": "303"
+        },
+        "305": {
+            "link": {
+                "name": "upper_leg.R<hips<Armature<Low Poly Skinned Character Smooth Joined",
+                "file": "assets\\models\\low_poly_skinned_character_smooth_joined.fbx"
+            },
+            "parent": "279"
+        },
+        "306": {
+            "link": {
+                "name": "lower_leg.R<upper_leg.R<hips<Armature<Low Poly Skinned Character Smooth Joined",
+                "file": "assets\\models\\low_poly_skinned_character_smooth_joined.fbx"
+            },
+            "parent": "305"
+        },
+        "307": {
+            "link": {
+                "name": "foot.R<lower_leg.R<upper_leg.R<hips<Armature<Low Poly Skinned Character Smooth Joined",
+                "file": "assets\\models\\low_poly_skinned_character_smooth_joined.fbx"
+            },
+            "parent": "306"
+        },
+        "308": {
+            "link": {
+                "name": "foot.R_end<foot.R<lower_leg.R<upper_leg.R<hips<Armature<Low Poly Skinned Character Smooth Joined",
+                "file": "assets\\models\\low_poly_skinned_character_smooth_joined.fbx"
+            },
+            "parent": "307"
+        },
+        "309": {
+            "link": {
+                "name": "foot.R_end_end<foot.R_end<foot.R<lower_leg.R<upper_leg.R<hips<Armature<Low Poly Skinned Character Smooth Joined",
+                "file": "assets\\models\\low_poly_skinned_character_smooth_joined.fbx"
+            },
+            "parent": "308"
         }
     },
     "meshes": {
@@ -3243,6 +3548,12 @@
                 "name": "Mouth",
                 "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
             }
+        },
+        "274": {
+            "link": {
+                "name": "Low Poly Skinned Character Smooth Joined Body",
+                "file": "assets\\models\\low_poly_skinned_character_smooth_joined.fbx"
+            }
         }
     },
     "textures": {
@@ -3280,6 +3591,12 @@
             "link": {
                 "name": "texture_0",
                 "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            }
+        },
+        "272": {
+            "link": {
+                "name": "texture_0",
+                "file": "assets\\models\\low_poly_skinned_character_smooth_joined.fbx"
             }
         }
     },
@@ -3554,6 +3871,29 @@
                     0.1960784
                 ]
             }
+        },
+        "273": {
+            "link": {
+                "name": "Low Poly Skinned Character Textured",
+                "file": "assets\\models\\low_poly_skinned_character_smooth_joined.fbx"
+            },
+            "Phong": {
+                "specularColor": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    0.1960784
+                ],
+                "shininess": 2,
+                "ambientFactor": 0.5,
+                "diffuseTexture": "186",
+                "diffuseColor": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            }
         }
     },
     "shaders": {
@@ -3642,6 +3982,24 @@
                 "name": "Armature|Armature|Armature|Walk|Armature|Walk",
                 "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
             }
+        },
+        "310": {
+            "link": {
+                "name": "Armature|Armature|Armature|Armature|Armature|A pose|Armature|A pose|Arma",
+                "file": "assets\\models\\low_poly_skinned_character_smooth_joined.fbx"
+            }
+        },
+        "311": {
+            "link": {
+                "name": "Armature|Armature|Armature|Armature|Armature|Action|Armature|Action|Arma",
+                "file": "assets\\models\\low_poly_skinned_character_smooth_joined.fbx"
+            }
+        },
+        "312": {
+            "link": {
+                "name": "Armature|Armature|Armature|Armature|Armature|Walk|Armature|Walk|Armature",
+                "file": "assets\\models\\low_poly_skinned_character_smooth_joined.fbx"
+            }
         }
     },
     "skins": {
@@ -3655,6 +4013,12 @@
             "link": {
                 "name": "skin_7",
                 "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
+            }
+        },
+        "275": {
+            "link": {
+                "name": "skin_8",
+                "file": "assets\\models\\low_poly_skinned_character_smooth_joined.fbx"
             }
         }
     },
@@ -3802,6 +4166,7 @@
         "assets/textures/low_poly_character_smooth_texture.png",
         "assets/models/low_poly_skinned_character_flat.fbx",
         "assets/textures/low_poly_skinned_character_texture.png",
-        "assets/models/low_poly_skinned_character_smooth.fbx"
+        "assets/models/low_poly_skinned_character_smooth.fbx",
+        "assets/models/low_poly_skinned_character_smooth_joined.fbx"
     ]
 }
