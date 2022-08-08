@@ -3014,12 +3014,12 @@
                 0.0,
                 0.0,
                 0.0,
-                -1.1920850795377191e-7,
+                -1.1920850795377193e-7,
                 -0.9999933,
                 0.0,
                 0.0,
                 0.9999933,
-                -1.1920850795377191e-7,
+                -1.1920850795377193e-7,
                 0.0,
                 0.0,
                 0.3499999,
@@ -4144,7 +4144,8 @@
                 "js/pp/tool/widget_frame",
                 "js/mesh_modifier",
                 "js/mesh_modifier/tool",
-                "js/mesh_modifier/test"
+                "js/mesh_modifier/test",
+                "js/mesh_modifier/tool/vertex"
             ],
             "useInternalBundler": false
         },

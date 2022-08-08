@@ -1,4 +1,4 @@
-FreeEditTool = class FreeEditTool extends VertexTool {
+VertexFreeEditTool = class VertexFreeEditTool extends VertexTool {
     constructor(toolData) {
         super(toolData);
 
@@ -84,14 +84,14 @@ FreeEditTool = class FreeEditTool extends VertexTool {
         let leftScheme = this._myToolData.myLeftControlScheme;
         leftScheme.setSelectText("");
         leftScheme.setSqueezeText("x2: Play/Stop Animation\nHold: Enable Locomotion");
-        leftScheme.setThumbstickText("x2: Download Configuration\nLeft/Right: Change Tool");
+        leftScheme.setThumbstickText("Left/Right: Change Tool\nUp/Down: Change Tool Group\nx2: Download Configuration");
         leftScheme.setBottomButtonText("");
         leftScheme.setTopButtonText("");
 
         let rightScheme = this._myToolData.myRightControlScheme;
         rightScheme.setSelectText("x1: Select Vertex\n x2: Select All Vertexes");
         rightScheme.setSqueezeText("Move Vertex Free");
-        rightScheme.setThumbstickText("x1: Toggle Control Scheme\nLeft/Right: Move Vertex Along Normal");
+        rightScheme.setThumbstickText("Left/Right: Move Vertex Along Normal\nx1: Toggle Control Scheme");
         rightScheme.setBottomButtonText("x1: Reset Vertex\n x2: Reset All Vertexes");
         rightScheme.setTopButtonText("x1: Deselect Vertex\n x2: Deselect All Vertexes");
     }

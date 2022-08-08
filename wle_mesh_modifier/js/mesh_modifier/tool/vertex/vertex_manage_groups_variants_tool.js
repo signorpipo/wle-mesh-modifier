@@ -1,4 +1,4 @@
-ManageGroupsVariantsTool = class ManageGroupsVariantsTool extends VertexTool {
+VertexManageGroupsVariantsTool = class VertexManageGroupsVariantsTool extends VertexTool {
     constructor(toolData, manageGroups = false, manageVariants = false) {
         super(toolData);
 
@@ -106,10 +106,10 @@ ManageGroupsVariantsTool = class ManageGroupsVariantsTool extends VertexTool {
         let rightScheme = this._myToolData.myRightControlScheme;
 
         leftScheme.setSqueezeText("x2: Play/Stop Animation\nHold: Enable Locomotion");
-        leftScheme.setThumbstickText("x2: Download Configuration\nLeft/Right: Change Tool");
+        leftScheme.setThumbstickText("Left/Right: Change Tool\nUp/Down: Change Tool Group\nx2: Download Configuration");
 
         rightScheme.setSqueezeText("Select/Deselect Group");
-        rightScheme.setThumbstickText("x1: Toggle Control Scheme\nLeft/Right: Change Current Group Variant");
+        rightScheme.setThumbstickText("Left/Right: Change Current Group Variant\nx1: Toggle Control Scheme");
 
         if (this._myManageVariants) {
             leftScheme.setSelectText("x2: Delete Variant");

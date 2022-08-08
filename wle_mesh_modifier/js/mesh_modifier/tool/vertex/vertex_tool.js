@@ -1,8 +1,53 @@
+VertexToolData = class VertexToolData {
+    constructor(mesh) {
+        this.myMeshObject = null;
+        this.myIsFlatShading = true;
+
+        this.myMeshComponent = null;
+        this.myMeshAnimationObject = null;
+        this.myAnimationToPlay = null;
+        this.myAPoseAnimation = null;
+
+        this.myPointerObject = null;
+        this.myVertexGroupConfig = null;
+
+        this.myIsPlayingAnimation = false;
+
+        this.mySelectedVertexes = [];
+        this.mySelectedVertexGroup = null;
+        this.mySelectedVertexVariant = null;
+        this.myVertexDataBackup = [];
+        for (let vertex of mesh.vertexData) {
+            this.myVertexDataBackup.push(vertex);
+        }
+
+        this.myLeftControlScheme = null;
+        this.myRightControlScheme = null;
+    }
+};
+
 VertexTool = class VertexTool {
     constructor(toolData) {
         this._myToolData = toolData;
 
         this._myMinDistanceToSelect = 0.025;
+    }
+
+    getToolData() {
+        return this._myToolData;
+    }
+
+    reset() {
+        this._myToolData.mySelectedVertexes = [];
+        this._myToolData.mySelectedVertexGroup = null;
+        this._myToolData.mySelectedVertexVariant = null;
+
+        if (this._myToolData.myIsPlayingAnimation) {
+            let animationComponent = this._myToolData.myMeshAnimationObject.pp_getComponentHierarchy("animation");
+            animationComponent.stop();
+            animationComponent.animation = this._myToolData.myAPoseAnimation;
+            animationComponent.play();
+        }
     }
 
     start() {

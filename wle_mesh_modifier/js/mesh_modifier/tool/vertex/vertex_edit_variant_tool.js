@@ -1,4 +1,4 @@
-EditVariantTool = class EditVariantTool extends FreeEditTool {
+VertexEditVariantTool = class VertexEditVariantTool extends VertexFreeEditTool {
     constructor(toolData) {
         super(toolData);
 
