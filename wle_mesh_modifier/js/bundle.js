@@ -182,6 +182,8 @@ require('./mesh_modifier/tool/vertex/vertex_free_edit_tool.js');
 require('./mesh_modifier/tool/vertex/vertex_manage_groups_tool.js');
 require('./mesh_modifier/tool/vertex/vertex_manage_variants_tool.js');
 require('./mesh_modifier/tool/vertex/vertex_edit_variant_tool.js');
+require('./mesh_modifier/tool/index/index_tool');
+require('./mesh_modifier/tool/index/index_free_edit_tool');
 require('./mesh_modifier/tool/dummy_tool.js');
 
 require('./mesh_modifier/mesh_modifier_gateway.js');

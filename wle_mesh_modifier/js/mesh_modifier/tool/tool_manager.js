@@ -62,6 +62,17 @@ ToolManager = class ToolManager {
         this._myVertexToolData.myRightControlScheme = params.myRightControlScheme;
         this._loadVertexGroupConfig(params.myVariantGroupCongigPath);
 
+        this._myIndexToolData = new IndexToolData(meshComponent.mesh);
+        this._myIndexToolData.myMeshObject = params.myMeshObject;
+        this._myIndexToolData.myMeshAnimationObject = params.myMeshAnimationObject;
+        this._myIndexToolData.myAnimationToPlay = params.myAnimationToPlay;
+        this._myIndexToolData.myAPoseAnimation = params.myAPoseAnimation;
+        this._myIndexToolData.myIsFlatShading = params.myIsFlatShading;
+        this._myIndexToolData.myMeshComponent = meshComponent;
+        this._myIndexToolData.myPointerObject = params.myPointerObject;
+        this._myIndexToolData.myLeftControlScheme = params.myLeftControlScheme;
+        this._myIndexToolData.myRightControlScheme = params.myRightControlScheme;
+
         this._myScrollEnabled = true;
 
         PP.myDebugManager.allocateDraw(PP.DebugDrawObjectType.POINT, 1000);
@@ -139,7 +150,8 @@ ToolManager = class ToolManager {
         this._myTools[ToolType.VERTEX_GROUP_MANAGEMENT] = new VertexManageGroupsTool(this._myVertexToolData);
         this._myTools[ToolType.VERTEX_VARIANT_MANAGEMENT] = new VertexManageVariantsTool(this._myVertexToolData);
         this._myTools[ToolType.VERTEX_VARIANT_EDIT] = new VertexEditVariantTool(this._myVertexToolData);
-        this._myTools[ToolType.INDEX_FREE_EDIT] = new IndexFreeEditTool(this._myVertexToolData);
+
+        this._myTools[ToolType.INDEX_FREE_EDIT] = new IndexFreeEditTool(this._myIndexToolData);
 
         this._myTools[ToolType.VERTEX_GROUP_MANAGEMENT].registerGroupSavedEventListener(this, this._onGroupSaved.bind(this));
         this._myTools[ToolType.VERTEX_VARIANT_MANAGEMENT].registerEditVariantEventListener(this, this._onEditVariant.bind(this));
