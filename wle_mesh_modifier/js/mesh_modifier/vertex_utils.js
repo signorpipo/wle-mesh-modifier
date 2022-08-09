@@ -82,7 +82,7 @@ VertexUtils = {
         mesh.vertexData[vertexIndex * vertexDataSize + WL.Mesh.NORMAL.Y] = normal[1];
         mesh.vertexData[vertexIndex * vertexDataSize + WL.Mesh.NORMAL.Z] = normal[2];
     },
-    resetMesh(meshComponent, originalVertexData) {
+    resetMeshVertexData(meshComponent, originalVertexData) {
         let mesh = meshComponent.mesh;
         let positionAttribute = mesh.attribute(WL.MeshAttribute.Position);
         let normalAttribute = mesh.attribute(WL.MeshAttribute.Normal);
@@ -103,6 +103,10 @@ VertexUtils = {
             VertexUtils.setVertexPosition(vertexPositionReset, index, mesh, positionAttribute);
             VertexUtils.setVertexNormal(vertexNormalReset, index, mesh, normalAttribute);
         }
+    },
+    resetMeshIndexData(meshComponent, originalIndexData) {
+        let mesh = meshComponent.mesh;
+        mesh.indexData.pp_copy(originalIndexData);
     },
     resetVertexes(meshComponent, vertexIndexList, originalVertexData, isFlatShading) {
         let mesh = meshComponent.mesh;
@@ -174,6 +178,61 @@ VertexUtils = {
             }
         }
     },
+    deleteSelectedVertexesFromIndexData(meshComponent, selectedVertexes) {
+        if (selectedVertexes.length == 0) {
+            return;
+        }
+
+        let trianglesIndex = [];
+        for (let selectedVertex of selectedVertexes) {
+            for (let vertexIndex of selectedVertex.getIndexes()) {
+                let triangles = VertexUtils.getVertexTrianglesIndexData(vertexIndex, meshComponent.mesh);
+                for (let triangle of triangles) {
+                    trianglesIndex.pp_pushUnique(triangle[0]);
+                    trianglesIndex.pp_pushUnique(triangle[1]);
+                    trianglesIndex.pp_pushUnique(triangle[2]);
+                }
+            }
+        }
+
+        VertexUtils.deleteMeshIndexesFromIndexData(meshComponent.mesh, trianglesIndex);
+    },
+    deleteMeshIndexesFromIndexData(mesh, indexesToDelete) {
+        let indexDataArray = [];
+        for (let index = 0; index < mesh.indexData.length; index++) {
+            if (!indexesToDelete.pp_hasEqual(index)) {
+                indexDataArray.push(mesh.indexData[index]);
+            }
+        }
+
+        let newIndexData = new Uint32Array(indexDataArray.length);
+        newIndexData.pp_copy(indexDataArray);
+        mesh.indexData = newIndexData;
+    },
+    hideSelectedVertexesFromIndexData(meshComponent, selectedVertexes) {
+        if (selectedVertexes.length == 0) {
+            return;
+        }
+
+        let trianglesIndex = [];
+        for (let selectedVertex of selectedVertexes) {
+            for (let vertexIndex of selectedVertex.getIndexes()) {
+                let triangles = VertexUtils.getVertexTrianglesIndexData(vertexIndex, meshComponent.mesh);
+                for (let triangle of triangles) {
+                    trianglesIndex.pp_pushUnique(triangle[0]);
+                    trianglesIndex.pp_pushUnique(triangle[1]);
+                    trianglesIndex.pp_pushUnique(triangle[2]);
+                }
+            }
+        }
+
+        VertexUtils.hideMeshIndexesFromIndexData(meshComponent.mesh, trianglesIndex);
+    },
+    hideMeshIndexesFromIndexData(mesh, indexDataIndexesToHide) {
+        for (let indexDataIndexToHide of indexDataIndexesToHide) {
+            mesh.indexData[indexDataIndexToHide] = 0;
+        }
+    },
     updateVertexNormals(vertexIndex, mesh, isFlatShading) {
         if (isFlatShading) {
             let sameVertexIndex = VertexUtils.getSameVertexIndexes(mesh, vertexIndex);
@@ -192,7 +251,7 @@ VertexUtils = {
 
         while (vertexIndexListToProcess.length > 0) {
             let currentVertexIndex = vertexIndexListToProcess.shift();
-            let currentTriangles = VertexUtils.getVertexTriangles(currentVertexIndex, mesh);
+            let currentTriangles = VertexUtils.getVertexTrianglesVertexData(currentVertexIndex, mesh);
             for (let i = 0; i < currentTriangles.length; i++) {
                 let triangle = currentTriangles[i];
                 for (let triangleIndex of triangle) {
@@ -227,7 +286,7 @@ VertexUtils = {
         let sameVertexIndex = VertexUtils.getSameVertexIndexes(mesh, vertexIndex);
         let triangles = [];
         for (let vertexIndex of sameVertexIndex) {
-            let currentTriangles = VertexUtils.getVertexTriangles(vertexIndex, mesh);
+            let currentTriangles = VertexUtils.getVertexTrianglesVertexData(vertexIndex, mesh);
             triangles.push(...currentTriangles);
         }
 
@@ -268,7 +327,7 @@ VertexUtils = {
 
         return normal;
     },
-    getVertexTriangles(vertexIndex, mesh) {
+    getVertexTrianglesVertexData(vertexIndex, mesh) {
         let triangles = [];
 
         let vertexIndexDataIndexList = mesh.indexData.pp_findAllIndexesEqual(vertexIndex);
@@ -276,6 +335,18 @@ VertexUtils = {
         for (let vertexIndexDataIndex of vertexIndexDataIndexList) {
             let startVertex = vertexIndexDataIndex - vertexIndexDataIndex % 3;
             triangles.push([mesh.indexData[startVertex], mesh.indexData[startVertex + 1], mesh.indexData[startVertex + 2]]);
+        }
+
+        return triangles;
+    },
+    getVertexTrianglesIndexData(vertexIndex, mesh) {
+        let triangles = [];
+
+        let vertexIndexDataIndexList = mesh.indexData.pp_findAllIndexesEqual(vertexIndex);
+
+        for (let vertexIndexDataIndex of vertexIndexDataIndexList) {
+            let startVertex = vertexIndexDataIndex - vertexIndexDataIndex % 3;
+            triangles.push([startVertex, startVertex + 1, startVertex + 2]);
         }
 
         return triangles;

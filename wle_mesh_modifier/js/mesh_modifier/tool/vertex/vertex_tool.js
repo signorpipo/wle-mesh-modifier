@@ -16,10 +16,7 @@ VertexToolData = class VertexToolData {
         this.mySelectedVertexes = [];
         this.mySelectedVertexGroup = null;
         this.mySelectedVertexVariant = null;
-        this.myVertexDataBackup = [];
-        for (let vertex of mesh.vertexData) {
-            this.myVertexDataBackup.push(vertex);
-        }
+        this.myVertexDataBackup = mesh.vertexData.pp_clone();
 
         this.myLeftControlScheme = null;
         this.myRightControlScheme = null;
@@ -181,7 +178,7 @@ VertexTool = class VertexTool {
     }
 
     _resetAllVertexes() {
-        VertexUtils.resetMesh(this._myToolData.myMeshComponent, this._myToolData.myVertexDataBackup);
+        VertexUtils.resetMeshVertexData(this._myToolData.myMeshComponent, this._myToolData.myVertexDataBackup);
     }
 
     // Group

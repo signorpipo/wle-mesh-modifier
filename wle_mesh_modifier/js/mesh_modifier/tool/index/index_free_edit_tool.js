@@ -6,7 +6,42 @@ IndexFreeEditTool = class IndexFreeEditTool extends IndexTool {
     update(dt) {
         super.update(dt);
 
+        if (PP.myRightGamepad.getButtonInfo(PP.ButtonType.BOTTOM_BUTTON).isPressEnd(2)) {
+            this._resetAllIndexes();
+            //this._myToolData.myMeshObject.pp_setActive(false);
+        }
+
+        if (PP.myRightGamepad.getButtonInfo(PP.ButtonType.SELECT).isPressed()) {
+            this._selectVertex();
+        }
+
+        if (PP.myRightGamepad.getButtonInfo(PP.ButtonType.SELECT).isPressEnd(2)) {
+            this._selectAll();
+        }
+
+        if (PP.myRightGamepad.getButtonInfo(PP.ButtonType.TOP_BUTTON).isPressed()) {
+            this._deselectVertex();
+        }
+
+        if (PP.myRightGamepad.getButtonInfo(PP.ButtonType.TOP_BUTTON).isPressEnd(2)) {
+            this._deselectAll();
+        }
+
+        if (PP.myRightGamepad.getButtonInfo(PP.ButtonType.SQUEEZE).isPressEnd(2)) {
+            this._deleteSelectedVertexesFromIndexData();
+            //this._myToolData.myMeshObject.pp_setActive(false);
+        }
+
+        if (PP.myRightGamepad.getButtonInfo(PP.ButtonType.SQUEEZE).isPressEnd(3)) {
+            this._hideSelectedVertexesFromIndexData();
+            //this._myToolData.myMeshObject.pp_setActive(false);
+        }
+
         this._debugDraw();
+    }
+
+    _deselectAll() {
+        this._myToolData.mySelectedVertexes = [];
     }
 
     _setupControlScheme() {
@@ -19,13 +54,17 @@ IndexFreeEditTool = class IndexFreeEditTool extends IndexTool {
 
         let rightScheme = this._myToolData.myRightControlScheme;
         rightScheme.setSelectText("x1: Select Vertex\n x2: Select All Vertexes");
-        rightScheme.setSqueezeText("Delete Vertexes' Indexes");
+        rightScheme.setSqueezeText("x2: Delete Vertexes' Indexes\nx3: Hide Vertexes' Indexes");
         rightScheme.setThumbstickText("x1: Toggle Control Scheme");
         rightScheme.setBottomButtonText("x2: Reset All Indexes");
         rightScheme.setTopButtonText("x1: Deselect Vertex\n x2: Deselect All Vertexes");
     }
 
     _debugDraw() {
+        if (this._myToolData.myIsPlayingAnimation) return;
 
+        for (let selectedVertex of this._myToolData.mySelectedVertexes) {
+            selectedVertex.debugDraw();
+        }
     }
 };

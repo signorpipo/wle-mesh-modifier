@@ -12,10 +12,9 @@ IndexToolData = class IndexToolData {
 
         this.myIsPlayingAnimation = false;
 
-        this.myIndexDataBackup = [];
-        for (let index of mesh.indexData) {
-            this.myIndexDataBackup.push(index);
-        }
+        this.mySelectedVertexes = [];
+        this.myVertexDataBackup = mesh.vertexData.pp_clone();
+        this.myIndexDataBackup = mesh.indexData.pp_clone();
 
         this.myLeftControlScheme = null;
         this.myRightControlScheme = null;
@@ -30,6 +29,8 @@ IndexTool = class IndexTool {
     }
 
     reset() {
+        this._myToolData.mySelectedVertexes = [];
+
         if (this._myToolData.myIsPlayingAnimation) {
             let animationComponent = this._myToolData.myMeshAnimationObject.pp_getComponentHierarchy("animation");
             animationComponent.stop();
@@ -65,5 +66,70 @@ IndexTool = class IndexTool {
 
     _setupControlScheme() {
 
+    }
+
+    // Selection
+    _selectVertex() {
+        let pointerPosition = this._myToolData.myPointerObject.pp_getPosition();
+
+        let selectedVertexParams = VertexUtils.getClosestSelectedVertex(this._myToolData.myMeshObject, pointerPosition, this._myToolData.myVertexDataBackup);
+
+        let vertexPositionWorld = selectedVertexParams.getPosition();
+        if (vertexPositionWorld.vec3_distance(pointerPosition) < this._myMinDistanceToSelect) {
+            if (this._isSelectedVertexValid(selectedVertexParams)) {
+                this._myToolData.mySelectedVertexes.pp_pushUnique(selectedVertexParams, element => element.equals(selectedVertexParams));
+            }
+        }
+    }
+
+    _isSelectedVertexValid(selectedVertexParams) {
+        return true;
+    }
+
+    _deselectVertex() {
+        let pointerPosition = this._myToolData.myPointerObject.pp_getPosition();
+
+        let selectedVertexParams = VertexUtils.getClosestSelectedVertex(this._myToolData.myMeshObject, pointerPosition, this._myToolData.myVertexDataBackup);
+
+        let vertexPositionWorld = selectedVertexParams.getPosition();
+        if (vertexPositionWorld.vec3_distance(pointerPosition) < this._myMinDistanceToSelect) {
+            this._myToolData.mySelectedVertexes.pp_removeAll(element => element.equals(selectedVertexParams));
+        }
+    }
+
+    _selectAll() {
+        this._myToolData.mySelectedVertexes = [];
+        let meshTransform = this._myToolData.myMeshComponent.object.pp_getTransform();
+
+        let vertexDataSize = WL.Mesh.VERTEX_FLOAT_SIZE;
+        let vertexCount = this._myToolData.myMeshComponent.mesh.vertexData.length / vertexDataSize;
+
+        for (let i = 0; i < vertexCount; i++) {
+            let vertexPosition = VertexUtils.getVertexPosition(i, this._myToolData.myMeshComponent.mesh);
+            let vertexPositionWorld = vertexPosition.vec3_convertPositionToWorld(meshTransform);
+
+            let selectedVertexParams = VertexUtils.getClosestSelectedVertex(this._myToolData.myMeshObject, vertexPositionWorld, this._myToolData.myVertexDataBackup);
+            this._myToolData.mySelectedVertexes.pp_pushUnique(selectedVertexParams, element => element.equals(selectedVertexParams));
+        }
+    }
+
+
+    // Reset
+    _resetAllIndexes() {
+        VertexUtils.resetMeshIndexData(this._myToolData.myMeshComponent, this._myToolData.myIndexDataBackup);
+    }
+
+    // Delete
+    _deleteSelectedVertexesFromIndexData() {
+        if (this._myToolData.mySelectedVertexes.length > 0) {
+            VertexUtils.deleteSelectedVertexesFromIndexData(this._myToolData.myMeshComponent, this._myToolData.mySelectedVertexes);
+        }
+    }
+
+    // Hide
+    _hideSelectedVertexesFromIndexData() {
+        if (this._myToolData.mySelectedVertexes.length > 0) {
+            VertexUtils.hideSelectedVertexesFromIndexData(this._myToolData.myMeshComponent, this._myToolData.mySelectedVertexes);
+        }
     }
 };

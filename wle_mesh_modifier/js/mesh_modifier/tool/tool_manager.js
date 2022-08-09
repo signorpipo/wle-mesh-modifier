@@ -18,6 +18,8 @@ ToolManagerParams = class ToolManagerParams {
 
 ToolManager = class ToolManager {
     constructor(params) {
+        this._myParams = params;
+
         this._myActiveToolGroupIndex = 0;
         this._myActiveToolIndex = 0;
 
@@ -81,6 +83,8 @@ ToolManager = class ToolManager {
 
     update(dt) {
         if (this._myStarted) {
+            //this._myParams.myMeshObject.pp_setActive(true);
+
             let axes = PP.myLeftGamepad.getAxesInfo().getAxes();
             if (!PP.myLeftGamepad.getButtonInfo(PP.ButtonType.SQUEEZE).isPressed()) {
                 if (Math.abs(axes[0]) > 0.5) {
