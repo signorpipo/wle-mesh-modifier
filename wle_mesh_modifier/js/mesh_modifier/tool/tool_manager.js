@@ -79,10 +79,17 @@ ToolManager = class ToolManager {
 
         PP.myDebugManager.allocateDraw(PP.DebugDrawObjectType.POINT, 1000);
         PP.myDebugManager.allocateDraw(PP.DebugDrawObjectType.ARROW, 1000);
+
+        this._myParams.myMeshObject.pp_setActive(true);
+
+        let refresherObject = WL.scene.addObject(null);
+        this._myRefresher = refresherObject.addComponent("mesh"); // this trigger a refresh of other meshes somehow
     }
 
     update(dt) {
         if (this._myStarted) {
+            this._myRefresher.active = true;
+            this._myRefresher.active = false;
             //this._myParams.myMeshObject.pp_setActive(true);
 
             let axes = PP.myLeftGamepad.getAxesInfo().getAxes();

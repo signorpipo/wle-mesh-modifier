@@ -37,6 +37,30 @@ IndexFreeEditTool = class IndexFreeEditTool extends IndexTool {
             //this._myToolData.myMeshObject.pp_setActive(false);
         }
 
+        if (PP.myLeftGamepad.getButtonInfo(PP.ButtonType.BOTTOM_BUTTON).isPressEnd(2)) {
+            let newIndexData = VertexUtils.getIndexDataAfterDeleteSelectedVertexes(this._myToolData.myMeshComponent, this._myToolData.mySelectedVertexes);
+            let newMesh = new WL.Mesh({
+                indexData: newIndexData,
+                indexType: WL.MeshIndexType.UnsignedInt,
+                vertexData: this._myToolData.myMeshComponent.mesh.vertexData
+            });
+            this._myToolData.myMeshComponent.mesh = newMesh;
+
+            //this._myToolData.myMeshObject.pp_setActive(false);
+        }
+
+        if (PP.myLeftGamepad.getButtonInfo(PP.ButtonType.TOP_BUTTON).isPressEnd(2)) {
+            let newMesh = new WL.Mesh({
+                indexData: this._myToolData.myMeshComponent.mesh.indexData,
+                indexType: WL.MeshIndexType.UnsignedInt,
+                vertexData: this._myToolData.myMeshComponent.mesh.vertexData
+            });
+
+            this._myToolData.myMeshComponent.mesh = newMesh;
+
+            //this._myToolData.myMeshObject.pp_setActive(false);
+        }
+
         this._debugDraw();
     }
 
@@ -49,8 +73,8 @@ IndexFreeEditTool = class IndexFreeEditTool extends IndexTool {
         leftScheme.setSelectText("");
         leftScheme.setSqueezeText("x2: Play/Stop Animation\nHold: Enable Locomotion");
         leftScheme.setThumbstickText("Left/Right: Change Tool\nUp/Down: Change Tool Group");
-        leftScheme.setBottomButtonText("");
-        leftScheme.setTopButtonText("");
+        leftScheme.setBottomButtonText("x2: Delete Vertexes' Indexes With New Mesh");
+        leftScheme.setTopButtonText("x2: Replace With New Equal Mesh");
 
         let rightScheme = this._myToolData.myRightControlScheme;
         rightScheme.setSelectText("x1: Select Vertex\n x2: Select All Vertexes");

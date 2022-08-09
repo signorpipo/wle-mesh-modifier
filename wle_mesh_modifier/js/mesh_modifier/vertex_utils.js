@@ -209,6 +209,31 @@ VertexUtils = {
         newIndexData.pp_copy(indexDataArray);
         mesh.indexData = newIndexData;
     },
+    getIndexDataAfterDeleteSelectedVertexes(meshComponent, selectedVertexes) {
+        let indexesToDelete = [];
+        for (let selectedVertex of selectedVertexes) {
+            for (let vertexIndex of selectedVertex.getIndexes()) {
+                let triangles = VertexUtils.getVertexTrianglesIndexData(vertexIndex, meshComponent.mesh);
+                for (let triangle of triangles) {
+                    indexesToDelete.pp_pushUnique(triangle[0]);
+                    indexesToDelete.pp_pushUnique(triangle[1]);
+                    indexesToDelete.pp_pushUnique(triangle[2]);
+                }
+            }
+        }
+
+        let indexDataArray = [];
+        for (let index = 0; index < meshComponent.mesh.indexData.length; index++) {
+            if (!indexesToDelete.pp_hasEqual(index)) {
+                indexDataArray.push(meshComponent.mesh.indexData[index]);
+            }
+        }
+
+        let newIndexData = new Uint32Array(indexDataArray.length);
+        newIndexData.pp_copy(indexDataArray);
+
+        return newIndexData;
+    },
     hideSelectedVertexesFromIndexData(meshComponent, selectedVertexes) {
         if (selectedVertexes.length == 0) {
             return;
