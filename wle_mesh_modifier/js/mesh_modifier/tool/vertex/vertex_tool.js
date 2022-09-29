@@ -41,9 +41,11 @@ VertexTool = class VertexTool {
 
         if (this._myToolData.myIsPlayingAnimation) {
             let animationComponent = this._myToolData.myMeshAnimationObject.pp_getComponentHierarchy("animation");
-            animationComponent.stop();
-            animationComponent.animation = this._myToolData.myAPoseAnimation;
-            animationComponent.play();
+            if (animationComponent) {
+                animationComponent.stop();
+                animationComponent.animation = this._myToolData.myAPoseAnimation;
+                animationComponent.play();
+            }
         }
     }
 
@@ -61,14 +63,16 @@ VertexTool = class VertexTool {
 
         if (PP.myLeftGamepad.getButtonInfo(PP.ButtonType.SQUEEZE).isPressEnd(2)) {
             let animationComponent = this._myToolData.myMeshAnimationObject.pp_getComponentHierarchy("animation");
-            animationComponent.stop();
-            if (this._myToolData.myIsPlayingAnimation) {
-                animationComponent.animation = this._myToolData.myAPoseAnimation;
-            } else {
-                animationComponent.animation = this._myToolData.myAnimationToPlay;
+            if (animationComponent) {
+                animationComponent.stop();
+                if (this._myToolData.myIsPlayingAnimation) {
+                    animationComponent.animation = this._myToolData.myAPoseAnimation;
+                } else {
+                    animationComponent.animation = this._myToolData.myAnimationToPlay;
+                }
+                animationComponent.play();
+                this._myToolData.myIsPlayingAnimation = !this._myToolData.myIsPlayingAnimation;
             }
-            animationComponent.play();
-            this._myToolData.myIsPlayingAnimation = !this._myToolData.myIsPlayingAnimation;
         }
     }
 

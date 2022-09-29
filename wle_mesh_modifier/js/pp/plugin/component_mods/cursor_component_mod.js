@@ -94,16 +94,12 @@ if (_WL && _WL._componentTypes && _WL._componentTypes[_WL._componentTypeIndices[
         if (this.cursorRayObject) {
             this.cursorRayObject.pp_setActive(true);
             this.showRay = false;
+            this.cursorRayOrigin = new Float32Array(3);
             this.cursorRayScale = new Float32Array(3);
             this.cursorRayScale.set(this.cursorRayObject.scalingLocal);
 
             /* Set ray to a good default distance of the cursor of 1m */
-            this.object.getTranslationWorld(this.origin);
-            this.object.getForward(this.direction);
-            this._setCursorRayTransform([
-                this.origin[0] + this.direction[0],
-                this.origin[1] + this.direction[1],
-                this.origin[2] + this.direction[2]]);
+            this._setCursorRayTransform(null);
         }
 
         this._setCursorVisibility(false);
@@ -118,12 +114,15 @@ if (_WL && _WL._componentTypes && _WL._componentTypes[_WL._componentTypeIndices[
 
     _WL._componentTypes[_WL._componentTypeIndices["cursor"]].proto._setCursorRayTransform = function (hitPosition) {
         if (!this.cursorRayObject) return;
-        const dist = vec3.dist(this.origin, hitPosition);
-        this.cursorRayObject.setTranslationLocal([0.0, 0.0, -dist / 2]);
         if (this.cursorRayScalingAxis != 4) {
             this.cursorRayObject.resetScaling();
-            this.cursorRayScale[this.cursorRayScalingAxis] = dist / 2;
-            this.cursorRayObject.scale(this.cursorRayScale);
+
+            if (hitPosition != null) {
+                this.cursorRayObject.getTranslationWorld(this.cursorRayOrigin);
+                let dist = vec3.dist(this.cursorRayOrigin, hitPosition);
+                this.cursorRayScale[this.cursorRayScalingAxis] = dist;
+                this.cursorRayObject.scale(this.cursorRayScale);
+            }
         }
     };
 
@@ -186,12 +185,7 @@ if (_WL && _WL._componentTypes && _WL._componentTypes[_WL._componentTypeIndices[
                 this._setCursorRayTransform(this.cursorPos);
             } else {
                 if (this.visible && this.cursorRayObject) {
-                    this.object.getTranslationWorld(this.origin);
-                    this.object.getForward(this.direction);
-                    this._setCursorRayTransform([
-                        this.origin[0] + this.direction[0],
-                        this.origin[1] + this.direction[1],
-                        this.origin[2] + this.direction[2]]);
+                    this._setCursorRayTransform(null);
                 }
 
                 this._setCursorVisibility(false);
@@ -416,8 +410,7 @@ if (_WL && _WL._componentTypes && _WL._componentTypes[_WL._componentTypeIndices[
         this.object.getTranslationWorld(this.origin);
 
         /* Reverse-project the direction into view space */
-        vec3.transformMat4(this.direction, this.direction,
-            this.projectionMatrix);
+        vec3.transformMat4(this.direction, this.direction, this.projectionMatrix);
         vec3.normalize(this.direction, this.direction);
         vec3.transformQuat(this.direction, this.direction, this.object.transformWorld);
         const rayHit = this.rayHit = (this.rayCastMode == 0) ?

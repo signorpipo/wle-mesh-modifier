@@ -197,11 +197,11 @@ VertexGroup = class VertexGroup {
 
             let vertexPositionWorld = vertexPosition.vec3_convertPositionToWorld(meshTransform);
             {
-                let debugDrawParams = new PP.DebugPointParams();
+                let debugDrawParams = new PP.VisualPointParams();
                 debugDrawParams.myPosition = vertexPositionWorld;
                 debugDrawParams.myRadius = 0.003;
                 debugDrawParams.myColor = color;
-                PP.myDebugManager.draw(debugDrawParams);
+                PP.myDebugVisualManager.draw(debugDrawParams);
             }
         }
     }

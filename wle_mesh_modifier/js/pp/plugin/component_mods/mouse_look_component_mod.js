@@ -66,6 +66,10 @@ if (_WL && _WL._componentTypes && _WL._componentTypes[_WL._componentTypeIndices[
                     document.body.style.cursor = "initial";
                 }
             }.bind(this));
+            WL.canvas.addEventListener('mouseleave', function (e) {
+                this.mouseDown = false;
+                document.body.style.cursor = "initial";
+            }.bind(this));
 
             WL.canvas.addEventListener('touchstart', function (e) {
                 this.mouseDown = true;

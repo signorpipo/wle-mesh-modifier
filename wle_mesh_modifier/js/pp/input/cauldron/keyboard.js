@@ -1,73 +1,129 @@
-PP.KeyCode = {
-    _0: 48,
-    _1: 49,
-    _2: 50,
-    _3: 51,
-    _4: 52,
-    _5: 53,
-    _6: 54,
-    _7: 55,
-    _8: 56,
-    _9: 57,
+PP.KeyType = {
+    _0: "0",
+    _1: "1",
+    _2: "2",
+    _3: "3",
+    _4: "4",
+    _5: "5",
+    _6: "6",
+    _7: "7",
+    _8: "8",
+    _9: "9",
 
-    W: 87,
-    A: 65,
-    S: 83,
-    D: 68,
+    A: "A",
+    B: "B",
+    C: "C",
+    D: "D",
+    E: "E",
+    F: "F",
+    G: "G",
+    H: "H",
+    I: "I",
+    J: "J",
+    K: "K",
+    L: "L",
+    M: "M",
+    N: "N",
+    O: "O",
+    P: "P",
+    Q: "Q",
+    R: "R",
+    S: "S",
+    T: "T",
+    U: "U",
+    V: "V",
+    W: "W",
+    X: "X",
+    Y: "Y",
+    Z: "Z",
 
-    Q: 81,
-    E: 69,
-    R: 82,
+    a: "a",
+    b: "b",
+    c: "c",
+    d: "d",
+    e: "e",
+    f: "f",
+    g: "g",
+    h: "h",
+    i: "i",
+    j: "j",
+    k: "k",
+    l: "l",
+    m: "m",
+    n: "n",
+    o: "o",
+    p: "p",
+    q: "q",
+    r: "r",
+    s: "s",
+    t: "t",
+    u: "u",
+    v: "v",
+    w: "w",
+    x: "x",
+    y: "y",
+    z: "z",
 
-    C: 67,
-    F: 70,
+    UP: "ArrowUp",
+    DOWN: "ArrowDown",
+    LEFT: "ArrowLeft",
+    RIGHT: "ArrowRight",
 
-    I: 73,
-    J: 74,
-    K: 75,
-    L: 76,
+    SPACE: " ",
+    ENTER: "Enter",
+    BACKSPACE: "Backspace",
+    ESC: "Escape",
 
-    Y: 89,
-    U: 85,
-    O: 79,
-
-    N: 78,
-    H: 72,
-
-    SPACE: 32,
-    BACKSPACE: 8,
-    SHIFT: 16,
-    CONTROL: 17,
-    ENTER: 13,
-    ESC: 27,
-
-    UP: 38,
-    DOWN: 40,
-    LEFT: 37,
-    RIGHT: 39,
+    SHIFT_LEFT: "ShiftLeft",
+    SHIFT_RIGHT: "ShiftRight",
+    CONTROL_LEFT: "ControlLeft",
+    CONTROL_RIGHT: "ControlRight",
+    ALT_LEFT: "AltLeft",
+    ALT_RIGHT: "AltRight",
 };
 
 PP.Keyboard = class Keyboard {
     constructor() {
-        this._myKeys = new Map();
+        this._myKeyInfos = new Map();
 
-        for (let keyCode in PP.KeyCode) {
-            this.addKey(PP.KeyCode[keyCode]);
+        for (let keyType in PP.KeyType) {
+            this.addKey(PP.KeyType[keyType]);
         }
     }
 
-    isPressed(keyCode) {
+    isKeyPressed(keyType) {
         let isPressed = false;
 
-        if (this._myKeys.has(keyCode)) {
-            isPressed = this._myKeys.get(keyCode);
+        if (this._myKeyInfos.has(keyType)) {
+            isPressed = this._myKeyInfos.get(keyType).myIsPressed;
         }
 
         return isPressed;
     }
 
-    addKey(keyCode) {
-        this._myKeys.set(keyCode, false);
+    isKeyPressStart(keyType) {
+        let isPressStart = false;
+
+        if (this._myKeyInfos.has(keyType)) {
+            isPressStart = this._myKeyInfos.get(keyType).myIsPressStart;
+        }
+
+        return isPressStart;
+    }
+
+    isKeyPressEnd(keyType) {
+        let isPressEnd = false;
+
+        if (this._myKeyInfos.has(keyType)) {
+            isPressEnd = this._myKeyInfos.get(keyType).myIsPressEnd;
+        }
+
+        return isPressEnd;
+    }
+
+    addKey(keyType) {
+        this._myKeyInfos.set(keyType,
+            { myIsPressed: false, myIsPressStart: false, myIsPressStartToProcess: false, myIsPressEnd: false, myIsPressEndToProcess: false, });
     }
 
     start() {
@@ -77,23 +133,47 @@ PP.Keyboard = class Keyboard {
 
     update(dt) {
         if (!document.hasFocus()) {
-            for (let keyCode of this._myKeys.keys()) {
-                this._myKeys.set(keyCode, false);
+            for (let keyInfo of this._myKeyInfos.values()) {
+                if (keyInfo.myIsPressed) {
+                    keyInfo.myIsPressed = false;
+                    keyInfo.myIsPressEndToProcess = true;
+                }
             }
+        }
+
+        for (let keyInfo of this._myKeyInfos.values()) {
+            keyInfo.myIsPressStart = keyInfo.myIsPressStartToProcess;
+            keyInfo.myIsPressEnd = keyInfo.myIsPressEndToProcess;
+            keyInfo.myIsPressStartToProcess = false;
+            keyInfo.myIsPressEndToProcess = false;
         }
     }
 
     _keyDown(event) {
-        this._keyChanged(event.keyCode, true);
+        this._keyPressedChanged(event.key, true);
+        if (event.key != event.code) {
+            this._keyPressedChanged(event.code, true);
+        }
     }
 
     _keyUp(event) {
-        this._keyChanged(event.keyCode, false);
+        this._keyPressedChanged(event.key, false);
+        if (event.key != event.code) {
+            this._keyPressedChanged(event.code, false);
+        }
     }
 
-    _keyChanged(keyCode, isDown) {
-        if (this._myKeys.has(keyCode)) {
-            this._myKeys.set(keyCode, isDown);
+    _keyPressedChanged(keyType, isPressed) {
+        if (this._myKeyInfos.has(keyType)) {
+            let keyInfo = this._myKeyInfos.get(keyType);
+
+            if (isPressed) {
+                keyInfo.myIsPressed = true;
+                keyInfo.myIsPressStartToProcess = true;
+            } else {
+                keyInfo.myIsPressed = false;
+                keyInfo.myIsPressEndToProcess = true;
+            }
         }
     }
 };

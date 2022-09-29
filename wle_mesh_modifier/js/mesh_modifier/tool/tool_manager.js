@@ -77,8 +77,8 @@ ToolManager = class ToolManager {
 
         this._myScrollEnabled = true;
 
-        PP.myDebugManager.allocateDraw(PP.DebugDrawObjectType.POINT, 1000);
-        PP.myDebugManager.allocateDraw(PP.DebugDrawObjectType.ARROW, 1000);
+        PP.myDebugVisualManager.allocateDraw(PP.VisualElementType.POINT, 1000);
+        PP.myDebugVisualManager.allocateDraw(PP.VisualElementType.ARROW, 1000);
 
         this._myParams.myMeshObject.pp_setActive(true);
 

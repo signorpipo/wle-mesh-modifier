@@ -322,22 +322,22 @@ class SelectedVertexParams {
         let meshTransform = this._myMeshComponent.object.pp_getTransform();
         let vertexPositionWorld = this.getPosition(meshTransform);
         {
-            let debugDrawParams = new PP.DebugPointParams();
+            let debugDrawParams = new PP.VisualPointParams();
             debugDrawParams.myPosition = vertexPositionWorld;
             debugDrawParams.myRadius = 0.0035;
             debugDrawParams.myColor = PP.ColorUtils.color255To1([20, 20, 20, 255]);
-            PP.myDebugManager.draw(debugDrawParams, lifetime);
+            PP.myDebugVisualManager.draw(debugDrawParams, lifetime);
         }
 
         let vertexNormalWorld = this.getNormal(meshTransform);
         {
-            let debugDrawParams = new PP.DebugArrowParams();
+            let debugDrawParams = new PP.VisualPointParams();
             debugDrawParams.myStart = vertexPositionWorld;
             debugDrawParams.myDirection = vertexNormalWorld;
             debugDrawParams.myLength = 0.05;
             debugDrawParams.myThickness = 0.0015;
             debugDrawParams.myColor = PP.ColorUtils.color255To1([20, 20, 20, 255]);
-            PP.myDebugManager.draw(debugDrawParams, lifetime);
+            PP.myDebugVisualManager.draw(debugDrawParams, lifetime);
         }
     }
 }

@@ -1,8 +1,8 @@
 WL.registerComponent("pp-set-player-height", {
     _myEyesHeight: { type: WL.Type.Float, default: 1.65 },
-    _mySetOnlyOnce: { type: WL.Type.Bool, default: true }
+    _mySetOnlyOnStart: { type: WL.Type.Bool, default: false }
 }, {
-    start: function () {
+    start() {
         let localPosition = this.object.pp_getPositionLocal();
         this.object.pp_setPositionLocal([localPosition[0], this._myEyesHeight, localPosition[2]]);
 
@@ -14,8 +14,8 @@ WL.registerComponent("pp-set-player-height", {
         WL.onXRSessionStart.push(this._onXRSessionStart.bind(this));
         WL.onXRSessionEnd.push(this._onXRSessionEnd.bind(this));
     },
-    _onXRSessionStart: function () {
-        if (this.active && (!this._mySetOnlyOnce || !this._myHeightSetOnce)) {
+    _onXRSessionStart() {
+        if (this.active && (!this._mySetOnlyOnStart || !this._myHeightSetOnce)) {
             let localPosition = this.object.pp_getPositionLocal();
             if (PP.XRUtils.isReferenceSpaceLocalFloor()) {
                 this.object.pp_setPositionLocal([localPosition[0], 0, localPosition[2]]);
@@ -28,8 +28,8 @@ WL.registerComponent("pp-set-player-height", {
             this._myHeightSetOnce = true;
         }
     },
-    _onXRSessionEnd: function () {
-        if (this.active && !this._mySetOnlyOnce) {
+    _onXRSessionEnd() {
+        if (this.active && !this._mySetOnlyOnStart) {
             let localPosition = this.object.pp_getPositionLocal();
             this.object.pp_setPositionLocal([localPosition[0], this._myEyesHeight, localPosition[2]]);
         }

@@ -11,22 +11,7 @@ if (WL && WL.Object) {
         }
 
         if (deepCloneParams.isDeepCloneComponentVariable("mesh", "mesh")) {
-            let vertexData = new Float32Array(this.mesh.vertexData.length);
-            let indexData = new Uint32Array(this.mesh.indexData.length);
-
-            for (let i = 0; i < this.mesh.vertexData.length; i++) {
-                vertexData[i] = this.mesh.vertexData[i];
-            }
-
-            for (let i = 0; i < this.mesh.indexData.length; i++) {
-                indexData[i] = this.mesh.indexData[i];
-            }
-
-            clonedComponent.mesh = new WL.Mesh({
-                indexData: indexData,
-                indexType: WL.MeshIndexType.UnsignedInt,
-                vertexData: vertexData
-            });
+            clonedComponent.mesh = PP.MeshUtils.cloneMesh(this.mesh);
         } else {
             clonedComponent.mesh = this.mesh;
         }
@@ -91,6 +76,8 @@ if (WL && WL.Object) {
 
         return clonedComponent;
     };
+
+
 
     Object.defineProperty(WL.MeshComponent.prototype, "pp_clone", { enumerable: false });
     Object.defineProperty(WL.CollisionComponent.prototype, "pp_clone", { enumerable: false });

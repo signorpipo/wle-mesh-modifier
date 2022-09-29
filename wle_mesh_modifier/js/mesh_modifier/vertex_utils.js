@@ -463,7 +463,7 @@ SelectedVertexParams = class SelectedVertexParams {
         let meshTransform = this._myMeshComponent.object.pp_getTransform();
         let vertexPositionWorld = this.getPosition(meshTransform);
         {
-            let debugDrawParams = new PP.DebugPointParams();
+            let debugDrawParams = new PP.VisualPointParams();
             debugDrawParams.myPosition = vertexPositionWorld;
             debugDrawParams.myRadius = 0.0035;
             if (color != null) {
@@ -471,12 +471,12 @@ SelectedVertexParams = class SelectedVertexParams {
             } else {
                 debugDrawParams.myColor = PP.ColorUtils.color255To1([20, 20, 20, 255]);
             }
-            PP.myDebugManager.draw(debugDrawParams, 0);
+            PP.myDebugVisualManager.draw(debugDrawParams, 0);
         }
 
         let vertexNormalWorld = this.getOriginalNormal(meshTransform);
         {
-            let debugDrawParams = new PP.DebugArrowParams();
+            let debugDrawParams = new PP.VisualPointParams();
             debugDrawParams.myStart = vertexPositionWorld;
             debugDrawParams.myDirection = vertexNormalWorld;
             debugDrawParams.myLength = 0.05;
@@ -486,7 +486,7 @@ SelectedVertexParams = class SelectedVertexParams {
             } else {
                 debugDrawParams.myColor = PP.ColorUtils.color255To1([20, 20, 20, 255]);
             }
-            PP.myDebugManager.draw(debugDrawParams, 0);
+            PP.myDebugVisualManager.draw(debugDrawParams, 0);
         }
     }
 };

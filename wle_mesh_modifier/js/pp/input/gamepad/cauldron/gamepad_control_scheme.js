@@ -1,9 +1,11 @@
 WL.registerComponent('pp-gamepad-control-scheme', {
-    _myVisible: { type: WL.Type.Bool, default: true },
+    _myStartVisible: { type: WL.Type.Bool, default: true },
 
     _myHandedness: { type: WL.Type.Enum, values: ['left', 'right'], default: 'left' },
 
-    _myLineLength: { type: WL.Type.Float, default: 0.085 },
+    _myTextScaleMultiplier: { type: WL.Type.Float, default: 1 },
+    _myLineLengthMultiplier: { type: WL.Type.Float, default: 1 },
+    _myLineThicknessMultiplier: { type: WL.Type.Float, default: 1 },
 
     _mySelectText: { type: WL.Type.String, default: "" },
     _mySqueezeText: { type: WL.Type.String, default: "" },
@@ -15,23 +17,21 @@ WL.registerComponent('pp-gamepad-control-scheme', {
     _mySqueeze: { type: WL.Type.Object, default: null },
     _myThumbstick: { type: WL.Type.Object, default: null },
     _myBottomButton: { type: WL.Type.Object, default: null },
-    _myTopButton: { type: WL.Type.Object, default: null },
-
-    _myCubeMesh: { type: WL.Type.Mesh },
-    _myTextMaterial: { type: WL.Type.Material },
-    _myFlatMaterial: { type: WL.Type.Material }
+    _myTopButton: { type: WL.Type.Object, default: null }
 }, {
     init: function () {
     },
     start: function () {
-        this._myTextMaterial = this._myTextMaterial.clone();
-        this._myFlatMaterial = this._myFlatMaterial.clone();
+        this._myTextMaterial = PP.myDefaultResources.myMaterials.myText.clone();
+        this._myFlatMaterial = PP.myDefaultResources.myMaterials.myFlatOpaque.clone();
 
         this._myHandednessType = PP.InputUtils.getHandednessByIndex(this._myHandedness);
         this._myControlSchemeDirection = (this._myHandednessType == PP.Handedness.LEFT) ? 1 : -1;
 
+        this._myVisible = false;
+
         this._createControlScheme();
-        this.setVisible(this._myVisible);
+        this.setVisible(this._myStartVisible);
     },
     update: function (dt) {
     },
@@ -77,7 +77,7 @@ WL.registerComponent('pp-gamepad-control-scheme', {
         this.object.pp_resetScale();
 
         let distanceFromButton = 0.015;
-        let lineLength = this._myLineLength;
+        let lineLength = 0.0935 * this._myLineLengthMultiplier;
 
         let referenceObject = this._myThumbstick;
 
@@ -149,12 +149,12 @@ WL.registerComponent('pp-gamepad-control-scheme', {
         lineObject = lineRootObject.pp_addObject();
 
         let lineMesh = lineObject.addComponent('mesh');
-        lineMesh.mesh = this._myCubeMesh;
+        lineMesh.mesh = PP.myDefaultResources.myMeshes.myCube;
         lineMesh.material = this._myFlatMaterial;
 
         lineRootObject.pp_setPosition(start);
 
-        let thickness = 0.001;
+        let thickness = 0.001 * this._myLineThicknessMultiplier;
         lineObject.pp_scaleObject([thickness / 2, thickness / 2, length / 2]);
 
         lineObject.pp_lookTo(lineDirection);
@@ -164,7 +164,7 @@ WL.registerComponent('pp-gamepad-control-scheme', {
         let textObject = parentObject.pp_addObject();
         textObject.pp_setPosition(position);
         textObject.pp_lookTo(up, forward);
-        textObject.pp_scaleObject(0.075);
+        textObject.pp_scaleObject(0.0935 * this._myTextScaleMultiplier);
 
         let textComponent = textObject.pp_addComponent("text");
         textComponent.alignment = WL.Alignment.Center;
