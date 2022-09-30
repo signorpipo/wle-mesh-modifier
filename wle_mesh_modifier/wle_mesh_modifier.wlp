@@ -40,7 +40,7 @@
                 {
                     "type": "mesh-modifier-gateway",
                     "mesh-modifier-gateway": {
-                        "_myMeshObject": "73",
+                        "_myMeshObject": "277",
                         "_myPointer": "82",
                         "_myToolLabel": "87",
                         "_myVertexGroupConfigPath": "low_poly_skinned_character_smooth_joined_config.json",
@@ -50,7 +50,7 @@
                         "_myRightControlScheme": "24",
                         "_myPointerObject": "82",
                         "_myShadeType": "smooth",
-                        "_myMeshAnimationObject": null,
+                        "_myMeshAnimationObject": "278",
                         "_myAnimationToPlay": "312",
                         "_myAPoseAnimation": "310"
                     }
@@ -220,7 +220,8 @@
                         "_myBottomButtonText": "Bottom Button Text",
                         "_myTopButtonText": "Top Button Text",
                         "_myLineLength": 0.125,
-                        "_myLineLengthMultiplier": 1.5
+                        "_myLineLengthMultiplier": 1.5,
+                        "_myLineMaterial": "36"
                     }
                 }
             ]
@@ -275,7 +276,8 @@
                         "_myHandedness": "right",
                         "_myVisible": true,
                         "_myLineLength": 0.125,
-                        "_myLineLengthMultiplier": 1.5
+                        "_myLineLengthMultiplier": 1.5,
+                        "_myLineMaterial": "36"
                     },
                     "active": true
                 }
@@ -1579,7 +1581,14 @@
                 "name": "Armature<Low Poly Skinned Character Flat",
                 "file": "assets\\models\\low_poly_skinned_character_flat.fbx"
             },
-            "parent": "154"
+            "parent": "154",
+            "components": [
+                {
+                    "animation": {
+                        "retarget": false
+                    }
+                }
+            ]
         },
         "156": {
             "link": {
@@ -2176,7 +2185,24 @@
                 "name": "Armature<Low Poly Skinned Character Smooth",
                 "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
             },
-            "parent": "244"
+            "parent": "244",
+            "components": [
+                {
+                    "animation": {
+                        "retarget": false
+                    }
+                },
+                {
+                    "animation": {
+                        "retarget": false
+                    }
+                },
+                {
+                    "animation": {
+                        "retarget": false
+                    }
+                }
+            ]
         },
         "246": {
             "link": {
@@ -2461,10 +2487,15 @@
                         "animation": "310"
                     }
                 },
-                null,
                 {
                     "animation": {
-                        "preview": false
+                        "retarget": false
+                    }
+                },
+                {
+                    "animation": {
+                        "preview": false,
+                        "retarget": false
                     }
                 }
             ]
@@ -3212,16 +3243,24 @@
                     0.4
                 ]
             },
-            "name": "Control Scheme Font"
+            "name": "Control Scheme Font",
+            "Text": {
+                "color": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ]
+            }
         },
         "112": {
             "name": "Control Scheme Flat",
             "pipeline": "7",
             "Flat": {
                 "color": [
-                    0.0784,
-                    0.0784,
-                    0.0784,
+                    0.8078431,
+                    0.6037321,
+                    0.1584006,
                     1.0
                 ]
             }
