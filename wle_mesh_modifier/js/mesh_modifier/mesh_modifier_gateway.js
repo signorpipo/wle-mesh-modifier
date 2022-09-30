@@ -1,4 +1,5 @@
 WL.registerComponent("mesh-modifier-gateway", {
+    _myForceMeshRefresh: { type: WL.Type.Bool, default: false },
     _myVertexGroupConfigPath: { type: WL.Type.String },
     _myMeshObject: { type: WL.Type.Object },
     _myMeshAnimationObject: { type: WL.Type.Object },
@@ -17,6 +18,8 @@ WL.registerComponent("mesh-modifier-gateway", {
     },
     start: function () {
         let params = new ToolManagerParams();
+
+        params.myForceMeshRefresh = this._myForceMeshRefresh;
 
         params.myMeshObject = this._myMeshObject;
         params.myMeshAnimationObject = this._myMeshAnimationObject;

@@ -1,5 +1,7 @@
 ToolManagerParams = class ToolManagerParams {
     constructor() {
+        this.myForceMeshRefresh = false;
+
         this.myMeshObject = null;
         this.myMeshComponent = null;
         this.myMeshAnimationObject = null;
@@ -173,6 +175,10 @@ ToolManager = class ToolManager {
                 }
 
                 this._mySetMeshActiveCounter = 0;
+            }
+
+            if (!this._myParams.myForceMeshRefresh) {
+                this._myParams.myMeshObject.pp_setActive(true);
             }
         }
     }

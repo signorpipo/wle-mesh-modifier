@@ -160,6 +160,8 @@ VertexTool = class VertexTool {
         if (this._myToolData.mySelectedVertexes.length > 0) {
             for (let selectedVertex of this._myToolData.mySelectedVertexes) {
                 VertexUtils.updateVertexNormals(selectedVertex.getIndexes()[0], this._myToolData.myMeshComponent.mesh, this._myToolData.myIsFlatShading);
+
+                this._myToolData.myMeshObject.pp_setActive(false);
             }
         }
     }
