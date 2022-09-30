@@ -1,6 +1,7 @@
 ToolManagerParams = class ToolManagerParams {
     constructor() {
         this.myMeshObject = null;
+        this.myMeshComponent = null;
         this.myMeshAnimationObject = null;
         this.myAnimationToPlay = null;
         this.myAPoseAnimation = null;
@@ -52,6 +53,8 @@ ToolManager = class ToolManager {
 
         let meshComponent = params.myMeshObject.pp_getComponentHierarchy("mesh");
 
+        this._myParams.myMeshComponent = meshComponent;
+
         this._myVertexToolData = new VertexToolData(meshComponent.mesh);
         this._myVertexToolData.myMeshObject = params.myMeshObject;
         this._myVertexToolData.myMeshAnimationObject = params.myMeshAnimationObject;
@@ -84,13 +87,16 @@ ToolManager = class ToolManager {
 
         let refresherObject = WL.scene.addObject(null);
         this._myRefresher = refresherObject.addComponent("mesh"); // this trigger a refresh of other meshes somehow
+
+        this._mySetMeshActiveCounter = 0;
+        this._mySetMeshActiveFalse = false;
+        this._mySetMeshActiveFalseUsed = false;
     }
 
     update(dt) {
         if (this._myStarted) {
             this._myRefresher.active = true;
             this._myRefresher.active = false;
-            //this._myParams.myMeshObject.pp_setActive(true);
 
             let axes = PP.myLeftGamepad.getAxesInfo().getAxes();
             if (!PP.myLeftGamepad.getButtonInfo(PP.ButtonType.SQUEEZE).isPressed()) {
@@ -150,6 +156,23 @@ ToolManager = class ToolManager {
                     let currentGroup = this._myToolGroupOrder[this._myActiveToolGroupIndex];
                     this._myToolLabel.text = this._myToolOrder[currentGroup][this._myActiveToolIndex];
                 }
+            }
+
+            if (this._mySetMeshActiveCounter < 1) {
+                this._mySetMeshActiveFalse = !this._mySetMeshActiveFalseUsed && (this._mySetMeshActiveFalse || !this._myParams.myMeshComponent.active);
+                this._mySetMeshActiveFalseUsed = false;
+
+                this._myParams.myMeshObject.pp_setActive(true);
+
+                this._mySetMeshActiveCounter++;
+            } else {
+                if (this._mySetMeshActiveFalse) {
+                    this._mySetMeshActiveFalse = false;
+                    this._myParams.myMeshObject.pp_setActive(false);
+                    this._mySetMeshActiveFalseUsed = true;
+                }
+
+                this._mySetMeshActiveCounter = 0;
             }
         }
     }

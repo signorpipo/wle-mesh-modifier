@@ -121,12 +121,16 @@ IndexTool = class IndexTool {
     // Reset
     _resetAllIndexes() {
         VertexUtils.resetMeshIndexData(this._myToolData.myMeshComponent, this._myToolData.myIndexDataBackup);
+
+        this._myToolData.myMeshObject.pp_setActive(false);
     }
 
     // Delete
     _deleteSelectedVertexesFromIndexData() {
         if (this._myToolData.mySelectedVertexes.length > 0) {
             VertexUtils.deleteSelectedVertexesFromIndexData(this._myToolData.myMeshComponent, this._myToolData.mySelectedVertexes);
+
+            this._myToolData.myMeshObject.pp_setActive(false);
         }
     }
 
@@ -134,6 +138,8 @@ IndexTool = class IndexTool {
     _hideSelectedVertexesFromIndexData() {
         if (this._myToolData.mySelectedVertexes.length > 0) {
             VertexUtils.hideSelectedVertexesFromIndexData(this._myToolData.myMeshComponent, this._myToolData.mySelectedVertexes);
+
+            this._myToolData.myMeshObject.pp_setActive(false);
         }
     }
 };

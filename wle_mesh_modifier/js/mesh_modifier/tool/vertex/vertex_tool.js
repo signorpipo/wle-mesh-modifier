@@ -143,12 +143,16 @@ VertexTool = class VertexTool {
     _moveSelectedVertexes(movement) {
         if (this._myToolData.mySelectedVertexes.length > 0) {
             VertexUtils.moveSelectedVertexes(this._myToolData.myMeshObject, this._myToolData.mySelectedVertexes, movement);
+
+            this._myToolData.myMeshObject.pp_setActive(false);
         }
     }
 
     _moveSelectedVertexesAlongNormals(movement) {
         if (this._myToolData.mySelectedVertexes.length > 0) {
             VertexUtils.moveSelectedVertexesAlongNormals(this._myToolData.myMeshObject, this._myToolData.mySelectedVertexes, movement, true);
+
+            this._myToolData.myMeshObject.pp_setActive(false);
         }
     }
 
@@ -170,6 +174,8 @@ VertexTool = class VertexTool {
         if (vertexPositionWorld.vec3_distance(pointerPosition) < this._myMinDistanceToSelect) {
 
             VertexUtils.resetVertexes(this._myToolData.myMeshComponent, selectedVertexParams.getIndexes(), this._myToolData.myVertexDataBackup, this._myToolData.myIsFlatShading);
+
+            this._myToolData.myMeshObject.pp_setActive(false);
         }
     }
 
@@ -178,11 +184,14 @@ VertexTool = class VertexTool {
             let indexList = this._myToolData.mySelectedVertexGroup.getIndexList();
             VertexUtils.resetVertexes(this._myToolData.myMeshComponent, indexList, this._myToolData.myVertexDataBackup, this._myToolData.myIsFlatShading);
 
+            this._myToolData.myMeshObject.pp_setActive(false);
         }
     }
 
     _resetAllVertexes() {
         VertexUtils.resetMeshVertexData(this._myToolData.myMeshComponent, this._myToolData.myVertexDataBackup);
+
+        this._myToolData.myMeshObject.pp_setActive(false);
     }
 
     // Group
@@ -248,7 +257,6 @@ VertexTool = class VertexTool {
     _editVariant() {
         if (this._myToolData.mySelectedVertexVariant == null) {
             return;
-
         }
 
         let variantID = this._myToolData.mySelectedVertexVariant.getID();
@@ -262,6 +270,8 @@ VertexTool = class VertexTool {
             this._myToolData.mySelectedVertexVariant = this._myToolData.mySelectedVertexGroup.getNextVariant(this._myToolData.mySelectedVertexVariant, direction);
             if (this._myToolData.mySelectedVertexVariant != null) {
                 this._myToolData.mySelectedVertexVariant.loadVariant(this._myToolData.myMeshComponent.mesh, this._myToolData.myIsFlatShading);
+
+                this._myToolData.myMeshObject.pp_setActive(false);
             } else {
                 this._resetGroupVertexes();
             }
