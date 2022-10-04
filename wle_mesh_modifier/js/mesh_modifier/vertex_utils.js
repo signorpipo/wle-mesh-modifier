@@ -378,6 +378,7 @@ VertexUtils = {
     }
 };
 
+selectedVertexColor = 46;
 SelectedVertexParams = class SelectedVertexParams {
     constructor(meshComponent, indexes, originalMeshVertexData) {
         this._myMeshComponent = meshComponent;
@@ -461,32 +462,18 @@ SelectedVertexParams = class SelectedVertexParams {
 
     debugDraw(color = null) {
         let meshTransform = this._myMeshComponent.object.pp_getTransform();
-        let vertexPositionWorld = this.getPosition(meshTransform);
-        {
-            let debugDrawParams = new PP.VisualPointParams();
-            debugDrawParams.myPosition = vertexPositionWorld;
-            debugDrawParams.myRadius = 0.0035;
-            if (color != null) {
-                debugDrawParams.myColor = color;
-            } else {
-                debugDrawParams.myColor = PP.ColorUtils.color255To1([20, 20, 20, 255]);
-            }
-            PP.myDebugVisualManager.draw(debugDrawParams, 0);
+
+        let actualColor = color;
+        if (color == null) {
+            actualColor = PP.ColorUtils.color255To1([selectedVertexColor, selectedVertexColor, selectedVertexColor, 255]);
         }
 
-        let vertexNormalWorld = this.getOriginalNormal(meshTransform);
-        {
-            let debugDrawParams = new PP.VisualPointParams();
-            debugDrawParams.myStart = vertexPositionWorld;
-            debugDrawParams.myDirection = vertexNormalWorld;
-            debugDrawParams.myLength = 0.05;
-            debugDrawParams.myThickness = 0.0015;
-            if (color != null) {
-                debugDrawParams.myColor = color;
-            } else {
-                debugDrawParams.myColor = PP.ColorUtils.color255To1([20, 20, 20, 255]);
-            }
-            PP.myDebugVisualManager.draw(debugDrawParams, 0);
+        let vertexPositionWorld = this.getPosition(meshTransform);
+        PP.myDebugVisualManager.drawPoint(0, vertexPositionWorld, actualColor, 0.0035);
+
+        if (false) {
+            let vertexNormalWorld = this.getOriginalNormal(meshTransform);
+            PP.myDebugVisualManager.drawArrow(0, vertexPositionWorld, vertexNormalWorld, 0.05, actualColor, 0.0015);
         }
     }
 };

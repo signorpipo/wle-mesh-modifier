@@ -1,5 +1,6 @@
 WL.registerComponent("mesh-modifier-gateway", {
     _myForceMeshRefresh: { type: WL.Type.Bool, default: false },
+    _mySelectedVertexColor: { type: WL.Type.Int, default: 46 },
     _myVertexGroupConfigPath: { type: WL.Type.String },
     _myMeshObject: { type: WL.Type.Object },
     _myAnimationToPlay: { type: WL.Type.Animation },
@@ -39,6 +40,8 @@ WL.registerComponent("mesh-modifier-gateway", {
         params.myVariantGroupCongigPath = this._myVertexGroupConfigPath;
         params.myLeftControlScheme = this._myLeftControlScheme.pp_getComponent("pp-gamepad-control-scheme");
         params.myRightControlScheme = this._myRightControlScheme.pp_getComponent("pp-gamepad-control-scheme");
+
+        selectedVertexColor = this._mySelectedVertexColor;
 
         this._myToolManager = new ToolManager(params);
     },
