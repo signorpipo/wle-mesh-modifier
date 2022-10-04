@@ -250,7 +250,7 @@ ToolManager = class ToolManager {
     }
 
     _onEditVariant() {
-        this._myActiveToolGroupIndex = this._myToolGroupOrder.pp_findIndexEqual(ToolType.VERTEX);
+        this._myActiveToolGroupIndex = this._myToolGroupOrder.pp_findIndexEqual(ToolGroupType.VERTEX);
         let currentGroup = this._myToolGroupOrder[this._myActiveToolGroupIndex];
         this._myActiveToolIndex = this._myToolOrder[currentGroup].pp_findIndexEqual(ToolType.VERTEX_VARIANT_EDIT);
 

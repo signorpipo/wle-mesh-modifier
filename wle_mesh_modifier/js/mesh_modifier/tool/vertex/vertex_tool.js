@@ -153,7 +153,7 @@ VertexTool = class VertexTool {
 
     _moveSelectedVertexesAlongNormals(movement) {
         if (this._myToolData.mySelectedVertexes.length > 0) {
-            let scaledMovement = movement.vec3_scale(this._myToolData.myScaleFactor);
+            let scaledMovement = movement * this._myToolData.myScaleFactor;
             VertexUtils.moveSelectedVertexesAlongNormals(this._myToolData.myMeshObject, this._myToolData.mySelectedVertexes, scaledMovement, true);
 
             this._myToolData.myMeshObject.pp_setActive(false);

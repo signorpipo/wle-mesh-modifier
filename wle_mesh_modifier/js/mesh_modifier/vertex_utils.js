@@ -258,7 +258,10 @@ VertexUtils = {
             mesh.indexData[indexDataIndexToHide] = 0;
         }
     },
+    updateVertexNormalsActive: true,
     updateVertexNormals(vertexIndex, mesh, isFlatShading) {
+        if (!VertexUtils.updateVertexNormalsActive) return;
+
         if (isFlatShading) {
             let sameVertexIndex = VertexUtils.getSameVertexIndexes(mesh, vertexIndex);
             for (let vertexIndex of sameVertexIndex) {

@@ -1,5 +1,6 @@
 WL.registerComponent("mesh-modifier-gateway", {
     _myForceMeshRefresh: { type: WL.Type.Bool, default: false },
+    _myUpdateNormals: { type: WL.Type.Bool, default: false },
     _mySelectedVertexColor: { type: WL.Type.Int, default: 46 },
     _myVertexGroupConfigPath: { type: WL.Type.String },
     _myMeshObject: { type: WL.Type.Object },
@@ -42,6 +43,7 @@ WL.registerComponent("mesh-modifier-gateway", {
         params.myRightControlScheme = this._myRightControlScheme.pp_getComponent("pp-gamepad-control-scheme");
 
         selectedVertexColor = this._mySelectedVertexColor;
+        VertexUtils.updateVertexNormalsActive = this._myUpdateNormals;
 
         this._myToolManager = new ToolManager(params);
     },
