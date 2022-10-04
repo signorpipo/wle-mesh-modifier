@@ -38,24 +38,6 @@
                     }
                 },
                 {
-                    "type": "mesh-modifier-gateway",
-                    "mesh-modifier-gateway": {
-                        "_myMeshObject": "277",
-                        "_myPointer": "82",
-                        "_myToolLabel": "87",
-                        "_myVertexGroupConfigPath": "low_poly_skinned_character_smooth_joined_config.json",
-                        "_myGroupLabel": "106",
-                        "_myVariantLabel": "108",
-                        "_myLeftControlScheme": "23",
-                        "_myRightControlScheme": "24",
-                        "_myPointerObject": "82",
-                        "_myShadeType": "smooth",
-                        "_myMeshAnimationObject": "278",
-                        "_myAnimationToPlay": "312",
-                        "_myAPoseAnimation": "310"
-                    }
-                },
-                {
                     "type": "pp-input-manager"
                 },
                 {
@@ -73,6 +55,25 @@
                         "_myFlatOpaque": "328",
                         "_myPhongOpaque": "329",
                         "_myText": "327"
+                    }
+                },
+                {
+                    "type": "mesh-modifier-gateway",
+                    "mesh-modifier-gateway": {
+                        "_myMeshObject": "391",
+                        "_myPointer": "82",
+                        "_myToolLabel": "87",
+                        "_myVertexGroupConfigPath": "low_poly_skinned_character_smooth_joined_config.json",
+                        "_myGroupLabel": "106",
+                        "_myVariantLabel": "108",
+                        "_myLeftControlScheme": "23",
+                        "_myRightControlScheme": "24",
+                        "_myPointerObject": "82",
+                        "_myShadeType": "smooth",
+                        "_myMeshAnimationObject": "278",
+                        "_myAnimationToPlay": "462",
+                        "_myAPoseAnimation": "399",
+                        "_myRestPoseAnimation": "463"
                     }
                 }
             ]
@@ -1573,12 +1574,12 @@
                 0.0,
                 0.0,
                 0.0,
-                -1.1920875664372943e-7,
+                -1.192087566437295e-7,
                 -0.9999954,
                 0.0,
                 0.0,
                 0.9999954,
-                -1.1920875664372943e-7,
+                -1.192087566437295e-7,
                 0.0,
                 0.0,
                 0.3499999,
@@ -2760,6 +2761,535 @@
                 "file": "assets\\models\\low_poly_skinned_character_smooth_joined.fbx"
             },
             "parent": "308"
+        },
+        "391": {
+            "name": "Fem Hero 01",
+            "parent": "72",
+            "transformation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "components": [
+                {
+                    "type": "pp-set-active",
+                    "pp-set-active": {
+                        "_myActive": false
+                    }
+                }
+            ]
+        },
+        "392": {
+            "name": "Pivot",
+            "parent": "391",
+            "transformation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ]
+        },
+        "404": {
+            "link": {
+                "name": "Fem Hero 01 Object",
+                "file": "assets\\models\\fem_hero_01.glb"
+            },
+            "parent": "392"
+        },
+        "405": {
+            "link": {
+                "name": "Armature<Fem Hero 01 Object",
+                "file": "assets\\models\\fem_hero_01.glb"
+            },
+            "parent": "404"
+        },
+        "406": {
+            "link": {
+                "name": "_rootJoint<Armature<Fem Hero 01 Object",
+                "file": "assets\\models\\fem_hero_01.glb"
+            },
+            "parent": "405",
+            "skin": "403",
+            "components": [
+                {
+                    "animation": {
+                        "preview": false,
+                        "animation": "463"
+                    }
+                }
+            ]
+        },
+        "407": {
+            "link": {
+                "name": "ROOT_00<_rootJoint<Armature<Fem Hero 01 Object",
+                "file": "assets\\models\\fem_hero_01.glb"
+            },
+            "parent": "406",
+            "skin": "403"
+        },
+        "408": {
+            "link": {
+                "name": "Hips_03<ROOT_00<_rootJoint<Armature<Fem Hero 01 Object",
+                "file": "assets\\models\\fem_hero_01.glb"
+            },
+            "parent": "407",
+            "skin": "403"
+        },
+        "409": {
+            "link": {
+                "name": "Spine_01<Hips_03<ROOT_00<_rootJoint<Armature<Fem Hero 01 Object",
+                "file": "assets\\models\\fem_hero_01.glb"
+            },
+            "parent": "408",
+            "skin": "403"
+        },
+        "410": {
+            "link": {
+                "name": "Spine1_02<Spine_01<Hips_03<ROOT_00<_rootJoint<Armature<Fem Hero 01 Object",
+                "file": "assets\\models\\fem_hero_01.glb"
+            },
+            "parent": "409",
+            "skin": "403"
+        },
+        "411": {
+            "link": {
+                "name": "Neck_04<Spine1_02<Spine_01<Hips_03<ROOT_00<_rootJoint<Armature<Fem Hero 01 Object",
+                "file": "assets\\models\\fem_hero_01.glb"
+            },
+            "parent": "410",
+            "skin": "403"
+        },
+        "412": {
+            "link": {
+                "name": "Head_05<Neck_04<Spine1_02<Spine_01<Hips_03<ROOT_00<_rootJoint<Armature<Fem Hero 01 Object",
+                "file": "assets\\models\\fem_hero_01.glb"
+            },
+            "parent": "411",
+            "skin": "403"
+        },
+        "413": {
+            "link": {
+                "name": "R Clavicle_06<Spine1_02<Spine_01<Hips_03<ROOT_00<_rootJoint<Armature<Fem Hero 01 Object",
+                "file": "assets\\models\\fem_hero_01.glb"
+            },
+            "parent": "410",
+            "skin": "403"
+        },
+        "414": {
+            "link": {
+                "name": "R UpperArm_07<R Clavicle_06<Spine1_02<Spine_01<Hips_03<ROOT_00<_rootJoint<Armature<Fem Hero 01 Object",
+                "file": "assets\\models\\fem_hero_01.glb"
+            },
+            "parent": "413",
+            "skin": "403"
+        },
+        "415": {
+            "link": {
+                "name": "R Forearm_08<R UpperArm_07<R Clavicle_06<Spine1_02<Spine_01<Hips_03<ROOT_00<_rootJoint<Armature<Fem Hero 01 Object",
+                "file": "assets\\models\\fem_hero_01.glb"
+            },
+            "parent": "414",
+            "skin": "403"
+        },
+        "416": {
+            "link": {
+                "name": "R Hand_09<R Forearm_08<R UpperArm_07<R Clavicle_06<Spine1_02<Spine_01<Hips_03<ROOT_00<_rootJoint<Armature<Fem Hero 01 Object",
+                "file": "assets\\models\\fem_hero_01.glb"
+            },
+            "parent": "415",
+            "skin": "403"
+        },
+        "417": {
+            "link": {
+                "name": "R Finger0_010<R Hand_09<R Forearm_08<R UpperArm_07<R Clavicle_06<Spine1_02<Spine_01<Hips_03<ROOT_00<_rootJoint<Armature<Fem Hero 01 Object",
+                "file": "assets\\models\\fem_hero_01.glb"
+            },
+            "parent": "416",
+            "skin": "403"
+        },
+        "418": {
+            "link": {
+                "name": "R Finger01_011<R Finger0_010<R Hand_09<R Forearm_08<R UpperArm_07<R Clavicle_06<Spine1_02<Spine_01<Hips_03<ROOT_00<_rootJoint<Armature<Fem Hero 01 Object",
+                "file": "assets\\models\\fem_hero_01.glb"
+            },
+            "parent": "417",
+            "skin": "403"
+        },
+        "419": {
+            "link": {
+                "name": "R Finger02_012<R Finger01_011<R Finger0_010<R Hand_09<R Forearm_08<R UpperArm_07<R Clavicle_06<Spine1_02<Spine_01<Hips_03<ROOT_00<_rootJoint<Armature<Fem Hero 01 Object",
+                "file": "assets\\models\\fem_hero_01.glb"
+            },
+            "parent": "418",
+            "skin": "403"
+        },
+        "420": {
+            "link": {
+                "name": "R Finger1_013<R Hand_09<R Forearm_08<R UpperArm_07<R Clavicle_06<Spine1_02<Spine_01<Hips_03<ROOT_00<_rootJoint<Armature<Fem Hero 01 Object",
+                "file": "assets\\models\\fem_hero_01.glb"
+            },
+            "parent": "416",
+            "skin": "403"
+        },
+        "421": {
+            "link": {
+                "name": "R Finger11_014<R Finger1_013<R Hand_09<R Forearm_08<R UpperArm_07<R Clavicle_06<Spine1_02<Spine_01<Hips_03<ROOT_00<_rootJoint<Armature<Fem Hero 01 Object",
+                "file": "assets\\models\\fem_hero_01.glb"
+            },
+            "parent": "420",
+            "skin": "403"
+        },
+        "422": {
+            "link": {
+                "name": "R Finger12_015<R Finger11_014<R Finger1_013<R Hand_09<R Forearm_08<R UpperArm_07<R Clavicle_06<Spine1_02<Spine_01<Hips_03<ROOT_00<_rootJoint<Armature<Fem Hero 01 Object",
+                "file": "assets\\models\\fem_hero_01.glb"
+            },
+            "parent": "421",
+            "skin": "403"
+        },
+        "423": {
+            "link": {
+                "name": "R Finger2_016<R Hand_09<R Forearm_08<R UpperArm_07<R Clavicle_06<Spine1_02<Spine_01<Hips_03<ROOT_00<_rootJoint<Armature<Fem Hero 01 Object",
+                "file": "assets\\models\\fem_hero_01.glb"
+            },
+            "parent": "416",
+            "skin": "403"
+        },
+        "424": {
+            "link": {
+                "name": "R Finger21_017<R Finger2_016<R Hand_09<R Forearm_08<R UpperArm_07<R Clavicle_06<Spine1_02<Spine_01<Hips_03<ROOT_00<_rootJoint<Armature<Fem Hero 01 Object",
+                "file": "assets\\models\\fem_hero_01.glb"
+            },
+            "parent": "423",
+            "skin": "403"
+        },
+        "425": {
+            "link": {
+                "name": "R Finger22_018<R Finger21_017<R Finger2_016<R Hand_09<R Forearm_08<R UpperArm_07<R Clavicle_06<Spine1_02<Spine_01<Hips_03<ROOT_00<_rootJoint<Armature<Fem Hero 01 Object",
+                "file": "assets\\models\\fem_hero_01.glb"
+            },
+            "parent": "424",
+            "skin": "403"
+        },
+        "426": {
+            "link": {
+                "name": "R Finger3_019<R Hand_09<R Forearm_08<R UpperArm_07<R Clavicle_06<Spine1_02<Spine_01<Hips_03<ROOT_00<_rootJoint<Armature<Fem Hero 01 Object",
+                "file": "assets\\models\\fem_hero_01.glb"
+            },
+            "parent": "416",
+            "skin": "403"
+        },
+        "427": {
+            "link": {
+                "name": "R Finger31_020<R Finger3_019<R Hand_09<R Forearm_08<R UpperArm_07<R Clavicle_06<Spine1_02<Spine_01<Hips_03<ROOT_00<_rootJoint<Armature<Fem Hero 01 Object",
+                "file": "assets\\models\\fem_hero_01.glb"
+            },
+            "parent": "426",
+            "skin": "403"
+        },
+        "428": {
+            "link": {
+                "name": "R Finger32_021<R Finger31_020<R Finger3_019<R Hand_09<R Forearm_08<R UpperArm_07<R Clavicle_06<Spine1_02<Spine_01<Hips_03<ROOT_00<_rootJoint<Armature<Fem Hero 01 Object",
+                "file": "assets\\models\\fem_hero_01.glb"
+            },
+            "parent": "427",
+            "skin": "403"
+        },
+        "429": {
+            "link": {
+                "name": "R Finger4_022<R Hand_09<R Forearm_08<R UpperArm_07<R Clavicle_06<Spine1_02<Spine_01<Hips_03<ROOT_00<_rootJoint<Armature<Fem Hero 01 Object",
+                "file": "assets\\models\\fem_hero_01.glb"
+            },
+            "parent": "416",
+            "skin": "403"
+        },
+        "430": {
+            "link": {
+                "name": "R Finger41_023<R Finger4_022<R Hand_09<R Forearm_08<R UpperArm_07<R Clavicle_06<Spine1_02<Spine_01<Hips_03<ROOT_00<_rootJoint<Armature<Fem Hero 01 Object",
+                "file": "assets\\models\\fem_hero_01.glb"
+            },
+            "parent": "429",
+            "skin": "403"
+        },
+        "431": {
+            "link": {
+                "name": "R Finger42_024<R Finger41_023<R Finger4_022<R Hand_09<R Forearm_08<R UpperArm_07<R Clavicle_06<Spine1_02<Spine_01<Hips_03<ROOT_00<_rootJoint<Armature<Fem Hero 01 Object",
+                "file": "assets\\models\\fem_hero_01.glb"
+            },
+            "parent": "430",
+            "skin": "403"
+        },
+        "432": {
+            "link": {
+                "name": "L Clavicle_025<Spine1_02<Spine_01<Hips_03<ROOT_00<_rootJoint<Armature<Fem Hero 01 Object",
+                "file": "assets\\models\\fem_hero_01.glb"
+            },
+            "parent": "410",
+            "skin": "403"
+        },
+        "433": {
+            "link": {
+                "name": "L UpperArm_026<L Clavicle_025<Spine1_02<Spine_01<Hips_03<ROOT_00<_rootJoint<Armature<Fem Hero 01 Object",
+                "file": "assets\\models\\fem_hero_01.glb"
+            },
+            "parent": "432",
+            "skin": "403"
+        },
+        "434": {
+            "link": {
+                "name": "L Forearm_027<L UpperArm_026<L Clavicle_025<Spine1_02<Spine_01<Hips_03<ROOT_00<_rootJoint<Armature<Fem Hero 01 Object",
+                "file": "assets\\models\\fem_hero_01.glb"
+            },
+            "parent": "433",
+            "skin": "403"
+        },
+        "435": {
+            "link": {
+                "name": "L Hand_028<L Forearm_027<L UpperArm_026<L Clavicle_025<Spine1_02<Spine_01<Hips_03<ROOT_00<_rootJoint<Armature<Fem Hero 01 Object",
+                "file": "assets\\models\\fem_hero_01.glb"
+            },
+            "parent": "434",
+            "skin": "403"
+        },
+        "436": {
+            "link": {
+                "name": "L Finger0_029<L Hand_028<L Forearm_027<L UpperArm_026<L Clavicle_025<Spine1_02<Spine_01<Hips_03<ROOT_00<_rootJoint<Armature<Fem Hero 01 Object",
+                "file": "assets\\models\\fem_hero_01.glb"
+            },
+            "parent": "435",
+            "skin": "403"
+        },
+        "437": {
+            "link": {
+                "name": "L Finger01_030<L Finger0_029<L Hand_028<L Forearm_027<L UpperArm_026<L Clavicle_025<Spine1_02<Spine_01<Hips_03<ROOT_00<_rootJoint<Armature<Fem Hero 01 Object",
+                "file": "assets\\models\\fem_hero_01.glb"
+            },
+            "parent": "436",
+            "skin": "403"
+        },
+        "438": {
+            "link": {
+                "name": "L Finger02_031<L Finger01_030<L Finger0_029<L Hand_028<L Forearm_027<L UpperArm_026<L Clavicle_025<Spine1_02<Spine_01<Hips_03<ROOT_00<_rootJoint<Armature<Fem Hero 01 Object",
+                "file": "assets\\models\\fem_hero_01.glb"
+            },
+            "parent": "437",
+            "skin": "403"
+        },
+        "439": {
+            "link": {
+                "name": "L Finger1_032<L Hand_028<L Forearm_027<L UpperArm_026<L Clavicle_025<Spine1_02<Spine_01<Hips_03<ROOT_00<_rootJoint<Armature<Fem Hero 01 Object",
+                "file": "assets\\models\\fem_hero_01.glb"
+            },
+            "parent": "435",
+            "skin": "403"
+        },
+        "440": {
+            "link": {
+                "name": "L Finger11_033<L Finger1_032<L Hand_028<L Forearm_027<L UpperArm_026<L Clavicle_025<Spine1_02<Spine_01<Hips_03<ROOT_00<_rootJoint<Armature<Fem Hero 01 Object",
+                "file": "assets\\models\\fem_hero_01.glb"
+            },
+            "parent": "439",
+            "skin": "403"
+        },
+        "441": {
+            "link": {
+                "name": "L Finger12_034<L Finger11_033<L Finger1_032<L Hand_028<L Forearm_027<L UpperArm_026<L Clavicle_025<Spine1_02<Spine_01<Hips_03<ROOT_00<_rootJoint<Armature<Fem Hero 01 Object",
+                "file": "assets\\models\\fem_hero_01.glb"
+            },
+            "parent": "440",
+            "skin": "403"
+        },
+        "442": {
+            "link": {
+                "name": "L Finger2_035<L Hand_028<L Forearm_027<L UpperArm_026<L Clavicle_025<Spine1_02<Spine_01<Hips_03<ROOT_00<_rootJoint<Armature<Fem Hero 01 Object",
+                "file": "assets\\models\\fem_hero_01.glb"
+            },
+            "parent": "435",
+            "skin": "403"
+        },
+        "443": {
+            "link": {
+                "name": "L Finger21_036<L Finger2_035<L Hand_028<L Forearm_027<L UpperArm_026<L Clavicle_025<Spine1_02<Spine_01<Hips_03<ROOT_00<_rootJoint<Armature<Fem Hero 01 Object",
+                "file": "assets\\models\\fem_hero_01.glb"
+            },
+            "parent": "442",
+            "skin": "403"
+        },
+        "444": {
+            "link": {
+                "name": "L Finger22_037<L Finger21_036<L Finger2_035<L Hand_028<L Forearm_027<L UpperArm_026<L Clavicle_025<Spine1_02<Spine_01<Hips_03<ROOT_00<_rootJoint<Armature<Fem Hero 01 Object",
+                "file": "assets\\models\\fem_hero_01.glb"
+            },
+            "parent": "443",
+            "skin": "403"
+        },
+        "445": {
+            "link": {
+                "name": "L Finger3_038<L Hand_028<L Forearm_027<L UpperArm_026<L Clavicle_025<Spine1_02<Spine_01<Hips_03<ROOT_00<_rootJoint<Armature<Fem Hero 01 Object",
+                "file": "assets\\models\\fem_hero_01.glb"
+            },
+            "parent": "435",
+            "skin": "403"
+        },
+        "446": {
+            "link": {
+                "name": "L Finger31_039<L Finger3_038<L Hand_028<L Forearm_027<L UpperArm_026<L Clavicle_025<Spine1_02<Spine_01<Hips_03<ROOT_00<_rootJoint<Armature<Fem Hero 01 Object",
+                "file": "assets\\models\\fem_hero_01.glb"
+            },
+            "parent": "445",
+            "skin": "403"
+        },
+        "447": {
+            "link": {
+                "name": "L Finger32_040<L Finger31_039<L Finger3_038<L Hand_028<L Forearm_027<L UpperArm_026<L Clavicle_025<Spine1_02<Spine_01<Hips_03<ROOT_00<_rootJoint<Armature<Fem Hero 01 Object",
+                "file": "assets\\models\\fem_hero_01.glb"
+            },
+            "parent": "446",
+            "skin": "403"
+        },
+        "448": {
+            "link": {
+                "name": "L Finger4_041<L Hand_028<L Forearm_027<L UpperArm_026<L Clavicle_025<Spine1_02<Spine_01<Hips_03<ROOT_00<_rootJoint<Armature<Fem Hero 01 Object",
+                "file": "assets\\models\\fem_hero_01.glb"
+            },
+            "parent": "435",
+            "skin": "403"
+        },
+        "449": {
+            "link": {
+                "name": "L Finger41_042<L Finger4_041<L Hand_028<L Forearm_027<L UpperArm_026<L Clavicle_025<Spine1_02<Spine_01<Hips_03<ROOT_00<_rootJoint<Armature<Fem Hero 01 Object",
+                "file": "assets\\models\\fem_hero_01.glb"
+            },
+            "parent": "448",
+            "skin": "403"
+        },
+        "450": {
+            "link": {
+                "name": "L Finger42_043<L Finger41_042<L Finger4_041<L Hand_028<L Forearm_027<L UpperArm_026<L Clavicle_025<Spine1_02<Spine_01<Hips_03<ROOT_00<_rootJoint<Armature<Fem Hero 01 Object",
+                "file": "assets\\models\\fem_hero_01.glb"
+            },
+            "parent": "449",
+            "skin": "403"
+        },
+        "451": {
+            "link": {
+                "name": "L UpperArm_026_0<L UpperArm_026<L Clavicle_025<Spine1_02<Spine_01<Hips_03<ROOT_00<_rootJoint<Armature<Fem Hero 01 Object",
+                "file": "assets\\models\\fem_hero_01.glb"
+            },
+            "parent": "433",
+            "skin": "403"
+        },
+        "452": {
+            "link": {
+                "name": "L Clavicle_025_0<L Clavicle_025<Spine1_02<Spine_01<Hips_03<ROOT_00<_rootJoint<Armature<Fem Hero 01 Object",
+                "file": "assets\\models\\fem_hero_01.glb"
+            },
+            "parent": "432",
+            "skin": "403"
+        },
+        "453": {
+            "link": {
+                "name": "R Thigh_044<Hips_03<ROOT_00<_rootJoint<Armature<Fem Hero 01 Object",
+                "file": "assets\\models\\fem_hero_01.glb"
+            },
+            "parent": "408",
+            "skin": "403"
+        },
+        "454": {
+            "link": {
+                "name": "R Calf_045<R Thigh_044<Hips_03<ROOT_00<_rootJoint<Armature<Fem Hero 01 Object",
+                "file": "assets\\models\\fem_hero_01.glb"
+            },
+            "parent": "453",
+            "skin": "403"
+        },
+        "455": {
+            "link": {
+                "name": "R Foot_046<R Calf_045<R Thigh_044<Hips_03<ROOT_00<_rootJoint<Armature<Fem Hero 01 Object",
+                "file": "assets\\models\\fem_hero_01.glb"
+            },
+            "parent": "454",
+            "skin": "403"
+        },
+        "456": {
+            "link": {
+                "name": "R Toe0_047<R Foot_046<R Calf_045<R Thigh_044<Hips_03<ROOT_00<_rootJoint<Armature<Fem Hero 01 Object",
+                "file": "assets\\models\\fem_hero_01.glb"
+            },
+            "parent": "455",
+            "skin": "403"
+        },
+        "457": {
+            "link": {
+                "name": "L Thigh_048<Hips_03<ROOT_00<_rootJoint<Armature<Fem Hero 01 Object",
+                "file": "assets\\models\\fem_hero_01.glb"
+            },
+            "parent": "408",
+            "skin": "403"
+        },
+        "458": {
+            "link": {
+                "name": "L Calf_049<L Thigh_048<Hips_03<ROOT_00<_rootJoint<Armature<Fem Hero 01 Object",
+                "file": "assets\\models\\fem_hero_01.glb"
+            },
+            "parent": "457",
+            "skin": "403"
+        },
+        "459": {
+            "link": {
+                "name": "L Foot_050<L Calf_049<L Thigh_048<Hips_03<ROOT_00<_rootJoint<Armature<Fem Hero 01 Object",
+                "file": "assets\\models\\fem_hero_01.glb"
+            },
+            "parent": "458",
+            "skin": "403"
+        },
+        "460": {
+            "link": {
+                "name": "L Toe0_051<L Foot_050<L Calf_049<L Thigh_048<Hips_03<ROOT_00<_rootJoint<Armature<Fem Hero 01 Object",
+                "file": "assets\\models\\fem_hero_01.glb"
+            },
+            "parent": "459",
+            "skin": "403"
+        },
+        "461": {
+            "link": {
+                "name": "Fem Hero 01<Fem Hero 01 Object",
+                "file": "assets\\models\\fem_hero_01.glb"
+            },
+            "parent": "404",
+            "components": [
+                {
+                    "mesh": {
+                        "skin": "403",
+                        "material": "393"
+                    }
+                }
+            ]
         }
     },
     "meshes": {
@@ -3044,6 +3574,12 @@
                 "name": "Low Poly Skinned Character Smooth Joined Body",
                 "file": "assets\\models\\low_poly_skinned_character_smooth_joined.fbx"
             }
+        },
+        "402": {
+            "link": {
+                "name": "Fem Hero 01",
+                "file": "assets\\models\\fem_hero_01.glb"
+            }
         }
     },
     "textures": {
@@ -3088,6 +3624,12 @@
                 "name": "texture_0",
                 "file": "assets\\models\\low_poly_skinned_character_smooth_joined.fbx"
             }
+        },
+        "465": {
+            "link": {
+                "name": "fem_hero_01_texture.png",
+                "file": "assets\\textures\\fem_hero_01_texture.png"
+            }
         }
     },
     "images": {
@@ -3108,7 +3650,15 @@
             "link": {
                 "name": "low_poly_skinned_character_texture.png",
                 "file": "assets\\textures\\low_poly_skinned_character_texture.png"
-            }
+            },
+            "compress": false
+        },
+        "464": {
+            "link": {
+                "name": "fem_hero_01_texture.png",
+                "file": "assets\\textures\\fem_hero_01_texture.png"
+            },
+            "compress": false
         }
     },
     "materials": {
@@ -3429,6 +3979,36 @@
                     0.4472135
                 ]
             }
+        },
+        "393": {
+            "link": {
+                "name": "Low Poly Skinned Character Textured",
+                "file": "assets\\models\\low_poly_skinned_character_flat.fbx"
+            },
+            "Phong": {
+                "shininess": 2,
+                "ambientFactor": 0.5,
+                "diffuseTexture": "465",
+                "diffuseColor": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "specularColor": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    0.1960784
+                ]
+            },
+            "name": "Fem Hero 01 "
+        },
+        "401": {
+            "link": {
+                "name": "Material_0",
+                "file": "assets\\models\\fem_hero_01.glb"
+            }
         }
     },
     "shaders": {
@@ -3528,7 +4108,8 @@
             "link": {
                 "name": "Armature|Armature|Armature|A pose|Armature|A pose",
                 "file": "assets\\models\\low_poly_skinned_character_flat.fbx"
-            }
+            },
+            "name": "Armature|Armature|Armature|A pose|Armature|A pose"
         },
         "183": {
             "link": {
@@ -3577,27 +4158,21 @@
                 "name": "Armature|Armature|Armature|Armature|Armature|Walk|Armature|Walk|Armature",
                 "file": "assets\\models\\low_poly_skinned_character_smooth_joined.fbx"
             }
+        },
+        "462": {
+            "link": {
+                "name": "Fem Hero 01 Idle",
+                "file": "assets\\models\\fem_hero_01.glb"
+            }
+        },
+        "463": {
+            "link": {
+                "name": "Fem Hero 01 Rest Pose",
+                "file": "assets\\models\\fem_hero_01.glb"
+            }
         }
     },
     "skins": {
-        "142": {
-            "link": {
-                "name": "skin_6",
-                "file": "assets\\models\\low_poly_skinned_character_flat.fbx"
-            }
-        },
-        "200": {
-            "link": {
-                "name": "skin_7",
-                "file": "assets\\models\\low_poly_skinned_character_smooth.fbx"
-            }
-        },
-        "275": {
-            "link": {
-                "name": "skin_8",
-                "file": "assets\\models\\low_poly_skinned_character_smooth_joined.fbx"
-            }
-        },
         "324": {
             "link": {
                 "name": "skin_0",
@@ -3857,6 +4432,69 @@
                 "307",
                 "308"
             ]
+        },
+        "403": {
+            "link": {
+                "name": "Armature",
+                "file": "assets\\models\\fem_hero_01.glb"
+            },
+            "joints": [
+                "406",
+                "407",
+                "408",
+                "409",
+                "410",
+                "411",
+                "412",
+                "413",
+                "414",
+                "415",
+                "416",
+                "417",
+                "418",
+                "419",
+                "420",
+                "421",
+                "422",
+                "423",
+                "424",
+                "425",
+                "426",
+                "427",
+                "428",
+                "429",
+                "430",
+                "431",
+                "432",
+                "433",
+                "434",
+                "435",
+                "436",
+                "437",
+                "438",
+                "439",
+                "440",
+                "441",
+                "442",
+                "443",
+                "444",
+                "445",
+                "446",
+                "447",
+                "448",
+                "449",
+                "450",
+                "451",
+                "452",
+                "453",
+                "454",
+                "455",
+                "456",
+                "457",
+                "458",
+                "459",
+                "460"
+            ]
         }
     },
     "pipelines": {
@@ -4029,6 +4667,8 @@
         "assets/models/low_poly_skinned_character_flat.fbx",
         "assets/textures/low_poly_skinned_character_texture.png",
         "assets/models/low_poly_skinned_character_smooth.fbx",
-        "assets/models/low_poly_skinned_character_smooth_joined.fbx"
+        "assets/models/low_poly_skinned_character_smooth_joined.fbx",
+        "assets/models/fem_hero_01.glb",
+        "assets/textures/fem_hero_01_texture.png"
     ]
 }

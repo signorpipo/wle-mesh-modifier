@@ -6,7 +6,7 @@ ToolManagerParams = class ToolManagerParams {
         this.myMeshComponent = null;
         this.myMeshAnimationObject = null;
         this.myAnimationToPlay = null;
-        this.myAPoseAnimation = null;
+        this.myRestPoseAnimation = null;
 
         this.myIsFlatShading = true;
         this.myPointerObject = null;
@@ -61,19 +61,22 @@ ToolManager = class ToolManager {
         this._myVertexToolData.myMeshObject = params.myMeshObject;
         this._myVertexToolData.myMeshAnimationObject = params.myMeshAnimationObject;
         this._myVertexToolData.myAnimationToPlay = params.myAnimationToPlay;
-        this._myVertexToolData.myAPoseAnimation = params.myAPoseAnimation;
+        this._myVertexToolData.myRestPoseAnimation = params.myRestPoseAnimation;
         this._myVertexToolData.myIsFlatShading = params.myIsFlatShading;
         this._myVertexToolData.myMeshComponent = meshComponent;
         this._myVertexToolData.myPointerObject = params.myPointerObject;
         this._myVertexToolData.myLeftControlScheme = params.myLeftControlScheme;
         this._myVertexToolData.myRightControlScheme = params.myRightControlScheme;
+
+        this._myVertexToolData.myScaleFactor = 1 / this._myParams.myMeshComponent.object.pp_getScale()[0];
+
         this._loadVertexGroupConfig(params.myVariantGroupCongigPath);
 
         this._myIndexToolData = new IndexToolData(meshComponent.mesh);
         this._myIndexToolData.myMeshObject = params.myMeshObject;
         this._myIndexToolData.myMeshAnimationObject = params.myMeshAnimationObject;
         this._myIndexToolData.myAnimationToPlay = params.myAnimationToPlay;
-        this._myIndexToolData.myAPoseAnimation = params.myAPoseAnimation;
+        this._myIndexToolData.myRestPoseAnimation = params.myRestPoseAnimation;
         this._myIndexToolData.myIsFlatShading = params.myIsFlatShading;
         this._myIndexToolData.myMeshComponent = meshComponent;
         this._myIndexToolData.myPointerObject = params.myPointerObject;

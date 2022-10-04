@@ -6,7 +6,9 @@ VertexToolData = class VertexToolData {
         this.myMeshComponent = null;
         this.myMeshAnimationObject = null;
         this.myAnimationToPlay = null;
-        this.myAPoseAnimation = null;
+        this.myRestPoseAnimation = null;
+
+        this.myScaleFactor = 1;
 
         this.myPointerObject = null;
         this.myVertexGroupConfig = null;
@@ -43,7 +45,7 @@ VertexTool = class VertexTool {
             let animationComponent = this._myToolData.myMeshAnimationObject.pp_getComponentHierarchy("animation");
             if (animationComponent) {
                 animationComponent.stop();
-                animationComponent.animation = this._myToolData.myAPoseAnimation;
+                animationComponent.animation = this._myToolData.myRestPoseAnimation;
                 animationComponent.play();
             }
         }
@@ -66,7 +68,7 @@ VertexTool = class VertexTool {
             if (animationComponent) {
                 animationComponent.stop();
                 if (this._myToolData.myIsPlayingAnimation) {
-                    animationComponent.animation = this._myToolData.myAPoseAnimation;
+                    animationComponent.animation = this._myToolData.myRestPoseAnimation;
                 } else {
                     animationComponent.animation = this._myToolData.myAnimationToPlay;
                 }
@@ -142,7 +144,8 @@ VertexTool = class VertexTool {
     // Move
     _moveSelectedVertexes(movement) {
         if (this._myToolData.mySelectedVertexes.length > 0) {
-            VertexUtils.moveSelectedVertexes(this._myToolData.myMeshObject, this._myToolData.mySelectedVertexes, movement);
+            let scaledMovement = movement.vec3_scale(this._myToolData.myScaleFactor);
+            VertexUtils.moveSelectedVertexes(this._myToolData.myMeshObject, this._myToolData.mySelectedVertexes, scaledMovement);
 
             this._myToolData.myMeshObject.pp_setActive(false);
         }
@@ -150,7 +153,8 @@ VertexTool = class VertexTool {
 
     _moveSelectedVertexesAlongNormals(movement) {
         if (this._myToolData.mySelectedVertexes.length > 0) {
-            VertexUtils.moveSelectedVertexesAlongNormals(this._myToolData.myMeshObject, this._myToolData.mySelectedVertexes, movement, true);
+            let scaledMovement = movement.vec3_scale(this._myToolData.myScaleFactor);
+            VertexUtils.moveSelectedVertexesAlongNormals(this._myToolData.myMeshObject, this._myToolData.mySelectedVertexes, scaledMovement, true);
 
             this._myToolData.myMeshObject.pp_setActive(false);
         }

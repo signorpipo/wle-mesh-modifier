@@ -2,9 +2,8 @@ WL.registerComponent("mesh-modifier-gateway", {
     _myForceMeshRefresh: { type: WL.Type.Bool, default: false },
     _myVertexGroupConfigPath: { type: WL.Type.String },
     _myMeshObject: { type: WL.Type.Object },
-    _myMeshAnimationObject: { type: WL.Type.Object },
     _myAnimationToPlay: { type: WL.Type.Animation },
-    _myAPoseAnimation: { type: WL.Type.Animation },
+    _myRestPoseAnimation: { type: WL.Type.Animation },
     _myShadeType: { type: WL.Type.Enum, values: ['flat', 'smooth'], default: 'flat' },
     _myPointerObject: { type: WL.Type.Object },
     _myToolLabel: { type: WL.Type.Object },
@@ -22,9 +21,15 @@ WL.registerComponent("mesh-modifier-gateway", {
         params.myForceMeshRefresh = this._myForceMeshRefresh;
 
         params.myMeshObject = this._myMeshObject;
-        params.myMeshAnimationObject = this._myMeshAnimationObject;
+
+        let animationComponent = this._myMeshObject.pp_getComponentHierarchy("animation");
+
+        if (animationComponent != null) {
+            params.myMeshAnimationObject = animationComponent.object;
+        }
+
         params.myAnimationToPlay = this._myAnimationToPlay;
-        params.myAPoseAnimation = this._myAPoseAnimation;
+        params.myRestPoseAnimation = this._myRestPoseAnimation;
 
         params.myIsFlatShading = this._myShadeType == 0;
         params.myPointerObject = this._myPointerObject;

@@ -6,7 +6,7 @@ IndexToolData = class IndexToolData {
         this.myMeshComponent = null;
         this.myMeshAnimationObject = null;
         this.myAnimationToPlay = null;
-        this.myAPoseAnimation = null;
+        this.myRestPoseAnimation = null;
 
         this.myPointerObject = null;
 
@@ -35,7 +35,7 @@ IndexTool = class IndexTool {
             let animationComponent = this._myToolData.myMeshAnimationObject.pp_getComponentHierarchy("animation");
             if (animationComponent) {
                 animationComponent.stop();
-                animationComponent.animation = this._myToolData.myAPoseAnimation;
+                animationComponent.animation = this._myToolData.myRestPoseAnimation;
                 animationComponent.play();
             }
         }
@@ -58,7 +58,7 @@ IndexTool = class IndexTool {
             if (animationComponent) {
                 animationComponent.stop();
                 if (this._myToolData.myIsPlayingAnimation) {
-                    animationComponent.animation = this._myToolData.myAPoseAnimation;
+                    animationComponent.animation = this._myToolData.myRestPoseAnimation;
                 } else {
                     animationComponent.animation = this._myToolData.myAnimationToPlay;
                 }
