@@ -196,7 +196,7 @@ VertexGroup = class VertexGroup {
 
 
             let vertexPositionWorld = vertexPosition.vec3_convertPositionToWorld(meshTransform);
-            PP.myDebugVisualManager.drawPoint(0, vertexPositionWorld, color, 0.003);
+            PP.myDebugVisualManager.drawPoint(0, vertexPositionWorld, color, 0.002);
         }
     }
 };

@@ -86,7 +86,8 @@
                 {
                     "type": "locomotion",
                     "locomotion": {
-                        "_myMaxSpeed": 0.25
+                        "_myMaxSpeed": 0.25,
+                        "_myFlyEnabled": true
                     }
                 }
             ]
@@ -2840,7 +2841,9 @@
                 {
                     "animation": {
                         "preview": false,
-                        "animation": "463"
+                        "animation": "463",
+                        "speed": 0.25,
+                        "retarget": false
                     }
                 }
             ]
