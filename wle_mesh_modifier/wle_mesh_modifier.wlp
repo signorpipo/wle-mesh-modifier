@@ -75,7 +75,8 @@
                         "_myAPoseAnimation": "399",
                         "_myRestPoseAnimation": "463",
                         "_mySelectedVertexColor": 200
-                    }
+                    },
+                    "active": true
                 }
             ]
         },
@@ -2790,7 +2791,8 @@
                     "type": "pp-set-active",
                     "pp-set-active": {
                         "_myActive": false
-                    }
+                    },
+                    "active": true
                 }
             ]
         },
@@ -3293,6 +3295,40 @@
                         "material": "393"
                     }
                 }
+            ]
+        },
+        "466": {
+            "name": "Test Load Variant",
+            "components": [
+                {
+                    "type": "load-variant",
+                    "load-variant": {
+                        "_myMeshObject": "391",
+                        "_myShadeType": "smooth",
+                        "_myVariantSetup": "[[0,0],[2,0],[3,1],[4,0],[5,1]]",
+                        "_myVertexGroupConfigPath": "fem_hero_01_config.json"
+                    },
+                    "active": true
+                }
+            ],
+            "parent": "101",
+            "transformation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                -10000.0,
+                0.0,
+                1.0
             ]
         }
     },

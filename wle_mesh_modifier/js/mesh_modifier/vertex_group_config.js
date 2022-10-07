@@ -1,7 +1,32 @@
+MeshVariantSetup = class MeshVariantSetup {
+    constructor() {
+        this._myVariantSetupMap = new Map();
+    }
+
+    setGroupVariant(groupID, variantID) {
+        this._myVariantSetupMap.set(groupID, variantID);
+    }
+
+    getVariantSetupMap() {
+        return this._myVariantSetupMap;
+    }
+};
+
 VertexGroupConfig = class VertexGroupConfig {
     constructor() {
         this._myNextGroupID = 0;
         this._myVertexGroups = new Map();
+    }
+
+    loadVariantSetup(mesh, meshVariantSetup, isFlatShading) {
+        let variantSetupMap = meshVariantSetup.getVariantSetupMap();
+
+        for (let entry of variantSetupMap.entries()) {
+            let group = this.getGroup(entry[0]);
+            if (group != null) {
+                group.loadVariant(mesh, entry[1], isFlatShading);
+            }
+        }
     }
 
     addGroup() {
@@ -233,7 +258,7 @@ VertexGroupVariant = class VertexGroupVariant {
 
         for (let [index, vertexPosition] of this._myPositionMap.entries()) {
             positionAttribute.get(index, position);
-            if (!vertexPosition.pp_equals(position)) {
+            if (!vertexPosition.vec_equals(position, 0.00001)) {
                 match = false;
                 break;
             }

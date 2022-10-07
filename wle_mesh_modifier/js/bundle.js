@@ -177,27 +177,28 @@ require('./pp/tool/widget_frame/widget_frame_ui');
 require('./pp/tool/widget_frame/widget_frame');
 
 //MESH MODIFIER
-require('./mesh_modifier/cauldron_utils.js');
-require('./mesh_modifier/file_manager.js');
-require('./mesh_modifier/vertex_group_config.js');
-require('./mesh_modifier/direction_2D_to_3D_converter.js');
-require('./mesh_modifier/locomotion.js');
-require('./mesh_modifier/vertex_utils.js');
+require('./mesh_modifier/cauldron_utils');
+require('./mesh_modifier/file_manager');
+require('./mesh_modifier/vertex_group_config');
+require('./mesh_modifier/direction_2D_to_3D_converter');
+require('./mesh_modifier/locomotion');
+require('./mesh_modifier/vertex_utils');
 
-require('./mesh_modifier/test/test_download.js');
-require('./mesh_modifier/test/test_loadFile.js');
+require('./mesh_modifier/test/test_download');
+require('./mesh_modifier/test/test_loadFile');
 require('./mesh_modifier/test/test_set_axis');
 
-require('./mesh_modifier/tool/tool_type.js');
-require('./mesh_modifier/tool/tool_manager.js');
-require('./mesh_modifier/tool/vertex/vertex_tool.js');
-require('./mesh_modifier/tool/vertex/vertex_manage_groups_variants_tool.js');
-require('./mesh_modifier/tool/vertex/vertex_free_edit_tool.js');
-require('./mesh_modifier/tool/vertex/vertex_manage_groups_tool.js');
-require('./mesh_modifier/tool/vertex/vertex_manage_variants_tool.js');
-require('./mesh_modifier/tool/vertex/vertex_edit_variant_tool.js');
+require('./mesh_modifier/tool/tool_type');
+require('./mesh_modifier/tool/tool_manager');
+require('./mesh_modifier/tool/vertex/vertex_tool');
+require('./mesh_modifier/tool/vertex/vertex_manage_groups_variants_tool');
+require('./mesh_modifier/tool/vertex/vertex_free_edit_tool');
+require('./mesh_modifier/tool/vertex/vertex_manage_groups_tool');
+require('./mesh_modifier/tool/vertex/vertex_manage_variants_tool');
+require('./mesh_modifier/tool/vertex/vertex_edit_variant_tool');
 require('./mesh_modifier/tool/index/index_tool');
 require('./mesh_modifier/tool/index/index_free_edit_tool');
-require('./mesh_modifier/tool/dummy_tool.js');
+require('./mesh_modifier/tool/dummy_tool');
 
-require('./mesh_modifier/mesh_modifier_gateway.js');
+require('./mesh_modifier/load_variants');
+require('./mesh_modifier/mesh_modifier_gateway');
