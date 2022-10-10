@@ -4,6 +4,8 @@ WL.registerComponent("mesh-modifier-gateway", {
     _mySelectedVertexColor: { type: WL.Type.Int, default: 46 },
     _myVertexGroupConfigPath: { type: WL.Type.String },
     _myMeshObject: { type: WL.Type.Object },
+    _myMeshFilePath: { type: WL.Type.String },
+    _myMeshFileMaterial: { type: WL.Type.Material },
     _myAnimationToPlay: { type: WL.Type.Animation },
     _myRestPoseAnimation: { type: WL.Type.Animation },
     _myShadeType: { type: WL.Type.Enum, values: ['flat', 'smooth'], default: 'flat' },
@@ -13,18 +15,37 @@ WL.registerComponent("mesh-modifier-gateway", {
     _myVariantLabel: { type: WL.Type.Object },
     _myLeftControlScheme: { type: WL.Type.Object },
     _myRightControlScheme: { type: WL.Type.Object },
+    _myPropsObject: { type: WL.Type.Object },
 }, {
     init: function () {
-
+        this._myStarted = false;
     },
     start: function () {
+        if (this.myMeshObject == null) {
+            WL.scene.append(this._myMeshFilePath).then(function (meshObject) {
+                meshObject.pp_setParent(this._myPropsObject);
+                meshObject.pp_resetTransformLocal();
+                PP.MeshUtils.setMaterial(meshObject, this._myMeshFileMaterial);
+                this._start(meshObject);
+            }.bind(this)
+            );
+        } else {
+            this._start(this.myMeshObject);
+        }
+    },
+    update: function (dt) {
+        if (this._myStarted) {
+            this._myToolManager.update(dt);
+        }
+    },
+    _start(meshObject) {
         let params = new ToolManagerParams();
 
         params.myForceMeshRefresh = this._myForceMeshRefresh;
 
-        params.myMeshObject = this._myMeshObject;
+        params.myMeshObject = meshObject;
 
-        let animationComponent = this._myMeshObject.pp_getComponentHierarchy("animation");
+        let animationComponent = params.myMeshObject.pp_getComponentHierarchy("animation");
 
         if (animationComponent != null) {
             params.myMeshAnimationObject = animationComponent.object;
@@ -46,8 +67,7 @@ WL.registerComponent("mesh-modifier-gateway", {
         VertexUtils.updateVertexNormalsActive = this._myUpdateNormals;
 
         this._myToolManager = new ToolManager(params);
-    },
-    update: function (dt) {
-        this._myToolManager.update(dt);
-    },
+
+        this._myStarted = true;
+    }
 });

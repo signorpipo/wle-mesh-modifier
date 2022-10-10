@@ -60,10 +60,10 @@
                 {
                     "type": "mesh-modifier-gateway",
                     "mesh-modifier-gateway": {
-                        "_myMeshObject": "391",
+                        "_myMeshObject": null,
                         "_myPointer": "82",
                         "_myToolLabel": "87",
-                        "_myVertexGroupConfigPath": "fem_hero_01_config.json",
+                        "_myVertexGroupConfigPath": "fem_hero_01_streamed_config.json",
                         "_myGroupLabel": "106",
                         "_myVariantLabel": "108",
                         "_myLeftControlScheme": "23",
@@ -74,7 +74,10 @@
                         "_myAnimationToPlay": "462",
                         "_myAPoseAnimation": "399",
                         "_myRestPoseAnimation": "463",
-                        "_mySelectedVertexColor": 200
+                        "_mySelectedVertexColor": 200,
+                        "_myMeshFilePath": "./models/fem_hero_01.glb",
+                        "_myPropsObject": "72",
+                        "_myMeshFileMaterial": "393"
                     },
                     "active": true
                 }
@@ -4645,7 +4648,8 @@
                 "requiredFeatures": {
                     "local-floor": true
                 }
-            }
+            },
+            "enableRuntimeGltf": true
         },
         "scripting": {
             "sourcePaths": [

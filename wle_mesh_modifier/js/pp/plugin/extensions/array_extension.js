@@ -2427,8 +2427,26 @@ for (let key in Array.prototype) {
     if (found) {
         Object.defineProperty(Array.prototype, key, { enumerable: false });
 
+        Uint8ClampedArray.prototype[key] = Array.prototype[key];
+        Object.defineProperty(Uint8ClampedArray.prototype, key, { enumerable: false });
+
+        Uint8ClampedArray.prototype[key] = Array.prototype[key];
+        Object.defineProperty(Uint8ClampedArray.prototype, key, { enumerable: false });
+
+        Uint8Array.prototype[key] = Array.prototype[key];
+        Object.defineProperty(Uint8Array.prototype, key, { enumerable: false });
+
+        Uint16Array.prototype[key] = Array.prototype[key];
+        Object.defineProperty(Uint16Array.prototype, key, { enumerable: false });
+
         Uint32Array.prototype[key] = Array.prototype[key];
         Object.defineProperty(Uint32Array.prototype, key, { enumerable: false });
+
+        Int8Array.prototype[key] = Array.prototype[key];
+        Object.defineProperty(Int8Array.prototype, key, { enumerable: false });
+
+        Int16Array.prototype[key] = Array.prototype[key];
+        Object.defineProperty(Int16Array.prototype, key, { enumerable: false });
 
         Int32Array.prototype[key] = Array.prototype[key];
         Object.defineProperty(Int32Array.prototype, key, { enumerable: false });
