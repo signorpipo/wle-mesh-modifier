@@ -77,7 +77,7 @@
                         "_mySelectedVertexColor": 200,
                         "_myMeshFilePath": "./models/fem_hero_01.glb",
                         "_myPropsObject": "72",
-                        "_myMeshFileMaterial": "393"
+                        "_myMeshFileMaterial": "467"
                     },
                     "active": true
                 }
@@ -4052,6 +4052,24 @@
                 "name": "Material_0",
                 "file": "assets\\models\\fem_hero_01.glb"
             }
+        },
+        "467": {
+            "name": "Wireframe",
+            "pipeline": "469",
+            "FixedMeshVisualizer": {
+                "color": [
+                    1.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "wireframeColor": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    0.0
+                ]
+            }
         }
     },
     "shaders": {
@@ -4142,6 +4160,12 @@
         "322": {
             "link": {
                 "name": "TileFeedback.frag",
+                "file": "default"
+            }
+        },
+        "468": {
+            "link": {
+                "name": "FixedMeshVisualizer.frag",
                 "file": "default"
             }
         }
@@ -4616,6 +4640,24 @@
         "323": {
             "link": {
                 "name": "Sky",
+                "file": "default"
+            }
+        },
+        "469": {
+            "link": {
+                "name": "FixedMeshVisualizer Opaque",
+                "file": "default"
+            },
+            "name": "FixedMeshVisualizer",
+            "blending": true,
+            "depthTest": false,
+            "sampleAlphaToCoverage": true,
+            "blendSrcRgb": "source alpha",
+            "blendDestRgb": "one minus source alpha"
+        },
+        "470": {
+            "link": {
+                "name": "FixedMeshVisualizer Opaque",
                 "file": "default"
             }
         }
