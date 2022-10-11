@@ -187,6 +187,7 @@ require('./mesh_modifier/vertex_utils');
 require('./mesh_modifier/test/test_download');
 require('./mesh_modifier/test/test_loadFile');
 require('./mesh_modifier/test/test_set_axis');
+require('./mesh_modifier/test/log_object');
 
 require('./mesh_modifier/tool/tool_type');
 require('./mesh_modifier/tool/tool_manager');
