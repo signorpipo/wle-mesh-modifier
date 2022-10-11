@@ -66,6 +66,24 @@ IndexTool = class IndexTool {
                 this._myToolData.myIsPlayingAnimation = !this._myToolData.myIsPlayingAnimation;
             }
         }
+
+        this._previewVertexDebugDraw();
+    }
+
+    _previewVertexDebugDraw() {
+        if (this._myToolData.myIsPlayingAnimation) return;
+
+        let pointerPosition = this._myToolData.myPointerObject.pp_getPosition();
+
+        let selectedVertexParams = VertexUtils.getClosestSelectedVertex(this._myToolData.myMeshObject, pointerPosition, this._myToolData.myVertexDataBackup);
+
+        let vertexPositionWorld = selectedVertexParams.getPosition();
+        if (vertexPositionWorld.vec3_distance(pointerPosition) < this._myMinDistanceToSelect) {
+            if (this._isSelectedVertexValid(selectedVertexParams)) {
+                selectedVertexParams.debugDraw(null, true);
+            }
+        }
+
     }
 
     _setupControlScheme() {

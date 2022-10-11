@@ -463,7 +463,7 @@ SelectedVertexParams = class SelectedVertexParams {
         return this._myMeshComponent.mesh._index == other._myMeshComponent.mesh._index && this._myIndexes.pp_equals(other._myIndexes);
     }
 
-    debugDraw(color = null) {
+    debugDraw(color = null, isPreview = false) {
         let meshTransform = this._myMeshComponent.object.pp_getTransform();
 
         let actualColor = color;
@@ -472,7 +472,8 @@ SelectedVertexParams = class SelectedVertexParams {
         }
 
         let vertexPositionWorld = this.getPosition(meshTransform);
-        PP.myDebugVisualManager.drawPoint(0, vertexPositionWorld, actualColor, 0.0035);
+        let vertexSize = isPreview ? 0.002 : 0.0035;
+        PP.myDebugVisualManager.drawPoint(0, vertexPositionWorld, actualColor, vertexSize);
 
         if (false) {
             let vertexNormalWorld = this.getOriginalNormal(meshTransform);
