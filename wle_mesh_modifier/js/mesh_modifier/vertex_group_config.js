@@ -208,19 +208,13 @@ VertexGroup = class VertexGroup {
     debugDraw(meshComponent) {
         let meshTransform = meshComponent.object.pp_getTransform();
         let mesh = meshComponent.mesh;
-        let meshVertexes = mesh.vertexData;
 
         let color = randomColor(this._myID);
 
-        let vertexDataSize = WL.Mesh.VERTEX_FLOAT_SIZE;
         for (let vertexIndex of this._myIndexList) {
-            let vertexPosition = [
-                meshVertexes[vertexIndex * vertexDataSize + WL.Mesh.POS.X],
-                meshVertexes[vertexIndex * vertexDataSize + WL.Mesh.POS.Y],
-                meshVertexes[vertexIndex * vertexDataSize + WL.Mesh.POS.Z]];
-
-
+            let vertexPosition = VertexUtils.getVertexPosition(vertexIndex, mesh);
             let vertexPositionWorld = vertexPosition.vec3_convertPositionToWorld(meshTransform);
+
             PP.myDebugVisualManager.drawPoint(0, vertexPositionWorld, color, 0.002);
         }
     }
@@ -285,11 +279,6 @@ VertexGroupVariant = class VertexGroupVariant {
         let vertexIndexList = [];
         for (let [index, vertexPosition] of this._myPositionMap.entries()) {
             positionAttribute.set(index, vertexPosition);
-
-            let vertexDataSize = WL.Mesh.VERTEX_FLOAT_SIZE;
-            mesh.vertexData[index * vertexDataSize + WL.Mesh.POS.X] = vertexPosition[0];
-            mesh.vertexData[index * vertexDataSize + WL.Mesh.POS.Y] = vertexPosition[1];
-            mesh.vertexData[index * vertexDataSize + WL.Mesh.POS.Z] = vertexPosition[2];
 
             vertexIndexList.push(index);
 

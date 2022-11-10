@@ -21,7 +21,7 @@ WL.registerComponent("mesh-modifier-gateway", {
         this._myStarted = false;
     },
     start: function () {
-        if (this.myMeshObject == null) {
+        if (this._myMeshObject == null) {
             WL.scene.append(this._myMeshFilePath).then(function (meshObject) {
                 meshObject.pp_setParent(this._myPropsObject);
                 meshObject.pp_resetTransformLocal();
@@ -30,7 +30,7 @@ WL.registerComponent("mesh-modifier-gateway", {
             }.bind(this)
             );
         } else {
-            this._start(this.myMeshObject);
+            this._start(this._myMeshObject);
         }
     },
     update: function (dt) {

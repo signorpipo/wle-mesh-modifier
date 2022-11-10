@@ -83,7 +83,7 @@
             - vec3_transformQuat    / vec3_transformMat4
             - vec3_componentAlongAxis           / vec3_removeComponentAlongAxis / vec3_copyComponentAlongAxis   / vec3_valueAlongAxis  
             - vec3_isConcordant
-            - vec3_isFurtherAlongDirection
+            - vec3_isFurtherAlongAxis
             - vec3_isToTheRight
             - vec3_isOnAxis
             - vec3_isOnPlane
@@ -105,6 +105,7 @@
 
         QUAT:
             ○ quat_set          / quat_copy     / quat_identity
+            - quat_clone 
             - quat_normalize    / quat_invert
             - quat_isNormalized
             - quat_length
@@ -701,9 +702,9 @@ Array.prototype.vec3_isConcordant = function (vector) {
     return glMatrix.vec3.angle(this, vector) <= Math.PI / 2;
 };
 
-Array.prototype.vec3_isFurtherAlongDirection = function () {
+Array.prototype.vec3_isFurtherAlongAxis = function () {
     let componentAlong = glMatrix.vec3.create();
-    return function vec3_isFurtherAlongDirection(vector, axis) {
+    return function vec3_isFurtherAlongAxis(vector, axis) {
         let thisAxisLength = this.vec3_componentAlongAxis(axis, componentAlong).vec3_length();
         let thisAxisLengthSigned = this.vec3_isConcordant(axis) ? thisAxisLength : -thisAxisLength;
 
@@ -1233,6 +1234,11 @@ Array.prototype.quat_normalize = function (out = glMatrix.quat.create()) {
 Array.prototype.quat_copy = function (quat) {
     glMatrix.quat.copy(this, quat);
     return this;
+};
+
+Array.prototype.quat_clone = function (out = glMatrix.quat.create()) {
+    glMatrix.quat.copy(out, this);
+    return out;
 };
 
 Array.prototype.quat_set = function (x, y = null, z = null, w = null) {
@@ -2414,7 +2420,7 @@ Array.prototype._quat_setAxes = function () {
 
 
 for (let key in Array.prototype) {
-    let prefixes = ["pp_", "vec_", "vec3_", "vec4_", "quat_", "quat2_", "mat3_", "mat4_", "_pp_", "_vec_", "_quat_",];
+    let prefixes = ["pp_", "vec_", "vec2_", "vec3_", "vec4_", "quat_", "quat2_", "mat3_", "mat4_", "_pp_", "_vec_", "_quat_",];
 
     let found = false;
     for (let prefix of prefixes) {

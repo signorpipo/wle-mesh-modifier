@@ -15,14 +15,6 @@
                     }
                 },
                 {
-                    "type": "pp-mute-all",
-                    "active": false
-                },
-                {
-                    "type": "pp-clear-console-on-session",
-                    "active": true
-                },
-                {
                     "type": "pp-get-player-objects",
                     "pp-get-player-objects": {
                         "_myPlayer": "19",
@@ -32,8 +24,8 @@
                         "_myHead": "99",
                         "_myEyeLeft": "26",
                         "_myEyeRight": "27",
-                        "_myHandLeft": "23",
-                        "_myHandRight": "24",
+                        "_myHandLeft": "472",
+                        "_myHandRight": "476",
                         "_myVRHead": "25"
                     }
                 },
@@ -60,7 +52,7 @@
                 {
                     "type": "mesh-modifier-gateway",
                     "mesh-modifier-gateway": {
-                        "_myMeshObject": null,
+                        "_myMeshObject": "277",
                         "_myPointer": "82",
                         "_myToolLabel": "87",
                         "_myVertexGroupConfigPath": "fem_hero_01_streamed_config.json",
@@ -71,13 +63,15 @@
                         "_myPointerObject": "82",
                         "_myShadeType": "smooth",
                         "_myMeshAnimationObject": "278",
-                        "_myAnimationToPlay": "462",
+                        "_myAnimationToPlay": "312",
                         "_myAPoseAnimation": "399",
-                        "_myRestPoseAnimation": "463",
+                        "_myRestPoseAnimation": "310",
                         "_mySelectedVertexColor": 200,
                         "_myMeshFilePath": "./models/fem_hero_01.glb",
                         "_myPropsObject": "72",
-                        "_myMeshFileMaterial": "393"
+                        "_myMeshFileMaterial": "393",
+                        "_myForceMeshRefresh": false,
+                        "_myUpdateNormals": false
                     },
                     "active": true
                 }
@@ -159,8 +153,8 @@
             ]
         },
         "23": {
-            "name": "Hand Left",
-            "parent": "100",
+            "name": "Gamepad Left",
+            "parent": "471",
             "transformation": [
                 1.0,
                 0.0,
@@ -184,31 +178,15 @@
                     "type": "pp-set-hand-local-transform"
                 },
                 {
-                    "type": "pp-console-vr",
-                    "pp-console-vr": {
-                        "_myHandedness": "left",
-                        "_myTextMaterial": "33",
-                        "_myPlaneMaterial": "32"
-                    }
-                },
-                {
-                    "type": "pp-easy-tune",
-                    "pp-easy-tune": {
-                        "_myHandedness": "left",
-                        "_myPlaneMaterial": "32",
-                        "_myTextMaterial": "33"
-                    }
-                },
-                {
-                    "type": "pp-gamepad-animator",
-                    "pp-gamepad-animator": {
+                    "type": "pp-gamepad-mesh-animator",
+                    "pp-gamepad-mesh-animator": {
                         "_mySelect": "55",
                         "_mySqueeze": "56",
                         "_myThumbstick": "57",
+                        "_myTopButton": "58",
                         "_myBottomButton": "53",
-                        "_myTopButton": "58"
-                    },
-                    "active": true
+                        "_myUsePressForSqueeze": true
+                    }
                 },
                 {
                     "type": "pp-gamepad-control-scheme",
@@ -228,14 +206,16 @@
                         "_myTopButtonText": "Top Button Text",
                         "_myLineLength": 0.125,
                         "_myLineLengthMultiplier": 1.5,
-                        "_myLineMaterial": "36"
-                    }
+                        "_myLineMaterial": "36",
+                        "_myShowOnStart": true
+                    },
+                    "active": true
                 }
             ]
         },
         "24": {
-            "name": "Hand Right",
-            "parent": "100",
+            "name": "Gamepad Right",
+            "parent": "473",
             "components": [
                 {
                     "type": "pp-set-hand-local-transform",
@@ -244,25 +224,15 @@
                     }
                 },
                 {
-                    "type": "pp-tool-cursor",
-                    "pp-tool-cursor": {
-                        "_myHandedness": "right",
-                        "_myPulseOnHover": false,
-                        "_myCursorMesh": "p2",
-                        "_myCursorMaterial": "32"
-                    }
-                },
-                {
-                    "type": "pp-gamepad-animator",
-                    "pp-gamepad-animator": {
+                    "type": "pp-gamepad-mesh-animator",
+                    "pp-gamepad-mesh-animator": {
                         "_myHandedness": "right",
                         "_mySelect": "63",
                         "_mySqueeze": "64",
                         "_myThumbstick": "65",
-                        "_myBottomButton": "61",
-                        "_myTopButton": "66"
-                    },
-                    "active": true
+                        "_myTopButton": "66",
+                        "_myBottomButton": "61"
+                    }
                 },
                 {
                     "type": "pp-gamepad-control-scheme",
@@ -284,7 +254,8 @@
                         "_myVisible": true,
                         "_myLineLength": 0.125,
                         "_myLineLengthMultiplier": 1.5,
-                        "_myLineMaterial": "36"
+                        "_myLineMaterial": "36",
+                        "_myShowOnStart": true
                     },
                     "active": true
                 }
@@ -875,16 +846,16 @@
             "parent": "23",
             "transformation": [
                 1.0000009,
-                1.509960156909074e-7,
-                -8.742289026031359e-8,
+                1.5099605832347154e-7,
+                -8.742292578745038e-8,
                 0.0,
-                1.5229656469273328e-7,
+                1.5229659311444268e-7,
                 -0.5109128,
-                0.8596251,
+                0.8596252,
                 0.0,
-                8.51353902930896e-8,
-                -0.8596349,
-                -0.5109187,
+                8.513541871479903e-8,
+                -0.859635,
+                -0.5109186,
                 0.0,
                 0.009961,
                 -0.0240265,
@@ -3333,6 +3304,472 @@
                 0.0,
                 1.0
             ]
+        },
+        "471": {
+            "name": "Hands Left",
+            "parent": "100",
+            "components": [
+                {
+                    "type": "pp-switch-hand-object",
+                    "pp-switch-hand-object": {
+                        "_myGamepad": "23",
+                        "_myTrackedHand": "475"
+                    }
+                }
+            ]
+        },
+        "472": {
+            "name": "Hand Left",
+            "parent": "471",
+            "components": [
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                {
+                    "type": "pp-set-hand-local-transform"
+                }
+            ]
+        },
+        "473": {
+            "name": "Hands Right",
+            "parent": "100",
+            "transformation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "components": [
+                {
+                    "type": "pp-switch-hand-object",
+                    "pp-switch-hand-object": {
+                        "_myGamepad": "24",
+                        "_myTrackedHand": "478"
+                    }
+                }
+            ]
+        },
+        "474": {
+            "name": "Tool Hand Left",
+            "parent": "471",
+            "components": [
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                {
+                    "type": "pp-set-hand-local-transform"
+                },
+                {
+                    "type": "pp-console-vr",
+                    "pp-console-vr": {
+                        "_myHandedness": "left",
+                        "_myTextMaterial": "33",
+                        "_myPlaneMaterial": "32"
+                    }
+                },
+                {
+                    "type": "pp-easy-tune",
+                    "pp-easy-tune": {
+                        "_myHandedness": "left",
+                        "_myPlaneMaterial": "32",
+                        "_myTextMaterial": "33"
+                    }
+                }
+            ]
+        },
+        "475": {
+            "name": "Tracked Hand Left",
+            "parent": "471",
+            "components": [
+                {
+                    "type": "pp-tracked-hand-draw-all-joints",
+                    "pp-tracked-hand-draw-all-joints": {
+                        "_myJointMesh": "p1",
+                        "_myJointMaterial": "35"
+                    }
+                }
+            ]
+        },
+        "476": {
+            "name": "Hand Right",
+            "parent": "473",
+            "components": [
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                {
+                    "type": "pp-set-hand-local-transform",
+                    "pp-set-hand-local-transform": {
+                        "_myHandedness": "right"
+                    }
+                }
+            ]
+        },
+        "477": {
+            "name": "Tool Hand RIght",
+            "parent": "473",
+            "components": [
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                {
+                    "type": "pp-set-hand-local-transform",
+                    "pp-set-hand-local-transform": {
+                        "_myHandedness": "right"
+                    }
+                },
+                {
+                    "type": "pp-tool-cursor",
+                    "pp-tool-cursor": {
+                        "_myHandedness": "right",
+                        "_myPulseOnHover": false,
+                        "_myCursorMesh": "p2",
+                        "_myCursorMaterial": "32"
+                    }
+                }
+            ]
+        },
+        "478": {
+            "name": "Tracked Hand Right",
+            "parent": "473",
+            "components": [
+                {
+                    "type": "pp-tracked-hand-draw-all-joints",
+                    "pp-tracked-hand-draw-all-joints": {
+                        "_myJointMesh": "p1",
+                        "_myJointMaterial": "35",
+                        "_myHandedness": "right"
+                    }
+                }
+            ]
         }
     },
     "meshes": {
@@ -4668,7 +5105,7 @@
             "version": [
                 0,
                 9,
-                2
+                3
             ]
         },
         "rendering": {
@@ -4683,8 +5120,8 @@
             "xrButtonColor": "black",
             "webxr": {
                 "optionalFeatures": {
-                    "hand-tracking": false,
-                    "hit-test": false,
+                    "hand-tracking": true,
+                    "hit-test": true,
                     "local-floor": true
                 },
                 "requiredFeatures": {

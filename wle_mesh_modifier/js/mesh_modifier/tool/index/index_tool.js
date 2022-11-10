@@ -123,9 +123,7 @@ IndexTool = class IndexTool {
         this._myToolData.mySelectedVertexes = [];
         let meshTransform = this._myToolData.myMeshComponent.object.pp_getTransform();
 
-        let vertexDataSize = WL.Mesh.VERTEX_FLOAT_SIZE;
-        let vertexCount = this._myToolData.myMeshComponent.mesh.vertexData.length / vertexDataSize;
-
+        let vertexCount = mesh.vertexCount;
         for (let i = 0; i < vertexCount; i++) {
             let vertexPosition = VertexUtils.getVertexPosition(i, this._myToolData.myMeshComponent.mesh);
             let vertexPositionWorld = vertexPosition.vec3_convertPositionToWorld(meshTransform);

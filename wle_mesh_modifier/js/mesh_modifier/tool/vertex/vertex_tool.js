@@ -133,8 +133,7 @@ VertexTool = class VertexTool {
         this._myToolData.mySelectedVertexes = [];
         let meshTransform = this._myToolData.myMeshComponent.object.pp_getTransform();
 
-        let vertexDataSize = WL.Mesh.VERTEX_FLOAT_SIZE;
-        let vertexCount = this._myToolData.myMeshComponent.mesh.vertexData.length / vertexDataSize;
+        let vertexCount = this._myToolData.myMeshComponent.mesh.vertexCount;
 
         for (let i = 0; i < vertexCount; i++) {
             let vertexPosition = VertexUtils.getVertexPosition(i, this._myToolData.myMeshComponent.mesh);
@@ -173,6 +172,14 @@ VertexTool = class VertexTool {
         if (this._myToolData.mySelectedVertexes.length > 0) {
             let scaledMovement = movement * this._myToolData.myScaleFactor;
             VertexUtils.moveSelectedVertexesAlongNormals(this._myToolData.myMeshObject, this._myToolData.mySelectedVertexes, scaledMovement, true);
+
+            this._myToolData.myMeshObject.pp_setActive(false);
+        }
+    }
+
+    _changeSelectedVertexesWeight(amount) {
+        if (this._myToolData.mySelectedVertexes.length > 0) {
+            VertexUtils.changeSelectedVertexesWeight(this._myToolData.myMeshObject, this._myToolData.mySelectedVertexes, amount);
 
             this._myToolData.myMeshObject.pp_setActive(false);
         }

@@ -38,7 +38,11 @@ VertexFreeEditTool = class VertexFreeEditTool extends VertexTool {
         let axes = PP.myRightGamepad.getAxesInfo().getAxes();
         if (Math.abs(axes[0]) > 0.2) {
             let movement = axes[0] * 0.2 * dt;
-            this._moveSelectedVertexesAlongNormals(movement);
+            if (PP.myRightGamepad.getButtonInfo(PP.ButtonType.SELECT).isPressed()) {
+                this._changeSelectedVertexesWeight(movement / 2);
+            } else {
+                this._moveSelectedVertexesAlongNormals(movement);
+            }
             this._myHasMovedVertexesAlongNormals = true;
         } else if (this._myHasMovedVertexesAlongNormals) {
             this._myHasMovedVertexesAlongNormals = false;
@@ -97,10 +101,14 @@ VertexFreeEditTool = class VertexFreeEditTool extends VertexTool {
     }
 
     _debugDraw() {
-        if (this._myToolData.myIsPlayingAnimation) return;
+        //if (this._myToolData.myIsPlayingAnimation) return;
 
         for (let selectedVertex of this._myToolData.mySelectedVertexes) {
             selectedVertex.debugDraw();
+        }
+
+        if (this._myToolData.mySelectedVertexes.length > 0) {
+            //this._myToolData.mySelectedVertexes[0].debugInfo();
         }
     }
 };
