@@ -79,6 +79,22 @@ VertexUtils = {
             jointWeightAttribute.set(vertexIndex, jointWeight);
         } catch (e) { }
     },
+    getJointID: function (vertexIndex, mesh) {
+        let jointID = [0, 0, 0, 0];
+
+        try {
+            let jointIDAttribute = mesh.attribute(WL.MeshAttribute.JointId);
+            jointIDAttribute.get(vertexIndex, jointID);
+        } catch (e) { }
+
+        return jointID;
+    },
+    setJointID: function (jointID, vertexIndex, mesh) {
+        try {
+            let jointIDAttribute = mesh.attribute(WL.MeshAttribute.JointId);
+            jointIDAttribute.set(vertexIndex, jointID);
+        } catch (e) { }
+    },
     resetMeshVertexData(meshComponent, originalVertexData) {
         let mesh = meshComponent.mesh;
         let positionAttribute = mesh.attribute(WL.MeshAttribute.Position);
@@ -188,10 +204,34 @@ VertexUtils = {
                 let jointWeight = VertexUtils.getJointWeight(index, mesh);
 
                 for (let i = 0; i < 4; i++) {
-                    jointWeight[i] = jointWeight[i] + amount;
+                    if (jointWeight[i] != 0) {
+                        jointWeight[i] = jointWeight[i] + amount;
+                    }
                 }
 
                 VertexUtils.setJointWeight(jointWeight, index, mesh);
+            }
+        }
+    },
+    increaseSelectedVertexesJointID(selectedVertexes, sign) {
+        if (selectedVertexes.length == 0) {
+            return;
+        }
+
+        for (let selectedVertex of selectedVertexes) {
+            let mesh = selectedVertex.getMesh();
+            let indexes = selectedVertex.getIndexes();
+
+            for (let index of indexes) {
+                let jointID = VertexUtils.getJointID(index, mesh);
+
+                for (let i = 0; i < 4; i++) {
+                    if (jointID[i] != 0) {
+                        jointID[i] = jointID[i] + 1 * sign;
+                    }
+                }
+
+                VertexUtils.setJointID(jointID, index, mesh);
             }
         }
     },

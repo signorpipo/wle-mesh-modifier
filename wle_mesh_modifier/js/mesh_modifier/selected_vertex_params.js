@@ -70,6 +70,9 @@ SelectedVertexParams = class SelectedVertexParams {
             jointWeightAttribute.get(this._myIndexes[0], jointWeight);
 
             jointWeight.vec_error();
+
+            let jointID = VertexUtils.getJointID(this._myIndexes[0], this._myMeshComponent.mesh);
+            jointID.vec_error();
         } catch (error) {
         }
     }

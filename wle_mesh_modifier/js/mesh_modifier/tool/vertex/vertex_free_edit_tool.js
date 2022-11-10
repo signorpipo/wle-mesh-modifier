@@ -5,6 +5,8 @@ VertexFreeEditTool = class VertexFreeEditTool extends VertexTool {
         this._myPreviousPointerPosition = null;
         this._myHasMovedVertexes = false;
         this._myHasMovedVertexesAlongNormals = false;
+
+        this._myLastXAxisValue = 0;
     }
 
     update(dt) {
@@ -38,14 +40,23 @@ VertexFreeEditTool = class VertexFreeEditTool extends VertexTool {
         let axes = PP.myRightGamepad.getAxesInfo().getAxes();
         if (Math.abs(axes[0]) > 0.2) {
             let movement = axes[0] * 0.2 * dt;
-            if (PP.myRightGamepad.getButtonInfo(PP.ButtonType.SELECT).isPressed()) {
-                this._changeSelectedVertexesWeight(movement / 2);
-            } else {
-                this._moveSelectedVertexesAlongNormals(movement);
+            if (!PP.myLeftGamepad.getButtonInfo(PP.ButtonType.SELECT).isPressed()) {
+                if (PP.myRightGamepad.getButtonInfo(PP.ButtonType.SELECT).isPressed()) {
+                    this._changeSelectedVertexesWeight(movement / 2);
+                } else {
+                    this._moveSelectedVertexesAlongNormals(movement);
+                }
             }
+
+            this._myLastXAxisValue = axes[0];
             this._myHasMovedVertexesAlongNormals = true;
         } else if (this._myHasMovedVertexesAlongNormals) {
             this._myHasMovedVertexesAlongNormals = false;
+
+            if (PP.myLeftGamepad.getButtonInfo(PP.ButtonType.SELECT).isPressed()) {
+                this._increaseSelectedVertexesJointID(Math.pp_sign(this._myLastXAxisValue));
+            }
+
             this._updateNormals();
         }
 

@@ -177,6 +177,14 @@ VertexTool = class VertexTool {
         }
     }
 
+    _increaseSelectedVertexesJointID(sign) {
+        if (this._myToolData.mySelectedVertexes.length > 0) {
+            VertexUtils.increaseSelectedVertexesJointID(this._myToolData.mySelectedVertexes, sign);
+
+            this._myToolData.myMeshObject.pp_setActive(false);
+        }
+    }
+
     _changeSelectedVertexesWeight(amount) {
         if (this._myToolData.mySelectedVertexes.length > 0) {
             VertexUtils.changeSelectedVertexesWeight(this._myToolData.myMeshObject, this._myToolData.mySelectedVertexes, amount);
