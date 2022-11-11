@@ -1,9 +1,12 @@
 downloadFileText = function (filename, text) {
-    var element = document.createElement('a');
-    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
-    element.setAttribute('download', filename);
+    const blob = new Blob([text], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
 
+    let element = document.createElement('a');
+    element.href = url;
+    element.download = filename;
     element.style.display = 'none';
+
     document.body.appendChild(element);
 
     element.click();
