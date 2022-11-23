@@ -42,11 +42,13 @@ VertexTool = class VertexTool {
         this._myToolData.mySelectedVertexVariant = null;
 
         if (this._myToolData.myIsPlayingAnimation) {
-            let animationComponent = this._myToolData.myMeshAnimationObject.pp_getComponentHierarchy("animation");
-            if (animationComponent) {
-                animationComponent.stop();
-                animationComponent.animation = this._myToolData.myRestPoseAnimation;
-                animationComponent.play();
+            if (this._myToolData.myMeshAnimationObject != null) {
+                let animationComponent = this._myToolData.myMeshAnimationObject.pp_getComponentHierarchy("animation");
+                if (animationComponent) {
+                    animationComponent.stop();
+                    animationComponent.animation = this._myToolData.myRestPoseAnimation;
+                    animationComponent.play();
+                }
             }
         }
     }
@@ -64,16 +66,18 @@ VertexTool = class VertexTool {
         }
 
         if (PP.myLeftGamepad.getButtonInfo(PP.ButtonType.SQUEEZE).isPressEnd(2)) {
-            let animationComponent = this._myToolData.myMeshAnimationObject.pp_getComponentHierarchy("animation");
-            if (animationComponent) {
-                animationComponent.stop();
-                if (this._myToolData.myIsPlayingAnimation) {
-                    animationComponent.animation = this._myToolData.myRestPoseAnimation;
-                } else {
-                    animationComponent.animation = this._myToolData.myAnimationToPlay;
+            if (this._myToolData.myMeshAnimationObject != null) {
+                let animationComponent = this._myToolData.myMeshAnimationObject.pp_getComponentHierarchy("animation");
+                if (animationComponent) {
+                    animationComponent.stop();
+                    if (this._myToolData.myIsPlayingAnimation) {
+                        animationComponent.animation = this._myToolData.myRestPoseAnimation;
+                    } else {
+                        animationComponent.animation = this._myToolData.myAnimationToPlay;
+                    }
+                    animationComponent.play();
+                    this._myToolData.myIsPlayingAnimation = !this._myToolData.myIsPlayingAnimation;
                 }
-                animationComponent.play();
-                this._myToolData.myIsPlayingAnimation = !this._myToolData.myIsPlayingAnimation;
             }
         }
 

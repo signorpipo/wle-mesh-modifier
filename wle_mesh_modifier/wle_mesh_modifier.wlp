@@ -52,10 +52,10 @@
                 {
                     "type": "mesh-modifier-gateway",
                     "mesh-modifier-gateway": {
-                        "_myMeshObject": "277",
+                        "_myMeshObject": "483",
                         "_myPointer": "82",
                         "_myToolLabel": "87",
-                        "_myVertexGroupConfigPath": "fem_hero_01_streamed_config.json",
+                        "_myVertexGroupConfigPath": "",
                         "_myGroupLabel": "106",
                         "_myVariantLabel": "108",
                         "_myLeftControlScheme": "23",
@@ -63,9 +63,9 @@
                         "_myPointerObject": "82",
                         "_myShadeType": "smooth",
                         "_myMeshAnimationObject": "278",
-                        "_myAnimationToPlay": "312",
+                        "_myAnimationToPlay": null,
                         "_myAPoseAnimation": "399",
-                        "_myRestPoseAnimation": "310",
+                        "_myRestPoseAnimation": null,
                         "_mySelectedVertexColor": 200,
                         "_myMeshFilePath": "./models/fem_hero_01.glb",
                         "_myPropsObject": "72",
@@ -232,7 +232,8 @@
                         "_mySqueeze": "64",
                         "_myThumbstick": "65",
                         "_myTopButton": "66",
-                        "_myBottomButton": "61"
+                        "_myBottomButton": "61",
+                        "_myUsePressForSqueeze": true
                     }
                 },
                 {
@@ -3771,6 +3772,682 @@
                     }
                 }
             ]
+        },
+        "483": {
+            "name": "Male Rigged",
+            "parent": "72",
+            "transformation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "components": [
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                {
+                    "type": "pp-set-active",
+                    "pp-set-active": {
+                        "_myActive": false
+                    }
+                }
+            ]
+        },
+        "493": {
+            "link": {
+                "name": "Male",
+                "file": "assets\\models\\male_rigged.glb"
+            },
+            "parent": "483"
+        },
+        "494": {
+            "link": {
+                "name": "Male Skeleton<Male",
+                "file": "assets\\models\\male_rigged.glb"
+            },
+            "parent": "493"
+        },
+        "495": {
+            "link": {
+                "name": "Male Body<Male Skeleton<Male",
+                "file": "assets\\models\\male_rigged.glb"
+            },
+            "parent": "494",
+            "components": [
+                {
+                    "mesh": {
+                        "skin": "492"
+                    }
+                }
+            ]
+        },
+        "496": {
+            "link": {
+                "name": "Male Hair<Male Skeleton<Male",
+                "file": "assets\\models\\male_rigged.glb"
+            },
+            "parent": "494"
+        },
+        "497": {
+            "link": {
+                "name": "Bind_Hips<Male Skeleton<Male",
+                "file": "assets\\models\\male_rigged.glb"
+            },
+            "parent": "494",
+            "skin": "492"
+        },
+        "498": {
+            "link": {
+                "name": "Bind_Spine<Bind_Hips<Male Skeleton<Male",
+                "file": "assets\\models\\male_rigged.glb"
+            },
+            "parent": "497",
+            "skin": "492"
+        },
+        "499": {
+            "link": {
+                "name": "Bind_Spine1<Bind_Spine<Bind_Hips<Male Skeleton<Male",
+                "file": "assets\\models\\male_rigged.glb"
+            },
+            "parent": "498",
+            "skin": "492"
+        },
+        "500": {
+            "link": {
+                "name": "Bind_Spine2<Bind_Spine1<Bind_Spine<Bind_Hips<Male Skeleton<Male",
+                "file": "assets\\models\\male_rigged.glb"
+            },
+            "parent": "499",
+            "skin": "492"
+        },
+        "501": {
+            "link": {
+                "name": "Bind_Neck<Bind_Spine2<Bind_Spine1<Bind_Spine<Bind_Hips<Male Skeleton<Male",
+                "file": "assets\\models\\male_rigged.glb"
+            },
+            "parent": "500",
+            "skin": "492"
+        },
+        "502": {
+            "link": {
+                "name": "Bind_Head<Bind_Neck<Bind_Spine2<Bind_Spine1<Bind_Spine<Bind_Hips<Male Skeleton<Male",
+                "file": "assets\\models\\male_rigged.glb"
+            },
+            "parent": "501",
+            "skin": "492"
+        },
+        "503": {
+            "link": {
+                "name": "Bind_HeadTop_End<Bind_Head<Bind_Neck<Bind_Spine2<Bind_Spine1<Bind_Spine<Bind_Hips<Male Skeleton<Male",
+                "file": "assets\\models\\male_rigged.glb"
+            },
+            "parent": "502",
+            "skin": "492"
+        },
+        "504": {
+            "link": {
+                "name": "Bind_LeftShoulder<Bind_Spine2<Bind_Spine1<Bind_Spine<Bind_Hips<Male Skeleton<Male",
+                "file": "assets\\models\\male_rigged.glb"
+            },
+            "parent": "500",
+            "skin": "492"
+        },
+        "505": {
+            "link": {
+                "name": "Bind_LeftArm<Bind_LeftShoulder<Bind_Spine2<Bind_Spine1<Bind_Spine<Bind_Hips<Male Skeleton<Male",
+                "file": "assets\\models\\male_rigged.glb"
+            },
+            "parent": "504",
+            "skin": "492"
+        },
+        "506": {
+            "link": {
+                "name": "Bind_LeftForeArm<Bind_LeftArm<Bind_LeftShoulder<Bind_Spine2<Bind_Spine1<Bind_Spine<Bind_Hips<Male Skeleton<Male",
+                "file": "assets\\models\\male_rigged.glb"
+            },
+            "parent": "505",
+            "skin": "492"
+        },
+        "507": {
+            "link": {
+                "name": "Bind_LeftHand<Bind_LeftForeArm<Bind_LeftArm<Bind_LeftShoulder<Bind_Spine2<Bind_Spine1<Bind_Spine<Bind_Hips<Male Skeleton<Male",
+                "file": "assets\\models\\male_rigged.glb"
+            },
+            "parent": "506",
+            "skin": "492"
+        },
+        "508": {
+            "link": {
+                "name": "Bind_LeftHandThumb1<Bind_LeftHand<Bind_LeftForeArm<Bind_LeftArm<Bind_LeftShoulder<Bind_Spine2<Bind_Spine1<Bind_Spine<Bind_Hips<Male Skeleton<Male",
+                "file": "assets\\models\\male_rigged.glb"
+            },
+            "parent": "507",
+            "skin": "492"
+        },
+        "509": {
+            "link": {
+                "name": "Bind_LeftHandThumb2<Bind_LeftHandThumb1<Bind_LeftHand<Bind_LeftForeArm<Bind_LeftArm<Bind_LeftShoulder<Bind_Spine2<Bind_Spine1<Bind_Spine<Bind_Hips<Male Skeleton<Male",
+                "file": "assets\\models\\male_rigged.glb"
+            },
+            "parent": "508",
+            "skin": "492"
+        },
+        "510": {
+            "link": {
+                "name": "Bind_LeftHandThumb3<Bind_LeftHandThumb2<Bind_LeftHandThumb1<Bind_LeftHand<Bind_LeftForeArm<Bind_LeftArm<Bind_LeftShoulder<Bind_Spine2<Bind_Spine1<Bind_Spine<Bind_Hips<Male Skeleton<Male",
+                "file": "assets\\models\\male_rigged.glb"
+            },
+            "parent": "509",
+            "skin": "492"
+        },
+        "511": {
+            "link": {
+                "name": "Bind_LeftHandThumb4<Bind_LeftHandThumb3<Bind_LeftHandThumb2<Bind_LeftHandThumb1<Bind_LeftHand<Bind_LeftForeArm<Bind_LeftArm<Bind_LeftShoulder<Bind_Spine2<Bind_Spine1<Bind_Spine<Bind_Hips<Male Skeleton<Male",
+                "file": "assets\\models\\male_rigged.glb"
+            },
+            "parent": "510",
+            "skin": "492"
+        },
+        "512": {
+            "link": {
+                "name": "Bind_LeftHandIndex1<Bind_LeftHand<Bind_LeftForeArm<Bind_LeftArm<Bind_LeftShoulder<Bind_Spine2<Bind_Spine1<Bind_Spine<Bind_Hips<Male Skeleton<Male",
+                "file": "assets\\models\\male_rigged.glb"
+            },
+            "parent": "507",
+            "skin": "492"
+        },
+        "513": {
+            "link": {
+                "name": "Bind_LeftHandIndex2<Bind_LeftHandIndex1<Bind_LeftHand<Bind_LeftForeArm<Bind_LeftArm<Bind_LeftShoulder<Bind_Spine2<Bind_Spine1<Bind_Spine<Bind_Hips<Male Skeleton<Male",
+                "file": "assets\\models\\male_rigged.glb"
+            },
+            "parent": "512",
+            "skin": "492"
+        },
+        "514": {
+            "link": {
+                "name": "Bind_LeftHandIndex3<Bind_LeftHandIndex2<Bind_LeftHandIndex1<Bind_LeftHand<Bind_LeftForeArm<Bind_LeftArm<Bind_LeftShoulder<Bind_Spine2<Bind_Spine1<Bind_Spine<Bind_Hips<Male Skeleton<Male",
+                "file": "assets\\models\\male_rigged.glb"
+            },
+            "parent": "513",
+            "skin": "492"
+        },
+        "515": {
+            "link": {
+                "name": "Bind_LeftHandIndex4<Bind_LeftHandIndex3<Bind_LeftHandIndex2<Bind_LeftHandIndex1<Bind_LeftHand<Bind_LeftForeArm<Bind_LeftArm<Bind_LeftShoulder<Bind_Spine2<Bind_Spine1<Bind_Spine<Bind_Hips<Male Skeleton<Male",
+                "file": "assets\\models\\male_rigged.glb"
+            },
+            "parent": "514",
+            "skin": "492"
+        },
+        "516": {
+            "link": {
+                "name": "Bind_LeftHandMiddle1<Bind_LeftHand<Bind_LeftForeArm<Bind_LeftArm<Bind_LeftShoulder<Bind_Spine2<Bind_Spine1<Bind_Spine<Bind_Hips<Male Skeleton<Male",
+                "file": "assets\\models\\male_rigged.glb"
+            },
+            "parent": "507",
+            "skin": "492"
+        },
+        "517": {
+            "link": {
+                "name": "Bind_LeftHandMiddle2<Bind_LeftHandMiddle1<Bind_LeftHand<Bind_LeftForeArm<Bind_LeftArm<Bind_LeftShoulder<Bind_Spine2<Bind_Spine1<Bind_Spine<Bind_Hips<Male Skeleton<Male",
+                "file": "assets\\models\\male_rigged.glb"
+            },
+            "parent": "516",
+            "skin": "492"
+        },
+        "518": {
+            "link": {
+                "name": "Bind_LeftHandMiddle3<Bind_LeftHandMiddle2<Bind_LeftHandMiddle1<Bind_LeftHand<Bind_LeftForeArm<Bind_LeftArm<Bind_LeftShoulder<Bind_Spine2<Bind_Spine1<Bind_Spine<Bind_Hips<Male Skeleton<Male",
+                "file": "assets\\models\\male_rigged.glb"
+            },
+            "parent": "517",
+            "skin": "492"
+        },
+        "519": {
+            "link": {
+                "name": "Bind_LeftHandMiddle4<Bind_LeftHandMiddle3<Bind_LeftHandMiddle2<Bind_LeftHandMiddle1<Bind_LeftHand<Bind_LeftForeArm<Bind_LeftArm<Bind_LeftShoulder<Bind_Spine2<Bind_Spine1<Bind_Spine<Bind_Hips<Male Skeleton<Male",
+                "file": "assets\\models\\male_rigged.glb"
+            },
+            "parent": "518",
+            "skin": "492"
+        },
+        "520": {
+            "link": {
+                "name": "Bind_LeftHandRing1<Bind_LeftHand<Bind_LeftForeArm<Bind_LeftArm<Bind_LeftShoulder<Bind_Spine2<Bind_Spine1<Bind_Spine<Bind_Hips<Male Skeleton<Male",
+                "file": "assets\\models\\male_rigged.glb"
+            },
+            "parent": "507",
+            "skin": "492"
+        },
+        "521": {
+            "link": {
+                "name": "Bind_LeftHandRing2<Bind_LeftHandRing1<Bind_LeftHand<Bind_LeftForeArm<Bind_LeftArm<Bind_LeftShoulder<Bind_Spine2<Bind_Spine1<Bind_Spine<Bind_Hips<Male Skeleton<Male",
+                "file": "assets\\models\\male_rigged.glb"
+            },
+            "parent": "520",
+            "skin": "492"
+        },
+        "522": {
+            "link": {
+                "name": "Bind_LeftHandRing3<Bind_LeftHandRing2<Bind_LeftHandRing1<Bind_LeftHand<Bind_LeftForeArm<Bind_LeftArm<Bind_LeftShoulder<Bind_Spine2<Bind_Spine1<Bind_Spine<Bind_Hips<Male Skeleton<Male",
+                "file": "assets\\models\\male_rigged.glb"
+            },
+            "parent": "521",
+            "skin": "492"
+        },
+        "523": {
+            "link": {
+                "name": "Bind_LeftHandRing4<Bind_LeftHandRing3<Bind_LeftHandRing2<Bind_LeftHandRing1<Bind_LeftHand<Bind_LeftForeArm<Bind_LeftArm<Bind_LeftShoulder<Bind_Spine2<Bind_Spine1<Bind_Spine<Bind_Hips<Male Skeleton<Male",
+                "file": "assets\\models\\male_rigged.glb"
+            },
+            "parent": "522",
+            "skin": "492"
+        },
+        "524": {
+            "link": {
+                "name": "Bind_LeftHandPinky1<Bind_LeftHand<Bind_LeftForeArm<Bind_LeftArm<Bind_LeftShoulder<Bind_Spine2<Bind_Spine1<Bind_Spine<Bind_Hips<Male Skeleton<Male",
+                "file": "assets\\models\\male_rigged.glb"
+            },
+            "parent": "507",
+            "skin": "492"
+        },
+        "525": {
+            "link": {
+                "name": "Bind_LeftHandPinky2<Bind_LeftHandPinky1<Bind_LeftHand<Bind_LeftForeArm<Bind_LeftArm<Bind_LeftShoulder<Bind_Spine2<Bind_Spine1<Bind_Spine<Bind_Hips<Male Skeleton<Male",
+                "file": "assets\\models\\male_rigged.glb"
+            },
+            "parent": "524",
+            "skin": "492"
+        },
+        "526": {
+            "link": {
+                "name": "Bind_LeftHandPinky3<Bind_LeftHandPinky2<Bind_LeftHandPinky1<Bind_LeftHand<Bind_LeftForeArm<Bind_LeftArm<Bind_LeftShoulder<Bind_Spine2<Bind_Spine1<Bind_Spine<Bind_Hips<Male Skeleton<Male",
+                "file": "assets\\models\\male_rigged.glb"
+            },
+            "parent": "525",
+            "skin": "492"
+        },
+        "527": {
+            "link": {
+                "name": "Bind_LeftHandPinky4<Bind_LeftHandPinky3<Bind_LeftHandPinky2<Bind_LeftHandPinky1<Bind_LeftHand<Bind_LeftForeArm<Bind_LeftArm<Bind_LeftShoulder<Bind_Spine2<Bind_Spine1<Bind_Spine<Bind_Hips<Male Skeleton<Male",
+                "file": "assets\\models\\male_rigged.glb"
+            },
+            "parent": "526",
+            "skin": "492"
+        },
+        "528": {
+            "link": {
+                "name": "Bind_RightShoulder<Bind_Spine2<Bind_Spine1<Bind_Spine<Bind_Hips<Male Skeleton<Male",
+                "file": "assets\\models\\male_rigged.glb"
+            },
+            "parent": "500",
+            "skin": "492"
+        },
+        "529": {
+            "link": {
+                "name": "Bind_RightArm<Bind_RightShoulder<Bind_Spine2<Bind_Spine1<Bind_Spine<Bind_Hips<Male Skeleton<Male",
+                "file": "assets\\models\\male_rigged.glb"
+            },
+            "parent": "528",
+            "skin": "492"
+        },
+        "530": {
+            "link": {
+                "name": "Bind_RightForeArm<Bind_RightArm<Bind_RightShoulder<Bind_Spine2<Bind_Spine1<Bind_Spine<Bind_Hips<Male Skeleton<Male",
+                "file": "assets\\models\\male_rigged.glb"
+            },
+            "parent": "529",
+            "skin": "492"
+        },
+        "531": {
+            "link": {
+                "name": "Bind_RightHand<Bind_RightForeArm<Bind_RightArm<Bind_RightShoulder<Bind_Spine2<Bind_Spine1<Bind_Spine<Bind_Hips<Male Skeleton<Male",
+                "file": "assets\\models\\male_rigged.glb"
+            },
+            "parent": "530",
+            "skin": "492"
+        },
+        "532": {
+            "link": {
+                "name": "Bind_RightHandThumb1<Bind_RightHand<Bind_RightForeArm<Bind_RightArm<Bind_RightShoulder<Bind_Spine2<Bind_Spine1<Bind_Spine<Bind_Hips<Male Skeleton<Male",
+                "file": "assets\\models\\male_rigged.glb"
+            },
+            "parent": "531",
+            "skin": "492"
+        },
+        "533": {
+            "link": {
+                "name": "Bind_RightHandThumb2<Bind_RightHandThumb1<Bind_RightHand<Bind_RightForeArm<Bind_RightArm<Bind_RightShoulder<Bind_Spine2<Bind_Spine1<Bind_Spine<Bind_Hips<Male Skeleton<Male",
+                "file": "assets\\models\\male_rigged.glb"
+            },
+            "parent": "532",
+            "skin": "492"
+        },
+        "534": {
+            "link": {
+                "name": "Bind_RightHandThumb3<Bind_RightHandThumb2<Bind_RightHandThumb1<Bind_RightHand<Bind_RightForeArm<Bind_RightArm<Bind_RightShoulder<Bind_Spine2<Bind_Spine1<Bind_Spine<Bind_Hips<Male Skeleton<Male",
+                "file": "assets\\models\\male_rigged.glb"
+            },
+            "parent": "533",
+            "skin": "492"
+        },
+        "535": {
+            "link": {
+                "name": "Bind_RightHandThumb4<Bind_RightHandThumb3<Bind_RightHandThumb2<Bind_RightHandThumb1<Bind_RightHand<Bind_RightForeArm<Bind_RightArm<Bind_RightShoulder<Bind_Spine2<Bind_Spine1<Bind_Spine<Bind_Hips<Male Skeleton<Male",
+                "file": "assets\\models\\male_rigged.glb"
+            },
+            "parent": "534",
+            "skin": "492"
+        },
+        "536": {
+            "link": {
+                "name": "Bind_RightHandIndex1<Bind_RightHand<Bind_RightForeArm<Bind_RightArm<Bind_RightShoulder<Bind_Spine2<Bind_Spine1<Bind_Spine<Bind_Hips<Male Skeleton<Male",
+                "file": "assets\\models\\male_rigged.glb"
+            },
+            "parent": "531",
+            "skin": "492"
+        },
+        "537": {
+            "link": {
+                "name": "Bind_RightHandIndex2<Bind_RightHandIndex1<Bind_RightHand<Bind_RightForeArm<Bind_RightArm<Bind_RightShoulder<Bind_Spine2<Bind_Spine1<Bind_Spine<Bind_Hips<Male Skeleton<Male",
+                "file": "assets\\models\\male_rigged.glb"
+            },
+            "parent": "536",
+            "skin": "492"
+        },
+        "538": {
+            "link": {
+                "name": "Bind_RightHandIndex3<Bind_RightHandIndex2<Bind_RightHandIndex1<Bind_RightHand<Bind_RightForeArm<Bind_RightArm<Bind_RightShoulder<Bind_Spine2<Bind_Spine1<Bind_Spine<Bind_Hips<Male Skeleton<Male",
+                "file": "assets\\models\\male_rigged.glb"
+            },
+            "parent": "537",
+            "skin": "492"
+        },
+        "539": {
+            "link": {
+                "name": "Bind_RightHandIndex4<Bind_RightHandIndex3<Bind_RightHandIndex2<Bind_RightHandIndex1<Bind_RightHand<Bind_RightForeArm<Bind_RightArm<Bind_RightShoulder<Bind_Spine2<Bind_Spine1<Bind_Spine<Bind_Hips<Male Skeleton<Male",
+                "file": "assets\\models\\male_rigged.glb"
+            },
+            "parent": "538",
+            "skin": "492"
+        },
+        "540": {
+            "link": {
+                "name": "Bind_RightHandMiddle1<Bind_RightHand<Bind_RightForeArm<Bind_RightArm<Bind_RightShoulder<Bind_Spine2<Bind_Spine1<Bind_Spine<Bind_Hips<Male Skeleton<Male",
+                "file": "assets\\models\\male_rigged.glb"
+            },
+            "parent": "531",
+            "skin": "492"
+        },
+        "541": {
+            "link": {
+                "name": "Bind_RightHandMiddle2<Bind_RightHandMiddle1<Bind_RightHand<Bind_RightForeArm<Bind_RightArm<Bind_RightShoulder<Bind_Spine2<Bind_Spine1<Bind_Spine<Bind_Hips<Male Skeleton<Male",
+                "file": "assets\\models\\male_rigged.glb"
+            },
+            "parent": "540",
+            "skin": "492"
+        },
+        "542": {
+            "link": {
+                "name": "Bind_RightHandMiddle3<Bind_RightHandMiddle2<Bind_RightHandMiddle1<Bind_RightHand<Bind_RightForeArm<Bind_RightArm<Bind_RightShoulder<Bind_Spine2<Bind_Spine1<Bind_Spine<Bind_Hips<Male Skeleton<Male",
+                "file": "assets\\models\\male_rigged.glb"
+            },
+            "parent": "541",
+            "skin": "492"
+        },
+        "543": {
+            "link": {
+                "name": "Bind_RightHandMiddle4<Bind_RightHandMiddle3<Bind_RightHandMiddle2<Bind_RightHandMiddle1<Bind_RightHand<Bind_RightForeArm<Bind_RightArm<Bind_RightShoulder<Bind_Spine2<Bind_Spine1<Bind_Spine<Bind_Hips<Male Skeleton<Male",
+                "file": "assets\\models\\male_rigged.glb"
+            },
+            "parent": "542",
+            "skin": "492"
+        },
+        "544": {
+            "link": {
+                "name": "Bind_RightHandRing1<Bind_RightHand<Bind_RightForeArm<Bind_RightArm<Bind_RightShoulder<Bind_Spine2<Bind_Spine1<Bind_Spine<Bind_Hips<Male Skeleton<Male",
+                "file": "assets\\models\\male_rigged.glb"
+            },
+            "parent": "531",
+            "skin": "492"
+        },
+        "545": {
+            "link": {
+                "name": "Bind_RightHandRing2<Bind_RightHandRing1<Bind_RightHand<Bind_RightForeArm<Bind_RightArm<Bind_RightShoulder<Bind_Spine2<Bind_Spine1<Bind_Spine<Bind_Hips<Male Skeleton<Male",
+                "file": "assets\\models\\male_rigged.glb"
+            },
+            "parent": "544",
+            "skin": "492"
+        },
+        "546": {
+            "link": {
+                "name": "Bind_RightHandRing3<Bind_RightHandRing2<Bind_RightHandRing1<Bind_RightHand<Bind_RightForeArm<Bind_RightArm<Bind_RightShoulder<Bind_Spine2<Bind_Spine1<Bind_Spine<Bind_Hips<Male Skeleton<Male",
+                "file": "assets\\models\\male_rigged.glb"
+            },
+            "parent": "545",
+            "skin": "492"
+        },
+        "547": {
+            "link": {
+                "name": "Bind_RightHandRing4<Bind_RightHandRing3<Bind_RightHandRing2<Bind_RightHandRing1<Bind_RightHand<Bind_RightForeArm<Bind_RightArm<Bind_RightShoulder<Bind_Spine2<Bind_Spine1<Bind_Spine<Bind_Hips<Male Skeleton<Male",
+                "file": "assets\\models\\male_rigged.glb"
+            },
+            "parent": "546",
+            "skin": "492"
+        },
+        "548": {
+            "link": {
+                "name": "Bind_RightHandPinky1<Bind_RightHand<Bind_RightForeArm<Bind_RightArm<Bind_RightShoulder<Bind_Spine2<Bind_Spine1<Bind_Spine<Bind_Hips<Male Skeleton<Male",
+                "file": "assets\\models\\male_rigged.glb"
+            },
+            "parent": "531",
+            "skin": "492"
+        },
+        "549": {
+            "link": {
+                "name": "Bind_RightHandPinky2<Bind_RightHandPinky1<Bind_RightHand<Bind_RightForeArm<Bind_RightArm<Bind_RightShoulder<Bind_Spine2<Bind_Spine1<Bind_Spine<Bind_Hips<Male Skeleton<Male",
+                "file": "assets\\models\\male_rigged.glb"
+            },
+            "parent": "548",
+            "skin": "492"
+        },
+        "550": {
+            "link": {
+                "name": "Bind_RightHandPinky3<Bind_RightHandPinky2<Bind_RightHandPinky1<Bind_RightHand<Bind_RightForeArm<Bind_RightArm<Bind_RightShoulder<Bind_Spine2<Bind_Spine1<Bind_Spine<Bind_Hips<Male Skeleton<Male",
+                "file": "assets\\models\\male_rigged.glb"
+            },
+            "parent": "549",
+            "skin": "492"
+        },
+        "551": {
+            "link": {
+                "name": "Bind_RightHandPinky4<Bind_RightHandPinky3<Bind_RightHandPinky2<Bind_RightHandPinky1<Bind_RightHand<Bind_RightForeArm<Bind_RightArm<Bind_RightShoulder<Bind_Spine2<Bind_Spine1<Bind_Spine<Bind_Hips<Male Skeleton<Male",
+                "file": "assets\\models\\male_rigged.glb"
+            },
+            "parent": "550",
+            "skin": "492"
+        },
+        "552": {
+            "link": {
+                "name": "Bind_LeftUpLeg<Bind_Hips<Male Skeleton<Male",
+                "file": "assets\\models\\male_rigged.glb"
+            },
+            "parent": "497",
+            "skin": "492"
+        },
+        "553": {
+            "link": {
+                "name": "Bind_LeftLeg<Bind_LeftUpLeg<Bind_Hips<Male Skeleton<Male",
+                "file": "assets\\models\\male_rigged.glb"
+            },
+            "parent": "552",
+            "skin": "492"
+        },
+        "554": {
+            "link": {
+                "name": "Bind_LeftFoot<Bind_LeftLeg<Bind_LeftUpLeg<Bind_Hips<Male Skeleton<Male",
+                "file": "assets\\models\\male_rigged.glb"
+            },
+            "parent": "553",
+            "skin": "492"
+        },
+        "555": {
+            "link": {
+                "name": "Bind_LeftToeBase<Bind_LeftFoot<Bind_LeftLeg<Bind_LeftUpLeg<Bind_Hips<Male Skeleton<Male",
+                "file": "assets\\models\\male_rigged.glb"
+            },
+            "parent": "554",
+            "skin": "492"
+        },
+        "556": {
+            "link": {
+                "name": "Bind_LeftToe_End<Bind_LeftToeBase<Bind_LeftFoot<Bind_LeftLeg<Bind_LeftUpLeg<Bind_Hips<Male Skeleton<Male",
+                "file": "assets\\models\\male_rigged.glb"
+            },
+            "parent": "555",
+            "skin": "492"
+        },
+        "557": {
+            "link": {
+                "name": "Bind_RightUpLeg<Bind_Hips<Male Skeleton<Male",
+                "file": "assets\\models\\male_rigged.glb"
+            },
+            "parent": "497",
+            "skin": "492"
+        },
+        "558": {
+            "link": {
+                "name": "Bind_RightLeg<Bind_RightUpLeg<Bind_Hips<Male Skeleton<Male",
+                "file": "assets\\models\\male_rigged.glb"
+            },
+            "parent": "557",
+            "skin": "492"
+        },
+        "559": {
+            "link": {
+                "name": "Bind_RightFoot<Bind_RightLeg<Bind_RightUpLeg<Bind_Hips<Male Skeleton<Male",
+                "file": "assets\\models\\male_rigged.glb"
+            },
+            "parent": "558",
+            "skin": "492"
+        },
+        "560": {
+            "link": {
+                "name": "Bind_RightToeBase<Bind_RightFoot<Bind_RightLeg<Bind_RightUpLeg<Bind_Hips<Male Skeleton<Male",
+                "file": "assets\\models\\male_rigged.glb"
+            },
+            "parent": "559",
+            "skin": "492"
+        },
+        "561": {
+            "link": {
+                "name": "Bind_RightToe_End<Bind_RightToeBase<Bind_RightFoot<Bind_RightLeg<Bind_RightUpLeg<Bind_Hips<Male Skeleton<Male",
+                "file": "assets\\models\\male_rigged.glb"
+            },
+            "parent": "560",
+            "skin": "492"
+        },
+        "562": {
+            "link": {
+                "name": "neutral_bone<Male Skeleton<Male",
+                "file": "assets\\models\\male_rigged.glb"
+            },
+            "parent": "494",
+            "skin": "492"
         }
     },
     "meshes": {
@@ -4067,6 +4744,18 @@
                 "name": "Fem Hero 01-uv1",
                 "file": "assets\\models\\fem_hero_01.glb"
             }
+        },
+        "490": {
+            "link": {
+                "name": "Male Body",
+                "file": "assets\\models\\male_rigged.glb"
+            }
+        },
+        "491": {
+            "link": {
+                "name": "Male Hair",
+                "file": "assets\\models\\male_rigged.glb"
+            }
         }
     },
     "textures": {
@@ -4117,6 +4806,18 @@
                 "name": "fem_hero_01_texture.png",
                 "file": "assets\\textures\\fem_hero_01_texture.png"
             }
+        },
+        "486": {
+            "link": {
+                "name": "texture_0",
+                "file": "assets\\models\\male_rigged.glb"
+            }
+        },
+        "487": {
+            "link": {
+                "name": "texture_1",
+                "file": "assets\\models\\male_rigged.glb"
+            }
         }
     },
     "images": {
@@ -4144,6 +4845,20 @@
             "link": {
                 "name": "fem_hero_01_texture.png",
                 "file": "assets\\textures\\fem_hero_01_texture.png"
+            },
+            "compress": false
+        },
+        "563": {
+            "link": {
+                "name": "Image_0",
+                "file": "assets\\models\\male_rigged.glb"
+            },
+            "compress": false
+        },
+        "564": {
+            "link": {
+                "name": "Image_1",
+                "file": "assets\\models\\male_rigged.glb"
             },
             "compress": false
         }
@@ -4519,6 +5234,24 @@
                     1.0,
                     0.0
                 ]
+            }
+        },
+        "488": {
+            "link": {
+                "name": "Male Body",
+                "file": "assets\\models\\male_rigged.glb"
+            },
+            "Phong": {
+                "ambientFactor": 0.5
+            }
+        },
+        "489": {
+            "link": {
+                "name": "Male Hair",
+                "file": "assets\\models\\male_rigged.glb"
+            },
+            "Phong": {
+                "ambientFactor": 0.5
             }
         }
     },
@@ -5012,6 +5745,80 @@
                 "459",
                 "460"
             ]
+        },
+        "492": {
+            "link": {
+                "name": "Male Skeleton",
+                "file": "assets\\models\\male_rigged.glb"
+            },
+            "joints": [
+                "497",
+                "498",
+                "499",
+                "500",
+                "501",
+                "502",
+                "503",
+                "504",
+                "505",
+                "506",
+                "507",
+                "508",
+                "509",
+                "510",
+                "511",
+                "512",
+                "513",
+                "514",
+                "515",
+                "516",
+                "517",
+                "518",
+                "519",
+                "520",
+                "521",
+                "522",
+                "523",
+                "524",
+                "525",
+                "526",
+                "527",
+                "528",
+                "529",
+                "530",
+                "531",
+                "532",
+                "533",
+                "534",
+                "535",
+                "536",
+                "537",
+                "538",
+                "539",
+                "540",
+                "541",
+                "542",
+                "543",
+                "544",
+                "545",
+                "546",
+                "547",
+                "548",
+                "549",
+                "550",
+                "551",
+                "552",
+                "553",
+                "554",
+                "555",
+                "556",
+                "557",
+                "558",
+                "559",
+                "560",
+                "561",
+                "562"
+            ]
         }
     },
     "pipelines": {
@@ -5226,7 +6033,8 @@
         "assets/models/low_poly_skinned_character_smooth.fbx",
         "assets/models/low_poly_skinned_character_smooth_joined.fbx",
         "assets/models/fem_hero_01.glb",
-        "assets/textures/fem_hero_01_texture.png"
+        "assets/textures/fem_hero_01_texture.png",
+        "assets/models/male_rigged.glb"
     ],
     "fonts": {
         "481": {
