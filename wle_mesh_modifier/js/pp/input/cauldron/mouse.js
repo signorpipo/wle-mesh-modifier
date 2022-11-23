@@ -20,12 +20,14 @@ PP.Mouse = class Mouse {
 
         this._myInternalMousePosition = PP.vec2_create();
         this._myScreenSize = PP.vec2_create();
+        this._updateScreenSize();
 
         this._myResetMovingDelay = 0.15;
         this._myResetMovingTimer = new PP.Timer(this._myResetMovingDelay, false);
         this._myIsMoving = false;
 
         this._myIsInsideView = true;
+        this._myIsValid = false;
 
         this._myContextMenuActive = true;
         this._myMiddleButtonScrollActive = true;
@@ -65,6 +67,8 @@ PP.Mouse = class Mouse {
             buttonInfo.myIsPressStartToProcess = false;
             buttonInfo.myIsPressEndToProcess = false;
         }
+
+        this._updateScreenSize();
     }
 
     destroy() {
@@ -74,6 +78,10 @@ PP.Mouse = class Mouse {
         WL.canvas.removeEventListener("mouseleave", this._myOnMouseLeaveCallback);
         WL.canvas.removeEventListener("contextmenu", this._myPreventContextMenuCallback);
         WL.canvas.removeEventListener("mousedown", this._myPreventMiddleButtonScrollCallback);
+    }
+
+    isValid() {
+        return this._myIsValid;
     }
 
     isButtonPressed(buttonInfoType) {
@@ -140,6 +148,13 @@ PP.Mouse = class Mouse {
         let mousePosition = out;
         mousePosition[0] = this._myInternalMousePosition[0];
         mousePosition[1] = this._myScreenSize[1] - 1 - this._myInternalMousePosition[1];
+        return mousePosition;
+    }
+
+    getPositionScreenNormalized(out = PP.vec2_create()) {
+        let mousePosition = out;
+        mousePosition[0] = (this._myScreenSize[0] == 0) ? 0 : ((this._myInternalMousePosition[0] / this._myScreenSize[0]) * 2 - 1);
+        mousePosition[1] = (this._myScreenSize[1] == 0) ? 0 : (((this._myScreenSize[1] - 1 - this._myInternalMousePosition[1]) / this._myScreenSize[1]) * 2 - 1);
         return mousePosition;
     }
 
@@ -210,19 +225,19 @@ PP.Mouse = class Mouse {
         return this._myResetMovingDelay;
     }
 
-    _updatePositionAndView(event) {
-        let bounds = event.target.getBoundingClientRect();
-        this._myScreenSize[0] = bounds.width;
-        this._myScreenSize[1] = bounds.height;
+    _updatePositionAndScreen(event) {
+        this._updateScreenSize();
         this._myInternalMousePosition[0] = event.clientX;
         this._myInternalMousePosition[1] = event.clientY;
+
+        this._myIsValid = true;
     }
 
     _onMouseMove(event) {
         this._myResetMovingTimer.start(this._myResetMovingDelay);
         this._myIsMoving = true;
 
-        this._updatePositionAndView(event);
+        this._updatePositionAndScreen(event);
     }
 
     _onMouseDown(event) {
@@ -232,7 +247,7 @@ PP.Mouse = class Mouse {
             buttonInfo.myIsPressStartToProcess = true;
         }
 
-        this._updatePositionAndView(event);
+        this._updatePositionAndScreen(event);
     }
 
     _onMouseUp(event) {
@@ -242,7 +257,7 @@ PP.Mouse = class Mouse {
             buttonInfo.myIsPressEndToProcess = true;
         }
 
-        this._updatePositionAndView(event);
+        this._updatePositionAndScreen(event);
     }
 
     _onMouseLeave(event) {
@@ -276,5 +291,11 @@ PP.Mouse = class Mouse {
             event.preventDefault();
             return false;
         }
+    }
+
+    _updateScreenSize() {
+        let bounds = WL.canvas.getBoundingClientRect();
+        this._myScreenSize[0] = bounds.width;
+        this._myScreenSize[1] = bounds.height;
     }
 };
