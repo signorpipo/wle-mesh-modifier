@@ -9,6 +9,7 @@ WL.registerComponent("mesh-modifier-gateway", {
     _myAnimationToPlay: { type: WL.Type.Animation },
     _myRestPoseAnimation: { type: WL.Type.Animation },
     _myShadeType: { type: WL.Type.Enum, values: ['flat', 'smooth'], default: 'flat' },
+    _myEnableDownload: { type: WL.Type.Bool, default: false },
     _myPointerObject: { type: WL.Type.Object },
     _myToolLabel: { type: WL.Type.Object },
     _myGroupLabel: { type: WL.Type.Object },
@@ -62,6 +63,8 @@ WL.registerComponent("mesh-modifier-gateway", {
         params.myVariantGroupCongigPath = this._myVertexGroupConfigPath;
         params.myLeftControlScheme = this._myLeftControlScheme.pp_getComponent("pp-gamepad-control-scheme");
         params.myRightControlScheme = this._myRightControlScheme.pp_getComponent("pp-gamepad-control-scheme");
+
+        params.myEnableDownload = this._myEnableDownload;
 
         selectedVertexColor = this._mySelectedVertexColor;
         VertexUtils.updateVertexNormalsActive = this._myUpdateNormals;

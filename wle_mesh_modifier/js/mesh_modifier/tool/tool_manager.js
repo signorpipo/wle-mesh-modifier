@@ -16,6 +16,8 @@ ToolManagerParams = class ToolManagerParams {
         this.myVariantGroupCongigPath = null;
         this.myLeftControlScheme = null;
         this.myRightControlScheme = null;
+
+        this.myEnableDownload = false;
     }
 };
 
@@ -267,7 +269,10 @@ ToolManager = class ToolManager {
 
             if (PP.myLeftGamepad.getButtonInfo(PP.ButtonType.THUMBSTICK).isPressEnd(2)) {
                 let configText = jsonStringify(vertexToolData.myVertexGroupConfig);
-                downloadFileText("vertex_group_config.json", jsonStringify(vertexToolData.myVertexGroupConfig));
+
+                if (this._myParams.myEnableDownload) {
+                    downloadFileText("vertex_group_config.json", jsonStringify(vertexToolData.myVertexGroupConfig));
+                }
 
                 console.log("Vertex Group Config:");
                 console.log(configText);

@@ -71,7 +71,8 @@
                         "_myPropsObject": "72",
                         "_myMeshFileMaterial": "393",
                         "_myForceMeshRefresh": false,
-                        "_myUpdateNormals": false
+                        "_myUpdateNormals": false,
+                        "_myEnableDownload": false
                     },
                     "active": true
                 }
@@ -4060,6 +4061,12 @@
                 "name": "Fem Hero 01",
                 "file": "assets\\models\\fem_hero_01.glb"
             }
+        },
+        "482": {
+            "link": {
+                "name": "Fem Hero 01-uv1",
+                "file": "assets\\models\\fem_hero_01.glb"
+            }
         }
     },
     "textures": {
@@ -4159,7 +4166,8 @@
                     0.0784,
                     0.0784,
                     1.0
-                ]
+                ],
+                "font": "481"
             }
         },
         "31": {
@@ -4175,7 +4183,10 @@
                 "name": "DefaultFontMaterial",
                 "file": "default"
             },
-            "name": "Tool Font"
+            "name": "Tool Font",
+            "Text": {
+                "font": "481"
+            }
         },
         "35": {
             "link": {
@@ -4298,7 +4309,8 @@
                     0.0,
                     0.0,
                     1.0
-                ]
+                ],
+                "font": "481"
             }
         },
         "112": {
@@ -4436,7 +4448,8 @@
                     0.0784,
                     0.0784,
                     1.0
-                ]
+                ],
+                "font": "481"
             },
             "name": "Text"
         },
@@ -5024,6 +5037,9 @@
             "link": {
                 "name": "Flat Opaque Textured",
                 "file": "default"
+            },
+            "features": {
+                "ALPHA_MASKED": true
             }
         },
         "10": {
@@ -5042,6 +5058,9 @@
             "link": {
                 "name": "Phong Opaque Textured",
                 "file": "default"
+            },
+            "features": {
+                "ALPHA_MASKED": true
             }
         },
         "16": {
@@ -5066,6 +5085,9 @@
             "link": {
                 "name": "Physical Opaque Textured",
                 "file": "default"
+            },
+            "features": {
+                "ALPHA_MASKED": true
             }
         },
         "320": {
@@ -5097,6 +5119,18 @@
                 "name": "FixedMeshVisualizer Opaque",
                 "file": "default"
             }
+        },
+        "479": {
+            "link": {
+                "name": "Phong Normalmapped",
+                "file": "default"
+            }
+        },
+        "480": {
+            "link": {
+                "name": "Phong Lightmapped",
+                "file": "default"
+            }
         }
     },
     "settings": {
@@ -5105,7 +5139,7 @@
             "version": [
                 0,
                 9,
-                3
+                4
             ]
         },
         "rendering": {
@@ -5193,5 +5227,13 @@
         "assets/models/low_poly_skinned_character_smooth_joined.fbx",
         "assets/models/fem_hero_01.glb",
         "assets/textures/fem_hero_01_texture.png"
-    ]
+    ],
+    "fonts": {
+        "481": {
+            "link": {
+                "name": "DejaVuSans.ttf",
+                "file": "default"
+            }
+        }
+    }
 }
