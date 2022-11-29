@@ -27,7 +27,7 @@ VertexUtils = {
         return vertexIndex;
     },
     getSameVertexIndexes: function (mesh, vertexIndex) {
-        let selectedVertexIndexes = [];
+        let sameVertexIndexes = [];
         let closestVertexPosition = VertexUtils.getVertexPosition(vertexIndex, mesh);
 
         let vertexCount = mesh.vertexCount;
@@ -35,11 +35,11 @@ VertexUtils = {
             let vertexPosition = VertexUtils.getVertexPosition(i, mesh);
 
             if (closestVertexPosition.pp_equals(vertexPosition)) {
-                selectedVertexIndexes.push(i);
+                sameVertexIndexes.push(i);
             }
         }
 
-        return selectedVertexIndexes;
+        return sameVertexIndexes;
     },
     setVertexPositionWithAttribute: function (position, vertexIndex, positionAttribute) {
         positionAttribute.set(vertexIndex, position);

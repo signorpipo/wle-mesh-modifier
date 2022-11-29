@@ -66,6 +66,19 @@ VertexGroupConfig = class VertexGroupConfig {
         }
     }
 
+    remapToMesh(fromMesh, toMesh) {
+        let resultGroupConfig = new VertexGroupConfig();
+
+        for (let [groupID, group] of this._myVertexGroups.entries()) {
+            let resultGroup = group.remapToMesh(fromMesh, toMesh);
+            resultGroupConfig._myVertexGroups.set(groupID, resultGroup);
+        }
+
+        resultGroupConfig._myNextGroupID = this._myNextGroupID;
+
+        return resultGroupConfig;
+    }
+
     debugDraw(meshComponent) {
         for (let group of this._myVertexGroups.values()) {
             group.debugDraw(meshComponent);
@@ -205,6 +218,41 @@ VertexGroup = class VertexGroup {
         }
     }
 
+    remapToMesh(fromMesh, toMesh) {
+        let resultGroup = new VertexGroup(this._myID);
+        let identityTransform = PP.mat4_create().mat4_identity();
+
+        for (let [variantID, variant] of this._myVariants.entries()) {
+            resultGroup._myVariants.set(variantID, new VertexGroupVariant(variantID));
+        }
+        resultGroup._myNextVariantID = this._myNextVariantID;
+
+        for (let index of this._myIndexList) {
+            let fromVertexPosition = VertexUtils.getVertexPosition(index, fromMesh);
+            let toVertexIndex = VertexUtils.getClosestVertexIndex(toMesh, identityTransform, fromVertexPosition);
+            let toVertexIndexList = VertexUtils.getSameVertexIndexes(toMesh, toVertexIndex);
+
+            let resultIndexListLengthBeforeAdd = resultGroup._myIndexList.length;
+            for (let toIndex of toVertexIndexList) {
+                resultGroup.addIndex(toIndex);
+            }
+
+            let newIndexAdded = resultIndexListLengthBeforeAdd != resultGroup._myIndexList.length;
+            if (newIndexAdded) {
+                for (let [variantID, variant] of this._myVariants.entries()) {
+                    let resultVariant = resultGroup._myVariants.get(variantID);
+
+                    let fromVertexPosition = variant.getPosition(index);
+                    for (let toIndex of toVertexIndexList) {
+                        resultVariant.setPosition(toIndex, fromVertexPosition);
+                    }
+                }
+            }
+        }
+
+        return resultGroup;
+    }
+
     debugDraw(meshComponent) {
         let meshTransform = meshComponent.object.pp_getTransform();
         let mesh = meshComponent.mesh;
@@ -228,6 +276,14 @@ VertexGroupVariant = class VertexGroupVariant {
 
     getID() {
         return this._myID;
+    }
+
+    getPosition(index) {
+        return this._myPositionMap.get(index);
+    }
+
+    setPosition(index, position) {
+        return this._myPositionMap.set(index, position);
     }
 
     removeIndex(index) {

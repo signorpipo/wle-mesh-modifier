@@ -13,7 +13,7 @@ ToolManagerParams = class ToolManagerParams {
         this.myToolLabel = null;
         this.myGroupLabel = null;
         this.myVariantLabel = null;
-        this.myVariantGroupCongigPath = null;
+        this.myVariantGroupConfigPath = null;
         this.myLeftControlScheme = null;
         this.myRightControlScheme = null;
 
@@ -72,7 +72,7 @@ ToolManager = class ToolManager {
 
         this._myVertexToolData.myScaleFactor = 1 / this._myParams.myMeshComponent.object.pp_getScale()[0];
 
-        this._loadVertexGroupConfig(params.myVariantGroupCongigPath);
+        this._loadVertexGroupConfig(params.myVariantGroupConfigPath);
 
         this._myIndexToolData = new IndexToolData(meshComponent.mesh);
         this._myIndexToolData.myMeshObject = params.myMeshObject;

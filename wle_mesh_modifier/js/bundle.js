@@ -224,3 +224,5 @@ require('./mesh_modifier/tool/dummy_tool');
 require('./mesh_modifier/load_variants_component');
 require('./mesh_modifier/load_variants');
 require('./mesh_modifier/mesh_modifier_gateway');
+
+require('./mesh_modifier/remap_group');

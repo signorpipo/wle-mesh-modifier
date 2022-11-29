@@ -60,7 +60,7 @@ WL.registerComponent("mesh-modifier-gateway", {
         params.myToolLabel = this._myToolLabel;
         params.myGroupLabel = this._myGroupLabel;
         params.myVariantLabel = this._myVariantLabel;
-        params.myVariantGroupCongigPath = this._myVertexGroupConfigPath;
+        params.myVariantGroupConfigPath = this._myVertexGroupConfigPath;
         params.myLeftControlScheme = this._myLeftControlScheme.pp_getComponent("pp-gamepad-control-scheme");
         params.myRightControlScheme = this._myRightControlScheme.pp_getComponent("pp-gamepad-control-scheme");
 
