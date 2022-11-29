@@ -8,12 +8,14 @@ VertexUtils = {
 
         return new SelectedVertexParams(meshComponent, selectedVertexIndexes, originalMeshVertexData);
     },
-    getClosestVertexIndex: function (mesh, meshTransform, position) {
+    getClosestVertexIndex: function (mesh, meshTransform, position, indexToIgnore = []) {
         let minDistance = -1;
         let vertexIndex = -1;
 
         let vertexCount = mesh.vertexCount;
         for (let i = 0; i < vertexCount; i++) {
+            if (indexToIgnore.pp_hasEqual(i)) continue;
+
             let vertexPosition = VertexUtils.getVertexPosition(i, mesh);
             let vertexPositionWorld = vertexPosition.vec3_convertPositionToWorld(meshTransform);
 

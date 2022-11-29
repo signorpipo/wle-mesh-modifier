@@ -66,11 +66,14 @@ VertexGroupConfig = class VertexGroupConfig {
         }
     }
 
-    remapToMesh(fromMesh, toMesh) {
+    remapToMesh(fromMesh, toMesh, fromToTransform = PP.mat4_create().mat4_identity()) {
         let resultGroupConfig = new VertexGroupConfig();
 
+        let fromIndexAlreadyProcessed = [];
+        let toIndexAlreadyProcessed = [];
+
         for (let [groupID, group] of this._myVertexGroups.entries()) {
-            let resultGroup = group.remapToMesh(fromMesh, toMesh);
+            let resultGroup = group.remapToMesh(fromMesh, toMesh, fromIndexAlreadyProcessed, toIndexAlreadyProcessed, fromToTransform);
             resultGroupConfig._myVertexGroups.set(groupID, resultGroup);
         }
 
@@ -218,7 +221,7 @@ VertexGroup = class VertexGroup {
         }
     }
 
-    remapToMesh(fromMesh, toMesh) {
+    remapToMesh(fromMesh, toMesh, fromIndexAlreadyProcessed, toIndexAlreadyProcessed, fromToTransform = PP.mat4_create().mat4_identity()) {
         let resultGroup = new VertexGroup(this._myID);
         let identityTransform = PP.mat4_create().mat4_identity();
 
@@ -228,9 +231,23 @@ VertexGroup = class VertexGroup {
         resultGroup._myNextVariantID = this._myNextVariantID;
 
         for (let index of this._myIndexList) {
+            if (fromIndexAlreadyProcessed.pp_hasEqual(index)) continue;
+            let fromVertexIndexList = VertexUtils.getSameVertexIndexes(fromMesh, index);
+            for (let indexFromList of fromVertexIndexList) {
+                fromIndexAlreadyProcessed.pp_pushUnique(indexFromList);
+            }
+
             let fromVertexPosition = VertexUtils.getVertexPosition(index, fromMesh);
-            let toVertexIndex = VertexUtils.getClosestVertexIndex(toMesh, identityTransform, fromVertexPosition);
+            let fromVertexPositionTransformed = fromVertexPosition.vec3_convertPositionToWorld(fromToTransform);
+            let toVertexIndex = VertexUtils.getClosestVertexIndex(toMesh, identityTransform, fromVertexPositionTransformed, toIndexAlreadyProcessed);
+            if (toVertexIndex == -1) {
+                toVertexIndex = VertexUtils.getClosestVertexIndex(toMesh, identityTransform, fromVertexPositionTransformed);
+            }
             let toVertexIndexList = VertexUtils.getSameVertexIndexes(toMesh, toVertexIndex);
+
+            for (let indexFromList of toVertexIndexList) {
+                toIndexAlreadyProcessed.pp_pushUnique(indexFromList);
+            }
 
             let resultIndexListLengthBeforeAdd = resultGroup._myIndexList.length;
             for (let toIndex of toVertexIndexList) {
@@ -242,9 +259,10 @@ VertexGroup = class VertexGroup {
                 for (let [variantID, variant] of this._myVariants.entries()) {
                     let resultVariant = resultGroup._myVariants.get(variantID);
 
-                    let fromVertexPosition = variant.getPosition(index);
+                    let fromVertexVariantPosition = variant.getPosition(index);
+                    let fromVertexVariantPositionTransformed = fromVertexVariantPosition.vec3_convertPositionToWorld(fromToTransform);
                     for (let toIndex of toVertexIndexList) {
-                        resultVariant.setPosition(toIndex, fromVertexPosition);
+                        resultVariant.setPosition(toIndex, fromVertexVariantPositionTransformed);
                     }
                 }
             }
@@ -345,5 +363,9 @@ VertexGroupVariant = class VertexGroupVariant {
     fromJSONObject(jsonObject) {
         this._myID = jsonObject._myID;
         this._myPositionMap = jsonObject._myPositionMap;
+
+        for (let [index, position] of this._myPositionMap.entries()) {
+            this._myPositionMap.set(index, [position[0], position[1], position[2]]);
+        }
     }
 };

@@ -4,6 +4,7 @@ WL.registerComponent("remap-group", {
     _myFromMeshVertexGroupConfigPath: { type: WL.Type.String },
     _myToMeshObject: { type: WL.Type.Object },
     _myToMeshFilePath: { type: WL.Type.String },
+    _myTransformObject: { type: WL.Type.Object },
     _myEnableDownload: { type: WL.Type.Bool, default: false },
 }, {
     start: function () {
@@ -48,7 +49,7 @@ WL.registerComponent("remap-group", {
     update(dt) {
         if (!this._myConverted) {
             if (this._myFromMesh != null && this._myToMesh != null && this._myFromVertexGroupConfig != null) {
-                let toVertexGroupConfig = this._myFromVertexGroupConfig.remapToMesh(this._myFromMesh, this._myToMesh);
+                let toVertexGroupConfig = this._myFromVertexGroupConfig.remapToMesh(this._myFromMesh, this._myToMesh, (this._myTransformObject != null) ? this._myTransformObject.pp_getTransformLocal() : undefined);
 
                 let configText = jsonStringify(toVertexGroupConfig);
 
