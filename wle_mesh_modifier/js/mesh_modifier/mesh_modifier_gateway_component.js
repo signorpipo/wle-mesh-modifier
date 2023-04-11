@@ -2,6 +2,7 @@ import { AnimationComponent, Component, Property } from "@wonderlandengine/api";
 import { GamepadControlSchemeComponent, MaterialUtils, getScene } from "../pp";
 import { setSelectedVertexColor } from "./selected_vertex_params";
 import { ToolManager, ToolManagerParams } from "./tool/tool_manager";
+import { VertexUtils } from "./vertex_utils";
 
 export class MeshModifierGatewayComponent extends Component {
     static TypeName = "mesh-modifier-gateway";
