@@ -1,15 +1,15 @@
-import { Component, Type } from "@wonderlandengine/api";
+import { Component, Property } from "@wonderlandengine/api";
 
 export class RemapGroupComponent extends Component {
     static TypeName = "remap-group";
     static Properties = {
-        _myFromMeshObject: { type: WL.Type.Object },
-        _myFromMeshFilePath: { type: WL.Type.String },
-        _myFromMeshVertexGroupConfigPath: { type: WL.Type.String },
-        _myToMeshObject: { type: WL.Type.Object },
-        _myToMeshFilePath: { type: WL.Type.String },
-        _myTransformObject: { type: WL.Type.Object },
-        _myEnableDownload: { type: WL.Type.Bool, default: false },
+        _myFromMeshObject: Property.object(),
+        _myFromMeshFilePath: Property.string(),
+        _myFromMeshVertexGroupConfigPath: Property.string(),
+        _myToMeshObject: Property.object(),
+        _myToMeshFilePath: Property.string(),
+        _myTransformObject: Property.object(),
+        _myEnableDownload: Property.bool(false)
     };
 
     start() {

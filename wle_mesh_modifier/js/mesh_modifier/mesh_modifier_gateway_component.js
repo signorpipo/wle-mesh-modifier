@@ -1,26 +1,26 @@
-import { Component, Type } from "@wonderlandengine/api";
+import { Component, Property } from "@wonderlandengine/api";
 
 export class MeshModifierGatewayComponent extends Component {
     static TypeName = "mesh-modifier-gateway";
     static Properties = {
-        _myForceMeshRefresh: { type: WL.Type.Bool, default: false },
-        _myUpdateNormals: { type: WL.Type.Bool, default: false },
-        _mySelectedVertexColor: { type: WL.Type.Int, default: 46 },
-        _myVertexGroupConfigPath: { type: WL.Type.String },
-        _myMeshObject: { type: WL.Type.Object },
-        _myMeshFilePath: { type: WL.Type.String },
-        _myMeshFileMaterial: { type: WL.Type.Material },
-        _myAnimationToPlay: { type: WL.Type.Animation },
-        _myRestPoseAnimation: { type: WL.Type.Animation },
-        _myShadeType: { type: WL.Type.Enum, values: ['flat', 'smooth'], default: 'flat' },
-        _myEnableDownload: { type: WL.Type.Bool, default: false },
-        _myPointerObject: { type: WL.Type.Object },
-        _myToolLabel: { type: WL.Type.Object },
-        _myGroupLabel: { type: WL.Type.Object },
-        _myVariantLabel: { type: WL.Type.Object },
-        _myLeftControlScheme: { type: WL.Type.Object },
-        _myRightControlScheme: { type: WL.Type.Object },
-        _myPropsObject: { type: WL.Type.Object },
+        _myForceMeshRefresh: Property.bool(false),
+        _myUpdateNormals: Property.bool(false),
+        _mySelectedVertexColor: Property.int(46),
+        _myVertexGroupConfigPath: Property.string(),
+        _myMeshObject: Property.object(),
+        _myMeshFilePath: Property.string(),
+        _myMeshFileMaterial: Property.material(),
+        _myAnimationToPlay: Property.animation(),
+        _myRestPoseAnimation: Property.animation(),
+        _myShadeType: Property.enum(['flat', 'smooth'], 'flat'),
+        _myEnableDownload: Property.bool(false),
+        _myPointerObject: Property.object(),
+        _myToolLabel: Property.object(),
+        _myGroupLabel: Property.object(),
+        _myVariantLabel: Property.object(),
+        _myLeftControlScheme: Property.object(),
+        _myRightControlScheme: Property.object(),
+        _myPropsObject: Property.object()
     };
 
     init() {

@@ -1,12 +1,12 @@
-import { Component, Type } from "@wonderlandengine/api";
+import { Component, Property } from "@wonderlandengine/api";
 
 export class LoadVariantComponent extends Component {
     static TypeName = "load-variant";
     static Properties = {
-        _myMeshObject: { type: WL.Type.Object },
-        _myShadeType: { type: WL.Type.Enum, values: ['flat', 'smooth'], default: 'flat' },
-        _myVertexGroupConfigPath: { type: WL.Type.String },
-        _myVariantSetup: { type: WL.Type.String, default: '' }
+        _myMeshObject: Property.object(),
+        _myShadeType: Property.enum(['flat', 'smooth'], 'flat'),
+        _myVertexGroupConfigPath: Property.string(),
+        _myVariantSetup: Property.string('')
     };
 
     start() {
