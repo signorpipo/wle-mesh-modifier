@@ -1,13 +1,18 @@
-WL.registerComponent("remap-group", {
-    _myFromMeshObject: { type: WL.Type.Object },
-    _myFromMeshFilePath: { type: WL.Type.String },
-    _myFromMeshVertexGroupConfigPath: { type: WL.Type.String },
-    _myToMeshObject: { type: WL.Type.Object },
-    _myToMeshFilePath: { type: WL.Type.String },
-    _myTransformObject: { type: WL.Type.Object },
-    _myEnableDownload: { type: WL.Type.Bool, default: false },
-}, {
-    start: function () {
+import { Component, Type } from "@wonderlandengine/api";
+
+export class RemapGroupComponent extends Component {
+    static TypeName = "remap-group";
+    static Properties = {
+        _myFromMeshObject: { type: WL.Type.Object },
+        _myFromMeshFilePath: { type: WL.Type.String },
+        _myFromMeshVertexGroupConfigPath: { type: WL.Type.String },
+        _myToMeshObject: { type: WL.Type.Object },
+        _myToMeshFilePath: { type: WL.Type.String },
+        _myTransformObject: { type: WL.Type.Object },
+        _myEnableDownload: { type: WL.Type.Bool, default: false },
+    };
+
+    start() {
         this._myConverted = false;
 
         this._myFromMesh = null;
@@ -45,7 +50,8 @@ WL.registerComponent("remap-group", {
                 this._myFromVertexGroupConfig = new VertexGroupConfig();
             }.bind(this)
         );
-    },
+    }
+
     update(dt) {
         if (!this._myConverted) {
             if (this._myFromMesh != null && this._myToMesh != null && this._myFromVertexGroupConfig != null) {
@@ -64,4 +70,4 @@ WL.registerComponent("remap-group", {
             }
         }
     }
-});
+}

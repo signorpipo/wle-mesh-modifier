@@ -80,16 +80,7 @@
         },
         "19": {
             "name": "Player",
-            "parent": "18",
-            "components": [
-                {
-                    "type": "locomotion",
-                    "locomotion": {
-                        "_myMaxSpeed": 0.25,
-                        "_myFlyEnabled": true
-                    }
-                }
-            ]
+            "parent": "18"
         },
         "20": {
             "name": "Pivot",

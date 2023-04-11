@@ -1,10 +1,15 @@
-WL.registerComponent("load-variant", {
-    _myMeshObject: { type: WL.Type.Object },
-    _myShadeType: { type: WL.Type.Enum, values: ['flat', 'smooth'], default: 'flat' },
-    _myVertexGroupConfigPath: { type: WL.Type.String },
-    _myVariantSetup: { type: WL.Type.String, default: '' }
-}, {
-    start: function () {
+import { Component, Type } from "@wonderlandengine/api";
+
+export class LoadVariantComponent extends Component {
+    static TypeName = "load-variant";
+    static Properties = {
+        _myMeshObject: { type: WL.Type.Object },
+        _myShadeType: { type: WL.Type.Enum, values: ['flat', 'smooth'], default: 'flat' },
+        _myVertexGroupConfigPath: { type: WL.Type.String },
+        _myVariantSetup: { type: WL.Type.String, default: '' }
+    };
+
+    start() {
         let meshComponent = this._myMeshObject.pp_getComponentHierarchy("mesh");
 
         let variantSetupArray = JSON.parse(this._myVariantSetup);
@@ -17,4 +22,4 @@ WL.registerComponent("load-variant", {
 
         loadVariantSetup(meshComponent, this._myVertexGroupConfigPath, meshVariantSetup, this._myShadeType == 0);
     }
-});
+}
