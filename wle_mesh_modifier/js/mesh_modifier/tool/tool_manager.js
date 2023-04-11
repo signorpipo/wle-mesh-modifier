@@ -1,3 +1,6 @@
+import { MeshComponent } from "@wonderlandengine/api";
+import { GamepadButtonID, Timer, VisualElementType, getDebugVisualManager, getLeftGamepad, getScene } from "../../pp";
+
 ToolManagerParams = class ToolManagerParams {
     constructor() {
         this.myForceMeshRefresh = false;
@@ -53,9 +56,9 @@ ToolManager = class ToolManager {
         this._myToolLabel = params.myToolLabel.pp_getComponent("text");
         this._myGroupLabel = params.myGroupLabel.pp_getComponent("text");
         this._myVariantLabel = params.myVariantLabel.pp_getComponent("text");
-        this._myResetToolLabelTimer = new PP.Timer(2, false);
+        this._myResetToolLabelTimer = new Timer(2, false);
 
-        let meshComponent = params.myMeshObject.pp_getComponentHierarchy("mesh");
+        let meshComponent = params.myMeshObject.pp_getComponent(MeshComponent);
 
         this._myParams.myMeshComponent = meshComponent;
 
@@ -87,13 +90,13 @@ ToolManager = class ToolManager {
 
         this._myScrollEnabled = true;
 
-        PP.myDebugVisualManager.allocateDraw(PP.VisualElementType.POINT, 1000);
-        PP.myDebugVisualManager.allocateDraw(PP.VisualElementType.ARROW, 1000);
+        getDebugVisualManager().allocateDraw(VisualElementType.POINT, 1000);
+        getDebugVisualManager().allocateDraw(VisualElementType.ARROW, 1000);
 
         this._myParams.myMeshObject.pp_setActive(true);
 
-        let refresherObject = WL.scene.addObject(null);
-        this._myRefresher = refresherObject.addComponent("mesh"); // this trigger a refresh of other meshes somehow
+        let refresherObject = getScene().pp_addObject();
+        this._myRefresher = refresherObject.pp_addComponent(MeshComponent); // this trigger a refresh of other meshes somehow
 
         this._mySetMeshActiveCounter = 0;
         this._mySetMeshActiveFalse = false;
@@ -105,8 +108,8 @@ ToolManager = class ToolManager {
             this._myRefresher.active = true;
             this._myRefresher.active = false;
 
-            let axes = PP.myLeftGamepad.getAxesInfo().getAxes();
-            if (!PP.myLeftGamepad.getButtonInfo(PP.ButtonType.SQUEEZE).isPressed()) {
+            let axes = getLeftGamepad().getAxesInfo().getAxes();
+            if (!getLeftGamepad().getButtonInfo(GamepadButtonID.SQUEEZE).isPressed()) {
                 if (Math.abs(axes[0]) > 0.5) {
                     if (this._myScrollEnabled) {
                         let currentGroup = this._myToolGroupOrder[this._myActiveToolGroupIndex];
@@ -267,7 +270,7 @@ ToolManager = class ToolManager {
         if (currentGroup == ToolGroupType.VERTEX) {
             let vertexToolData = this._myTools[this._myToolOrder[currentGroup][this._myActiveToolIndex]].getToolData();
 
-            if (PP.myLeftGamepad.getButtonInfo(PP.ButtonType.THUMBSTICK).isPressEnd(2)) {
+            if (getLeftGamepad().getButtonInfo(GamepadButtonID.THUMBSTICK).isPressEnd(2)) {
                 let configText = jsonStringify(vertexToolData.myVertexGroupConfig);
 
                 if (this._myParams.myEnableDownload) {

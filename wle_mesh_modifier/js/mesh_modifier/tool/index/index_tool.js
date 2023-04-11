@@ -1,3 +1,5 @@
+import { GamepadButtonID, getLeftGamepad, getRightGamepad } from "../../../pp";
+
 IndexToolData = class IndexToolData {
     constructor(mesh) {
         this.myMeshObject = null;
@@ -33,7 +35,7 @@ IndexTool = class IndexTool {
 
         if (this._myToolData.myIsPlayingAnimation) {
             if (this._myToolData.myMeshAnimationObject != null) {
-                let animationComponent = this._myToolData.myMeshAnimationObject.pp_getComponentHierarchy("animation");
+                let animationComponent = this._myToolData.myMeshAnimationObject.pp_getComponent("animation");
                 if (animationComponent) {
                     animationComponent.stop();
                     animationComponent.animation = this._myToolData.myRestPoseAnimation;
@@ -50,14 +52,14 @@ IndexTool = class IndexTool {
     end() { }
 
     update(dt) {
-        if (PP.myRightGamepad.getButtonInfo(PP.ButtonType.THUMBSTICK).isPressEnd()) {
+        if (getRightGamepad().getButtonInfo(GamepadButtonID.THUMBSTICK).isPressEnd()) {
             this._myToolData.myLeftControlScheme.setVisible(!this._myToolData.myLeftControlScheme.isVisible());
             this._myToolData.myRightControlScheme.setVisible(!this._myToolData.myRightControlScheme.isVisible());
         }
 
-        if (PP.myLeftGamepad.getButtonInfo(PP.ButtonType.SQUEEZE).isPressEnd(2)) {
+        if (getLeftGamepad().getButtonInfo(GamepadButtonID.SQUEEZE).isPressEnd(2)) {
             if (this._myToolData.myMeshAnimationObject != null) {
-                let animationComponent = this._myToolData.myMeshAnimationObject.pp_getComponentHierarchy("animation");
+                let animationComponent = this._myToolData.myMeshAnimationObject.pp_getComponent("animation");
                 if (animationComponent) {
                     animationComponent.stop();
                     if (this._myToolData.myIsPlayingAnimation) {

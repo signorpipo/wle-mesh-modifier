@@ -24,7 +24,7 @@ jsonParse = function (json) {
 function _jsonReplacer(key, value) {
     if (value instanceof Map) {
         return {
-            dataType: 'Map',
+            dataType: "Map",
             value: Array.from(value.entries()),
         };
     } else {
@@ -33,8 +33,8 @@ function _jsonReplacer(key, value) {
 }
 
 function _jsonReviver(key, value) {
-    if (typeof value === 'object' && value !== null) {
-        if (value.dataType === 'Map') {
+    if (typeof value === "object" && value !== null) {
+        if (value.dataType === "Map") {
             return new Map(value.value);
         }
     }

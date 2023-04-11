@@ -13,7 +13,7 @@ export class TestLoasFileComponent extends Component {
         this._myData = null;
         this._myLogData = true;
 
-        loadFileJSON('./tests/test_json.json', data => this._myData = data);
+        loadFileJSON("./tests/test_json.json", data => this._myData = data);
     }
 
     update(dt) {

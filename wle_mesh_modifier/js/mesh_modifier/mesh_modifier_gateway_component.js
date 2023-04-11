@@ -1,4 +1,5 @@
 import { Component, Property } from "@wonderlandengine/api";
+import { MaterialUtils, MeshUtils, getScene } from "../pp";
 
 export class MeshModifierGatewayComponent extends Component {
     static TypeName = "mesh-modifier-gateway";
@@ -12,7 +13,7 @@ export class MeshModifierGatewayComponent extends Component {
         _myMeshFileMaterial: Property.material(),
         _myAnimationToPlay: Property.animation(),
         _myRestPoseAnimation: Property.animation(),
-        _myShadeType: Property.enum(['flat', 'smooth'], 'flat'),
+        _myShadeType: Property.enum(["flat", "smooth"], "flat"),
         _myEnableDownload: Property.bool(false),
         _myPointerObject: Property.object(),
         _myToolLabel: Property.object(),
@@ -29,10 +30,10 @@ export class MeshModifierGatewayComponent extends Component {
 
     start() {
         if (this._myMeshObject == null) {
-            WL.scene.append(this._myMeshFilePath).then(function (meshObject) {
+            getScene(this.engine).append(this._myMeshFilePath).then(function (meshObject) {
                 meshObject.pp_setParent(this._myPropsObject);
                 meshObject.pp_resetTransformLocal();
-                PP.MeshUtils.setMaterial(meshObject, this._myMeshFileMaterial);
+                MaterialUtils.setObjectMaterial(meshObject, this._myMeshFileMaterial);
                 this._start(meshObject);
             }.bind(this)
             );
@@ -54,7 +55,7 @@ export class MeshModifierGatewayComponent extends Component {
 
         params.myMeshObject = meshObject;
 
-        let animationComponent = params.myMeshObject.pp_getComponentHierarchy("animation");
+        let animationComponent = params.myMeshObject.pp_getComponent("animation");
 
         if (animationComponent != null) {
             params.myMeshAnimationObject = animationComponent.object;

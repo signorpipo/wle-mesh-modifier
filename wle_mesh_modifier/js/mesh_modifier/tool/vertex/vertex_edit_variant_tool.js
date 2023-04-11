@@ -1,3 +1,5 @@
+import { GamepadButtonID, getLeftGamepad, getRightGamepad } from "../../../pp";
+
 VertexEditVariantTool = class VertexEditVariantTool extends VertexFreeEditTool {
     constructor(toolData) {
         super(toolData);
@@ -19,15 +21,15 @@ VertexEditVariantTool = class VertexEditVariantTool extends VertexFreeEditTool {
             return;
         }
 
-        if (PP.myLeftGamepad.getButtonInfo(PP.ButtonType.BOTTOM_BUTTON).isPressEnd(2)) {
+        if (getLeftGamepad().getButtonInfo(GamepadButtonID.BOTTOM_BUTTON).isPressEnd(2)) {
             this._createVariant();
         }
 
-        if (PP.myLeftGamepad.getButtonInfo(PP.ButtonType.TOP_BUTTON).isPressEnd(2)) {
+        if (getLeftGamepad().getButtonInfo(GamepadButtonID.TOP_BUTTON).isPressEnd(2)) {
             this._editVariant();
         }
 
-        if (PP.myRightGamepad.getButtonInfo(PP.ButtonType.BOTTOM_BUTTON).isPressEnd(3)) {
+        if (getRightGamepad().getButtonInfo(GamepadButtonID.BOTTOM_BUTTON).isPressEnd(3)) {
             this._resetAllVertexes();
         }
 

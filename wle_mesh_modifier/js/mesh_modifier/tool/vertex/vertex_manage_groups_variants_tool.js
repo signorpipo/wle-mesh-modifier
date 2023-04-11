@@ -1,3 +1,5 @@
+import { GamepadButtonID, getLeftGamepad, getRightGamepad } from "../../../pp";
+
 VertexManageGroupsVariantsTool = class VertexManageGroupsVariantsTool extends VertexTool {
     constructor(toolData, manageGroups = false, manageVariants = false) {
         super(toolData);
@@ -22,8 +24,8 @@ VertexManageGroupsVariantsTool = class VertexManageGroupsVariantsTool extends Ve
     update(dt) {
         super.update(dt);
 
-        let axes = PP.myRightGamepad.getAxesInfo().getAxes();
-        if (Math.abs(axes[0]) > 0.5 && !PP.myLeftGamepad.getButtonInfo(PP.ButtonType.SQUEEZE).isPressed()) {
+        let axes = getRightGamepad().getAxesInfo().getAxes();
+        if (Math.abs(axes[0]) > 0.5 && !getLeftGamepad().getButtonInfo(GamepadButtonID.SQUEEZE).isPressed()) {
             if (this._myScrollEnabled) {
                 this._selectNextVariant(Math.pp_sign(axes[0]));
 
@@ -33,7 +35,7 @@ VertexManageGroupsVariantsTool = class VertexManageGroupsVariantsTool extends Ve
             this._myScrollEnabled = true;
         }
 
-        if (PP.myRightGamepad.getButtonInfo(PP.ButtonType.SQUEEZE).isPressEnd()) {
+        if (getRightGamepad().getButtonInfo(GamepadButtonID.SQUEEZE).isPressEnd()) {
             this._myToolData.mySelectedVertexes = [];
             if (this._myToolData.mySelectedVertexGroup != null) {
                 this._myToolData.mySelectedVertexGroup = null;
@@ -43,57 +45,57 @@ VertexManageGroupsVariantsTool = class VertexManageGroupsVariantsTool extends Ve
             }
         }
 
-        if (PP.myRightGamepad.getButtonInfo(PP.ButtonType.BOTTOM_BUTTON).isPressEnd(2)) {
+        if (getRightGamepad().getButtonInfo(GamepadButtonID.BOTTOM_BUTTON).isPressEnd(2)) {
             this._resetGroupVertexes();
             this._myToolData.mySelectedVertexVariant = null;
         }
 
-        if (PP.myRightGamepad.getButtonInfo(PP.ButtonType.BOTTOM_BUTTON).isPressEnd(3)) {
+        if (getRightGamepad().getButtonInfo(GamepadButtonID.BOTTOM_BUTTON).isPressEnd(3)) {
             this._resetAllVertexes();
             this._myToolData.mySelectedVertexVariant = null;
         }
 
 
         if (this._myManageGroups) {
-            if (PP.myRightGamepad.getButtonInfo(PP.ButtonType.SELECT).isPressed()) {
+            if (getRightGamepad().getButtonInfo(GamepadButtonID.SELECT).isPressed()) {
                 this._selectVertex();
             }
 
-            if (PP.myRightGamepad.getButtonInfo(PP.ButtonType.SELECT).isPressEnd(2)) {
+            if (getRightGamepad().getButtonInfo(GamepadButtonID.SELECT).isPressEnd(2)) {
                 this._selectAllGroupVertex();
             }
 
-            if (PP.myRightGamepad.getButtonInfo(PP.ButtonType.SELECT).isPressEnd(3)) {
+            if (getRightGamepad().getButtonInfo(GamepadButtonID.SELECT).isPressEnd(3)) {
                 this._selectAll();
             }
 
-            if (PP.myRightGamepad.getButtonInfo(PP.ButtonType.TOP_BUTTON).isPressed()) {
+            if (getRightGamepad().getButtonInfo(GamepadButtonID.TOP_BUTTON).isPressed()) {
                 this._deselectVertex();
             }
 
-            if (PP.myRightGamepad.getButtonInfo(PP.ButtonType.TOP_BUTTON).isPressEnd(2)) {
+            if (getRightGamepad().getButtonInfo(GamepadButtonID.TOP_BUTTON).isPressEnd(2)) {
                 this._myToolData.mySelectedVertexes = [];
             }
 
-            if (PP.myLeftGamepad.getButtonInfo(PP.ButtonType.BOTTOM_BUTTON).isPressEnd(2)) {
+            if (getLeftGamepad().getButtonInfo(GamepadButtonID.BOTTOM_BUTTON).isPressEnd(2)) {
                 this._saveGroup();
             }
 
-            if (PP.myLeftGamepad.getButtonInfo(PP.ButtonType.SELECT).isPressEnd(2)) {
+            if (getLeftGamepad().getButtonInfo(GamepadButtonID.SELECT).isPressEnd(2)) {
                 this._deleteGroup();
             }
         }
 
         if (this._myManageVariants) {
-            if (PP.myLeftGamepad.getButtonInfo(PP.ButtonType.TOP_BUTTON).isPressEnd(2)) {
+            if (getLeftGamepad().getButtonInfo(GamepadButtonID.TOP_BUTTON).isPressEnd(2)) {
                 this._goToEditVariant();
             }
 
-            if (PP.myLeftGamepad.getButtonInfo(PP.ButtonType.BOTTOM_BUTTON).isPressEnd(2)) {
+            if (getLeftGamepad().getButtonInfo(GamepadButtonID.BOTTOM_BUTTON).isPressEnd(2)) {
                 this._goToCreateVariant();
             }
 
-            if (PP.myLeftGamepad.getButtonInfo(PP.ButtonType.SELECT).isPressEnd(2)) {
+            if (getLeftGamepad().getButtonInfo(GamepadButtonID.SELECT).isPressEnd(2)) {
                 this._deleteVariant();
             }
         }

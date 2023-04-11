@@ -1,3 +1,6 @@
+import { MeshAttribute } from "@wonderlandengine/api";
+import { getDebugVisualManager, mat4_create } from "../pp";
+
 MeshVariantSetup = class MeshVariantSetup {
     constructor() {
         this._myVariantSetupMap = new Map();
@@ -66,7 +69,7 @@ VertexGroupConfig = class VertexGroupConfig {
         }
     }
 
-    remapToMesh(fromMesh, toMesh, fromToTransform = PP.mat4_create().mat4_identity()) {
+    remapToMesh(fromMesh, toMesh, fromToTransform = mat4_create().mat4_identity()) {
         let resultGroupConfig = new VertexGroupConfig();
 
         let fromIndexAlreadyProcessed = [];
@@ -221,9 +224,9 @@ VertexGroup = class VertexGroup {
         }
     }
 
-    remapToMesh(fromMesh, toMesh, fromIndexAlreadyProcessed, toIndexAlreadyProcessed, fromToTransform = PP.mat4_create().mat4_identity()) {
+    remapToMesh(fromMesh, toMesh, fromIndexAlreadyProcessed, toIndexAlreadyProcessed, fromToTransform = mat4_create().mat4_identity()) {
         let resultGroup = new VertexGroup(this._myID);
-        let identityTransform = PP.mat4_create().mat4_identity();
+        let identityTransform = mat4_create().mat4_identity();
 
         for (let [variantID, variant] of this._myVariants.entries()) {
             resultGroup._myVariants.set(variantID, new VertexGroupVariant(variantID));
@@ -281,7 +284,7 @@ VertexGroup = class VertexGroup {
             let vertexPosition = VertexUtils.getVertexPosition(vertexIndex, mesh);
             let vertexPositionWorld = vertexPosition.vec3_convertPositionToWorld(meshTransform);
 
-            PP.myDebugVisualManager.drawPoint(0, vertexPositionWorld, color, 0.002);
+            getDebugVisualManager().drawPoint(0, vertexPositionWorld, color, 0.002);
         }
     }
 };
@@ -319,7 +322,7 @@ VertexGroupVariant = class VertexGroupVariant {
     }
 
     matchMesh(mesh) {
-        let positionAttribute = mesh.attribute(WL.MeshAttribute.Position);
+        let positionAttribute = mesh.attribute(MeshAttribute.Position);
         let position = [0, 0, 0];
 
         let match = true;
@@ -336,7 +339,7 @@ VertexGroupVariant = class VertexGroupVariant {
     }
 
     saveVariant(mesh, indexList) {
-        let positionAttribute = mesh.attribute(WL.MeshAttribute.Position);
+        let positionAttribute = mesh.attribute(MeshAttribute.Position);
 
         this._myPositionMap.clear();
 
@@ -348,7 +351,7 @@ VertexGroupVariant = class VertexGroupVariant {
     }
 
     loadVariant(mesh, isFlatShading) {
-        let positionAttribute = mesh.attribute(WL.MeshAttribute.Position);
+        let positionAttribute = mesh.attribute(MeshAttribute.Position);
 
         let vertexIndexList = [];
         for (let [index, vertexPosition] of this._myPositionMap.entries()) {

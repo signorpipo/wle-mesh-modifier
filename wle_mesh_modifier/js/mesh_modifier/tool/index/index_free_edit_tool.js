@@ -1,3 +1,6 @@
+import { MeshIndexType, Mesh } from "@wonderlandengine/api";
+import { GamepadButtonID, getLeftGamepad, getRightGamepad } from "../../../pp";
+
 IndexFreeEditTool = class IndexFreeEditTool extends IndexTool {
     constructor(toolData) {
         super(toolData);
@@ -6,42 +9,42 @@ IndexFreeEditTool = class IndexFreeEditTool extends IndexTool {
     update(dt) {
         super.update(dt);
 
-        if (PP.myRightGamepad.getButtonInfo(PP.ButtonType.BOTTOM_BUTTON).isPressEnd(2)) {
+        if (getRightGamepad().getButtonInfo(GamepadButtonID.BOTTOM_BUTTON).isPressEnd(2)) {
             this._resetAllIndexes();
             //this._myToolData.myMeshObject.pp_setActive(false);
         }
 
-        if (PP.myRightGamepad.getButtonInfo(PP.ButtonType.SELECT).isPressed()) {
+        if (getRightGamepad().getButtonInfo(GamepadButtonID.SELECT).isPressed()) {
             this._selectVertex();
         }
 
-        if (PP.myRightGamepad.getButtonInfo(PP.ButtonType.SELECT).isPressEnd(2)) {
+        if (getRightGamepad().getButtonInfo(GamepadButtonID.SELECT).isPressEnd(2)) {
             this._selectAll();
         }
 
-        if (PP.myRightGamepad.getButtonInfo(PP.ButtonType.TOP_BUTTON).isPressed()) {
+        if (getRightGamepad().getButtonInfo(GamepadButtonID.TOP_BUTTON).isPressed()) {
             this._deselectVertex();
         }
 
-        if (PP.myRightGamepad.getButtonInfo(PP.ButtonType.TOP_BUTTON).isPressEnd(2)) {
+        if (getRightGamepad().getButtonInfo(GamepadButtonID.TOP_BUTTON).isPressEnd(2)) {
             this._deselectAll();
         }
 
-        if (PP.myRightGamepad.getButtonInfo(PP.ButtonType.SQUEEZE).isPressEnd(2)) {
+        if (getRightGamepad().getButtonInfo(GamepadButtonID.SQUEEZE).isPressEnd(2)) {
             this._deleteSelectedVertexesFromIndexData();
             //this._myToolData.myMeshObject.pp_setActive(false);
         }
 
-        if (PP.myRightGamepad.getButtonInfo(PP.ButtonType.SQUEEZE).isPressEnd(3)) {
+        if (getRightGamepad().getButtonInfo(GamepadButtonID.SQUEEZE).isPressEnd(3)) {
             this._hideSelectedVertexesFromIndexData();
             //this._myToolData.myMeshObject.pp_setActive(false);
         }
 
-        if (PP.myLeftGamepad.getButtonInfo(PP.ButtonType.BOTTOM_BUTTON).isPressEnd(2)) {
+        if (getLeftGamepad().getButtonInfo(GamepadButtonID.BOTTOM_BUTTON).isPressEnd(2)) {
             let newIndexData = VertexUtils.getIndexDataAfterDeleteSelectedVertexes(this._myToolData.myMeshComponent, this._myToolData.mySelectedVertexes);
-            let newMesh = new WL.Mesh({
+            let newMesh = new Mesh({
                 indexData: newIndexData,
-                indexType: WL.MeshIndexType.UnsignedInt,
+                indexType: MeshIndexType.UnsignedInt,
                 vertexData: this._myToolData.myMeshComponent.mesh.vertexData
             });
             this._myToolData.myMeshComponent.mesh = newMesh;
@@ -49,10 +52,10 @@ IndexFreeEditTool = class IndexFreeEditTool extends IndexTool {
             //this._myToolData.myMeshObject.pp_setActive(false);
         }
 
-        if (PP.myLeftGamepad.getButtonInfo(PP.ButtonType.TOP_BUTTON).isPressEnd(2)) {
-            let newMesh = new WL.Mesh({
+        if (getLeftGamepad().getButtonInfo(GamepadButtonID.TOP_BUTTON).isPressEnd(2)) {
+            let newMesh = new Mesh({
                 indexData: this._myToolData.myMeshComponent.mesh.indexData,
-                indexType: WL.MeshIndexType.UnsignedInt,
+                indexType: MeshIndexType.UnsignedInt,
                 vertexData: this._myToolData.myMeshComponent.mesh.vertexData
             });
 

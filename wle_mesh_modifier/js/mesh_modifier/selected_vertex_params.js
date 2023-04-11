@@ -1,3 +1,6 @@
+import { MeshAttribute } from "@wonderlandengine/api";
+import { ColorUtils, getDebugVisualManager, vec4_create } from "../pp";
+
 selectedVertexColor = 46;
 
 SelectedVertexParams = class SelectedVertexParams {
@@ -64,9 +67,9 @@ SelectedVertexParams = class SelectedVertexParams {
 
     debugInfo() {
         try {
-            let jointWeight = PP.vec4_create();
+            let jointWeight = vec4_create();
 
-            let jointWeightAttribute = this._myMeshComponent.mesh.attribute(WL.MeshAttribute.JointWeight);
+            let jointWeightAttribute = this._myMeshComponent.mesh.attribute(MeshAttribute.JointWeight);
             jointWeightAttribute.get(this._myIndexes[0], jointWeight);
 
             jointWeight.vec_error();
@@ -86,16 +89,16 @@ SelectedVertexParams = class SelectedVertexParams {
 
         let actualColor = color;
         if (color == null) {
-            actualColor = PP.ColorUtils.color255To1([selectedVertexColor, selectedVertexColor, selectedVertexColor, 255]);
+            actualColor = ColorUtils.color255To1([selectedVertexColor, selectedVertexColor, selectedVertexColor, 255]);
         }
 
         let vertexPositionWorld = this.getPosition(meshTransform);
         let vertexSize = isPreview ? 0.002 : 0.0035;
-        PP.myDebugVisualManager.drawPoint(0, vertexPositionWorld, actualColor, vertexSize);
+        getDebugVisualManager().drawPoint(0, vertexPositionWorld, actualColor, vertexSize);
 
         if (false) {
             let vertexNormalWorld = this.getOriginalNormal(meshTransform);
-            PP.myDebugVisualManager.drawArrow(0, vertexPositionWorld, vertexNormalWorld, 0.05, actualColor, 0.0015);
+            getDebugVisualManager().drawArrow(0, vertexPositionWorld, vertexNormalWorld, 0.05, actualColor, 0.0015);
         }
     }
 };

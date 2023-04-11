@@ -1,4 +1,5 @@
-import { Component, Property } from "@wonderlandengine/api";
+import { Component, MeshComponent, Property } from "@wonderlandengine/api";
+import { getScene } from "../pp";
 
 export class RemapGroupComponent extends Component {
     static TypeName = "remap-group";
@@ -21,19 +22,19 @@ export class RemapGroupComponent extends Component {
         this._myFromVertexGroupConfig = null;
 
         if (this._myFromMeshObject == null) {
-            WL.scene.append(this._myFromMeshFilePath).then(function (meshObject) {
-                this._myFromMesh = meshObject.pp_getComponentHierarchy("mesh").mesh;
+            getScene(this.engine).append(this._myFromMeshFilePath).then(function (meshObject) {
+                this._myFromMesh = meshObject.pp_getComponent(MeshComponent).mesh;
             }.bind(this));
         } else {
-            this._myFromMesh = this._myFromMeshObject.pp_getComponentHierarchy("mesh").mesh;
+            this._myFromMesh = this._myFromMeshObject.pp_getComponent(MeshComponent).mesh;
         }
 
         if (this._myToMeshObject == null) {
-            WL.scene.append(this._myToMeshFilePath).then(function (meshObject) {
-                this._myToMesh = meshObject.pp_getComponentHierarchy("mesh").mesh;
+            getScene(this.engine).append(this._myToMeshFilePath).then(function (meshObject) {
+                this._myToMesh = meshObject.pp_getComponent(MeshComponent).mesh;
             }.bind(this));
         } else {
-            this._myToMesh = this._myToMeshObject.pp_getComponentHierarchy("mesh").mesh;
+            this._myToMesh = this._myToMeshObject.pp_getComponent(MeshComponent).mesh;
         }
 
         loadFileText(this._myFromMeshVertexGroupConfigPath,

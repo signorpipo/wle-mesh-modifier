@@ -1,11 +1,11 @@
 downloadFileText = function (filename, text) {
-    const blob = new Blob([text], { type: 'text/plain' });
+    const blob = new Blob([text], { type: "text/plain" });
     const url = URL.createObjectURL(blob);
 
-    let element = document.createElement('a');
+    let element = document.createElement("a");
     element.href = url;
     element.download = filename;
-    element.style.display = 'none';
+    element.style.display = "none";
 
     document.body.appendChild(element);
 

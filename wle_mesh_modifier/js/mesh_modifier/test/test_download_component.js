@@ -1,4 +1,5 @@
 import { Component, Property } from "@wonderlandengine/api";
+import { GamepadButtonID, getRightGamepad } from "../../pp";
 
 export class TestDownloadComponent extends Component {
     static TypeName = "test-download";
@@ -15,11 +16,11 @@ export class TestDownloadComponent extends Component {
     }
 
     update(dt) {
-        if (PP.myRightGamepad.getButtonInfo(PP.ButtonType.SELECT).isPressEnd()) {
+        if (getRightGamepad().getButtonInfo(GamepadButtonID.SELECT).isPressEnd()) {
             downloadFileText("./tests/test.txt", "Super Attempt Because Yes");
         }
 
-        if (PP.myLeftGamepad.getButtonInfo(PP.ButtonType.SELECT).isPressEnd()) {
+        if (getLeftGamepad().getButtonInfo(GamepadButtonID.SELECT).isPressEnd()) {
             downloadFileJSON("./tests/test.json", this);
         }
     }

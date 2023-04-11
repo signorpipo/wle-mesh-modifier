@@ -1,6 +1,9 @@
+import { Mesh, MeshAttribute, MeshComponent } from "@wonderlandengine/api";
+import { vec3_create, vec4_create } from "../pp";
+
 VertexUtils = {
     getClosestSelectedVertex: function (meshObject, pointerPosition, originalMeshVertexData) {
-        let meshComponent = meshObject.pp_getComponentHierarchy("mesh");
+        let meshComponent = meshObject.pp_getComponent(MeshComponent);
         let meshTransform = meshComponent.object.pp_getTransform();
 
         let closestVertexIndex = VertexUtils.getClosestVertexIndex(meshComponent.mesh, meshTransform, pointerPosition);
@@ -47,17 +50,17 @@ VertexUtils = {
         positionAttribute.set(vertexIndex, position);
     },
     getVertexPosition: function (vertexIndex, mesh) {
-        let vertexPosition = PP.vec3_create();
+        let vertexPosition = vec3_create();
 
-        let positionAttribute = mesh.attribute(WL.MeshAttribute.Position);
+        let positionAttribute = mesh.attribute(MeshAttribute.Position);
         positionAttribute.get(vertexIndex, vertexPosition);
 
         return vertexPosition;
     },
     getVertexNormal: function (vertexIndex, mesh) {
-        let vertexNormal = PP.vec3_create();
+        let vertexNormal = vec3_create();
 
-        let positionAttribute = mesh.attribute(WL.MeshAttribute.Normal);
+        let positionAttribute = mesh.attribute(MeshAttribute.Normal);
         positionAttribute.get(vertexIndex, vertexNormal);
 
         return vertexNormal;
@@ -66,10 +69,10 @@ VertexUtils = {
         normalAttribute.set(vertexIndex, normal);
     },
     getJointWeight: function (vertexIndex, mesh) {
-        let jointWeight = PP.vec4_create();
+        let jointWeight = vec4_create();
 
         try {
-            let jointWeightAttribute = mesh.attribute(WL.MeshAttribute.JointWeight);
+            let jointWeightAttribute = mesh.attribute(MeshAttribute.JointWeight);
             jointWeightAttribute.get(vertexIndex, jointWeight);
         } catch (e) { }
 
@@ -77,7 +80,7 @@ VertexUtils = {
     },
     setJointWeight: function (jointWeight, vertexIndex, mesh) {
         try {
-            let jointWeightAttribute = mesh.attribute(WL.MeshAttribute.JointWeight);
+            let jointWeightAttribute = mesh.attribute(MeshAttribute.JointWeight);
             jointWeightAttribute.set(vertexIndex, jointWeight);
         } catch (e) { }
     },
@@ -85,7 +88,7 @@ VertexUtils = {
         let jointID = [0, 0, 0, 0];
 
         try {
-            let jointIDAttribute = mesh.attribute(WL.MeshAttribute.JointId);
+            let jointIDAttribute = mesh.attribute(MeshAttribute.JointId);
             jointIDAttribute.get(vertexIndex, jointID);
         } catch (e) { }
 
@@ -93,27 +96,27 @@ VertexUtils = {
     },
     setJointID: function (jointID, vertexIndex, mesh) {
         try {
-            let jointIDAttribute = mesh.attribute(WL.MeshAttribute.JointId);
+            let jointIDAttribute = mesh.attribute(MeshAttribute.JointId);
             jointIDAttribute.set(vertexIndex, jointID);
         } catch (e) { }
     },
     resetMeshVertexData(meshComponent, originalVertexData) {
         let mesh = meshComponent.mesh;
-        let positionAttribute = mesh.attribute(WL.MeshAttribute.Position);
-        let normalAttribute = mesh.attribute(WL.MeshAttribute.Normal);
+        let positionAttribute = mesh.attribute(MeshAttribute.Position);
+        let normalAttribute = mesh.attribute(MeshAttribute.Normal);
 
-        let vertexDataSize = WL.Mesh.VERTEX_FLOAT_SIZE;
+        let vertexDataSize = Mesh.VERTEX_FLOAT_SIZE;
         let vertexCount = originalVertexData.length / vertexDataSize;
         for (let index = 0; index < vertexCount; index++) {
             let vertexPositionReset = [
-                originalVertexData[index * vertexDataSize + WL.Mesh.POS.X],
-                originalVertexData[index * vertexDataSize + WL.Mesh.POS.Y],
-                originalVertexData[index * vertexDataSize + WL.Mesh.POS.Z]];
+                originalVertexData[index * vertexDataSize + Mesh.POS.X],
+                originalVertexData[index * vertexDataSize + Mesh.POS.Y],
+                originalVertexData[index * vertexDataSize + Mesh.POS.Z]];
 
             let vertexNormalReset = [
-                originalVertexData[index * vertexDataSize + WL.Mesh.NORMAL.X],
-                originalVertexData[index * vertexDataSize + WL.Mesh.NORMAL.Y],
-                originalVertexData[index * vertexDataSize + WL.Mesh.NORMAL.Z]];
+                originalVertexData[index * vertexDataSize + Mesh.NORMAL.X],
+                originalVertexData[index * vertexDataSize + Mesh.NORMAL.Y],
+                originalVertexData[index * vertexDataSize + Mesh.NORMAL.Z]];
 
             VertexUtils.setVertexPositionWithAttribute(vertexPositionReset, index, positionAttribute);
             VertexUtils.setVertexNormalWithAttribute(vertexNormalReset, index, normalAttribute);
@@ -125,14 +128,14 @@ VertexUtils = {
     },
     resetVertexes(meshComponent, vertexIndexList, originalVertexData, isFlatShading) {
         let mesh = meshComponent.mesh;
-        let positionAttribute = mesh.attribute(WL.MeshAttribute.Position);
+        let positionAttribute = mesh.attribute(MeshAttribute.Position);
 
-        let vertexDataSize = WL.Mesh.VERTEX_FLOAT_SIZE;
+        let vertexDataSize = Mesh.VERTEX_FLOAT_SIZE;
         for (let index of vertexIndexList) {
             let vertexPositionReset = [
-                originalVertexData[index * vertexDataSize + WL.Mesh.POS.X],
-                originalVertexData[index * vertexDataSize + WL.Mesh.POS.Y],
-                originalVertexData[index * vertexDataSize + WL.Mesh.POS.Z]];
+                originalVertexData[index * vertexDataSize + Mesh.POS.X],
+                originalVertexData[index * vertexDataSize + Mesh.POS.Y],
+                originalVertexData[index * vertexDataSize + Mesh.POS.Z]];
 
             VertexUtils.setVertexPositionWithAttribute(vertexPositionReset, index, positionAttribute);
 
@@ -144,7 +147,7 @@ VertexUtils = {
             return;
         }
 
-        let meshComponent = meshObject.pp_getComponentHierarchy("mesh");
+        let meshComponent = meshObject.pp_getComponent(MeshComponent);
         let meshTransform = meshComponent.object.pp_getTransform();
         let localMovement = movement.vec3_convertDirectionToLocal(meshTransform);
         let vertexPosition = [0, 0, 0];
@@ -152,7 +155,7 @@ VertexUtils = {
             let mesh = selectedVertex.getMesh();
             let indexes = selectedVertex.getIndexes();
 
-            let positionAttribute = mesh.attribute(WL.MeshAttribute.Position);
+            let positionAttribute = mesh.attribute(MeshAttribute.Position);
 
             positionAttribute.get(indexes[0], vertexPosition);
             vertexPosition.vec3_add(localMovement, vertexPosition);
@@ -166,7 +169,7 @@ VertexUtils = {
             return;
         }
 
-        let meshComponent = meshObject.pp_getComponentHierarchy("mesh");
+        let meshComponent = meshObject.pp_getComponent(MeshComponent);
         let meshTransform = meshComponent.object.pp_getTransform();
 
         let vertexPosition = [0, 0, 0];
@@ -184,7 +187,7 @@ VertexUtils = {
             let mesh = selectedVertex.getMesh();
             let indexes = selectedVertex.getIndexes();
 
-            let positionAttribute = mesh.attribute(WL.MeshAttribute.Position);
+            let positionAttribute = mesh.attribute(MeshAttribute.Position);
 
             positionAttribute.get(indexes[0], vertexPosition);
             vertexPosition.vec3_add(movementToApply, vertexPosition);
@@ -361,7 +364,7 @@ VertexUtils = {
 
         normal.vec3_normalize(normal);
 
-        let normalAttribute = mesh.attribute(WL.MeshAttribute.Normal);
+        let normalAttribute = mesh.attribute(MeshAttribute.Normal);
         for (let currentVertexIndex of processedVertexIndexList) {
             VertexUtils.setVertexNormalWithAttribute(normal, currentVertexIndex, normalAttribute);
         }
@@ -398,7 +401,7 @@ VertexUtils = {
 
             normal.vec3_normalize(normal);
 
-            let normalAttribute = mesh.attribute(WL.MeshAttribute.Normal);
+            let normalAttribute = mesh.attribute(MeshAttribute.Normal);
             VertexUtils.setVertexNormalWithAttribute(normal, vertexIndex, normalAttribute);
         }
     },

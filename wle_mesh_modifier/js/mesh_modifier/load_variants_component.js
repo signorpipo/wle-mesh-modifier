@@ -1,16 +1,16 @@
-import { Component, Property } from "@wonderlandengine/api";
+import { Component, Property, MeshComponent } from "@wonderlandengine/api";
 
 export class LoadVariantComponent extends Component {
     static TypeName = "load-variant";
     static Properties = {
         _myMeshObject: Property.object(),
-        _myShadeType: Property.enum(['flat', 'smooth'], 'flat'),
+        _myShadeType: Property.enum(["flat", "smooth"], "flat"),
         _myVertexGroupConfigPath: Property.string(),
-        _myVariantSetup: Property.string('')
+        _myVariantSetup: Property.string("")
     };
 
     start() {
-        let meshComponent = this._myMeshObject.pp_getComponentHierarchy("mesh");
+        let meshComponent = this._myMeshObject.pp_getComponent(MeshComponent);
 
         let variantSetupArray = JSON.parse(this._myVariantSetup);
         let meshVariantSetup = new MeshVariantSetup();
