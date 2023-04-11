@@ -1,7 +1,9 @@
-import { MeshIndexType, Mesh } from "@wonderlandengine/api";
+import { Mesh, MeshIndexType } from "@wonderlandengine/api";
 import { GamepadButtonID, getLeftGamepad, getRightGamepad } from "../../../pp";
+import { VertexUtils } from "../../vertex_utils";
+import { IndexTool } from "./index_tool";
 
-IndexFreeEditTool = class IndexFreeEditTool extends IndexTool {
+export class IndexFreeEditTool extends IndexTool {
     constructor(toolData) {
         super(toolData);
     }
@@ -94,4 +96,4 @@ IndexFreeEditTool = class IndexFreeEditTool extends IndexTool {
             selectedVertex.debugDraw();
         }
     }
-};
+}

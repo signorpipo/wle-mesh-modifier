@@ -1,6 +1,8 @@
 import { GamepadButtonID, getLeftGamepad, getRightGamepad } from "../../../pp";
+import { randomColor } from "../../cauldron_utils";
+import { VertexFreeEditTool } from "./vertex_free_edit_tool";
 
-VertexEditVariantTool = class VertexEditVariantTool extends VertexFreeEditTool {
+export class VertexEditVariantTool extends VertexFreeEditTool {
     constructor(toolData) {
         super(toolData);
 
@@ -94,4 +96,4 @@ VertexEditVariantTool = class VertexEditVariantTool extends VertexFreeEditTool {
     unregisterVariantEditedEventListener(id) {
         this._myVariantEditedCallbacks.delete(id);
     }
-};
+}

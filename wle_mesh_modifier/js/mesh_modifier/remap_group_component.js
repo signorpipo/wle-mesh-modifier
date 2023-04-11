@@ -1,5 +1,8 @@
 import { Component, MeshComponent, Property } from "@wonderlandengine/api";
 import { getScene } from "../pp";
+import { jsonParse, jsonStringify } from "./cauldron_utils";
+import { downloadFileText } from "./file_manager";
+import { VertexGroupConfig } from "./vertex_group_config";
 
 export class RemapGroupComponent extends Component {
     static TypeName = "remap-group";

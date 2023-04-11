@@ -1,5 +1,7 @@
-import { Component, Property } from "@wonderlandengine/api";
-import { MaterialUtils, MeshUtils, getScene } from "../pp";
+import { AnimationComponent, Component, Property } from "@wonderlandengine/api";
+import { GamepadControlSchemeComponent, MaterialUtils, getScene } from "../pp";
+import { setSelectedVertexColor } from "./selected_vertex_params";
+import { ToolManager, ToolManagerParams } from "./tool/tool_manager";
 
 export class MeshModifierGatewayComponent extends Component {
     static TypeName = "mesh-modifier-gateway";
@@ -55,7 +57,7 @@ export class MeshModifierGatewayComponent extends Component {
 
         params.myMeshObject = meshObject;
 
-        let animationComponent = params.myMeshObject.pp_getComponent("animation");
+        let animationComponent = params.myMeshObject.pp_getComponent(AnimationComponent);
 
         if (animationComponent != null) {
             params.myMeshAnimationObject = animationComponent.object;
@@ -70,12 +72,12 @@ export class MeshModifierGatewayComponent extends Component {
         params.myGroupLabel = this._myGroupLabel;
         params.myVariantLabel = this._myVariantLabel;
         params.myVariantGroupConfigPath = this._myVertexGroupConfigPath;
-        params.myLeftControlScheme = this._myLeftControlScheme.pp_getComponent("pp-gamepad-control-scheme");
-        params.myRightControlScheme = this._myRightControlScheme.pp_getComponent("pp-gamepad-control-scheme");
+        params.myLeftControlScheme = this._myLeftControlScheme.pp_getComponent(GamepadControlSchemeComponent);
+        params.myRightControlScheme = this._myRightControlScheme.pp_getComponent(GamepadControlSchemeComponent);
 
         params.myEnableDownload = this._myEnableDownload;
 
-        selectedVertexColor = this._mySelectedVertexColor;
+        setSelectedVertexColor(this._mySelectedVertexColor);
         VertexUtils.updateVertexNormalsActive = this._myUpdateNormals;
 
         this._myToolManager = new ToolManager(params);

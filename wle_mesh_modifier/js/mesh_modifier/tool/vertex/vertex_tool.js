@@ -1,6 +1,8 @@
+import { AnimationComponent } from "@wonderlandengine/api";
 import { GamepadButtonID, getLeftGamepad } from "../../../pp";
+import { VertexUtils } from "../../vertex_utils";
 
-VertexToolData = class VertexToolData {
+export class VertexToolData {
     constructor(mesh) {
         this.myMeshObject = null;
         this.myIsFlatShading = true;
@@ -25,9 +27,9 @@ VertexToolData = class VertexToolData {
         this.myLeftControlScheme = null;
         this.myRightControlScheme = null;
     }
-};
+}
 
-VertexTool = class VertexTool {
+export class VertexTool {
     constructor(toolData) {
         this._myToolData = toolData;
 
@@ -45,7 +47,7 @@ VertexTool = class VertexTool {
 
         if (this._myToolData.myIsPlayingAnimation) {
             if (this._myToolData.myMeshAnimationObject != null) {
-                let animationComponent = this._myToolData.myMeshAnimationObject.pp_getComponent("animation");
+                let animationComponent = this._myToolData.myMeshAnimationObject.pp_getComponent(AnimationComponent);
                 if (animationComponent) {
                     animationComponent.stop();
                     animationComponent.animation = this._myToolData.myRestPoseAnimation;
@@ -69,7 +71,7 @@ VertexTool = class VertexTool {
 
         if (getLeftGamepad().getButtonInfo(GamepadButtonID.SQUEEZE).isPressEnd(2)) {
             if (this._myToolData.myMeshAnimationObject != null) {
-                let animationComponent = this._myToolData.myMeshAnimationObject.pp_getComponent("animation");
+                let animationComponent = this._myToolData.myMeshAnimationObject.pp_getComponent(AnimationComponent);
                 if (animationComponent) {
                     animationComponent.stop();
                     if (this._myToolData.myIsPlayingAnimation) {
@@ -343,4 +345,4 @@ VertexTool = class VertexTool {
             this._myToolData.mySelectedVertexGroup.removeVariant(variantToDelete.getID());
         }
     }
-};
+}

@@ -1,9 +1,12 @@
 import { MeshAttribute } from "@wonderlandengine/api";
 import { ColorUtils, getDebugVisualManager, vec4_create } from "../pp";
+import { VertexUtils } from "./vertex_utils";
 
-selectedVertexColor = 46;
+export function setSelectedVertexColor(color) {
+    _selectedVertexColor = color;
+}
 
-SelectedVertexParams = class SelectedVertexParams {
+export class SelectedVertexParams {
     constructor(meshComponent, indexes, originalMeshVertexData) {
         this._myMeshComponent = meshComponent;
         this._myIndexes = indexes;
@@ -101,4 +104,8 @@ SelectedVertexParams = class SelectedVertexParams {
             getDebugVisualManager().drawArrow(0, vertexPositionWorld, vertexNormalWorld, 0.05, actualColor, 0.0015);
         }
     }
-};
+}
+
+
+
+let _selectedVertexColor = 46;

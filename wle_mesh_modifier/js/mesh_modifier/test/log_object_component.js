@@ -1,4 +1,4 @@
-import { Component, Property } from "@wonderlandengine/api";
+import { Component } from "@wonderlandengine/api";
 
 export class LogObjectComponent extends Component {
     static TypeName = "log-object";

@@ -12,32 +12,44 @@
  */
 
 /* wle:auto-imports:start */
-import {ConsoleVRToolComponent} from './pp/index.js';
-import {EasyTuneToolComponent} from './pp/index.js';
+import {MouseLookComponent} from '@wonderlandengine/components';
+import {LoadVariantComponent} from './mesh_modifier/load_variants_component.js';
+import {MeshModifierGatewayComponent} from './mesh_modifier/mesh_modifier_gateway_component.js';
+import {RemapGroupComponent} from './mesh_modifier/remap_group_component.js';
+import {TestDownloadComponent} from './mesh_modifier/test/test_download_component.js';
+import {TestLoasFileComponent} from './mesh_modifier/test/test_loadFile_component.js';
+import {TestSetAxisComponent} from './mesh_modifier/test/test_set_axis_component.js';
+import {CopyHandTransformComponent} from './pp/index.js';
+import {DebugManagerComponent} from './pp/index.js';
+import {GamepadControlSchemeComponent} from './pp/index.js';
 import {GamepadMeshAnimatorComponent} from './pp/index.js';
-import {PPGatewayComponent} from './pp/index.js';
+import {GetDefaultResourcesComponent} from './pp/index.js';
+import {GrabbableComponent} from './pp/index.js';
+import {GrabberHandComponent} from './pp/index.js';
+import {InputManagerComponent} from './pp/index.js';
+import {SetActiveComponent} from './pp/index.js';
 import {SetHandLocalTransformComponent} from './pp/index.js';
 import {SetHeadLocalTransformComponent} from './pp/index.js';
+import {SetPlayerHeightComponent} from './pp/index.js';
 import {SpatialAudioListenerComponent} from './pp/index.js';
 import {SwitchHandObjectComponent} from './pp/index.js';
 import {ToolCursorComponent} from './pp/index.js';
 import {TrackedHandDrawAllJointsComponent} from './pp/index.js';
-import {VirtualGamepadComponent} from './pp/index.js';
+import {VisualManagerComponent} from './pp/index.js';
 /* wle:auto-imports:end */
 
 import * as API from '@wonderlandengine/api'; // Deprecated: Backward compatibility.
 import { loadRuntime } from '@wonderlandengine/api';
-import { initPlayground } from './playground/init_playground.js';
 import { initPP } from './pp/index.js';
 
 /* wle:auto-constants:start */
-const ProjectName = 'wle_migration_to_1.0.0';
+const ProjectName = 'wle_mesh_modifier';
 const RuntimeBaseName = 'WonderlandRuntime';
 const WithPhysX = true;
-const WithLoader = false;
+const WithLoader = true;
 const WebXRFramebufferScaleFactor = 1;
-const WebXRRequiredFeatures = ['local',];
-const WebXROptionalFeatures = ['local','hand-tracking','hit-test',];
+const WebXRRequiredFeatures = ['local','local-floor',];
+const WebXROptionalFeatures = ['local','local-floor','hand-tracking','hit-test',];
 /* wle:auto-constants:end */
 
 const engine = await loadRuntime(RuntimeBaseName, {
@@ -82,21 +94,33 @@ if (document.readyState === 'loading') {
 }
 
 /* wle:auto-register:start */
-engine.registerComponent(ConsoleVRToolComponent);
-engine.registerComponent(EasyTuneToolComponent);
+engine.registerComponent(MouseLookComponent);
+engine.registerComponent(LoadVariantComponent);
+engine.registerComponent(MeshModifierGatewayComponent);
+engine.registerComponent(RemapGroupComponent);
+engine.registerComponent(TestDownloadComponent);
+engine.registerComponent(TestLoasFileComponent);
+engine.registerComponent(TestSetAxisComponent);
+engine.registerComponent(CopyHandTransformComponent);
+engine.registerComponent(DebugManagerComponent);
+engine.registerComponent(GamepadControlSchemeComponent);
 engine.registerComponent(GamepadMeshAnimatorComponent);
-engine.registerComponent(PPGatewayComponent);
+engine.registerComponent(GetDefaultResourcesComponent);
+engine.registerComponent(GrabbableComponent);
+engine.registerComponent(GrabberHandComponent);
+engine.registerComponent(InputManagerComponent);
+engine.registerComponent(SetActiveComponent);
 engine.registerComponent(SetHandLocalTransformComponent);
 engine.registerComponent(SetHeadLocalTransformComponent);
+engine.registerComponent(SetPlayerHeightComponent);
 engine.registerComponent(SpatialAudioListenerComponent);
 engine.registerComponent(SwitchHandObjectComponent);
 engine.registerComponent(ToolCursorComponent);
 engine.registerComponent(TrackedHandDrawAllJointsComponent);
-engine.registerComponent(VirtualGamepadComponent);
+engine.registerComponent(VisualManagerComponent);
 /* wle:auto-register:end */
 
 initPP(engine);
-initPlayground(engine);
 
 engine.scene.load(`${ProjectName}.bin`);
 

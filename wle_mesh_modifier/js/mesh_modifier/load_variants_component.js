@@ -1,4 +1,6 @@
-import { Component, Property, MeshComponent } from "@wonderlandengine/api";
+import { Component, MeshComponent, Property } from "@wonderlandengine/api";
+import { loadVariantSetup } from "./load_variants";
+import { MeshVariantSetup } from "./vertex_group_config";
 
 export class LoadVariantComponent extends Component {
     static TypeName = "load-variant";

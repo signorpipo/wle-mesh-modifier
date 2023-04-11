@@ -1,5 +1,6 @@
-import { Component, Property } from "@wonderlandengine/api";
+import { Component } from "@wonderlandengine/api";
 import { GamepadButtonID, getRightGamepad } from "../../pp";
+import { downloadFileJSON, downloadFileText } from "../file_manager";
 
 export class TestDownloadComponent extends Component {
     static TypeName = "test-download";

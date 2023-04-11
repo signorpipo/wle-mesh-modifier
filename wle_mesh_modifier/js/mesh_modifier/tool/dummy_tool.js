@@ -1,4 +1,4 @@
-DummyTool = class DummyTool {
+export class DummyTool {
     constructor() {
 
     }
@@ -14,4 +14,4 @@ DummyTool = class DummyTool {
     end() {
 
     }
-};
+}

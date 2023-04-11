@@ -1,6 +1,8 @@
+import { AnimationComponent } from "@wonderlandengine/api";
 import { GamepadButtonID, getLeftGamepad, getRightGamepad } from "../../../pp";
+import { VertexUtils } from "../../vertex_utils";
 
-IndexToolData = class IndexToolData {
+export class IndexToolData {
     constructor(mesh) {
         this.myMeshObject = null;
         this.myIsFlatShading = true;
@@ -21,9 +23,9 @@ IndexToolData = class IndexToolData {
         this.myLeftControlScheme = null;
         this.myRightControlScheme = null;
     }
-};
+}
 
-IndexTool = class IndexTool {
+export class IndexTool {
     constructor(toolData) {
         this._myToolData = toolData;
 
@@ -35,7 +37,7 @@ IndexTool = class IndexTool {
 
         if (this._myToolData.myIsPlayingAnimation) {
             if (this._myToolData.myMeshAnimationObject != null) {
-                let animationComponent = this._myToolData.myMeshAnimationObject.pp_getComponent("animation");
+                let animationComponent = this._myToolData.myMeshAnimationObject.pp_getComponent(AnimationComponent);
                 if (animationComponent) {
                     animationComponent.stop();
                     animationComponent.animation = this._myToolData.myRestPoseAnimation;
@@ -59,7 +61,7 @@ IndexTool = class IndexTool {
 
         if (getLeftGamepad().getButtonInfo(GamepadButtonID.SQUEEZE).isPressEnd(2)) {
             if (this._myToolData.myMeshAnimationObject != null) {
-                let animationComponent = this._myToolData.myMeshAnimationObject.pp_getComponent("animation");
+                let animationComponent = this._myToolData.myMeshAnimationObject.pp_getComponent(AnimationComponent);
                 if (animationComponent) {
                     animationComponent.stop();
                     if (this._myToolData.myIsPlayingAnimation) {
@@ -164,4 +166,4 @@ IndexTool = class IndexTool {
             this._myToolData.myMeshObject.pp_setActive(false);
         }
     }
-};
+}

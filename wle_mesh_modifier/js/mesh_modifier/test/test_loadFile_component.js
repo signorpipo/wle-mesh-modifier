@@ -1,4 +1,5 @@
-import { Component, Property } from "@wonderlandengine/api";
+import { Component } from "@wonderlandengine/api";
+import { loadFileJSON } from "../file_manager";
 
 export class TestLoasFileComponent extends Component {
     static TypeName = "test-loadFile";

@@ -1,7 +1,8 @@
 import { Mesh, MeshAttribute, MeshComponent } from "@wonderlandengine/api";
 import { vec3_create, vec4_create } from "../pp";
+import { SelectedVertexParams } from "./selected_vertex_params";
 
-VertexUtils = {
+export let VertexUtils = {
     getClosestSelectedVertex: function (meshObject, pointerPosition, originalMeshVertexData) {
         let meshComponent = meshObject.pp_getComponent(MeshComponent);
         let meshTransform = meshComponent.object.pp_getTransform();

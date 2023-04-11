@@ -1,4 +1,4 @@
-downloadFileText = function (filename, text) {
+export function downloadFileText(filename, text) {
     const blob = new Blob([text], { type: "text/plain" });
     const url = URL.createObjectURL(blob);
 
@@ -16,7 +16,7 @@ downloadFileText = function (filename, text) {
     return true;
 };
 
-downloadFileJSON = function (filename, object) {
+export function downloadFileJSON(filename, object) {
     let json = null;
     try {
         json = JSON.stringify(object);
@@ -29,15 +29,15 @@ downloadFileJSON = function (filename, object) {
     return false;
 };
 
-loadFileText = function (filepath, loadCallback, errorCallback) {
+export function loadFileText(filepath, loadCallback, errorCallback) {
     loadFile("text", filepath, loadCallback, errorCallback);
 };
 
-loadFileJSON = function (filepath, loadCallback, errorCallback) {
+export function loadFileJSON(filepath, loadCallback, errorCallback) {
     loadFile("json", filepath, loadCallback, errorCallback);
 };
 
-loadFile = function (responseBodyConversionFunction, filepath, loadCallback, errorCallback) {
+export function loadFile(responseBodyConversionFunction, filepath, loadCallback, errorCallback) {
     fetch(filepath)
         .then(
             function (response) {

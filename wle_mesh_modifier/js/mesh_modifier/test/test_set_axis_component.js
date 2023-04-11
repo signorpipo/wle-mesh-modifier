@@ -1,5 +1,5 @@
-import { Component, Property } from "@wonderlandengine/api";
-import { GamepadButtonID, getDebugVisualManager, getLeftGamepad } from "../../pp";
+import { Component } from "@wonderlandengine/api";
+import { DebugTransformComponent, GamepadButtonID, getDebugVisualManager, getLeftGamepad } from "../../pp";
 
 export class TestSetAxisComponent extends Component {
     static TypeName = "test-set-axis";
@@ -12,7 +12,7 @@ export class TestSetAxisComponent extends Component {
     }
 
     start() {
-        this.object.pp_addComponent("pp-debug-transform");
+        this.object.pp_addComponent(DebugTransformComponent);
     }
 
     update(dt) {

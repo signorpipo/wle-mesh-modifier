@@ -1,7 +1,9 @@
 import { MeshAttribute } from "@wonderlandengine/api";
 import { getDebugVisualManager, mat4_create } from "../pp";
+import { randomColor } from "./cauldron_utils";
+import { VertexUtils } from "./vertex_utils";
 
-MeshVariantSetup = class MeshVariantSetup {
+export class MeshVariantSetup {
     constructor() {
         this._myVariantSetupMap = new Map();
     }
@@ -13,9 +15,9 @@ MeshVariantSetup = class MeshVariantSetup {
     getVariantSetupMap() {
         return this._myVariantSetupMap;
     }
-};
+}
 
-VertexGroupConfig = class VertexGroupConfig {
+export class VertexGroupConfig {
     constructor() {
         this._myNextGroupID = 0;
         this._myVertexGroups = new Map();
@@ -90,9 +92,9 @@ VertexGroupConfig = class VertexGroupConfig {
             group.debugDraw(meshComponent);
         }
     }
-};
+}
 
-VertexGroup = class VertexGroup {
+export class VertexGroup {
     constructor(id) {
         this._myID = id;
         this._myIndexList = [];
@@ -287,9 +289,9 @@ VertexGroup = class VertexGroup {
             getDebugVisualManager().drawPoint(0, vertexPositionWorld, color, 0.002);
         }
     }
-};
+}
 
-VertexGroupVariant = class VertexGroupVariant {
+export class VertexGroupVariant {
     constructor(id) {
         this._myID = id;
         this._myPositionMap = new Map();
@@ -371,4 +373,4 @@ VertexGroupVariant = class VertexGroupVariant {
             this._myPositionMap.set(index, [position[0], position[1], position[2]]);
         }
     }
-};
+}

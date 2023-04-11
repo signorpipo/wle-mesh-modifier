@@ -1,6 +1,7 @@
 import { GamepadButtonID, getLeftGamepad } from "../../../pp";
+import { VertexTool } from "./vertex_tool";
 
-VertexFreeEditTool = class VertexFreeEditTool extends VertexTool {
+export class VertexFreeEditTool extends VertexTool {
     constructor(toolData) {
         super(toolData);
 
@@ -124,4 +125,4 @@ VertexFreeEditTool = class VertexFreeEditTool extends VertexTool {
             //this._myToolData.mySelectedVertexes[0].debugInfo();
         }
     }
-};
+}

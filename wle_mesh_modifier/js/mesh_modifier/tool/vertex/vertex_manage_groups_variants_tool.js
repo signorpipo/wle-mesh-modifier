@@ -1,6 +1,8 @@
 import { GamepadButtonID, getLeftGamepad, getRightGamepad } from "../../../pp";
+import { randomColor } from "../../cauldron_utils";
+import { VertexTool } from "./vertex_tool";
 
-VertexManageGroupsVariantsTool = class VertexManageGroupsVariantsTool extends VertexTool {
+export class VertexManageGroupsVariantsTool extends VertexTool {
     constructor(toolData, manageGroups = false, manageVariants = false) {
         super(toolData);
 
@@ -169,4 +171,4 @@ VertexManageGroupsVariantsTool = class VertexManageGroupsVariantsTool extends Ve
     unregisterEditVariantEventListener(id) {
         this._myEditVariantCallbacks.delete(id);
     }
-};
+}

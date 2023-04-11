@@ -1,4 +1,8 @@
-loadVariantSetup = function loadVariantSetup(meshComponent, vertexGroupConfigPath, meshVariantSetup, isFlatShading) {
+import { jsonParse } from "./cauldron_utils";
+import { loadFileText } from "./file_manager";
+import { VertexGroupConfig } from "./vertex_group_config";
+
+export function loadVariantSetup(meshComponent, vertexGroupConfigPath, meshVariantSetup, isFlatShading) {
     meshComponent.active = false;
 
     loadFileText(vertexGroupConfigPath,

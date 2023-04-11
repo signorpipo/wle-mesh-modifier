@@ -1,7 +1,18 @@
-import { MeshComponent } from "@wonderlandengine/api";
+import { MeshComponent, TextComponent } from "@wonderlandengine/api";
 import { GamepadButtonID, Timer, VisualElementType, getDebugVisualManager, getLeftGamepad, getScene } from "../../pp";
+import { jsonParse, jsonStringify } from "../cauldron_utils";
+import { downloadFileText } from "../file_manager";
+import { VertexGroupConfig } from "../vertex_group_config";
+import { IndexFreeEditTool } from "./index/index_free_edit_tool";
+import { IndexToolData } from "./index/index_tool";
+import { ToolGroupType, ToolType } from "./tool_type";
+import { VertexEditVariantTool } from "./vertex/vertex_edit_variant_tool";
+import { VertexFreeEditTool } from "./vertex/vertex_free_edit_tool";
+import { VertexManageGroupsTool } from "./vertex/vertex_manage_groups_tool";
+import { VertexManageVariantsTool } from "./vertex/vertex_manage_variants_tool";
+import { VertexToolData } from "./vertex/vertex_tool";
 
-ToolManagerParams = class ToolManagerParams {
+export class ToolManagerParams {
     constructor() {
         this.myForceMeshRefresh = false;
 
@@ -22,9 +33,9 @@ ToolManagerParams = class ToolManagerParams {
 
         this.myEnableDownload = false;
     }
-};
+}
 
-ToolManager = class ToolManager {
+export class ToolManager {
     constructor(params) {
         this._myParams = params;
 
@@ -53,9 +64,9 @@ ToolManager = class ToolManager {
 
         this._myTools = [];
 
-        this._myToolLabel = params.myToolLabel.pp_getComponent("text");
-        this._myGroupLabel = params.myGroupLabel.pp_getComponent("text");
-        this._myVariantLabel = params.myVariantLabel.pp_getComponent("text");
+        this._myToolLabel = params.myToolLabel.pp_getComponent(TextComponent);
+        this._myGroupLabel = params.myGroupLabel.pp_getComponent(TextComponent);
+        this._myVariantLabel = params.myVariantLabel.pp_getComponent(TextComponent);
         this._myResetToolLabelTimer = new Timer(2, false);
 
         let meshComponent = params.myMeshObject.pp_getComponent(MeshComponent);
@@ -300,4 +311,4 @@ ToolManager = class ToolManager {
             this._myVariantLabel.text = "";
         }
     }
-};
+}
