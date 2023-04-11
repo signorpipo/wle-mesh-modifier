@@ -1,130 +1,114 @@
-// xr-standard mapping is assumed
-PP.KeyboardGamepadCore = class KeyboardGamepadCore extends PP.GamepadCore {
+import { getKeyboard } from "../../cauldron/input_globals";
+import { Handedness } from "../../cauldron/input_types";
+import { KeyID } from "../../cauldron/keyboard";
+import { GamepadButtonID } from "../gamepad_buttons";
+import { GamepadCore } from "./gamepad_core";
 
-    constructor(handedness, handPose) {
-        super(handedness);
+export class KeyboardGamepadCore extends GamepadCore {
 
-        this._myHandPose = handPose; // can be null for keyboard
-        this._myHandPoseUpdateActive = false;
-    }
+    constructor(handPose) {
+        super(handPose);
 
-    getHandedness() {
-        return this._myHandedness;
-    }
-
-    getHandPose() {
-        return this._myHandPose;
-    }
-
-    setHandPoseUpdateActive(active) {
-        this._myHandPoseUpdateActive = active;
-    }
-
-    isHandPoseUpdateActive() {
-        return this._myHandPoseUpdateActive;
+        // Support Variables
+        this._myButtonData = this._createButtonData();
+        this._myAxesData = this._createAxesData();
+        this._myHapticActuators = [];
     }
 
     isGamepadCoreActive() {
         return true;
     }
 
-    start() {
-        if (this._myHandPose && this._myHandPoseUpdateActive) {
-            this._myHandPose.start();
-        }
-    }
+    getButtonData(buttonID) {
+        this._myButtonData.myIsPressed = false;
+        this._myButtonData.myIsTouched = false;
+        this._myButtonData.myValue = 0;
 
-    preUpdate(dt) {
-        if (this._myHandPose && this._myHandPoseUpdateActive) {
-            this._myHandPose.update(dt);
-        }
-    }
-
-    getButtonData(buttonType) {
-        let buttonData = { myIsPressed: false, myIsTouched: false, myValue: 0 };
+        let keyboard = getKeyboard(this.getEngine());
 
         if (this.isGamepadCoreActive()) {
-            if (this.getHandedness() == PP.Handedness.LEFT) {
-                switch (buttonType) {
-                    case PP.ButtonType.SELECT:
-                        buttonData.myIsPressed = PP.myKeyboard.isKeyPressed(PP.KeyType.C) || PP.myKeyboard.isKeyPressed(PP.KeyType.c);
+            if (this.getHandedness() == Handedness.LEFT) {
+                switch (buttonID) {
+                    case GamepadButtonID.SELECT:
+                        this._myButtonData.myIsPressed = keyboard.isKeyPressed(KeyID.E) || keyboard.isKeyPressed(KeyID.e);
                         break;
-                    case PP.ButtonType.SQUEEZE:
-                        buttonData.myIsPressed = PP.myKeyboard.isKeyPressed(PP.KeyType.F) || PP.myKeyboard.isKeyPressed(PP.KeyType.f);
+                    case GamepadButtonID.SQUEEZE:
+                        this._myButtonData.myIsPressed = keyboard.isKeyPressed(KeyID.Q) || keyboard.isKeyPressed(KeyID.q);
                         break;
-                    case PP.ButtonType.TOUCHPAD:
-                        buttonData.myIsPressed = PP.myKeyboard.isKeyPressed(PP.KeyType.X) || PP.myKeyboard.isKeyPressed(PP.KeyType.x);
+                    case GamepadButtonID.TOUCHPAD:
+                        this._myButtonData.myIsPressed = keyboard.isKeyPressed(KeyID.X) || keyboard.isKeyPressed(KeyID.x);
                         break;
-                    case PP.ButtonType.THUMBSTICK:
-                        buttonData.myIsPressed = PP.myKeyboard.isKeyPressed(PP.KeyType.R) || PP.myKeyboard.isKeyPressed(PP.KeyType.r);
+                    case GamepadButtonID.THUMBSTICK:
+                        this._myButtonData.myIsPressed = keyboard.isKeyPressed(KeyID.R) || keyboard.isKeyPressed(KeyID.r);
                         break;
-                    case PP.ButtonType.BOTTOM_BUTTON:
-                        buttonData.myIsPressed = PP.myKeyboard.isKeyPressed(PP.KeyType.Q) || PP.myKeyboard.isKeyPressed(PP.KeyType.q);
+                    case GamepadButtonID.BOTTOM_BUTTON:
+                        this._myButtonData.myIsPressed = keyboard.isKeyPressed(KeyID.C) || keyboard.isKeyPressed(KeyID.c);
                         break;
-                    case PP.ButtonType.TOP_BUTTON:
-                        buttonData.myIsPressed = PP.myKeyboard.isKeyPressed(PP.KeyType.E) || PP.myKeyboard.isKeyPressed(PP.KeyType.e);
+                    case GamepadButtonID.TOP_BUTTON:
+                        this._myButtonData.myIsPressed = keyboard.isKeyPressed(KeyID.F) || keyboard.isKeyPressed(KeyID.f);
                         break;
-                    case PP.ButtonType.THUMB_REST:
-                        buttonData.myIsPressed = PP.myKeyboard.isKeyPressed(PP.KeyType.V) || PP.myKeyboard.isKeyPressed(PP.KeyType.v);
+                    case GamepadButtonID.THUMB_REST:
+                        this._myButtonData.myIsPressed = keyboard.isKeyPressed(KeyID.V) || keyboard.isKeyPressed(KeyID.v);
                         break;
                 }
             } else {
-                switch (buttonType) {
-                    case PP.ButtonType.SELECT:
-                        buttonData.myIsPressed = PP.myKeyboard.isKeyPressed(PP.KeyType.N) || PP.myKeyboard.isKeyPressed(PP.KeyType.n);
+                switch (buttonID) {
+                    case GamepadButtonID.SELECT:
+                        this._myButtonData.myIsPressed = keyboard.isKeyPressed(KeyID.U) || keyboard.isKeyPressed(KeyID.u);
                         break;
-                    case PP.ButtonType.SQUEEZE:
-                        buttonData.myIsPressed = PP.myKeyboard.isKeyPressed(PP.KeyType.H) || PP.myKeyboard.isKeyPressed(PP.KeyType.h);
+                    case GamepadButtonID.SQUEEZE:
+                        this._myButtonData.myIsPressed = keyboard.isKeyPressed(KeyID.O) || keyboard.isKeyPressed(KeyID.o);
                         break;
-                    case PP.ButtonType.TOUCHPAD:
-                        buttonData.myIsPressed = PP.myKeyboard.isKeyPressed(PP.KeyType.M) || PP.myKeyboard.isKeyPressed(PP.KeyType.m);
+                    case GamepadButtonID.TOUCHPAD:
+                        this._myButtonData.myIsPressed = keyboard.isKeyPressed(KeyID.M) || keyboard.isKeyPressed(KeyID.m);
                         break;
-                    case PP.ButtonType.THUMBSTICK:
-                        buttonData.myIsPressed = PP.myKeyboard.isKeyPressed(PP.KeyType.Y) || PP.myKeyboard.isKeyPressed(PP.KeyType.y);
+                    case GamepadButtonID.THUMBSTICK:
+                        this._myButtonData.myIsPressed = keyboard.isKeyPressed(KeyID.Y) || keyboard.isKeyPressed(KeyID.y);
                         break;
-                    case PP.ButtonType.BOTTOM_BUTTON:
-                        buttonData.myIsPressed = PP.myKeyboard.isKeyPressed(PP.KeyType.O) || PP.myKeyboard.isKeyPressed(PP.KeyType.o);
+                    case GamepadButtonID.BOTTOM_BUTTON:
+                        this._myButtonData.myIsPressed = keyboard.isKeyPressed(KeyID.N) || keyboard.isKeyPressed(KeyID.n);
                         break;
-                    case PP.ButtonType.TOP_BUTTON:
-                        buttonData.myIsPressed = PP.myKeyboard.isKeyPressed(PP.KeyType.U) || PP.myKeyboard.isKeyPressed(PP.KeyType.u);
+                    case GamepadButtonID.TOP_BUTTON:
+                        this._myButtonData.myIsPressed = keyboard.isKeyPressed(KeyID.H) || keyboard.isKeyPressed(KeyID.h);
                         break;
-                    case PP.ButtonType.THUMB_REST:
-                        buttonData.myIsPressed = PP.myKeyboard.isKeyPressed(PP.KeyType.B) || PP.myKeyboard.isKeyPressed(PP.KeyType.b);
+                    case GamepadButtonID.THUMB_REST:
+                        this._myButtonData.myIsPressed = keyboard.isKeyPressed(KeyID.B) || keyboard.isKeyPressed(KeyID.b);
                         break;
                 }
             }
         }
 
-        if (buttonData.myIsPressed) {
-            buttonData.myIsTouched = true;
-            buttonData.myValue = 1;
+        if (this._myButtonData.myIsPressed) {
+            this._myButtonData.myIsTouched = true;
+            this._myButtonData.myValue = 1;
         }
 
-        return buttonData;
+        return this._myButtonData;
     }
 
-    getAxesData() {
-        let axes = [0.0, 0.0];
+    getAxesData(axesID) {
+        this._myAxesData.vec2_zero();
+
+        let keyboard = getKeyboard(this.getEngine());
 
         if (this.isGamepadCoreActive()) {
-            if (this.getHandedness() == PP.Handedness.LEFT) {
-                if (PP.myKeyboard.isKeyPressed(PP.KeyType.W) || PP.myKeyboard.isKeyPressed(PP.KeyType.w)) axes[1] += 1.0;
-                if (PP.myKeyboard.isKeyPressed(PP.KeyType.S) || PP.myKeyboard.isKeyPressed(PP.KeyType.s)) axes[1] += -1.0;
-                if (PP.myKeyboard.isKeyPressed(PP.KeyType.D) || PP.myKeyboard.isKeyPressed(PP.KeyType.d)) axes[0] += 1.0;
-                if (PP.myKeyboard.isKeyPressed(PP.KeyType.A) || PP.myKeyboard.isKeyPressed(PP.KeyType.a)) axes[0] += -1.0;
+            if (this.getHandedness() == Handedness.LEFT) {
+                if (keyboard.isKeyPressed(KeyID.W) || keyboard.isKeyPressed(KeyID.w)) this._myAxesData[1] += 1.0;
+                if (keyboard.isKeyPressed(KeyID.S) || keyboard.isKeyPressed(KeyID.s)) this._myAxesData[1] += -1.0;
+                if (keyboard.isKeyPressed(KeyID.D) || keyboard.isKeyPressed(KeyID.d)) this._myAxesData[0] += 1.0;
+                if (keyboard.isKeyPressed(KeyID.A) || keyboard.isKeyPressed(KeyID.a)) this._myAxesData[0] += -1.0;
             } else {
-                if (PP.myKeyboard.isKeyPressed(PP.KeyType.I) || PP.myKeyboard.isKeyPressed(PP.KeyType.i) || PP.myKeyboard.isKeyPressed(PP.KeyType.UP)) axes[1] += 1.0;
-                if (PP.myKeyboard.isKeyPressed(PP.KeyType.K) || PP.myKeyboard.isKeyPressed(PP.KeyType.k) || PP.myKeyboard.isKeyPressed(PP.KeyType.DOWN)) axes[1] += -1.0;
-                if (PP.myKeyboard.isKeyPressed(PP.KeyType.L) || PP.myKeyboard.isKeyPressed(PP.KeyType.l) || PP.myKeyboard.isKeyPressed(PP.KeyType.RIGHT)) axes[0] += 1.0;
-                if (PP.myKeyboard.isKeyPressed(PP.KeyType.J) || PP.myKeyboard.isKeyPressed(PP.KeyType.j) || PP.myKeyboard.isKeyPressed(PP.KeyType.LEFT)) axes[0] += -1.0;
+                if (keyboard.isKeyPressed(KeyID.I) || keyboard.isKeyPressed(KeyID.i) || keyboard.isKeyPressed(KeyID.UP)) this._myAxesData[1] += 1.0;
+                if (keyboard.isKeyPressed(KeyID.K) || keyboard.isKeyPressed(KeyID.k) || keyboard.isKeyPressed(KeyID.DOWN)) this._myAxesData[1] += -1.0;
+                if (keyboard.isKeyPressed(KeyID.L) || keyboard.isKeyPressed(KeyID.l) || keyboard.isKeyPressed(KeyID.RIGHT)) this._myAxesData[0] += 1.0;
+                if (keyboard.isKeyPressed(KeyID.J) || keyboard.isKeyPressed(KeyID.j) || keyboard.isKeyPressed(KeyID.LEFT)) this._myAxesData[0] += -1.0;
             }
         }
 
-        return axes;
+        return this._myAxesData;
     }
 
     getHapticActuators() {
-        let hapticActuators = [];
-        return hapticActuators;
+        return this._myHapticActuators;
     }
-};
+}

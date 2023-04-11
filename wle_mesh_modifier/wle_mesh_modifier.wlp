@@ -123,7 +123,7 @@
                 0.0,
                 1.0
             ],
-            "scale": [
+            "scaling": [
                 1.0,
                 1.0,
                 1.0
@@ -143,7 +143,7 @@
                 0.0,
                 1.0
             ],
-            "scale": [
+            "scaling": [
                 1.0,
                 1.0,
                 1.0
@@ -202,7 +202,7 @@
                 0.0,
                 1.0
             ],
-            "scale": [
+            "scaling": [
                 1.0,
                 1.0,
                 1.0
@@ -267,7 +267,7 @@
                 0.0,
                 1.0
             ],
-            "scale": [
+            "scaling": [
                 1.0,
                 1.0,
                 1.0
@@ -292,7 +292,7 @@
                 0.0,
                 1.0
             ],
-            "scale": [
+            "scaling": [
                 1.0,
                 1.0,
                 1.0
@@ -354,7 +354,7 @@
                 0.0,
                 1.0
             ],
-            "scale": [
+            "scaling": [
                 1.0,
                 1.0,
                 1.0
@@ -382,7 +382,7 @@
                 0.0,
                 1.0
             ],
-            "scale": [
+            "scaling": [
                 1.0,
                 1.0,
                 1.0
@@ -502,9 +502,9 @@
             "name": "Pivot",
             "parent": "69",
             "translation": [
-                -1.7881393432617188e-7,
+                -1.788139343261719e-7,
                 -0.0,
-                1.1291675150459923e-8
+                1.1291675150459925e-8
             ],
             "rotation": [
                 0.0,
@@ -512,7 +512,7 @@
                 0.0,
                 1.0
             ],
-            "scale": [
+            "scaling": [
                 1.0000003,
                 1.0000002,
                 1.0000001
@@ -532,7 +532,7 @@
                 0.0,
                 1.0
             ],
-            "scale": [
+            "scaling": [
                 0.9999994,
                 1.0000001,
                 1.0000003
@@ -568,7 +568,7 @@
                 0.0,
                 1.0
             ],
-            "scale": [
+            "scaling": [
                 1.0,
                 1.0,
                 1.0
@@ -588,7 +588,7 @@
                 0.0,
                 1.0
             ],
-            "scale": [
+            "scaling": [
                 1.0,
                 1.0,
                 1.0
@@ -617,7 +617,7 @@
                 0.0,
                 1.0
             ],
-            "scale": [
+            "scaling": [
                 1.0,
                 1.0,
                 1.0
@@ -651,7 +651,7 @@
                 0.0,
                 1.0
             ],
-            "scale": [
+            "scaling": [
                 1.0,
                 0.9999998,
                 0.9999997
@@ -671,7 +671,7 @@
                 0.0,
                 1.0
             ],
-            "scale": [
+            "scaling": [
                 0.4,
                 0.3999994,
                 0.3999997
@@ -683,7 +683,7 @@
             "translation": [
                 2.5331974029541016e-7,
                 0.05,
-                -5.867331864806147e-8
+                -5.8673318648061474e-8
             ],
             "rotation": [
                 3.427266221933678e-7,
@@ -691,7 +691,7 @@
                 -0.0,
                 1.0
             ],
-            "scale": [
+            "scaling": [
                 1.0,
                 1.0000002,
                 1.0000002
@@ -783,7 +783,7 @@
                 0.0,
                 1.0
             ],
-            "scale": [
+            "scaling": [
                 0.0049998,
                 0.0099999,
                 0.0049998
@@ -799,14 +799,14 @@
             ],
             "rotation": [
                 0.8691709,
-                5.960854565500995e-8,
+                5.960854565500996e-8,
                 -1.6376995759515012e-8,
                 0.4945118
             ],
-            "scale": [
+            "scaling": [
                 1.0,
-                0.9999999,
-                0.9999999
+                0.9999998,
+                0.9999998
             ]
         },
         "86": {
@@ -819,11 +819,11 @@
             ],
             "rotation": [
                 0.8691708,
-                8.723645095187749e-8,
+                8.72364509518775e-8,
                 -0.0,
                 0.4945118
             ],
-            "scale": [
+            "scaling": [
                 1.0000009,
                 0.9999936,
                 1.000005
@@ -849,12 +849,12 @@
                 6.174247602075411e-8,
                 0.9897139,
                 -0.1430605,
-                -1.0059083876967634e-7
+                -1.0059083876967636e-7
             ],
-            "scale": [
+            "scaling": [
                 0.1,
-                0.0999999,
-                0.0999999
+                0.0999998,
+                0.0999998
             ]
         },
         "97": {
@@ -905,7 +905,7 @@
                 0.0,
                 1.0
             ],
-            "scale": [
+            "scaling": [
                 1.0,
                 1.0,
                 1.0
@@ -953,7 +953,7 @@
                 -0.1430587,
                 -1.005869236792023e-7
             ],
-            "scale": [
+            "scaling": [
                 0.0749998,
                 0.0750003,
                 0.0749996
@@ -981,10 +981,10 @@
                 -0.1430591,
                 -1.00586738938091e-7
             ],
-            "scale": [
+            "scaling": [
                 0.0750005,
                 0.0750005,
-                0.0749997
+                0.0749996
             ]
         },
         "113": {
@@ -1007,7 +1007,7 @@
                 0.0,
                 1.0
             ],
-            "scale": [
+            "scaling": [
                 1.0,
                 1.0,
                 1.0
@@ -1027,10 +1027,10 @@
                 0.0965239,
                 0.9138368
             ],
-            "scale": [
+            "scaling": [
                 0.9999994,
                 0.9999997,
-                0.9999999
+                0.9999998
             ]
         },
         "116": {
@@ -1073,7 +1073,7 @@
                 0.0,
                 1.0
             ],
-            "scale": [
+            "scaling": [
                 0.05,
                 0.05,
                 0.05
@@ -1119,7 +1119,7 @@
                 0.0,
                 1.0
             ],
-            "scale": [
+            "scaling": [
                 1.0,
                 1.0,
                 1.0
@@ -1161,7 +1161,7 @@
                 0.0,
                 0.7071067
             ],
-            "scale": [
+            "scaling": [
                 1.0,
                 1.0000001,
                 1.0000002
@@ -1191,7 +1191,7 @@
                 0.0,
                 0.7071067
             ],
-            "scale": [
+            "scaling": [
                 1.0,
                 1.0000001,
                 1.0000002
@@ -1221,7 +1221,7 @@
                 0.0,
                 0.7071067
             ],
-            "scale": [
+            "scaling": [
                 1.0,
                 1.0000001,
                 1.0000002
@@ -1251,7 +1251,7 @@
                 0.0,
                 0.7071067
             ],
-            "scale": [
+            "scaling": [
                 1.0,
                 1.0000001,
                 1.0000002
@@ -1281,7 +1281,7 @@
                 0.6985042,
                 -0.1832872
             ],
-            "scale": [
+            "scaling": [
                 1.0,
                 0.9999998,
                 1.0000001
@@ -1311,7 +1311,7 @@
                 0.0,
                 0.7071067
             ],
-            "scale": [
+            "scaling": [
                 1.0,
                 1.0000001,
                 1.0000002
@@ -1341,7 +1341,7 @@
                 0.0,
                 0.7071067
             ],
-            "scale": [
+            "scaling": [
                 1.0,
                 1.0000001,
                 1.0000002
@@ -1371,7 +1371,7 @@
                 0.0,
                 0.7071067
             ],
-            "scale": [
+            "scaling": [
                 1.0,
                 1.0000001,
                 1.0000002
@@ -1401,7 +1401,7 @@
                 0.0,
                 0.7071067
             ],
-            "scale": [
+            "scaling": [
                 1.0,
                 1.0000001,
                 1.0000002
@@ -1431,7 +1431,7 @@
                 0.0,
                 0.7071067
             ],
-            "scale": [
+            "scaling": [
                 1.0,
                 1.0000001,
                 1.0000002
@@ -1461,7 +1461,7 @@
                 0.0,
                 0.7071067
             ],
-            "scale": [
+            "scaling": [
                 1.0,
                 1.0000001,
                 1.0000002
@@ -1492,7 +1492,7 @@
                 0.0,
                 0.7071067
             ],
-            "scale": [
+            "scaling": [
                 1.0,
                 0.9999954,
                 0.9999954
@@ -1739,7 +1739,7 @@
                 0.0,
                 0.7071067
             ],
-            "scale": [
+            "scaling": [
                 1.0,
                 1.0,
                 1.0
@@ -1769,7 +1769,7 @@
                 0.0,
                 0.7071067
             ],
-            "scale": [
+            "scaling": [
                 1.0,
                 0.9999998,
                 0.9999998
@@ -1799,7 +1799,7 @@
                 0.0,
                 0.7071067
             ],
-            "scale": [
+            "scaling": [
                 1.0,
                 0.9999998,
                 0.9999998
@@ -1829,7 +1829,7 @@
                 0.0,
                 0.7071067
             ],
-            "scale": [
+            "scaling": [
                 1.0,
                 1.0,
                 1.0
@@ -1859,8 +1859,8 @@
                 0.6985021,
                 -0.1832829
             ],
-            "scale": [
-                0.9999999,
+            "scaling": [
+                0.9999998,
                 0.9999997,
                 1.0
             ]
@@ -1889,7 +1889,7 @@
                 0.0,
                 0.7071067
             ],
-            "scale": [
+            "scaling": [
                 1.0,
                 1.0,
                 1.0
@@ -1919,7 +1919,7 @@
                 0.0,
                 0.7071067
             ],
-            "scale": [
+            "scaling": [
                 1.0,
                 1.0,
                 1.0
@@ -1949,7 +1949,7 @@
                 0.0,
                 0.7071067
             ],
-            "scale": [
+            "scaling": [
                 1.0,
                 1.0,
                 1.0
@@ -1979,7 +1979,7 @@
                 0.0,
                 0.7071067
             ],
-            "scale": [
+            "scaling": [
                 1.0,
                 1.0,
                 1.0
@@ -2009,7 +2009,7 @@
                 0.0,
                 0.7071067
             ],
-            "scale": [
+            "scaling": [
                 1.0,
                 1.0,
                 1.0
@@ -2040,7 +2040,7 @@
                 0.0,
                 0.7071067
             ],
-            "scale": [
+            "scaling": [
                 1.0,
                 1.0,
                 1.0
@@ -2072,7 +2072,7 @@
                 0.0,
                 0.7071067
             ],
-            "scale": [
+            "scaling": [
                 1.0,
                 0.9999896,
                 0.9999896
@@ -2329,7 +2329,7 @@
                 0.0,
                 0.7071067
             ],
-            "scale": [
+            "scaling": [
                 0.9999998,
                 1.0000001,
                 1.0000002
@@ -2361,7 +2361,7 @@
                 0.0,
                 0.7071067
             ],
-            "scale": [
+            "scaling": [
                 1.0,
                 0.9999929,
                 0.9999929
@@ -2660,7 +2660,7 @@
                 0.0,
                 1.0
             ],
-            "scale": [
+            "scaling": [
                 1.0,
                 1.0,
                 1.0
@@ -2680,7 +2680,7 @@
                 0.0,
                 1.0
             ],
-            "scale": [
+            "scaling": [
                 1.0,
                 1.0,
                 1.0
@@ -3191,7 +3191,7 @@
                 0.0,
                 1.0
             ],
-            "scale": [
+            "scaling": [
                 1.0,
                 1.0,
                 1.0
@@ -3324,7 +3324,7 @@
                 0.0,
                 1.0
             ],
-            "scale": [
+            "scaling": [
                 1.0,
                 1.0,
                 1.0
@@ -3766,7 +3766,7 @@
                 0.0,
                 1.0
             ],
-            "scale": [
+            "scaling": [
                 1.0,
                 1.0,
                 1.0
@@ -4357,7 +4357,7 @@
                 0.0,
                 1.0
             ],
-            "scale": [
+            "scaling": [
                 1.0,
                 1.0,
                 1.0
@@ -4962,7 +4962,7 @@
                 0.0,
                 1.0
             ],
-            "scale": [
+            "scaling": [
                 1.0,
                 1.0,
                 1.0
@@ -4982,7 +4982,7 @@
                 0.0,
                 1.0
             ],
-            "scale": [
+            "scaling": [
                 1.0,
                 1.0,
                 1.0
@@ -5395,49 +5395,49 @@
                 "name": "low_poly_character_smooth_texture.png",
                 "file": "assets\\textures\\low_poly_character_smooth_texture.png"
             },
-            "compress": false
+            "compression": "none"
         },
         "185": {
             "link": {
                 "name": "low_poly_skinned_character_texture.png",
                 "file": "assets\\textures\\low_poly_skinned_character_texture.png"
             },
-            "compress": false
+            "compression": "none"
         },
         "464": {
             "link": {
                 "name": "fem_hero_01_texture.png",
                 "file": "assets\\textures\\fem_hero_01_texture.png"
             },
-            "compress": false
+            "compression": "none"
         },
         "563": {
             "link": {
                 "name": "Image_0",
                 "file": "assets\\models\\male_rigged.glb"
             },
-            "compress": false
+            "compression": "none"
         },
         "564": {
             "link": {
                 "name": "Image_1",
                 "file": "assets\\models\\male_rigged.glb"
             },
-            "compress": false
+            "compression": "none"
         },
         "566": {
             "link": {
                 "name": "Image_0",
                 "file": "assets\\models\\female_rigged.glb"
             },
-            "compress": false
+            "compression": "none"
         },
         "567": {
             "link": {
                 "name": "Image_1",
                 "file": "assets\\models\\female_rigged.glb"
             },
-            "compress": false
+            "compression": "none"
         }
     },
     "materials": {
@@ -7060,9 +7060,9 @@
         "project": {
             "name": "wle_mesh_modifier",
             "version": [
+                1,
                 0,
-                9,
-                5
+                0
             ]
         },
         "rendering": {
@@ -7089,39 +7089,17 @@
         },
         "scripting": {
             "sourcePaths": [
-                "js/bundle.js",
-                "js/pp",
-                "js/pp/audio",
-                "js/pp/cauldron",
-                "js/pp/cauldron/cauldron",
-                "js/pp/cauldron/components",
-                "js/pp/cauldron/fsm",
-                "js/pp/cauldron/utils",
-                "js/pp/debug",
-                "js/pp/debug/components",
-                "js/pp/gameplay",
-                "js/pp/gameplay/grab_throw",
-                "js/pp/input",
-                "js/pp/input/cauldron",
-                "js/pp/input/gamepad",
-                "js/pp/plugin",
-                "js/pp/plugin/component_mods",
-                "js/pp/plugin/extensions",
-                "js/pp/tool",
-                "js/pp/tool/cauldron",
-                "js/pp/tool/cauldron/cauldron",
-                "js/pp/tool/cauldron/components",
-                "js/pp/tool/console_vr",
-                "js/pp/tool/easy_tune",
-                "js/pp/tool/easy_tune/easy_object_tuners",
-                "js/pp/tool/easy_tune/easy_tune_widgets",
-                "js/pp/tool/widget_frame",
+                "js",
+                "js/pp/index.js",
                 "js/mesh_modifier",
                 "js/mesh_modifier/tool",
                 "js/mesh_modifier/test",
                 "js/mesh_modifier/tool/vertex"
             ],
-            "useInternalBundler": false
+            "bundlingType": "esbuild",
+            "libraryPaths": [
+                "/js/lib/"
+            ]
         },
         "vr": {
             "leftEyeObject": "26",
@@ -7160,5 +7138,6 @@
                 "file": "default"
             }
         }
-    }
+    },
+    "languages": {}
 }

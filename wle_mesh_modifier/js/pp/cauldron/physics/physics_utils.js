@@ -1,78 +1,127 @@
-PP.PhysicsUtils = {
-    _myLayerFlagAmount: 8,
-    _myLayerFlagNames: ["0", "1", "2", "3", "4", "5", "6", "7"],
-    setLayerFlagAmount: function (layerFlagAmount) {
-        PP.PhysicsUtils._myLayerFlagAmount = layerFlagAmount;
-    },
-    setLayerFlagNames: function (layerFlagNames) {
-        PP.PhysicsUtils._myLayerFlagNames = layerFlagNames;
-    },
-    getLayerFlagAmount: function () {
-        return PP.PhysicsUtils._myLayerFlagAmount;
-    },
-    getLayerFlagNames: function () {
-        return PP.PhysicsUtils._myLayerFlagNames;
-    },
-    raycast: function () {
-        let objectsEqualCallback = (first, second) => first.pp_equals(second);
-        return function raycast(raycastSetup, raycastResult = new PP.RaycastResult()) {
-            let internalRaycastResult = WL.physics.rayCast(raycastSetup.myOrigin, raycastSetup.myDirection, raycastSetup.myBlockLayerFlags.getMask(), raycastSetup.myDistance);
+import { vec3_create } from "../../plugin/js/extensions/array_extension";
+import { RaycastHit, RaycastParams, RaycastResults } from "./physics_raycast_data";
 
-            raycastResult.myRaycastSetup = raycastSetup;
+let _myLayerFlagsNames = ["0", "1", "2", "3", "4", "5", "6", "7"];
 
-            let currentValidHitIndex = 0;
-            let validHitsCount = 0;
+export function setLayerFlagsNames(layerFlagsNames) {
+    _myLayerFlagsNames = layerFlagsNames;
+}
 
-            for (let i = 0; i < internalRaycastResult.hitCount; i++) {
-                let isHitValid = true;
+export function getLayerFlagsNames() {
+    return _myLayerFlagsNames;
+}
 
-                isHitValid = isHitValid &&
-                    (raycastSetup.myObjectsToIgnore.length == 0 ||
-                        !raycastSetup.myObjectsToIgnore.pp_hasEqual(internalRaycastResult.objects[i], objectsEqualCallback));
+export let raycast = function () {
+    let isInsideSubVector = vec3_create();
+    let invertedRaycastDirection = vec3_create();
+    let objectsEqualCallback = (first, second) => first.pp_equals(second);
+    return function raycast(raycastParams, raycastResults = new RaycastResults()) {
+        let internalRaycastResults = raycastParams.myPhysics.rayCast(raycastParams.myOrigin, raycastParams.myDirection, raycastParams.myBlockLayerFlags.getMask(), raycastParams.myDistance);
 
-                let isHitInsideCollision = isHitValid &&
-                    internalRaycastResult.distances[i] == 0 &&
-                    (raycastSetup.myOrigin.vec3_distance(internalRaycastResult.locations[i]) < 0.00001 &&
-                        Math.abs(raycastSetup.myDirection.vec3_angle(internalRaycastResult.normals[i]) - 180) < 0.00001);
+        if (raycastResults.myRaycastParams == null) {
+            raycastResults.myRaycastParams = new RaycastParams(raycastParams.myPhysics);
+        }
 
-                isHitValid = isHitValid && (!raycastSetup.myIgnoreHitsInsideCollision || !isHitInsideCollision);
+        raycastResults.myRaycastParams.copy(raycastParams);
 
-                if (isHitValid) {
-                    let hit = null;
+        let currentValidHitIndex = 0;
+        let validHitsCount = 0;
 
-                    if (currentValidHitIndex < raycastResult.myHits.length) {
-                        hit = raycastResult.myHits[currentValidHitIndex];
-                    } else if (raycastResult._myUnusedHits != null && raycastResult._myUnusedHits.length > 0) {
-                        hit = raycastResult._myUnusedHits.pop();
-                        raycastResult.myHits.push(hit);
-                    } else {
-                        hit = new PP.RaycastHit();
-                        raycastResult.myHits.push(hit);
+        let hitCount = internalRaycastResults.hitCount;
+        if (hitCount != 0) {
+            let objects = null;
+            let distances = null;
+            let locations = null;
+            let normals = null;
+
+            invertedRaycastDirection = raycastParams.myDirection.vec3_negate(invertedRaycastDirection);
+
+            for (let i = 0; i < hitCount; i++) {
+                if (raycastParams.myObjectsToIgnore.length != 0) {
+                    if (objects == null) {
+                        objects = internalRaycastResults.objects;
                     }
 
-                    hit.myPosition.vec3_copy(internalRaycastResult.locations[i]);
-                    hit.myNormal.vec3_copy(internalRaycastResult.normals[i]);
-                    hit.myDistance = internalRaycastResult.distances[i];
-                    hit.myObject = internalRaycastResult.objects[i];
+                    if (raycastParams.myObjectsToIgnore.pp_hasEqual(objects[i], objectsEqualCallback)) {
+                        continue;
+                    }
+                }
+
+                if (distances == null) {
+                    distances = internalRaycastResults.distances;
+                }
+
+                let isHitInsideCollision = distances[i] == 0;
+                if (isHitInsideCollision) {
+                    if (locations == null) {
+                        locations = internalRaycastResults.locations;
+                    }
+
+                    isHitInsideCollision &&= raycastParams.myOrigin.vec3_sub(locations[i], isInsideSubVector).vec3_isZero(Math.PP_EPSILON);
+
+                    if (isHitInsideCollision) {
+                        if (!normals) {
+                            normals = internalRaycastResults.normals;
+                        }
+
+                        isHitInsideCollision &&= invertedRaycastDirection.vec3_equals(normals[i], Math.PP_EPSILON_DEGREES);
+                    }
+                }
+
+                if (!raycastParams.myIgnoreHitsInsideCollision || !isHitInsideCollision) {
+                    let hit = null;
+
+                    if (currentValidHitIndex < raycastResults.myHits.length) {
+                        hit = raycastResults.myHits[currentValidHitIndex];
+                    } else if (raycastResults._myUnusedHits != null && raycastResults._myUnusedHits.length > 0) {
+                        hit = raycastResults._myUnusedHits.pop();
+                        raycastResults.myHits.push(hit);
+                    } else {
+                        hit = new RaycastHit();
+                        raycastResults.myHits.push(hit);
+                    }
+
+                    if (objects == null) {
+                        objects = internalRaycastResults.objects;
+                    }
+
+                    if (locations == null) {
+                        locations = internalRaycastResults.locations;
+                    }
+
+                    if (normals == null) {
+                        normals = internalRaycastResults.normals;
+                    }
+
+                    hit.myPosition.vec3_copy(locations[i]);
+                    hit.myNormal.vec3_copy(normals[i]);
+                    hit.myDistance = distances[i];
+                    hit.myObject = objects[i];
                     hit.myIsInsideCollision = isHitInsideCollision;
 
                     validHitsCount++;
                     currentValidHitIndex++;
                 }
             }
+        }
 
-            if (raycastResult.myHits.length > validHitsCount) {
-                if (raycastResult._myUnusedHits == null) {
-                    raycastResult._myUnusedHits = [];
-                }
-
-                let hitsToRemove = raycastResult.myHits.length - validHitsCount;
-                for (let i = 0; i < hitsToRemove; i++) {
-                    raycastResult._myUnusedHits.push(raycastResult.myHits.pop());
-                }
+        if (raycastResults.myHits.length > validHitsCount) {
+            if (raycastResults._myUnusedHits == null) {
+                raycastResults._myUnusedHits = [];
             }
 
-            return raycastResult;
-        };
-    }()
+            let hitsToRemove = raycastResults.myHits.length - validHitsCount;
+            for (let i = 0; i < hitsToRemove; i++) {
+                raycastResults._myUnusedHits.push(raycastResults.myHits.pop());
+            }
+        }
+
+        return raycastResults;
+    };
+}();
+
+export let PhysicsUtils = {
+    setLayerFlagsNames,
+    getLayerFlagsNames,
+    raycast
 };

@@ -7,14 +7,16 @@
         function transition(fsm, transitionData)
 */
 
-PP.StateData = class StateData {
+export class StateData {
+
     constructor(stateID, stateObject) {
         this.myID = stateID;
         this.myObject = stateObject;
     }
-};
+}
 
-PP.TransitionData = class TransitionData {
+export class TransitionData {
+
     constructor(transitionID, fromStateData, toStateData, transitionObject, skipStateFunction) {
         this.myID = transitionID;
         this.myFromState = fromStateData;
@@ -22,66 +24,59 @@ PP.TransitionData = class TransitionData {
         this.myObject = transitionObject;
         this.mySkipStateFunction = skipStateFunction;
     }
-};
+}
 
-PP.PendingPerform = class PendingPerform {
-    constructor(transitionID, ...args) {
-        this.myID = transitionID;
-        this.myArgs = args;
-    }
-};
-
-PP.PerformType = {
+export let PerformMode = {
     IMMEDIATE: 0,
     DELAYED: 1
 };
 
-PP.PerformDelayedType = {
+export let PerformDelayedMode = {
     QUEUE: 0,
     KEEP_FIRST: 1,
     KEEP_LAST: 2
 };
 
-PP.SkipStateFunction = {
+export let SkipStateFunction = {
     NONE: 0,
     END: 1,
     START: 2,
     BOTH: 3
 };
 
-PP.FSM = class FSM {
+export class FSM {
 
-    constructor(performType = PP.PerformType.IMMEDIATE, performDelayedType = PP.PerformDelayedType.QUEUE) {
+    constructor(performMode = PerformMode.IMMEDIATE, performDelayedMode = PerformDelayedMode.QUEUE) {
         this._myCurrentStateData = null;
 
-        this._myStateMap = new Map();
-        this._myTransitionMap = new Map();
+        this._myStates = new Map();
+        this._myTransitions = new Map();
 
         this._myDebugLogActive = false;
         this._myDebugShowDelayedInfo = false;
         this._myDebugLogName = "FSM";
 
-        this._myPerformType = performType;
-        this._myPerformDelayedType = performDelayedType;
+        this._myPerformMode = performMode;
+        this._myPerformDelayedMode = performDelayedMode;
         this._myPendingPerforms = [];
         this._myCurrentlyPerformedTransition = null;
 
         this._myInitCallbacks = new Map();            // Signature: callback(fsm, initStateData, initTransitionObject, ...args)
         this._myInitIDCallbacks = new Map();          // Signature: callback(fsm, initStateData, initTransitionObject, ...args)
-        this._myTransitionCallbacks = new Map();      // Signature: callback(fsm, fromStateData, toStateData, transitionData, performType, ...args)
-        this._myTransitionIDCallbacks = [];           // Signature: callback(fsm, fromStateData, toStateData, transitionData, performType, ...args)
+        this._myTransitionCallbacks = new Map();      // Signature: callback(fsm, fromStateData, toStateData, transitionData, performMode, ...args)
+        this._myTransitionIDCallbacks = [];           // Signature: callback(fsm, fromStateData, toStateData, transitionData, performMode, ...args)
     }
 
     addState(stateID, state = null) {
         let stateObject = null;
-        if (!state || typeof state == 'function') {
+        if (!state || typeof state == "function") {
             stateObject = {};
-            if (typeof state == 'function') {
-                stateObject.update = state;
+            if (typeof state == "function") {
+                stateObject.update = function update() { return state(...arguments); };
             } else {
                 stateObject.update = null;
             }
-            stateObject.clone = function () {
+            stateObject.clone = function clone() {
                 let cloneObject = {};
                 cloneObject.update = this.update;
                 cloneObject.clone = this.clone;
@@ -91,21 +86,21 @@ PP.FSM = class FSM {
             stateObject = state;
         }
 
-        let stateData = new PP.StateData(stateID, stateObject);
-        this._myStateMap.set(stateID, stateData);
-        this._myTransitionMap.set(stateID, new Map());
+        let stateData = new StateData(stateID, stateObject);
+        this._myStates.set(stateID, stateData);
+        this._myTransitions.set(stateID, new Map());
     }
 
-    addTransition(fromStateID, toStateID, transitionID, transition = null, skipStateFunction = PP.SkipStateFunction.NONE) {
+    addTransition(fromStateID, toStateID, transitionID, transition = null, skipStateFunction = SkipStateFunction.NONE) {
         let transitionObject = null;
-        if (!transition || typeof transition == 'function') {
+        if (!transition || typeof transition == "function") {
             transitionObject = {};
-            if (typeof transition == 'function') {
-                transitionObject.perform = transition;
+            if (typeof transition == "function") {
+                transitionObject.perform = function perform() { return transition(...arguments); };
             } else {
                 transitionObject.perform = null;
             }
-            transitionObject.clone = function () {
+            transitionObject.clone = function clone() {
                 let cloneObject = {};
                 cloneObject.perform = this.perform;
                 cloneObject.clone = this.clone;
@@ -116,10 +111,10 @@ PP.FSM = class FSM {
         }
 
         if (this.hasState(fromStateID) && this.hasState(toStateID)) {
-            let fromMap = this._getTransitionMapFromState(fromStateID);
+            let transitionsFromState = this._getTransitionsFromState(fromStateID);
 
-            let transitionData = new PP.TransitionData(transitionID, this.getState(fromStateID), this.getState(toStateID), transitionObject, skipStateFunction);
-            fromMap.set(transitionID, transitionData);
+            let transitionData = new TransitionData(transitionID, this.getState(fromStateID), this.getState(toStateID), transitionObject, skipStateFunction);
+            transitionsFromState.set(transitionID, transitionData);
         } else {
             if (!this.hasState(fromStateID) && !this.hasState(toStateID)) {
                 console.error("Can't add transition:", transitionID, "- from state not found:", fromStateID, "- to state not found:", toStateID);
@@ -133,13 +128,13 @@ PP.FSM = class FSM {
 
     init(initStateID, initTransition = null, ...args) {
         let initTransitionObject = initTransition;
-        if (initTransition && typeof initTransition == 'function') {
+        if (initTransition && typeof initTransition == "function") {
             initTransitionObject = {};
             initTransitionObject.performInit = initTransition;
         }
 
         if (this.hasState(initStateID)) {
-            let initStateData = this._myStateMap.get(initStateID);
+            let initStateData = this._myStates.get(initStateID);
 
             if (this._myDebugLogActive) {
                 console.log(this._myDebugLogName, "- Init:", initStateID);
@@ -158,9 +153,9 @@ PP.FSM = class FSM {
             }
 
             if (this._myInitIDCallbacks.size > 0) {
-                let callbackMap = this._myInitIDCallbacks.get(initStateID);
-                if (callbackMap != null) {
-                    callbackMap.forEach(function (callback) { callback(this, initStateData, initTransitionObject, ...args); }.bind(this));
+                let callbacks = this._myInitIDCallbacks.get(initStateID);
+                if (callbacks != null) {
+                    callbacks.forEach(function (callback) { callback(this, initStateData, initTransitionObject, ...args); }.bind(this));
                 }
             }
         } else if (this._myDebugLogActive) {
@@ -171,7 +166,7 @@ PP.FSM = class FSM {
     update(dt, ...args) {
         if (this._myPendingPerforms.length > 0) {
             for (let i = 0; i < this._myPendingPerforms.length; i++) {
-                this._perform(this._myPendingPerforms[i].myID, PP.PerformType.DELAYED, ...this._myPendingPerforms[i].myArgs);
+                this._perform(this._myPendingPerforms[i].myID, PerformMode.DELAYED, ...this._myPendingPerforms[i].myArgs);
             }
             this._myPendingPerforms = [];
         }
@@ -182,7 +177,7 @@ PP.FSM = class FSM {
     }
 
     perform(transitionID, ...args) {
-        if (this._myPerformType == PP.PerformType.DELAYED) {
+        if (this._myPerformMode == PerformMode.DELAYED) {
             this.performDelayed(transitionID, ...args);
         } else {
             this.performImmediate(transitionID, ...args);
@@ -192,20 +187,20 @@ PP.FSM = class FSM {
     performDelayed(transitionID, ...args) {
         let performDelayed = false;
 
-        switch (this._myPerformDelayedType) {
-            case PP.PerformDelayedType.QUEUE:
-                this._myPendingPerforms.push(new PP.PendingPerform(transitionID, ...args));
+        switch (this._myPerformDelayedMode) {
+            case PerformDelayedMode.QUEUE:
+                this._myPendingPerforms.push(new _PendingPerform(transitionID, ...args));
                 performDelayed = true;
                 break;
-            case PP.PerformDelayedType.KEEP_FIRST:
+            case PerformDelayedMode.KEEP_FIRST:
                 if (!this.hasPendingPerforms()) {
-                    this._myPendingPerforms.push(new PP.PendingPerform(transitionID, ...args));
+                    this._myPendingPerforms.push(new _PendingPerform(transitionID, ...args));
                     performDelayed = true;
                 }
                 break;
-            case PP.PerformDelayedType.KEEP_LAST:
+            case PerformDelayedMode.KEEP_LAST:
                 this.resetPendingPerforms();
-                this._myPendingPerforms.push(new PP.PendingPerform(transitionID, ...args));
+                this._myPendingPerforms.push(new _PendingPerform(transitionID, ...args));
                 performDelayed = true;
                 break;
         }
@@ -214,7 +209,7 @@ PP.FSM = class FSM {
     }
 
     performImmediate(transitionID, ...args) {
-        return this._perform(transitionID, PP.PerformType.IMMEDIATE, ...args);
+        return this._perform(transitionID, PerformMode.IMMEDIATE, ...args);
     }
 
     canPerform(transitionID) {
@@ -267,18 +262,18 @@ PP.FSM = class FSM {
     }
 
     getState(stateID) {
-        return this._myStateMap.get(stateID);
+        return this._myStates.get(stateID);
     }
 
     getStates() {
-        return this._myStateMap.values();
+        return this._myStates.values();
     }
 
     getTransitions() {
         let transitions = [];
 
-        for (let transitionsPerStateMap of this._myTransitionMap.values()) {
-            for (let transitionData of transitionsPerStateMap.values()) {
+        for (let transitionsFromState of this._myTransitions.values()) {
+            for (let transitionData of transitionsFromState.values()) {
                 transitions.push(transitionData);
             }
         }
@@ -287,15 +282,15 @@ PP.FSM = class FSM {
     }
 
     getTransitionsFromState(fromStateID) {
-        let transitionMap = this._getTransitionMapFromState(fromStateID);
-        return Array.from(transitionMap.values());
+        let transitionsFromState = this._getTransitionsFromState(fromStateID);
+        return Array.from(transitionsFromState.values());
     }
 
     getTransitionsFromStateToState(fromStateID, toStateID) {
-        let transitionMap = this._getTransitionMapFromState(fromStateID);
+        let transitionsFromState = this._getTransitionsFromState(fromStateID);
 
         let transitionsToState = [];
-        for (let transitionData of transitionMap.values()) {
+        for (let transitionData of transitionsFromState.values()) {
             if (transitionData.myToState.myID == toStateID) {
                 transitionsToState.push(transitionData);
             }
@@ -306,19 +301,19 @@ PP.FSM = class FSM {
 
     removeState(stateID) {
         if (this.hasState(stateID)) {
-            this._myStateMap.delete(stateID);
-            this._myTransitionMap.delete(stateID);
+            this._myStates.delete(stateID);
+            this._myTransitions.delete(stateID);
 
-            for (let transitionMap of this._myTransitionMap.values()) {
+            for (let transitionsFromState of this._myTransitions.values()) {
                 let toDelete = [];
-                for (let [transitionID, transitionData] of transitionMap.entries()) {
+                for (let [transitionID, transitionData] of transitionsFromState.entries()) {
                     if (transitionData.myToState.myID == stateID) {
                         toDelete.push(transitionID);
                     }
                 }
 
                 for (let transitionID of toDelete) {
-                    transitionMap.delete(transitionID);
+                    transitionsFromState.delete(transitionID);
                 }
             }
 
@@ -328,7 +323,7 @@ PP.FSM = class FSM {
     }
 
     removeTransitionFromState(fromStateID, transitionID) {
-        let fromTransitions = this._getTransitionMapFromState(fromStateID);
+        let fromTransitions = this._getTransitionsFromState(fromStateID);
         if (fromTransitions) {
             return fromTransitions.delete(transitionID);
         }
@@ -337,7 +332,7 @@ PP.FSM = class FSM {
     }
 
     hasState(stateID) {
-        return this._myStateMap.has(stateID);
+        return this._myStates.has(stateID);
     }
 
     hasTransitionFromState(fromStateID, transitionID) {
@@ -367,20 +362,20 @@ PP.FSM = class FSM {
         return hasTransition;
     }
 
-    setPerformType(performType) {
-        this._myPerformType = performType;
+    setPerformMode(performMode) {
+        this._myPerformMode = performMode;
     }
 
-    getPerformType() {
-        return this._myPerformType;
+    getPerformMode() {
+        return this._myPerformMode;
     }
 
-    setPerformDelayedType(performDelayedType) {
-        this._myPerformDelayedType = performDelayedType;
+    setPerformDelayedMode(performDelayedMode) {
+        this._myPerformDelayedMode = performDelayedMode;
     }
 
-    getPerformDelayedType() {
-        return this._myPerformDelayedType;
+    getPerformDelayedMode() {
+        return this._myPerformDelayedMode;
     }
 
     hasPendingPerforms() {
@@ -388,7 +383,7 @@ PP.FSM = class FSM {
     }
 
     getPendingPerforms() {
-        return this._myPendingPerforms.slice(0);
+        return this._myPendingPerforms.pp_clone();
     }
 
     clone(deepClone = false) {
@@ -396,45 +391,45 @@ PP.FSM = class FSM {
             return null;
         }
 
-        let cloneFSM = new PP.FSM();
+        let cloneFSM = new FSM();
 
         cloneFSM._myDebugLogActive = this._myDebugLogActive;
         cloneFSM._myDebugShowDelayedInfo = this._myDebugShowDelayedInfo;
         cloneFSM._myDebugLogName = this._myDebugLogName.slice(0);
 
-        cloneFSM._myPerformType = this._myPerformType;
-        cloneFSM._myPerformDelayedType = this._myPerformDelayedType;
-        cloneFSM._myPendingPerforms = this._myPendingPerforms.slice(0);
+        cloneFSM._myPerformMode = this._myPerformMode;
+        cloneFSM._myPerformDelayedMode = this._myPerformDelayedMode;
+        cloneFSM._myPendingPerforms = this._myPendingPerforms.pp_clone();
 
-        for (let entry of this._myStateMap.entries()) {
+        for (let entry of this._myStates.entries()) {
             let stateData = null;
 
             if (deepClone) {
-                stateData = new PP.StateData(entry[1].myID, entry[1].myObject.clone());
+                stateData = new StateData(entry[1].myID, entry[1].myObject.clone());
             } else {
-                stateData = new PP.StateData(entry[1].myID, entry[1].myObject);
+                stateData = new StateData(entry[1].myID, entry[1].myObject);
             }
 
-            cloneFSM._myStateMap.set(stateData.myID, stateData);
+            cloneFSM._myStates.set(stateData.myID, stateData);
         }
 
-        for (let entry of this._myTransitionMap.entries()) {
-            let fromStateMap = new Map();
-            cloneFSM._myTransitionMap.set(entry[0], fromStateMap);
+        for (let entry of this._myTransitions.entries()) {
+            let transitionsFromState = new Map();
+            cloneFSM._myTransitions.set(entry[0], transitionsFromState);
 
-            for (let tEntry of entry[1].entries()) {
+            for (let transitonEntry of entry[1].entries()) {
                 let transitionData = null;
 
-                let fromState = cloneFSM.getState(tEntry[1].myFromState.myID);
-                let toState = cloneFSM.getState(tEntry[1].myToState.myID);
+                let fromState = cloneFSM.getState(transitonEntry[1].myFromState.myID);
+                let toState = cloneFSM.getState(transitonEntry[1].myToState.myID);
 
                 if (deepClone) {
-                    transitionData = new PP.TransitionData(tEntry[1].myID, fromState, toState, tEntry[1].myObject.clone(), tEntry[1].mySkipStateFunction);
+                    transitionData = new TransitionData(transitonEntry[1].myID, fromState, toState, transitonEntry[1].myObject.clone(), transitonEntry[1].mySkipStateFunction);
                 } else {
-                    transitionData = new PP.TransitionData(tEntry[1].myID, fromState, toState, tEntry[1].myObject, tEntry[1].mySkipStateFunction);
+                    transitionData = new TransitionData(transitonEntry[1].myID, fromState, toState, transitonEntry[1].myObject, transitonEntry[1].mySkipStateFunction);
                 }
 
-                fromStateMap.set(transitionData.myID, transitionData);
+                transitionsFromState.set(transitionData.myID, transitionData);
             }
         }
 
@@ -452,13 +447,13 @@ PP.FSM = class FSM {
 
         let isDeepCloneable = true;
 
-        for (let entry of this._myStateMap.entries()) {
+        for (let entry of this._myStates.entries()) {
             isDeepCloneable = isDeepCloneable && entry[1].myObject.clone != null;
         }
 
-        for (let entry of this._myTransitionMap.entries()) {
-            for (let tEntry of entry[1].entries()) {
-                isDeepCloneable = isDeepCloneable && tEntry[1].myObject.clone != null;
+        for (let entry of this._myTransitions.entries()) {
+            for (let transitonEntry of entry[1].entries()) {
+                isDeepCloneable = isDeepCloneable && transitonEntry[1].myObject.clone != null;
             }
         }
 
@@ -481,23 +476,23 @@ PP.FSM = class FSM {
         this._myInitCallbacks.delete(callbackID);
     }
 
-    registerInitIDEventListener(iniStateID, callbackID, callback) {
-        let iniStateIDMap = this._myInitIDCallbacks.get(iniStateID);
-        if (iniStateIDMap == null) {
-            this._myInitIDCallbacks.set(iniStateID, new Map());
-            iniStateIDMap = this._myInitIDCallbacks.get(iniStateID);
+    registerInitIDEventListener(initStateID, callbackID, callback) {
+        let initStateIDCallbacks = this._myInitIDCallbacks.get(initStateID);
+        if (initStateIDCallbacks == null) {
+            this._myInitIDCallbacks.set(initStateID, new Map());
+            initStateIDCallbacks = this._myInitIDCallbacks.get(initStateID);
         }
 
-        iniStateIDMap.set(callbackID, callback);
+        initStateIDCallbacks.set(callbackID, callback);
     }
 
-    unregisterInitIDEventListener(iniStateID, callbackID) {
-        let iniStateIDMap = this._myInitIDCallbacks.get(iniStateID);
-        if (iniStateIDMap != null) {
-            iniStateIDMap.delete(callbackID);
+    unregisterInitIDEventListener(initStateID, callbackID) {
+        let initStateIDCallbacks = this._myInitIDCallbacks.get(initStateID);
+        if (initStateIDCallbacks != null) {
+            initStateIDCallbacks.delete(callbackID);
 
-            if (iniStateIDMap.size <= 0) {
-                this._myInitIDCallbacks.delete(iniStateID);
+            if (initStateIDCallbacks.size <= 0) {
+                this._myInitIDCallbacks.delete(initStateID);
             }
         }
     }
@@ -510,56 +505,56 @@ PP.FSM = class FSM {
         this._myTransitionCallbacks.delete(callbackID);
     }
 
-    //the fsm IDs can be null, that means that the callback is called whenever only the valid IDs match
-    //this let you register to all the transitions with a specific ID and from of a specific state but to every state (toStateID == null)
+    // The fsm IDs can be null, that means that the callback is called whenever only the valid IDs match
+    // This let you register to all the transitions with a specific ID and from of a specific state but to every state (toStateID == null)
     registerTransitionIDEventListener(fromStateID, toStateID, transitionID, callbackID, callback) {
-        let transitionIDMap = null;
+        let internalTransitionIDCallbacks = null;
         for (let value of this._myTransitionIDCallbacks) {
             if (value[0] == fromStateID && value[1] == toStateID && value[2] == transitionID) {
-                transitionIDMap = value[3];
+                internalTransitionIDCallbacks = value[3];
                 break;
             }
         }
 
-        if (transitionIDMap == null) {
-            let transitionMapValue = [];
-            transitionMapValue[0] = fromStateID;
-            transitionMapValue[1] = toStateID;
-            transitionMapValue[2] = transitionID;
-            transitionMapValue[3] = new Map();
+        if (internalTransitionIDCallbacks == null) {
+            let transitionIDCallbacks = [];
+            transitionIDCallbacks[0] = fromStateID;
+            transitionIDCallbacks[1] = toStateID;
+            transitionIDCallbacks[2] = transitionID;
+            transitionIDCallbacks[3] = new Map();
 
-            transitionIDMap = transitionMapValue[3];
+            internalTransitionIDCallbacks = transitionIDCallbacks[3];
 
-            this._myTransitionIDCallbacks.push(transitionMapValue);
+            this._myTransitionIDCallbacks.push(transitionIDCallbacks);
         }
 
-        transitionIDMap.set(callbackID, callback);
+        internalTransitionIDCallbacks.set(callbackID, callback);
     }
 
     unregisterTransitionIDEventListener(fromStateID, toStateID, transitionID, callbackID) {
-        let transitionIDMap = null;
+        let internalTransitionIDCallbacks = null;
         for (let value of this._myTransitionIDCallbacks) {
             if (value[0] == fromStateID && value[1] == toStateID && value[2] == transitionID) {
-                transitionIDMap = value[3];
+                internalTransitionIDCallbacks = value[3];
                 break;
             }
         }
 
-        if (transitionIDMap != null) {
-            transitionIDMap.delete(callbackID);
+        if (internalTransitionIDCallbacks != null) {
+            internalTransitionIDCallbacks.delete(callbackID);
 
-            if (transitionIDMap.size <= 0) {
+            if (internalTransitionIDCallbacks.size <= 0) {
                 this._myTransitionIDCallbacks.pp_remove(element => element[0] == fromStateID && element[1] == toStateID && element[2] == transitionID);
             }
         }
     }
 
-    _perform(transitionID, performType, ...args) {
+    _perform(transitionID, performMode, ...args) {
         if (this.isPerformingTransition()) {
             let currentlyPerformedTransition = this.getCurrentlyPerformedTransition();
             let consoleArguments = [this._myDebugLogName, "- Trying to perform:", transitionID];
             if (this._myDebugShowDelayedInfo) {
-                consoleArguments.push(performType == PP.PerformType.DELAYED ? "- Delayed" : "- Immediate");
+                consoleArguments.push(performMode == PerformMode.DELAYED ? "- Delayed" : "- Immediate");
             }
             consoleArguments.push("- But another transition is currently being performed -", currentlyPerformedTransition.myID);
             console.warn(...consoleArguments);
@@ -569,23 +564,23 @@ PP.FSM = class FSM {
 
         if (this._myCurrentStateData) {
             if (this.canPerform(transitionID)) {
-                let transitions = this._myTransitionMap.get(this._myCurrentStateData.myID);
+                let transitions = this._myTransitions.get(this._myCurrentStateData.myID);
                 let transitionToPerform = transitions.get(transitionID);
 
                 this._myCurrentlyPerformedTransition = transitionToPerform;
 
                 let fromState = this._myCurrentStateData;
-                let toState = this._myStateMap.get(transitionToPerform.myToState.myID);
+                let toState = this._myStates.get(transitionToPerform.myToState.myID);
 
                 if (this._myDebugLogActive) {
                     let consoleArguments = [this._myDebugLogName, "- From:", fromState.myID, "- To:", toState.myID, "- With:", transitionID];
                     if (this._myDebugShowDelayedInfo) {
-                        consoleArguments.push(performType == PP.PerformType.DELAYED ? "- Delayed" : "- Immediate");
+                        consoleArguments.push(performMode == PerformMode.DELAYED ? "- Delayed" : "- Immediate");
                     }
                     console.log(...consoleArguments);
                 }
 
-                if (transitionToPerform.mySkipStateFunction != PP.SkipStateFunction.END && transitionToPerform.mySkipStateFunction != PP.SkipStateFunction.BOTH &&
+                if (transitionToPerform.mySkipStateFunction != SkipStateFunction.END && transitionToPerform.mySkipStateFunction != SkipStateFunction.BOTH &&
                     fromState.myObject && fromState.myObject.end) {
                     fromState.myObject.end(this, transitionToPerform, ...args);
                 }
@@ -594,7 +589,7 @@ PP.FSM = class FSM {
                     transitionToPerform.myObject.perform(this, transitionToPerform, ...args);
                 }
 
-                if (transitionToPerform.mySkipStateFunction != PP.SkipStateFunction.START && transitionToPerform.mySkipStateFunction != PP.SkipStateFunction.BOTH &&
+                if (transitionToPerform.mySkipStateFunction != SkipStateFunction.START && transitionToPerform.mySkipStateFunction != SkipStateFunction.BOTH &&
                     toState.myObject && toState.myObject.start) {
                     toState.myObject.start(this, transitionToPerform, ...args);
                 }
@@ -602,21 +597,21 @@ PP.FSM = class FSM {
                 this._myCurrentStateData = transitionToPerform.myToState;
 
                 if (this._myTransitionCallbacks.size > 0) {
-                    this._myTransitionCallbacks.forEach(function (callback) { callback(this, fromState, toState, transitionToPerform, performType, ...args); }.bind(this));
+                    this._myTransitionCallbacks.forEach(function (callback) { callback(this, fromState, toState, transitionToPerform, performMode, ...args); }.bind(this));
                 }
 
                 if (this._myTransitionIDCallbacks.length > 0) {
-                    let transitionIDMaps = [];
+                    let internalTransitionIDCallbacks = [];
                     for (let value of this._myTransitionIDCallbacks) {
                         if ((value[0] == null || value[0] == fromState.myID) &&
                             (value[1] == null || value[1] == toState.myID) &&
                             (value[2] == null || value[2] == transitionToPerform.myID)) {
-                            transitionIDMaps.push(value[3]);
+                            internalTransitionIDCallbacks.push(value[3]);
                         }
                     }
 
-                    for (let callbackMap of this.transitionIDMaps) {
-                        callbackMap.forEach(function (callback) { callback(this, fromState, toState, transitionToPerform, performType, ...args); }.bind(this));
+                    for (let callbacks of this.internalTransitionIDCallbacks) {
+                        callbacks.forEach(function (callback) { callback(this, fromState, toState, transitionToPerform, performMode, ...args); }.bind(this));
                     }
                 }
 
@@ -626,14 +621,14 @@ PP.FSM = class FSM {
             } else if (this._myDebugLogActive) {
                 let consoleArguments = [this._myDebugLogName, "- No Transition:", transitionID, "- From:", this._myCurrentStateData.myID];
                 if (this._myDebugShowDelayedInfo) {
-                    consoleArguments.push(performType == PP.PerformType.DELAYED ? "- Delayed" : "- Immediate");
+                    consoleArguments.push(performMode == PerformMode.DELAYED ? "- Delayed" : "- Immediate");
                 }
                 console.warn(...consoleArguments);
             }
         } else if (this._myDebugLogActive) {
             let consoleArguments = [this._myDebugLogName, "- FSM not initialized yet"];
             if (this._myDebugShowDelayedInfo) {
-                consoleArguments.push(performType == PP.PerformType.DELAYED ? "- Delayed" : "- Immediate");
+                consoleArguments.push(performMode == PerformMode.DELAYED ? "- Delayed" : "- Immediate");
             }
             console.warn(...consoleArguments);
         }
@@ -641,7 +636,15 @@ PP.FSM = class FSM {
         return false;
     }
 
-    _getTransitionMapFromState(fromStateID) {
-        return this._myTransitionMap.get(fromStateID);
+    _getTransitionsFromState(fromStateID) {
+        return this._myTransitions.get(fromStateID);
     }
-};
+}
+
+class _PendingPerform {
+
+    constructor(transitionID, ...args) {
+        this.myID = transitionID;
+        this.myArgs = args;
+    }
+}

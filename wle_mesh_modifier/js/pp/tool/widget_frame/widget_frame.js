@@ -1,14 +1,28 @@
+import { getMainEngine } from "../../cauldron/wl/engine_globals";
+import { ToolHandedness } from "../cauldron/tool_types";
+import { WidgetFrameConfig } from "./widget_frame_config";
+import { WidgetFrameUI } from "./widget_frame_ui";
 
-PP.WidgetFrame = class WidgetFrame {
+export class WidgetParams {
 
-    constructor(widgetLetterID, buttonsColumnIndex) {
+    constructor() {
+        this.myHandedness = ToolHandedness.NONE;
+
+        this.myPlaneMaterial = null;
+        this.myTextMaterial = null;
+    }
+}
+
+export class WidgetFrame {
+
+    constructor(widgetLetterID, buttonsColumnIndex, engine = getMainEngine()) {
         this.myIsWidgetVisible = true;
         this.myIsPinned = false;
 
-        this._mySetup = new PP.WidgetFrameSetup(widgetLetterID, buttonsColumnIndex);
-        this._myAdditionalSetup = null;
+        this._myConfig = new WidgetFrameConfig(widgetLetterID, buttonsColumnIndex);
+        this._myParams = null;
 
-        this._myUI = new PP.WidgetFrameUI();
+        this._myUI = new WidgetFrameUI(engine);
         this._myShowVisibilityButton = false;
 
         this._myWidgetVisibleChangedCallbacks = new Map();      // Signature: callback(isWidgetVisible)
@@ -52,13 +66,13 @@ PP.WidgetFrame = class WidgetFrame {
         this._myPinChangedCallbacks.delete(id);
     }
 
-    start(parentObject, additionalSetup) {
-        this._myAdditionalSetup = additionalSetup;
+    start(parentObject, params) {
+        this._myParams = params;
 
-        this._myUI.build(parentObject, this._mySetup, additionalSetup);
-        this._myUI.setVisibilityButtonVisible(additionalSetup.myShowVisibilityButton);
-        this._myShowVisibilityButton = additionalSetup.myShowVisibilityButton;
-        if (!additionalSetup.myShowOnStart) {
+        this._myUI.build(parentObject, this._myConfig, params);
+        this._myUI.setVisibilityButtonVisible(params.myShowVisibilityButton);
+        this._myShowVisibilityButton = params.myShowVisibilityButton;
+        if (!params.myShowOnStart) {
             this._toggleVisibility(false, false);
         }
 
@@ -72,13 +86,13 @@ PP.WidgetFrame = class WidgetFrame {
     _addListeners() {
         let ui = this._myUI;
 
-        ui.myPinButtonCursorTargetComponent.addClickFunction(this._togglePin.bind(this, true));
-        ui.myPinButtonCursorTargetComponent.addHoverFunction(this._genericHover.bind(this, ui.myPinButtonBackgroundComponent.material));
-        ui.myPinButtonCursorTargetComponent.addUnHoverFunction(this._pinUnHover.bind(this, ui.myPinButtonBackgroundComponent.material));
+        ui.myPinButtonCursorTargetComponent.onClick.add(this._togglePin.bind(this, true));
+        ui.myPinButtonCursorTargetComponent.onHover.add(this._genericHover.bind(this, ui.myPinButtonBackgroundComponent.material));
+        ui.myPinButtonCursorTargetComponent.onUnhover.add(this._pinUnHover.bind(this, ui.myPinButtonBackgroundComponent.material));
 
-        ui.myVisibilityButtonCursorTargetComponent.addClickFunction(this._toggleVisibility.bind(this, true, true));
-        ui.myVisibilityButtonCursorTargetComponent.addHoverFunction(this._genericHover.bind(this, ui.myVisibilityButtonBackgroundComponent.material));
-        ui.myVisibilityButtonCursorTargetComponent.addUnHoverFunction(this._visibilityUnHover.bind(this, ui.myVisibilityButtonBackgroundComponent.material));
+        ui.myVisibilityButtonCursorTargetComponent.onClick.add(this._toggleVisibility.bind(this, true, true));
+        ui.myVisibilityButtonCursorTargetComponent.onHover.add(this._genericHover.bind(this, ui.myVisibilityButtonBackgroundComponent.material));
+        ui.myVisibilityButtonCursorTargetComponent.onUnhover.add(this._visibilityUnHover.bind(this, ui.myVisibilityButtonBackgroundComponent.material));
     }
 
     _toggleVisibility(isButton, notify) {
@@ -89,14 +103,14 @@ PP.WidgetFrame = class WidgetFrame {
         let textMaterial = this._myUI.myVisibilityButtonTextComponent.material;
         let backgroundMaterial = this._myUI.myVisibilityButtonBackgroundComponent.material;
         if (this.myIsWidgetVisible) {
-            textMaterial.color = this._mySetup.myDefaultTextColor;
+            textMaterial.color = this._myConfig.myDefaultTextColor;
             if (!isButton) {
-                backgroundMaterial.color = this._mySetup.myBackgroundColor;
+                backgroundMaterial.color = this._myConfig.myBackgroundColor;
             }
         } else {
-            textMaterial.color = this._mySetup.myButtonDisabledTextColor;
+            textMaterial.color = this._myConfig.myButtonDisabledTextColor;
             if (!isButton) {
-                backgroundMaterial.color = this._mySetup.myButtonDisabledBackgroundColor;
+                backgroundMaterial.color = this._myConfig.myButtonDisabledBackgroundColor;
             }
         }
 
@@ -118,14 +132,14 @@ PP.WidgetFrame = class WidgetFrame {
             let textMaterial = this._myUI.myPinButtonTextComponent.material;
             let backgroundMaterial = this._myUI.myPinButtonBackgroundComponent.material;
             if (this.myIsPinned) {
-                textMaterial.color = this._mySetup.myDefaultTextColor;
+                textMaterial.color = this._myConfig.myDefaultTextColor;
                 if (!isButton) {
-                    backgroundMaterial.color = this._mySetup.myBackgroundColor;
+                    backgroundMaterial.color = this._myConfig.myBackgroundColor;
                 }
             } else {
-                textMaterial.color = this._mySetup.myButtonDisabledTextColor;
+                textMaterial.color = this._myConfig.myButtonDisabledTextColor;
                 if (!isButton) {
-                    backgroundMaterial.color = this._mySetup.myButtonDisabledBackgroundColor;
+                    backgroundMaterial.color = this._myConfig.myButtonDisabledBackgroundColor;
                 }
             }
 
@@ -136,22 +150,22 @@ PP.WidgetFrame = class WidgetFrame {
     }
 
     _genericHover(material) {
-        material.color = this._mySetup.myButtonHoverColor;
+        material.color = this._myConfig.myButtonHoverColor;
     }
 
     _visibilityUnHover(material) {
         if (this.myIsWidgetVisible) {
-            material.color = this._mySetup.myBackgroundColor;
+            material.color = this._myConfig.myBackgroundColor;
         } else {
-            material.color = this._mySetup.myButtonDisabledBackgroundColor;
+            material.color = this._myConfig.myButtonDisabledBackgroundColor;
         }
     }
 
     _pinUnHover(material) {
         if (this.myIsPinned) {
-            material.color = this._mySetup.myBackgroundColor;
+            material.color = this._myConfig.myBackgroundColor;
         } else {
-            material.color = this._mySetup.myButtonDisabledBackgroundColor;
+            material.color = this._myConfig.myButtonDisabledBackgroundColor;
         }
     }
-};
+}

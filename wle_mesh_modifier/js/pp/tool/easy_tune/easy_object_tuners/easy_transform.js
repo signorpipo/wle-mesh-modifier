@@ -1,24 +1,11 @@
-WL.registerComponent("pp-easy-transform", {
-    _myVariableName: { type: WL.Type.String, default: "" },
-    _mySetAsDefault: { type: WL.Type.Bool, default: false },
-    _myUseTuneTarget: { type: WL.Type.Bool, default: false },
-    _myIsLocal: { type: WL.Type.Bool, default: false },
-    _myScaleAsOne: { type: WL.Type.Bool, default: true }, // Edit all scale values together
-}, {
-    init: function () {
-        this._myEasyObjectTuner = new PP.EasyTransform(this._myIsLocal, this._myScaleAsOne, this.object, this._myVariableName, this._mySetAsDefault, this._myUseTuneTarget);
-    },
-    start: function () {
-        this._myEasyObjectTuner.start();
-    },
-    update: function (dt) {
-        this._myEasyObjectTuner.update(dt);
-    }
-});
+import { mat4_create } from "../../../plugin/js/extensions/array_extension";
+import { EasyTuneTransform } from "../easy_tune_variable_types";
+import { EasyObjectTuner } from "./easy_object_tuner";
 
-PP.EasyTransform = class EasyTransform extends PP.EasyObjectTuner {
-    constructor(isLocal, scaleAsOne, object, variableName, setAsDefault, useTuneTarget) {
-        super(object, variableName, setAsDefault, useTuneTarget);
+export class EasyTransform extends EasyObjectTuner {
+
+    constructor(isLocal, scaleAsOne, object, variableName, setAsDefault, useTuneTarget, engine) {
+        super(object, variableName, setAsDefault, useTuneTarget, engine);
         this._myIsLocal = isLocal;
         this._myScaleAsOne = scaleAsOne;
     }
@@ -28,22 +15,22 @@ PP.EasyTransform = class EasyTransform extends PP.EasyObjectTuner {
     }
 
     _createEasyTuneVariable(variableName) {
-        return new PP.EasyTuneTransform(variableName, this._getDefaultValue(), this._myScaleAsOne);
+        return new EasyTuneTransform(variableName, this._getDefaultValue(), this._myScaleAsOne);
     }
 
     _getObjectValue(object) {
-        return this._myIsLocal ? object.pp_getTransformLocal() : object.pp_getTransformWorld();
+        return this._myIsLocal ? object.pp_getTransformLocal() : object.pp_getTransform();
     }
 
     _getDefaultValue() {
-        return PP.mat4_create();
+        return mat4_create();
     }
 
     _updateObjectValue(object, value) {
         if (this._myIsLocal) {
             object.pp_setTransformLocal(value);
         } else {
-            object.pp_setTransformWorld(value);
+            object.pp_setTransform(value);
         }
     }
-};
+}

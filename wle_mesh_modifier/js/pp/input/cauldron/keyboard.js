@@ -1,4 +1,4 @@
-PP.KeyType = {
+export let KeyID = {
     _0: "0",
     _1: "1",
     _2: "2",
@@ -79,56 +79,56 @@ PP.KeyType = {
     CONTROL_LEFT: "ControlLeft",
     CONTROL_RIGHT: "ControlRight",
     ALT_LEFT: "AltLeft",
-    ALT_RIGHT: "AltRight",
+    ALT_RIGHT: "AltRight"
 };
 
-PP.Keyboard = class Keyboard {
+export class Keyboard {
+
     constructor() {
         this._myKeyInfos = new Map();
 
-        for (let keyType in PP.KeyType) {
-            this.addKey(PP.KeyType[keyType]);
+        for (let key in KeyID) {
+            this.addKey(KeyID[key]);
         }
     }
 
-    isKeyPressed(keyType) {
+    isKeyPressed(keyID) {
         let isPressed = false;
 
-        if (this._myKeyInfos.has(keyType)) {
-            isPressed = this._myKeyInfos.get(keyType).myIsPressed;
+        if (this._myKeyInfos.has(keyID)) {
+            isPressed = this._myKeyInfos.get(keyID).myIsPressed;
         }
 
         return isPressed;
     }
 
-    isKeyPressStart(keyType) {
+    isKeyPressStart(keyID) {
         let isPressStart = false;
 
-        if (this._myKeyInfos.has(keyType)) {
-            isPressStart = this._myKeyInfos.get(keyType).myIsPressStart;
+        if (this._myKeyInfos.has(keyID)) {
+            isPressStart = this._myKeyInfos.get(keyID).myIsPressStart;
         }
 
         return isPressStart;
     }
 
-    isKeyPressEnd(keyType) {
+    isKeyPressEnd(keyID) {
         let isPressEnd = false;
 
-        if (this._myKeyInfos.has(keyType)) {
-            isPressEnd = this._myKeyInfos.get(keyType).myIsPressEnd;
+        if (this._myKeyInfos.has(keyID)) {
+            isPressEnd = this._myKeyInfos.get(keyID).myIsPressEnd;
         }
 
         return isPressEnd;
     }
 
-    addKey(keyType) {
-        this._myKeyInfos.set(keyType,
-            { myIsPressed: false, myIsPressStart: false, myIsPressStartToProcess: false, myIsPressEnd: false, myIsPressEndToProcess: false, });
+    addKey(keyID) {
+        this._myKeyInfos.set(keyID, this._createKeyInfo());
     }
 
     start() {
-        window.addEventListener('keydown', this._keyDown.bind(this));
-        window.addEventListener('keyup', this._keyUp.bind(this));
+        window.addEventListener("keydown", this._keyDown.bind(this));
+        window.addEventListener("keyup", this._keyUp.bind(this));
     }
 
     update(dt) {
@@ -163,9 +163,9 @@ PP.Keyboard = class Keyboard {
         }
     }
 
-    _keyPressedChanged(keyType, isPressed) {
-        if (this._myKeyInfos.has(keyType)) {
-            let keyInfo = this._myKeyInfos.get(keyType);
+    _keyPressedChanged(keyID, isPressed) {
+        if (this._myKeyInfos.has(keyID)) {
+            let keyInfo = this._myKeyInfos.get(keyID);
 
             if (isPressed) {
                 keyInfo.myIsPressed = true;
@@ -176,4 +176,8 @@ PP.Keyboard = class Keyboard {
             }
         }
     }
-};
+
+    _createKeyInfo() {
+        return { myIsPressed: false, myIsPressStart: false, myIsPressStartToProcess: false, myIsPressEnd: false, myIsPressEndToProcess: false, };
+    }
+}

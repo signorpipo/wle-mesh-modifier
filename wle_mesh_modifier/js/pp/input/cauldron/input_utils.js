@@ -1,82 +1,99 @@
-PP.InputUtils = {
-    getHandednessByIndex: function (index) {
-        let handedness = null;
+import { XRUtils } from "../../cauldron/utils/xr_utils";
+import { getMainEngine } from "../../cauldron/wl/engine_globals";
+import { Handedness, HandednessIndex, InputSourceType, TrackedHandJointID, TrackedHandJointIDIndex } from "./input_types";
 
-        switch (index) {
-            case PP.HandednessIndex.LEFT:
-                handedness = PP.Handedness.LEFT;
-                break;
-            case PP.HandednessIndex.RIGHT:
-                handedness = PP.Handedness.RIGHT;
-                break;
-        }
+export function getHandednessByIndex(index) {
+    let handedness = null;
 
-        return handedness;
-    },
-    getInputSource: function (handedness, inputSourceType) {
-        let inputSource = null;
+    switch (index) {
+        case HandednessIndex.LEFT:
+            handedness = Handedness.LEFT;
+            break;
+        case HandednessIndex.RIGHT:
+            handedness = Handedness.RIGHT;
+            break;
+    }
 
-        if (WL.xrSession && WL.xrSession.inputSources) {
-            for (let i = 0; i < WL.xrSession.inputSources.length; i++) {
-                let input = WL.xrSession.inputSources[i];
+    return handedness;
+}
 
-                let isCorrectType = (!inputSourceType) || (inputSourceType == PP.InputSourceType.GAMEPAD && !input.hand) || (inputSourceType == PP.InputSourceType.TRACKED_HAND && input.hand);
-                if (isCorrectType && input.handedness == handedness) {
-                    inputSource = input;
-                    break;
-                }
-            }
-        }
+export function getInputSource(handedness, inputSourceType = null, engine = getMainEngine()) {
+    let inputSource = null;
 
-        return inputSource;
-    },
-    getInputSourceTypeByHandedness: function (handedness) {
-        let inputSource = PP.InputUtils.getInputSource(handedness);
+    let xrSession = XRUtils.getSession(engine);
+    if (xrSession != null && xrSession.inputSources) {
+        for (let i = 0; i < xrSession.inputSources.length; i++) {
+            let input = xrSession.inputSources[i];
 
-        return PP.InputUtils.getInputSourceType(inputSource);
-    },
-    getInputSourceType: function (inputSource) {
-        let inputSourceType = null;
-
-        if (inputSource) {
-            if (inputSource.hand) {
-                inputSourceType = PP.InputSourceType.TRACKED_HAND;
-            } else {
-                inputSourceType = PP.InputSourceType.GAMEPAD;
-            }
-        }
-
-        return inputSourceType;
-    },
-    getOppositeHandedness: function (handedness) {
-        let oppositeHandedness = null;
-
-        switch (handedness) {
-            case PP.Handedness.LEFT:
-                oppositeHandedness = PP.Handedness.RIGHT;
-                break;
-            case PP.Handedness.RIGHT:
-                oppositeHandedness = PP.Handedness.LEFT;
-                break;
-        }
-
-        return oppositeHandedness;
-    },
-    getJointTypeByIndex: function (index) {
-        let jointType = null;
-
-        let jointTypeKey = null;
-        for (let jointTypeIndexKey in PP.TrackedHandJointTypeIndex) {
-            if (PP.TrackedHandJointTypeIndex[jointTypeIndexKey] == index) {
-                jointTypeKey = jointTypeIndexKey;
+            let isCorrectType = (!inputSourceType) || (inputSourceType == InputSourceType.GAMEPAD && !input.hand) || (inputSourceType == InputSourceType.TRACKED_HAND && input.hand);
+            if (isCorrectType && input.handedness == handedness) {
+                inputSource = input;
                 break;
             }
         }
+    }
 
-        if (jointTypeKey != null) {
-            jointType = PP.TrackedHandJointType[jointTypeKey];
+    return inputSource;
+}
+
+export function getInputSourceTypeByHandedness(handedness, engine) {
+    let inputSource = getInputSource(handedness, undefined, engine);
+
+    return getInputSourceType(inputSource);
+}
+
+export function getInputSourceType(inputSource) {
+    let inputSourceType = null;
+
+    if (inputSource) {
+        if (inputSource.hand) {
+            inputSourceType = InputSourceType.TRACKED_HAND;
+        } else {
+            inputSourceType = InputSourceType.GAMEPAD;
         }
+    }
 
-        return jointType;
-    },
+    return inputSourceType;
+}
+
+export function getOppositeHandedness(handedness) {
+    let oppositeHandedness = null;
+
+    switch (handedness) {
+        case Handedness.LEFT:
+            oppositeHandedness = Handedness.RIGHT;
+            break;
+        case Handedness.RIGHT:
+            oppositeHandedness = Handedness.LEFT;
+            break;
+    }
+
+    return oppositeHandedness;
+}
+
+export function getJointIDByIndex(index) {
+    let jointID = null;
+
+    let jointIDKey = null;
+    for (let jointIDIndexKey in TrackedHandJointIDIndex) {
+        if (TrackedHandJointIDIndex[jointIDIndexKey] == index) {
+            jointIDKey = jointIDIndexKey;
+            break;
+        }
+    }
+
+    if (jointIDKey != null) {
+        jointID = TrackedHandJointID[jointIDKey];
+    }
+
+    return jointID;
+}
+
+export let InputUtils = {
+    getHandednessByIndex,
+    getInputSource,
+    getInputSourceTypeByHandedness,
+    getInputSourceType,
+    getOppositeHandedness,
+    getJointIDByIndex
 };

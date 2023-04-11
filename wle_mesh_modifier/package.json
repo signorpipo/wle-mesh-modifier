@@ -1,18 +1,19 @@
 {
   "name": "wle_mesh_modifier",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "build": "esbuild ./js/bundle.js --sourcemap --bundle --outfile=\"deploy/wle_mesh_modifier-bundle.js\""
-  },
   "author": "Pipo",
+  "type": "module",
   "license": "ISC",
+  "dependencies": {
+    "@wonderlandengine/api": "^1.0.0-rc.3",
+    "@wonderlandengine/components": "^1.0.0-rc.3",
+    "gl-matrix": "^3.4.3",
+    "howler": "^2.2.3"
+  },
   "devDependencies": {
     "esbuild": "^0.14.54"
   },
-  "dependencies": {
-    "@wonderlandengine/components": "^0.8.16",
-    "gl-matrix": "^3.4.3"
+  "scripts": {
+    "build": "esbuild ./js/index.js --minify --sourcemap --bundle --outfile=\"deploy/wle_mesh_modifier.0.0-bundle.js\""
   }
 }

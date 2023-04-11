@@ -1,4 +1,7 @@
-PP.PhysicsLayerFlags = class PhysicsLayerFlags {
+import { PhysicsUtils } from "./physics_utils";
+
+export class PhysicsLayerFlags {
+
     constructor() {
         this._myLayerMask = 0;
     }
@@ -6,10 +9,10 @@ PP.PhysicsLayerFlags = class PhysicsLayerFlags {
     setFlagActive(indexOrName, active) {
         let index = indexOrName;
         if (isNaN(indexOrName)) {
-            index = PP.PhysicsUtils.getLayerFlagNames().pp_findIndexEqual(indexOrName);
+            index = PhysicsUtils.getLayerFlagsNames().pp_findIndexEqual(indexOrName);
         }
 
-        if (index >= 0 && index < PP.PhysicsUtils.getLayerFlagAmount()) {
+        if (index >= 0 && index < PhysicsUtils.getLayerFlagsNames().length) {
             let mask = 1 << index;
 
             if (active) {
@@ -23,12 +26,12 @@ PP.PhysicsLayerFlags = class PhysicsLayerFlags {
     isFlagActive(indexOrName) {
         let index = indexOrName;
         if (isNaN(indexOrName)) {
-            index = PP.PhysicsUtils.getLayerFlagNames().pp_findIndexEqual(indexOrName);
+            index = PhysicsUtils.getLayerFlagsNames().pp_findIndexEqual(indexOrName);
         }
 
         let isActive = false;
 
-        if (index >= 0 && index < PP.PhysicsUtils.getLayerFlagAmount()) {
+        if (index >= 0 && index < PhysicsUtils.getLayerFlagsNames().length) {
             let mask = 1 << index;
             isActive = !!(this._myLayerMask & mask);
         }
@@ -40,8 +43,24 @@ PP.PhysicsLayerFlags = class PhysicsLayerFlags {
         if (!active) {
             this._myLayerMask = 0;
         } else {
-            this._myLayerMask = Math.pow(2, PP.PhysicsUtils.getLayerFlagAmount()) - 1;
+            this._myLayerMask = Math.pow(2, PhysicsUtils.getLayerFlagsNames().length) - 1;
         }
+    }
+
+    add(layerFlags) {
+        this._myLayerMask = this._myLayerMask | layerFlags.getMask();
+    }
+
+    remove(layerFlags) {
+        this._myLayerMask = this._myLayerMask & ~(layerFlags.getMask());
+    }
+
+    intersect(layerFlags) {
+        this._myLayerMask = this._myLayerMask & layerFlags.getMask();
+    }
+
+    copy(layerFlags) {
+        this._myLayerMask = layerFlags._myLayerMask;
     }
 
     getMask() {
@@ -51,8 +70,4 @@ PP.PhysicsLayerFlags = class PhysicsLayerFlags {
     setMask(layerMask) {
         this._myLayerMask = layerMask;
     }
-
-    copy(layerFlags) {
-        this._myLayerMask = layerFlags._myLayerMask;
-    }
-};
+}

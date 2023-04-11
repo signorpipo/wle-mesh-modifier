@@ -1,40 +1,64 @@
-PP.GamepadCore = class GamepadCore {
+import { vec2_create } from "../../../plugin/js/extensions/array_extension";
 
-    constructor(handedness) {
-        this._myHandedness = handedness;
+export class GamepadCore {
+
+    constructor(handPose) {
+        this._myHandPose = handPose;
+
+        this._myManageHandPose = false;
     }
 
     getHandedness() {
-        return this._myHandedness;
+        return this.getHandPose().getHandedness();
     }
 
     getHandPose() {
-        return null;
+        return this._myHandPose;
+    }
+
+    getEngine() {
+        return this.getHandPose().getEngine();
     }
 
     isGamepadCoreActive() {
         return true;
     }
 
-    start() {
+    setManageHandPose(manageHandPose) {
+        this._myManageHandPose = manageHandPose;
+    }
 
+    isManagingHandPose() {
+        return this._myManageHandPose;
+    }
+
+    start() {
+        if (this.getHandPose() && this._myManageHandPose) {
+            this.getHandPose().start();
+        }
+
+        this._startHook();
     }
 
     preUpdate(dt) {
+        if (this.getHandPose() && this._myManageHandPose) {
+            this.getHandPose().update(dt);
+        }
 
+        this._preUpdateHook(dt);
     }
 
     postUpdate(dt) {
-
+        this._postUpdateHook(dt);
     }
 
-    getButtonData(buttonType) {
-        let buttonData = { pressed: false, touched: false, value: 0 };
+    getButtonData(buttonID) {
+        let buttonData = this._createButtonData();
         return buttonData;
     }
 
-    getAxesData() {
-        let axesData = [0.0, 0.0];
+    getAxesData(axesID) {
+        let axesData = this._createAxesData();
         return axesData;
     }
 
@@ -42,4 +66,28 @@ PP.GamepadCore = class GamepadCore {
         let hapticActuators = [];
         return hapticActuators;
     }
-};
+
+    // Hooks
+
+    _startHook() {
+
+    }
+
+    _preUpdateHook(dt) {
+
+    }
+
+    _postUpdateHook(dt) {
+
+    }
+
+    // Hooks end
+
+    _createButtonData() {
+        return { myIsPressed: false, myIsTouched: false, myValue: 0 };
+    }
+
+    _createAxesData() {
+        return vec2_create(0, 0);
+    }
+}

@@ -1,34 +1,43 @@
 /*
-let visualParams = new PP.VisualLineParams();
+let visualParams = new VisualLineParams();
 visualParams.myStart.vec3_copy(start);
 visualParams.myDirection.vec3_copy(direction);
 visualParams.myLength = 0.2;
-visualParams.myMaterial = PP.myDefaultResources.myMaterials.myFlatOpaque.clone();
-visualParams.myMaterial.color = [1, 1, 1, 1];
-PP.myVisualManager.draw(visualParams);
+visualParams.myMaterial = myDefaultResources.myMaterials.myFlatOpaque.clone();
+visualParams.myMaterial.color = vec4_create(1, 1, 1, 1);
+getVisualManager().draw(visualParams);
 
 or
 
-let visualLine = new PP.VisualLine(visualParams);
+let visualLine = new VisualLine(visualParams);
 */
 
-PP.VisualLineParams = class VisualLineParams {
+import { MeshComponent } from "@wonderlandengine/api";
+import { vec3_create } from "../../../plugin/js/extensions/array_extension";
+import { getDefaultMaterials, getDefaultMeshes } from "../../../pp/default_resources_globals";
+import { getSceneObjects } from "../../../pp/scene_objects_global";
+import { getMainEngine } from "../../wl/engine_globals";
+import { getVisualResources } from "../visual_globals";
+import { VisualElementType } from "./visual_element_types";
 
-    constructor() {
-        this.myStart = [0, 0, 0];
-        this.myDirection = [0, 0, 1];
+export class VisualLineParams {
+
+    constructor(engine = getMainEngine()) {
+        this.myStart = vec3_create();
+        this.myDirection = vec3_create(0, 0, 1);
         this.myLength = 0;
 
         this.myThickness = 0.005;
 
-        this.myMesh = null;         // the mesh is scaled along up axis, null means it will default on PP.myDefaultResources.myMeshes.myCylinder
+        this.myMesh = null;         // The mesh is scaled along up axis, null means it will default on myDefaultResources.myMeshes.myCylinder
 
-        this.myMaterial = null;     // null means it will default on PP.myDefaultResources.myMaterials.myFlatOpaque
-        this.myColor = null;        // if this is set and material is null, it will use the default flat opaque material with this color
+        this.myMaterial = null;     // null means it will default on myDefaultResources.myMaterials.myFlatOpaque
+        this.myColor = null;        // If this is set and material is null, it will use the default flat opaque material with this color
 
-        this.myParent = null;       // if this is set the parent will not be the visual root anymore, the positions will be local to this object
+        this.myParent = getSceneObjects(engine).myVisualElements;
+        this.myIsLocal = false;
 
-        this.myType = PP.VisualElementType.LINE;
+        this.myType = VisualElementType.LINE;
     }
 
     setStartEnd(start, end) {
@@ -39,11 +48,15 @@ PP.VisualLineParams = class VisualLineParams {
 
         return this;
     }
-};
 
-PP.VisualLine = class VisualLine {
+    copy(other) {
+        // Implemented outside class definition
+    }
+}
 
-    constructor(params = new PP.VisualLineParams()) {
+export class VisualLine {
+
+    constructor(params = new VisualLineParams()) {
         this._myParams = params;
 
         this._myVisible = false;
@@ -51,7 +64,7 @@ PP.VisualLine = class VisualLine {
 
         this._myDirty = false;
 
-        this._myLineRootObject = null;
+        this._myLineParentObject = null;
         this._myLineObject = null;
         this._myLineMeshComponent = null;
 
@@ -66,7 +79,7 @@ PP.VisualLine = class VisualLine {
     setVisible(visible) {
         if (this._myVisible != visible) {
             this._myVisible = visible;
-            this._myLineRootObject.pp_setActive(visible);
+            this._myLineParentObject.pp_setActive(visible);
         }
     }
 
@@ -80,6 +93,11 @@ PP.VisualLine = class VisualLine {
 
     setParams(params) {
         this._myParams = params;
+        this._markDirty();
+    }
+
+    copyParams(params) {
+        this._myParams.copy(params);
         this._markDirty();
     }
 
@@ -104,10 +122,10 @@ PP.VisualLine = class VisualLine {
     }
 
     _build() {
-        this._myLineRootObject = WL.scene.addObject(null);
-        this._myLineObject = WL.scene.addObject(this._myLineRootObject);
+        this._myLineParentObject = getSceneObjects(this._myParams.myParent.pp_getEngine()).myVisualElements.pp_addObject();
+        this._myLineObject = this._myLineParentObject.pp_addObject();
 
-        this._myLineMeshComponent = this._myLineObject.addComponent('mesh');
+        this._myLineMeshComponent = this._myLineObject.pp_addComponent(MeshComponent);
     }
 
     _markDirty() {
@@ -119,70 +137,69 @@ PP.VisualLine = class VisualLine {
     }
 
     clone() {
-        let clonedParams = new PP.VisualLineParams();
-        clonedParams.myStart.vec3_copy(this._myParams.myStart);
-        clonedParams.myDirection.vec3_copy(this._myParams.myDirection);
-        clonedParams.myLength = this._myParams.myLength;
-        clonedParams.myThickness = this._myParams.myThickness;
+        let clonedParams = new VisualLineParams(this._myParams.myParent.pp_getEngine());
+        clonedParams.copy(this._myParams);
 
-        clonedParams.myMesh = this._myParams.myMesh;
-
-        if (this._myParams.myMaterial != null) {
-            clonedParams.myMaterial = this._myParams.myMaterial.clone();
-        } else {
-            clonedParams.myMaterial = null;
-        }
-
-        if (this._myParams.myColor != null) {
-            clonedParams.myColor.vec4_copy(this._myParams.myColor);
-        } else {
-            clonedParams.myColor = null;
-        }
-
-        clonedParams.myParent = this._myParams.myParent;
-
-        let clone = new PP.VisualLine(clonedParams);
+        let clone = new VisualLine(clonedParams);
         clone.setAutoRefresh(this._myAutoRefresh);
         clone.setVisible(this._myVisible);
         clone._myDirty = this._myDirty;
 
         return clone;
     }
-};
 
-PP.VisualLine.prototype._refresh = function () {
-    let scaleLine = PP.vec3_create();
-    let translateLine = PP.vec3_create();
+    _refresh() {
+        // Implemented outside class definition
+    }
+}
 
-    let forward = PP.vec3_create(0, 1, 0);
+
+
+// IMPLEMENTATION
+
+VisualLine.prototype._refresh = function () {
+    let scaleLine = vec3_create();
+    let translateLine = vec3_create();
+
+    let forward = vec3_create(0, 1, 0);
     return function _refresh() {
-        this._myLineRootObject.pp_setParent(this._myParams.myParent == null ? PP.myVisualData.myRootObject : this._myParams.myParent, false);
+        this._myLineParentObject.pp_setParent(this._myParams.myParent, false);
 
-        this._myLineRootObject.pp_setPositionLocal(this._myParams.myStart);
-
-        this._myLineObject.pp_resetPositionLocal();
-        this._myLineObject.pp_resetScaleLocal();
+        if (this._myParams.myIsLocal) {
+            this._myLineParentObject.pp_setPositionLocal(this._myParams.myStart);
+        } else {
+            this._myLineParentObject.pp_setPosition(this._myParams.myStart);
+        }
 
         scaleLine.vec3_set(this._myParams.myThickness / 2, this._myParams.myLength / 2, this._myParams.myThickness / 2);
-        this._myLineObject.pp_scaleObject(scaleLine);
+        if (this._myParams.myIsLocal) {
+            this._myLineObject.pp_setScaleLocal(scaleLine);
+        } else {
+            this._myLineObject.pp_setScale(scaleLine);
+        }
 
-        this._myLineObject.pp_setUpLocal(this._myParams.myDirection, forward);
+        if (this._myParams.myIsLocal) {
+            this._myLineObject.pp_setUpLocal(this._myParams.myDirection, forward);
+        } else {
+            this._myLineObject.pp_setUp(this._myParams.myDirection, forward);
+        }
 
+        this._myLineObject.pp_resetPositionLocal();
         translateLine.vec3_set(0, this._myParams.myLength / 2, 0);
         this._myLineObject.pp_translateObject(translateLine);
 
         if (this._myParams.myMesh != null) {
             this._myLineMeshComponent.mesh = this._myParams.myMesh;
         } else {
-            this._myLineMeshComponent.mesh = PP.myDefaultResources.myMeshes.myCylinder;
+            this._myLineMeshComponent.mesh = getDefaultMeshes(this._myParams.myParent.pp_getEngine()).myCylinder;
         }
 
         if (this._myParams.myMaterial == null) {
             if (this._myParams.myColor == null) {
-                this._myLineMeshComponent.material = PP.myVisualData.myDefaultMaterials.myDefaultMeshMaterial;
+                this._myLineMeshComponent.material = getVisualResources(this._myParams.myParent.pp_getEngine()).myDefaultMaterials.myMesh;
             } else {
                 if (this._myFlatOpaqueMaterial == null) {
-                    this._myFlatOpaqueMaterial = PP.myDefaultResources.myMaterials.myFlatOpaque.clone();
+                    this._myFlatOpaqueMaterial = getDefaultMaterials(this._myParams.myParent.pp_getEngine()).myFlatOpaque.clone();
                 }
                 this._myLineMeshComponent.material = this._myFlatOpaqueMaterial;
                 this._myFlatOpaqueMaterial.color = this._myParams.myColor;
@@ -193,6 +210,32 @@ PP.VisualLine.prototype._refresh = function () {
     };
 }();
 
+VisualLineParams.prototype.copy = function copy(other) {
+    this.myStart.vec3_copy(other.myStart);
+    this.myDirection.vec3_copy(other.myDirection);
+    this.myLength = other.myLength;
+    this.myThickness = other.myThickness;
 
+    this.myMesh = other.myMesh;
 
-Object.defineProperty(PP.VisualLine.prototype, "_refresh", { enumerable: false });
+    if (other.myMaterial != null) {
+        this.myMaterial = other.myMaterial.clone();
+    } else {
+        this.myMaterial = null;
+    }
+
+    if (other.myColor != null) {
+        if (this.myColor != null) {
+            this.myColor.vec4_copy(other.myColor);
+        } else {
+            this.myColor = other.myColor.vec4_clone();
+        }
+    } else {
+        this.myColor = null;
+    }
+
+    this.myParent = other.myParent;
+    this.myIsLocal = other.myIsLocal;
+
+    this.myType = other.myType;
+};

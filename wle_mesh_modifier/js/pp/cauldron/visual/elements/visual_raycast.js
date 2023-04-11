@@ -1,17 +1,24 @@
 /*
-let visualParams = new PP.VisualRaycastParams();
-visualParams.myRaycastResult = raycastResult;
-PP.myVisualManager.draw(visualParams);
+let visualParams = new VisualRaycastParams();
+visualParams.myRaycastResults = raycastResults;
+getVisualManager().draw(visualParams);
 
 or
 
-let visualRaycast = new PP.VisualRaycast(visualParams);
+let visualRaycast = new VisualRaycast(visualParams);
 */
 
-PP.VisualRaycastParams = class VisualRaycastParams {
+import { getSceneObjects } from "../../../pp/scene_objects_global";
+import { RaycastResults } from "../../physics/physics_raycast_data";
+import { getMainEngine } from "../../wl/engine_globals";
+import { getVisualResources } from "../visual_globals";
+import { VisualArrow, VisualArrowParams } from "./visual_arrow";
+import { VisualElementType } from "./visual_element_types";
 
-    constructor() {
-        this._myRaycastResult = new PP.RaycastResult();
+export class VisualRaycastParams {
+
+    constructor(engine = getMainEngine()) {
+        this._myRaycastResults = new RaycastResults();
 
         this.myHitNormalLength = 0.2;
         this.myThickness = 0.005;
@@ -21,23 +28,28 @@ PP.VisualRaycastParams = class VisualRaycastParams {
         this.myRayMaterial = null;
         this.myHitNormalMaterial = null;
 
-        this.myParent = null; // if this is set the parent will not be the visual root anymore, the positions will be local to this object
+        this.myParent = getSceneObjects(engine).myVisualElements;
+        this.myIsLocal = false;
 
-        this.myType = PP.VisualElementType.RAYCAST;
+        this.myType = VisualElementType.RAYCAST;
     }
 
-    get myRaycastResult() {
-        return this._myRaycastResult;
+    get myRaycastResults() {
+        return this._myRaycastResults;
     }
 
-    set myRaycastResult(result) {
-        this._myRaycastResult.copy(result);
+    set myRaycastResults(result) {
+        this._myRaycastResults.copy(result);
     }
-};
 
-PP.VisualRaycast = class VisualRaycast {
+    copy(other) {
+        // Implemented outside class definition
+    }
+}
 
-    constructor(params = new PP.VisualRaycastParams()) {
+export class VisualRaycast {
+
+    constructor(params = new VisualRaycastParams()) {
         this._myParams = params;
 
         this._myVisible = false;
@@ -45,7 +57,7 @@ PP.VisualRaycast = class VisualRaycast {
 
         this._myDirty = false;
 
-        this._myVisualRaycast = new PP.VisualArrow();
+        this._myVisualRaycast = new VisualArrow(new VisualArrowParams(this._myParams.myParent.pp_getEngine()));
 
         this._myVisualRaycast.setAutoRefresh(false);
 
@@ -62,12 +74,12 @@ PP.VisualRaycast = class VisualRaycast {
             this._myVisible = visible;
 
             if (this._myVisible) {
-                if (this._myParams.myRaycastResult.myRaycastSetup != null) {
+                if (this._myParams.myRaycastResults.myRaycastParams != null) {
                     this._myVisualRaycast.setVisible(true);
                 }
 
-                if (this._myParams.myRaycastResult.myHits.length > 0) {
-                    let hitsToShow = Math.min(this._myParams.myRaycastResult.myHits.length, this._myVisualRaycastHitList.length);
+                if (this._myParams.myRaycastResults.myHits.length > 0) {
+                    let hitsToShow = Math.min(this._myParams.myRaycastResults.myHits.length, this._myVisualRaycastHitList.length);
 
                     for (let i = 0; i < hitsToShow; i++) {
                         let visualRaycastHit = this._myVisualRaycastHitList[i];
@@ -97,6 +109,11 @@ PP.VisualRaycast = class VisualRaycast {
         this._markDirty();
     }
 
+    copyParams(params) {
+        this._myParams.copy(params);
+        this._markDirty();
+    }
+
     paramsUpdated() {
         this._markDirty();
     }
@@ -110,8 +127,8 @@ PP.VisualRaycast = class VisualRaycast {
 
         this._myVisualRaycast.forceRefresh();
 
-        if (this._myParams.myRaycastResult.myHits.length > 0) {
-            let hitsToRefresh = Math.min(this._myParams.myRaycastResult.myHits.length, this._myVisualRaycastHitList.length);
+        if (this._myParams.myRaycastResults.myHits.length > 0) {
+            let hitsToRefresh = Math.min(this._myParams.myRaycastResults.myHits.length, this._myVisualRaycastHitList.length);
 
             for (let i = 0; i < hitsToRefresh; i++) {
                 let visualRaycastHit = this._myVisualRaycastHitList[i];
@@ -137,32 +154,33 @@ PP.VisualRaycast = class VisualRaycast {
             visualRaycastHit.setVisible(false);
         }
 
-        if (this._myParams.myRaycastResult.myHits.length > 0) {
+        if (this._myParams.myRaycastResults.myHits.length > 0) {
             let raycastDistance = this._myParams.myShowOnlyFirstHit ?
-                this._myParams.myRaycastResult.myHits.pp_first().myDistance :
-                this._myParams.myRaycastResult.myHits.pp_last().myDistance;
+                this._myParams.myRaycastResults.myHits.pp_first().myDistance :
+                this._myParams.myRaycastResults.myHits.pp_last().myDistance;
 
             {
                 let visualRaycastParams = this._myVisualRaycast.getParams();
-                visualRaycastParams.myStart.vec3_copy(this._myParams.myRaycastResult.myRaycastSetup.myOrigin);
-                visualRaycastParams.myDirection.vec3_copy(this._myParams.myRaycastResult.myRaycastSetup.myDirection);
+                visualRaycastParams.myStart.vec3_copy(this._myParams.myRaycastResults.myRaycastParams.myOrigin);
+                visualRaycastParams.myDirection.vec3_copy(this._myParams.myRaycastResults.myRaycastParams.myDirection);
                 visualRaycastParams.myLength = raycastDistance;
                 visualRaycastParams.myThickness = this._myParams.myThickness;
 
                 if (this._myParams.myRayMaterial == null) {
-                    visualRaycastParams.myMaterial = PP.myVisualData.myDefaultMaterials.myDefaultRayMaterial;
+                    visualRaycastParams.myMaterial = getVisualResources(this._myParams.myParent.pp_getEngine()).myDefaultMaterials.myRay;
                 } else {
                     visualRaycastParams.myMaterial = this._myParams.myRayMaterial;
                 }
 
                 visualRaycastParams.myParent = this._myParams.myParent;
+                visualRaycastParams.myIsLocal = this._myParams.myIsLocal;
 
                 this._myVisualRaycast.paramsUpdated();
 
                 this._myVisualRaycast.setVisible(this._myVisible);
             }
 
-            let hitsToShow = this._myParams.myShowOnlyFirstHit ? 1 : this._myParams.myRaycastResult.myHits.length;
+            let hitsToShow = this._myParams.myShowOnlyFirstHit ? 1 : this._myParams.myRaycastResults.myHits.length;
             while (hitsToShow > this._myVisualRaycastHitList.length) {
                 this._addVisualRaycastHit();
             }
@@ -172,18 +190,19 @@ PP.VisualRaycast = class VisualRaycast {
 
                 {
                     let visualRaycastHitParams = visualRaycastHit.getParams();
-                    visualRaycastHitParams.myStart.vec3_copy(this._myParams.myRaycastResult.myHits[i].myPosition);
-                    visualRaycastHitParams.myDirection.vec3_copy(this._myParams.myRaycastResult.myHits[i].myNormal);
+                    visualRaycastHitParams.myStart.vec3_copy(this._myParams.myRaycastResults.myHits[i].myPosition);
+                    visualRaycastHitParams.myDirection.vec3_copy(this._myParams.myRaycastResults.myHits[i].myNormal);
                     visualRaycastHitParams.myLength = this._myParams.myHitNormalLength;
                     visualRaycastHitParams.myThickness = this._myParams.myThickness;
 
                     if (this._myParams.myHitNormalMaterial == null) {
-                        visualRaycastHitParams.myMaterial = PP.myVisualData.myDefaultMaterials.myDefaultHitNormalMaterial;
+                        visualRaycastHitParams.myMaterial = getVisualResources(this._myParams.myParent.pp_getEngine()).myDefaultMaterials.myHitNormal;
                     } else {
                         visualRaycastHitParams.myMaterial = this._myParams.myHitNormalMaterial;
                     }
 
                     visualRaycastHitParams.myParent = this._myParams.myParent;
+                    visualRaycastHitParams.myIsLocal = this._myParams.myIsLocal;
 
                     visualRaycastHit.paramsUpdated();
 
@@ -191,21 +210,22 @@ PP.VisualRaycast = class VisualRaycast {
                 }
             }
 
-        } else if (this._myParams.myRaycastResult.myRaycastSetup != null) {
+        } else if (this._myParams.myRaycastResults.myRaycastParams != null) {
             {
                 let visualRaycastParams = this._myVisualRaycast.getParams();
-                visualRaycastParams.myStart.vec3_copy(this._myParams.myRaycastResult.myRaycastSetup.myOrigin);
-                visualRaycastParams.myDirection.vec3_copy(this._myParams.myRaycastResult.myRaycastSetup.myDirection);
-                visualRaycastParams.myLength = this._myParams.myRaycastResult.myRaycastSetup.myDistance;
+                visualRaycastParams.myStart.vec3_copy(this._myParams.myRaycastResults.myRaycastParams.myOrigin);
+                visualRaycastParams.myDirection.vec3_copy(this._myParams.myRaycastResults.myRaycastParams.myDirection);
+                visualRaycastParams.myLength = this._myParams.myRaycastResults.myRaycastParams.myDistance;
                 visualRaycastParams.myThickness = this._myParams.myThickness;
 
                 if (this._myParams.myRayMaterial == null) {
-                    visualRaycastParams.myMaterial = PP.myVisualData.myDefaultMaterials.myDefaultRayMaterial;
+                    visualRaycastParams.myMaterial = getVisualResources(this._myParams.myParent.pp_getEngine()).myDefaultMaterials.myRay;
                 } else {
                     visualRaycastParams.myMaterial = this._myParams.myRayMaterial;
                 }
 
                 visualRaycastParams.myParent = this._myParams.myParent;
+                visualRaycastParams.myIsLocal = this._myParams.myIsLocal;
 
                 this._myVisualRaycast.paramsUpdated();
 
@@ -225,27 +245,10 @@ PP.VisualRaycast = class VisualRaycast {
     }
 
     clone() {
-        let clonedParams = new PP.VisualRaycastParams();
-        clonedParams.myRaycastResult = this._myParams.myRaycastResult;
-        clonedParams.myHitNormalLength = this._myParams.myHitNormalLength;
-        clonedParams.myThickness = this._myParams.myThickness;
-        clonedParams.myShowOnlyFirstHit = this._myParams.myShowOnlyFirstHit;
+        let clonedParams = new VisualRaycastParams(this._myParams.myParent.pp_getEngine());
+        clonedParams.copy(this._myParams);
 
-        if (this._myParams.myRayMaterial != null) {
-            clonedParams.myRayMaterial = this._myParams.myRayMaterial.clone();
-        } else {
-            clonedParams.myRayMaterial = null;
-        }
-
-        if (this._myParams.myHitNormalMaterial != null) {
-            clonedParams.myHitNormalMaterial = this._myParams.myHitNormalMaterial.clone();
-        } else {
-            clonedParams.myHitNormalMaterial = null;
-        }
-
-        clonedParams.myParent = this._myParams.myParent;
-
-        let clone = new PP.VisualRaycast(clonedParams);
+        let clone = new VisualRaycast(clonedParams);
         clone.setAutoRefresh(this._myAutoRefresh);
         clone.setVisible(this._myVisible);
         clone._myDirty = this._myDirty;
@@ -254,11 +257,39 @@ PP.VisualRaycast = class VisualRaycast {
     }
 
     _addVisualRaycastHit() {
-        let visualRaycastHit = new PP.VisualArrow();
+        let visualRaycastHit = new VisualArrow(new VisualArrowParams(this._myParams.myParent.pp_getEngine()));
 
         visualRaycastHit.setAutoRefresh(false);
         visualRaycastHit.setVisible(false);
 
         this._myVisualRaycastHitList.push(visualRaycastHit);
     }
+}
+
+
+
+// IMPLEMENTATION
+
+VisualRaycastParams.prototype.copy = function copy(other) {
+    this.myRaycastResults = other.myRaycastResults;
+    this.myHitNormalLength = other.myHitNormalLength;
+    this.myThickness = other.myThickness;
+    this.myShowOnlyFirstHit = other.myShowOnlyFirstHit;
+
+    if (other.myRayMaterial != null) {
+        this.myRayMaterial = other.myRayMaterial.clone();
+    } else {
+        this.myRayMaterial = null;
+    }
+
+    if (other.myHitNormalMaterial != null) {
+        this.myHitNormalMaterial = other.myHitNormalMaterial.clone();
+    } else {
+        this.myHitNormalMaterial = null;
+    }
+
+    this.myParent = other.myParent;
+    this.myIsLocal = other.myIsLocal;
+
+    this.myType = other.myType;
 };

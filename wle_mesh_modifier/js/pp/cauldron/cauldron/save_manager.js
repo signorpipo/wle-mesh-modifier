@@ -1,18 +1,23 @@
-PP.SaveManager = class SaveManager {
-    constructor() {
-        this._mySaveCache = new Map();
+import { SaveUtils } from "../utils/save_utils";
+import { XRUtils } from "../utils/xr_utils";
+import { getMainEngine } from "../wl/engine_globals";
+import { Timer } from "./timer";
 
-        this._myCommitSavesDelayTimer = new PP.Timer(0, false);
+export class SaveManager {
+
+    constructor(engine = getMainEngine()) {
+        this._myEngine = engine;
+
+        this._mySaveCache = new Map();
+        this._myCacheEnabled = true;
+
+        this._myCommitSavesDelayTimer = new Timer(0, false);
         this._myDelaySavesCommit = true;
         this._myIDsToCommit = [];
 
         this._myCacheDefaultValueOnFail = true;
 
-        if (WL.xrSession) {
-            this._onXRSessionStart(WL.xrSession);
-        }
-        WL.onXRSessionStart.push(this._onXRSessionStart.bind(this));
-        WL.onXRSessionEnd.push(this._onXRSessionEnd.bind(this));
+        XRUtils.registerSessionStartEndEventListeners(this, this._onXRSessionStart.bind(this), this._onXRSessionEnd.bind(this), true, false, this._myEngine);
 
         this._myClearCallbacks = new Map();                 // Signature: callback()
         this._myDeleteCallbacks = new Map();                // Signature: callback(id)
@@ -41,6 +46,10 @@ PP.SaveManager = class SaveManager {
         this._myCacheDefaultValueOnFail = cache;
     }
 
+    setCacheEnabled(enabled) {
+        this._myCacheEnabled = enabled;
+    }
+
     update(dt) {
         if (this._myCommitSavesDelayTimer.isRunning()) {
             this._myCommitSavesDelayTimer.update(dt);
@@ -50,9 +59,9 @@ PP.SaveManager = class SaveManager {
         }
     }
 
-    save(id, value, overrideDelaySavesCommit = null) {
+    save(id, value, overrideDelaySavesCommit = null, overrideCacheEnabled = null) {
         let sameValue = false;
-        if (this._mySaveCache.has(id)) {
+        if (this._mySaveCache.has(id) && this._isCacheEnabled(overrideCacheEnabled)) {
             sameValue = this._mySaveCache.get(id) === value;
         }
 
@@ -78,9 +87,9 @@ PP.SaveManager = class SaveManager {
         }
 
         if (this._mySaveIDCallbacks.size > 0) {
-            let callbackMap = this._mySaveIDCallbacks.get(id);
-            if (callbackMap != null) {
-                callbackMap.forEach(function (callback) { callback(id, value); });
+            let callbacks = this._mySaveIDCallbacks.get(id);
+            if (callbacks != null) {
+                callbacks.forEach(function (callback) { callback(id, value); });
             }
         }
 
@@ -90,9 +99,9 @@ PP.SaveManager = class SaveManager {
             }
 
             if (this._mySaveValueChangedIDCallbacks.size > 0) {
-                let callbackMap = this._mySaveValueChangedIDCallbacks.get(id);
-                if (callbackMap != null) {
-                    callbackMap.forEach(function (callback) { callback(id, value); });
+                let callbacks = this._mySaveValueChangedIDCallbacks.get(id);
+                if (callbacks != null) {
+                    callbacks.forEach(function (callback) { callback(id, value); });
                 }
             }
         }
@@ -118,49 +127,49 @@ PP.SaveManager = class SaveManager {
         }
     }
 
-    has(id) {
-        return this._mySaveCache.has(id) || PP.SaveUtils.has(id);
+    has(id, overrideCacheEnabled = null) {
+        return (this._mySaveCache.has(id) && this._isCacheEnabled(overrideCacheEnabled)) || SaveUtils.has(id);
     }
 
-    delete(id) {
+    remove(id) {
         this._mySaveCache.delete(id);
-        PP.SaveUtils.delete(id);
+        SaveUtils.remove(id);
 
         if (this._myDeleteCallbacks.size > 0) {
             this._myDeleteCallbacks.forEach(function (callback) { callback(id); });
         }
 
         if (this._myDeleteIDCallbacks.size > 0) {
-            let callbackMap = this._myDeleteIDCallbacks.get(id);
-            if (callbackMap != null) {
-                callbackMap.forEach(function (callback) { callback(id); });
+            let callbacks = this._myDeleteIDCallbacks.get(id);
+            if (callbacks != null) {
+                callbacks.forEach(function (callback) { callback(id); });
             }
         }
     }
 
     clear() {
         this._mySaveCache.clear();
-        PP.SaveUtils.clear();
+        SaveUtils.clear();
 
         if (this._myClearCallbacks.size > 0) {
             this._myClearCallbacks.forEach(function (callback) { callback(); });
         }
     }
 
-    load(id, defaultValue = null) {
-        return this._load(id, defaultValue, "load");
+    load(id, defaultValue = null, overrideCacheEnabled = null) {
+        return this._load(id, defaultValue, "load", overrideCacheEnabled);
     }
 
-    loadString(id, defaultValue = null) {
-        return this._load(id, defaultValue, "loadString");
+    loadString(id, defaultValue = null, overrideCacheEnabled = null) {
+        return this._load(id, defaultValue, "loadString", overrideCacheEnabled);
     }
 
-    loadNumber(id, defaultValue = null) {
-        return this._load(id, defaultValue, "loadNumber");
+    loadNumber(id, defaultValue = null, overrideCacheEnabled = null) {
+        return this._load(id, defaultValue, "loadNumber", overrideCacheEnabled);
     }
 
-    loadBool(id, defaultValue = null) {
-        return this._load(id, defaultValue, "loadBool");
+    loadBool(id, defaultValue = null, overrideCacheEnabled = null) {
+        return this._load(id, defaultValue, "loadBool", overrideCacheEnabled);
     }
 
     getCommitSavesDelay() {
@@ -175,12 +184,16 @@ PP.SaveManager = class SaveManager {
         return this._myCacheDefaultValueOnFail;
     }
 
+    isCacheEnabled() {
+        return this._myCacheEnabled;
+    }
+
     _commitSave(id, isCommitSaveDelayed) {
         let value = this._mySaveCache.get(id);
         let failed = false;
 
         try {
-            PP.SaveUtils.save(id, value);
+            SaveUtils.save(id, value);
         } catch (error) {
             failed = true;
         }
@@ -190,21 +203,21 @@ PP.SaveManager = class SaveManager {
         }
 
         if (this._myCommitSaveIDCallbacks.size > 0) {
-            let callbackMap = this._myCommitSaveIDCallbacks.get(id);
-            if (callbackMap != null) {
-                callbackMap.forEach(function (callback) { callback(id, value, isCommitSaveDelayed, failed); });
+            let callbacks = this._myCommitSaveIDCallbacks.get(id);
+            if (callbacks != null) {
+                callbacks.forEach(function (callback) { callback(id, value, isCommitSaveDelayed, failed); });
             }
         }
 
         return failed;
     }
 
-    _load(id, defaultValue, functionName) {
+    _load(id, defaultValue, functionName, overrideCacheEnabled = null) {
         let value = null;
         let failed = false;
         let loadFromCache = false;
 
-        if (this._mySaveCache.has(id)) {
+        if (this._mySaveCache.has(id) && this._isCacheEnabled(overrideCacheEnabled)) {
             value = this._mySaveCache.get(id);
 
             if (value == null && defaultValue != null) {
@@ -218,7 +231,7 @@ PP.SaveManager = class SaveManager {
         } else {
             let saveResult = null;
             try {
-                saveResult = PP.SaveUtils[functionName](id, null);
+                saveResult = SaveUtils[functionName](id, null);
             } catch (error) {
                 // Error is managed as if it worked but there was no value
                 saveResult = null;
@@ -243,9 +256,9 @@ PP.SaveManager = class SaveManager {
         }
 
         if (this._myLoadIDCallbacks.size > 0) {
-            let callbackMap = this._myLoadIDCallbacks.get(id);
-            if (callbackMap != null) {
-                callbackMap.forEach(function (callback) { callback(id, value, loadFromCache, failed); });
+            let callbacks = this._myLoadIDCallbacks.get(id);
+            if (callbacks != null) {
+                callbacks.forEach(function (callback) { callback(id, value, loadFromCache, failed); });
             }
         }
 
@@ -253,7 +266,7 @@ PP.SaveManager = class SaveManager {
     }
 
     _onXRSessionStart(session) {
-        session.addEventListener('visibilitychange', function (event) {
+        session.addEventListener("visibilitychange", function (event) {
             if (event.session.visibilityState != "visible") {
                 this._onXRSessionInterrupt();
             }
@@ -285,21 +298,21 @@ PP.SaveManager = class SaveManager {
     }
 
     registerDeleteIDEventListener(valueID, callbackID, callback) {
-        let valueIDMap = this._myDeleteIDCallbacks.get(valueID);
-        if (valueIDMap == null) {
+        let valueIDCallbacks = this._myDeleteIDCallbacks.get(valueID);
+        if (valueIDCallbacks == null) {
             this._myDeleteIDCallbacks.set(valueID, new Map());
-            valueIDMap = this._myDeleteIDCallbacks.get(valueID);
+            valueIDCallbacks = this._myDeleteIDCallbacks.get(valueID);
         }
 
-        valueIDMap.set(callbackID, callback);
+        valueIDCallbacks.set(callbackID, callback);
     }
 
     unregisterDeleteIDEventListener(valueID, callbackID) {
-        let valueIDMap = this._myDeleteIDCallbacks.get(valueID);
-        if (valueIDMap != null) {
-            valueIDMap.delete(callbackID);
+        let valueIDCallbacks = this._myDeleteIDCallbacks.get(valueID);
+        if (valueIDCallbacks != null) {
+            valueIDCallbacks.delete(callbackID);
 
-            if (valueIDMap.size <= 0) {
+            if (valueIDCallbacks.size <= 0) {
                 this._myDeleteIDCallbacks.delete(valueID);
             }
         }
@@ -314,21 +327,21 @@ PP.SaveManager = class SaveManager {
     }
 
     registerSaveIDEventListener(valueID, callbackID, callback) {
-        let valueIDMap = this._mySaveIDCallbacks.get(valueID);
-        if (valueIDMap == null) {
+        let valueIDCallbacks = this._mySaveIDCallbacks.get(valueID);
+        if (valueIDCallbacks == null) {
             this._mySaveIDCallbacks.set(valueID, new Map());
-            valueIDMap = this._mySaveIDCallbacks.get(valueID);
+            valueIDCallbacks = this._mySaveIDCallbacks.get(valueID);
         }
 
-        valueIDMap.set(callbackID, callback);
+        valueIDCallbacks.set(callbackID, callback);
     }
 
     unregisterSaveIDEventListener(valueID, callbackID) {
-        let valueIDMap = this._mySaveIDCallbacks.get(valueID);
-        if (valueIDMap != null) {
-            valueIDMap.delete(callbackID);
+        let valueIDCallbacks = this._mySaveIDCallbacks.get(valueID);
+        if (valueIDCallbacks != null) {
+            valueIDCallbacks.delete(callbackID);
 
-            if (valueIDMap.size <= 0) {
+            if (valueIDCallbacks.size <= 0) {
                 this._mySaveIDCallbacks.delete(valueID);
             }
         }
@@ -343,21 +356,21 @@ PP.SaveManager = class SaveManager {
     }
 
     registerSaveValueChangedIDEventListener(valueID, callbackID, callback) {
-        let valueIDMap = this._mySaveValueChangedIDCallbacks.get(valueID);
-        if (valueIDMap == null) {
+        let valueIDCallbacks = this._mySaveValueChangedIDCallbacks.get(valueID);
+        if (valueIDCallbacks == null) {
             this._mySaveValueChangedIDCallbacks.set(valueID, new Map());
-            valueIDMap = this._mySaveValueChangedIDCallbacks.get(valueID);
+            valueIDCallbacks = this._mySaveValueChangedIDCallbacks.get(valueID);
         }
 
-        valueIDMap.set(callbackID, callback);
+        valueIDCallbacks.set(callbackID, callback);
     }
 
     unregisterSaveValueChangedIDEventListener(valueID, callbackID) {
-        let valueIDMap = this._mySaveValueChangedIDCallbacks.get(valueID);
-        if (valueIDMap != null) {
-            valueIDMap.delete(callbackID);
+        let valueIDCallbacks = this._mySaveValueChangedIDCallbacks.get(valueID);
+        if (valueIDCallbacks != null) {
+            valueIDCallbacks.delete(callbackID);
 
-            if (valueIDMap.size <= 0) {
+            if (valueIDCallbacks.size <= 0) {
                 this._mySaveValueChangedIDCallbacks.delete(valueID);
             }
         }
@@ -380,21 +393,21 @@ PP.SaveManager = class SaveManager {
     }
 
     registerCommitSaveIDEventListener(valueID, callbackID, callback) {
-        let valueIDMap = this._myCommitSaveIDCallbacks.get(valueID);
-        if (valueIDMap == null) {
+        let valueIDCallbacks = this._myCommitSaveIDCallbacks.get(valueID);
+        if (valueIDCallbacks == null) {
             this._myCommitSaveIDCallbacks.set(valueID, new Map());
-            valueIDMap = this._myCommitSaveIDCallbacks.get(valueID);
+            valueIDCallbacks = this._myCommitSaveIDCallbacks.get(valueID);
         }
 
-        valueIDMap.set(callbackID, callback);
+        valueIDCallbacks.set(callbackID, callback);
     }
 
     unregisterCommitSaveIDEventListener(valueID, callbackID) {
-        let valueIDMap = this._myCommitSaveIDCallbacks.get(valueID);
-        if (valueIDMap != null) {
-            valueIDMap.delete(callbackID);
+        let valueIDCallbacks = this._myCommitSaveIDCallbacks.get(valueID);
+        if (valueIDCallbacks != null) {
+            valueIDCallbacks.delete(callbackID);
 
-            if (valueIDMap.size <= 0) {
+            if (valueIDCallbacks.size <= 0) {
                 this._myCommitSaveIDCallbacks.delete(valueID);
             }
         }
@@ -409,23 +422,27 @@ PP.SaveManager = class SaveManager {
     }
 
     registerLoadIDEventListener(valueID, callbackID, callback) {
-        let valueIDMap = this._myLoadIDCallbacks.get(valueID);
-        if (valueIDMap == null) {
+        let valueIDCallbacks = this._myLoadIDCallbacks.get(valueID);
+        if (valueIDCallbacks == null) {
             this._myLoadIDCallbacks.set(valueID, new Map());
-            valueIDMap = this._myLoadIDCallbacks.get(valueID);
+            valueIDCallbacks = this._myLoadIDCallbacks.get(valueID);
         }
 
-        valueIDMap.set(callbackID, callback);
+        valueIDCallbacks.set(callbackID, callback);
     }
 
     unregisterLoadIDEventListener(valueID, callbackID) {
-        let valueIDMap = this._myLoadIDCallbacks.get(valueID);
-        if (valueIDMap != null) {
-            valueIDMap.delete(callbackID);
+        let valueIDCallbacks = this._myLoadIDCallbacks.get(valueID);
+        if (valueIDCallbacks != null) {
+            valueIDCallbacks.delete(callbackID);
 
-            if (valueIDMap.size <= 0) {
+            if (valueIDCallbacks.size <= 0) {
                 this._myLoadIDCallbacks.delete(valueID);
             }
         }
     }
-};
+
+    _isCacheEnabled(overrideCacheEnabled = null) {
+        return (this._myCacheEnabled && overrideCacheEnabled == null) || (overrideCacheEnabled != null && overrideCacheEnabled);
+    }
+}

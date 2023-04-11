@@ -1,36 +1,43 @@
-PP.ButtonType = {
-    SELECT: 0,      // Trigger
-    SQUEEZE: 1,     // Grip
-    TOUCHPAD: 2,    // This is to support older gamepads, you can just use TOP_BUTTON to use this button for both older and newer gamepads
+import { vec2_create } from "../../plugin/js/extensions/array_extension";
+
+export let GamepadButtonID = {
+    SELECT: 0,          // Trigger
+    SQUEEZE: 1,         // Grip
+    TOUCHPAD: 2,
     THUMBSTICK: 3,
     BOTTOM_BUTTON: 4,   // A or X button on oculus quest gamepad
     TOP_BUTTON: 5,      // B or Y button on oculus quest gamepad, reverts to TOUCHPAD button for gamepads that does not support TOP_BUTTON
     THUMB_REST: 6
 };
 
-PP.ButtonEvent = {
+export let GamepadButtonEvent = {
     PRESS_START: 0,
     PRESS_END: 1,
-    PRESSED: 2,     //Every frame that it is pressed
-    NOT_PRESSED: 3, //Every frame that it is not pressed
+    PRESSED: 2,         // Every frame that it is pressed
+    NOT_PRESSED: 3,     // Every frame that it is not pressed
     TOUCH_START: 4,
     TOUCH_END: 5,
-    TOUCHED: 6,     //Every frame that it is touched
-    NOT_TOUCHED: 7, //Every frame that it is not touched
+    TOUCHED: 6,         // Every frame that it is touched
+    NOT_TOUCHED: 7,     // Every frame that it is not touched
     VALUE_CHANGED: 8,
-    ALWAYS: 9,      //Every frame
+    ALWAYS: 9           // Every frame
 };
 
-PP.AxesEvent = {
+export let GamepadAxesID = {
+    THUMBSTICK: 0
+};
+
+export let GamepadAxesEvent = {
     X_CHANGED: 0,
     Y_CHANGED: 1,
     AXES_CHANGED: 2,
     ALWAYS: 3
 };
 
-PP.ButtonInfo = class ButtonInfo {
-    constructor(type, handedness) {
-        this.myType = type;
+export class GamepadButtonInfo {
+
+    constructor(id, handedness) {
+        this.myID = id;
         this.myHandedness = handedness;
 
         this.myIsPressed = false;
@@ -65,8 +72,8 @@ PP.ButtonInfo = class ButtonInfo {
         this.myPrevMultipleTouchEndCount = 0;
     }
 
-    getType() {
-        return this.myType;
+    getID() {
+        return this.myID;
     }
 
     getHandedness() {
@@ -102,7 +109,7 @@ PP.ButtonInfo = class ButtonInfo {
     }
 
     clone() {
-        let value = new ButtonInfo(this.myType, this.myHandedness);
+        let value = new GamepadButtonInfo(this.myID, this.myHandedness);
         value.myIsPressed = this.myIsPressed;
         value.myPrevIsPressed = this.myPrevIsPressed;
         value.myIsTouched = this.myIsTouched;
@@ -132,17 +139,21 @@ PP.ButtonInfo = class ButtonInfo {
 
         return value;
     }
-};
+}
 
-PP.AxesInfo = class AxesInfo {
-    constructor(handedness) {
+export class GamepadAxesInfo {
+
+    constructor(id, handedness) {
+        this.myID = id;
+
         this.myHandedness = handedness;
 
-        this.myAxes = new Float32Array(2); // this.myAxes[0] is X,  this.myAxes[1] is Y
-        this.myAxes.fill(0.0);
+        this.myAxes = vec2_create(0, 0); // this.myAxes[0] is X,  this.myAxes[1] is Y
+        this.myPrevAxes = vec2_create(0, 0);
+    }
 
-        this.myPrevAxes = new Float32Array(2);
-        this.myPrevAxes.fill(0.0);
+    getID() {
+        return this.myID;
     }
 
     getAxes() {
@@ -154,15 +165,16 @@ PP.AxesInfo = class AxesInfo {
     }
 
     clone() {
-        let value = new AxesInfo(this.myHandedness);
-        value.myAxes = this.myAxes;
-        value.myPrevAxes = this.myPrevAxes;
+        let value = new GamepadAxesInfo(this.myID, this.myHandedness);
+        value.myAxes.vec2_copy(this.myAxes);
+        value.myPrevAxes.vec2_copy(this.myPrevAxes);
 
         return value;
     }
-};
+}
 
-PP.PulseInfo = class PulseInfo {
+export class GamepadPulseInfo {
+
     constructor() {
         this.myIntensity = 0.0;
         this.myDuration = 0.0;
@@ -171,11 +183,11 @@ PP.PulseInfo = class PulseInfo {
     }
 
     clone() {
-        let value = new PulseInfo();
+        let value = new GamepadPulseInfo();
         value.myIntensity = this.myIntensity;
         value.myDuration = this.myDuration;
         value.myIsDevicePulsing = this.myIsDevicePulsing;
 
         return value;
     }
-};
+}

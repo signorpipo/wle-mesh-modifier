@@ -1,4 +1,5 @@
-PP.AudioSetup = class AudioSetup {
+export class AudioSetup {
+
     constructor(audioFilePath = null) {
         this.myAudioFilePath = (audioFilePath) ? audioFilePath.slice(0) : null;
 
@@ -6,18 +7,22 @@ PP.AudioSetup = class AudioSetup {
         this.myAutoplay = false;
 
         this.myVolume = 1.0;
-        this._myRate = 1.0; //From 0.5 to 4.0
+        this._myRate = 1.0; // From 0.5 to 4.0
 
         this.myPool = 5;
+        this.myPreload = true;
 
-        //Spatial
+        this.myPreventPlayWhenAudioContextNotRunning = false;
+
+        // Spatial Params
+
         this.myPosition = null;
         this.mySpatial = true;
         this.myReferenceDistance = 1.0; // At this distance (and closer) the volume is not reduced
     }
 
     clone() {
-        let audioSetup = new PP.AudioSetup();
+        let audioSetup = new AudioSetup();
 
         audioSetup.myAudioFilePath = this.myAudioFilePath.slice(0);
 
@@ -29,9 +34,18 @@ PP.AudioSetup = class AudioSetup {
         audioSetup.myRate = this.myRate;
 
         audioSetup.myPool = this.myPool;
+        audioSetup.myPreload = this.myPreload;
 
-        //Spatial
-        audioSetup.myPosition = this.myPosition;
+        audioSetup.myPreventPlayWhenAudioContextNotRunning = this.myPreventPlayWhenAudioContextNotRunning;
+
+        // Spatial
+
+        if (this.myPosition != null) {
+            audioSetup.myPosition = this.myPosition.vec3_clone();
+        } else {
+            audioSetup.myPosition = null;
+        }
+
         audioSetup.mySpatial = this.mySpatial;
         audioSetup.myReferenceDistance = this.myReferenceDistance;
 
@@ -53,4 +67,4 @@ PP.AudioSetup = class AudioSetup {
     set myRate(rate) {
         this._myRate = rate;
     }
-};
+}

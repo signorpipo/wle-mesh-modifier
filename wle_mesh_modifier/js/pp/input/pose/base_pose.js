@@ -1,37 +1,54 @@
-PP.BasePoseParams = class BasePoseParams {
-    constructor() {
+import { XRUtils } from "../../cauldron/utils/xr_utils";
+import { getMainEngine } from "../../cauldron/wl/engine_globals";
+import { mat4_create, quat2_create, quat_create, vec3_create } from "../../plugin/js/extensions/array_extension";
+
+export class BasePoseParams {
+
+    constructor(engine = getMainEngine()) {
         this.myReferenceObject = null;
         this.myFixForward = true;
         this.myForceEmulatedVelocities = false;
+        this.myUpdateOnViewReset = false;
+
+        this.myEngine = engine;
     }
-};
+}
 
 // BasePose transform is local by default (as if the parent/reference object was the identity transform)
-// you can use setReferenceObject if you want the BasePose to return the transform in world space 
-PP.BasePose = class BasePose {
+// You can use setReferenceObject if you want the BasePose to return the transform in world space 
+export class BasePose {
 
-    constructor(basePoseParams = new PP.BasePoseParams()) {
+    constructor(basePoseParams = new BasePoseParams()) {
         this._myFixForward = basePoseParams.myFixForward;
         this._myForceEmulatedVelocities = basePoseParams.myForceEmulatedVelocities;
+        this._myUpdateOnViewReset = basePoseParams.myUpdateOnViewReset;
 
         this._myReferenceSpace = null;
         this._myReferenceObject = basePoseParams.myReferenceObject;
 
-        this._myPosition = [0, 0, 0];
-        this._myRotation = [0, 0, 0, 1];
+        this._myEngine = basePoseParams.myEngine;
 
-        this._myPrevPosition = [0, 0, 0];
-        this._myPrevRotation = [0, 0, 0, 1];
+        this._myPosition = vec3_create();
+        this._myRotationQuat = quat2_create();
 
-        this._myLinearVelocity = [0, 0, 0];
-        this._myAngularVelocity = [0, 0, 0]; // Radians
+        this._myPrevPosition = vec3_create();
+        this._myPrevRotationQuat = quat_create();
+
+        this._myLinearVelocity = vec3_create();
+        this._myAngularVelocityRadians = vec3_create();
 
         this._myIsValid = false;
         this._myIsLinearVelocityEmulated = true;
         this._myIsAngularVelocityEmulated = true;
+
+        this._myPoseUpdatedCallbacks = new Map();   // Signature: callback(thisPose)
     }
 
-    // if the reference object is set, the transform will be converted using it as a parent,
+    getEngine() {
+        return this._myEngine;
+    }
+
+    // If the reference object is set, the transform will be converted using it as a parent,
     // otherwise the transform will be local, as if the parent/reference object was the identity transform
     setReferenceObject(referenceObject) {
         this._myReferenceObject = referenceObject;
@@ -57,16 +74,20 @@ PP.BasePose = class BasePose {
         return this._myForceEmulatedVelocities;
     }
 
+    setUpdateOnViewReset(updateOnViewReset) {
+        this._myUpdateOnViewReset = updateOnViewReset;
+    }
+
+    isUpdateOnViewReset() {
+        return this._myUpdateOnViewReset;
+    }
+
     getReferenceSpace() {
         return this._myReferenceSpace;
     }
 
-    getInputSource() {
-        return this._myInputSource;
-    }
-
     getPosition() {
-        // implemented outside class definition
+        // Implemented outside class definition
     }
 
     getRotation() {
@@ -83,7 +104,7 @@ PP.BasePose = class BasePose {
     }
 
     getRotationQuat() {
-        // implemented outside class definition
+        // Implemented outside class definition
     }
 
     getTransform() {
@@ -91,15 +112,15 @@ PP.BasePose = class BasePose {
     }
 
     getTransformMatrix() {
-        // implemented outside class definition
+        // Implemented outside class definition
     }
 
     getTransformQuat() {
-        // implemented outside class definition
+        // Implemented outside class definition
     }
 
     getLinearVelocity() {
-        // implemented outside class definition
+        // Implemented outside class definition
     }
 
     getAngularVelocity() {
@@ -107,11 +128,11 @@ PP.BasePose = class BasePose {
     }
 
     getAngularVelocityDegrees() {
-        // implemented outside class definition
+        // Implemented outside class definition
     }
 
     getAngularVelocityRadians() {
-        // implemented outside class definition
+        // Implemented outside class definition
     }
 
     isValid() {
@@ -126,96 +147,20 @@ PP.BasePose = class BasePose {
         return this._myIsAngularVelocityEmulated;
     }
 
+    registerPoseUpdatedEventListener(id, callback) {
+        this._myPoseUpdatedCallbacks.set(id, callback);
+    }
+
+    unregisterPoseUpdatedEventListener(id) {
+        this._myPoseUpdatedCallbacks.delete(id);
+    }
+
     start() {
-        if (WL.xrSession) {
-            this._onXRSessionStart(true, WL.xrSession);
-        }
-        WL.onXRSessionStart.push(this._onXRSessionStart.bind(this, false));
-        WL.onXRSessionEnd.push(this._onXRSessionEnd.bind(this));
+        XRUtils.registerSessionStartEndEventListeners(this, this._onXRSessionStart.bind(this), this._onXRSessionEnd.bind(this), true, true, this._myEngine);
     }
 
     update(dt) {
-        this._myPrevPosition.vec3_copy(this._myPosition);
-        this._myPrevRotation.quat_copy(this._myRotation);
-
-        let xrFrame = Module['webxr_frame'];
-        if (xrFrame && this._isReadyToGetPose()) {
-            let xrPose = null;
-            try {
-                xrPose = this._getPose(xrFrame);
-            } catch (error) {
-                // not handled, pose will be null
-            }
-
-            if (xrPose) {
-                this._myPosition[0] = xrPose.transform.position.x;
-                this._myPosition[1] = xrPose.transform.position.y;
-                this._myPosition[2] = xrPose.transform.position.z;
-
-                this._myRotation[0] = xrPose.transform.orientation.x;
-                this._myRotation[1] = xrPose.transform.orientation.y;
-                this._myRotation[2] = xrPose.transform.orientation.z;
-                this._myRotation[3] = xrPose.transform.orientation.w;
-
-                if (xrPose.linearVelocity && !this._myForceEmulatedVelocities) {
-                    this._myLinearVelocity[0] = xrPose.linearVelocity.x;
-                    this._myLinearVelocity[1] = xrPose.linearVelocity.y;
-                    this._myLinearVelocity[2] = xrPose.linearVelocity.z;
-
-                    this._myIsLinearVelocityEmulated = false;
-                } else {
-                    this._computeEmulatedLinearVelocity(dt);
-
-                    this._myIsLinearVelocityEmulated = true;
-                }
-
-                if (xrPose.angularVelocity && !this._myForceEmulatedVelocities) {
-                    this._myAngularVelocity[0] = xrPose.angularVelocity.x;
-                    this._myAngularVelocity[1] = xrPose.angularVelocity.y;
-                    this._myAngularVelocity[2] = xrPose.angularVelocity.z;
-
-                    this._myIsAngularVelocityEmulated = false;
-                } else {
-                    this._computeEmulatedAngularVelocity(dt);
-
-                    this._myIsAngularVelocityEmulated = true;
-                }
-
-                this._myIsValid = true;
-            } else {
-                // keep previous position and rotation but reset velocity because reasons
-
-                this._myLinearVelocity[0] = 0;
-                this._myLinearVelocity[1] = 0;
-                this._myLinearVelocity[2] = 0;
-
-                this._myAngularVelocity[0] = 0;
-                this._myAngularVelocity[1] = 0;
-                this._myAngularVelocity[2] = 0;
-
-                this._myIsValid = false;
-                this._myIsLinearVelocityEmulated = true;
-                this._myIsAngularVelocityEmulated = true;
-            }
-
-            this._updateHook(dt, xrPose);
-        } else {
-            // keep previous position and rotation but reset velocity because reasons
-
-            this._myLinearVelocity[0] = 0;
-            this._myLinearVelocity[1] = 0;
-            this._myLinearVelocity[2] = 0;
-
-            this._myAngularVelocity[0] = 0;
-            this._myAngularVelocity[1] = 0;
-            this._myAngularVelocity[2] = 0;
-
-            this._myIsValid = false;
-            this._myIsLinearVelocityEmulated = true;
-            this._myIsAngularVelocityEmulated = true;
-
-            this._updateHook(dt, null);
-        }
+        this._update(dt, true);
     }
 
     // Hooks
@@ -228,10 +173,10 @@ PP.BasePose = class BasePose {
         return null;
     }
 
-    _updateHook(dt, xrPose) {
+    _updateHook(dt, updateVelocity, xrPose) {
     }
 
-    _onXRSessionStartHook(manualStart, session) {
+    _onXRSessionStartHook(manualCall, session) {
 
     }
 
@@ -239,7 +184,104 @@ PP.BasePose = class BasePose {
 
     }
 
+    _onViewResetHook() {
+
+    }
+
     // Hooks end
+
+    _update(dt, updateVelocity) {
+        this._myPrevPosition.vec3_copy(this._myPosition);
+        this._myPrevRotationQuat.quat_copy(this._myRotationQuat);
+
+        let xrFrame = XRUtils.getFrame(this._myEngine);
+        if (xrFrame && this._isReadyToGetPose()) {
+            let xrPose = null;
+            try {
+                xrPose = this._getPose(xrFrame);
+            } catch (error) {
+                // Not handled, pose will be null
+            }
+
+            if (xrPose) {
+                this._myPosition[0] = xrPose.transform.position.x;
+                this._myPosition[1] = xrPose.transform.position.y;
+                this._myPosition[2] = xrPose.transform.position.z;
+
+                this._myRotationQuat[0] = xrPose.transform.orientation.x;
+                this._myRotationQuat[1] = xrPose.transform.orientation.y;
+                this._myRotationQuat[2] = xrPose.transform.orientation.z;
+                this._myRotationQuat[3] = xrPose.transform.orientation.w;
+                this._myRotationQuat.quat_normalize(this._myRotationQuat);
+
+                if (updateVelocity) {
+                    if (xrPose.linearVelocity && !this._myForceEmulatedVelocities) {
+                        this._myLinearVelocity[0] = xrPose.linearVelocity.x;
+                        this._myLinearVelocity[1] = xrPose.linearVelocity.y;
+                        this._myLinearVelocity[2] = xrPose.linearVelocity.z;
+
+                        this._myIsLinearVelocityEmulated = false;
+                    } else {
+                        this._computeEmulatedLinearVelocity(dt);
+
+                        this._myIsLinearVelocityEmulated = true;
+                    }
+
+                    if (xrPose.angularVelocity && !this._myForceEmulatedVelocities) {
+                        this._myAngularVelocityRadians[0] = xrPose.angularVelocity.x;
+                        this._myAngularVelocityRadians[1] = xrPose.angularVelocity.y;
+                        this._myAngularVelocityRadians[2] = xrPose.angularVelocity.z;
+
+                        this._myIsAngularVelocityEmulated = false;
+                    } else {
+                        this._computeEmulatedAngularVelocity(dt);
+
+                        this._myIsAngularVelocityEmulated = true;
+                    }
+                }
+
+                this._myIsValid = true;
+            } else {
+                // Keep previous position and rotation but reset velocity because reasons
+
+                if (updateVelocity) {
+                    this._myLinearVelocity[0] = 0;
+                    this._myLinearVelocity[1] = 0;
+                    this._myLinearVelocity[2] = 0;
+
+                    this._myAngularVelocityRadians[0] = 0;
+                    this._myAngularVelocityRadians[1] = 0;
+                    this._myAngularVelocityRadians[2] = 0;
+                }
+
+                this._myIsValid = false;
+                this._myIsLinearVelocityEmulated = true;
+                this._myIsAngularVelocityEmulated = true;
+            }
+
+            this._updateHook(dt, updateVelocity, xrPose);
+        } else {
+            // Keep previous position and rotation but reset velocity because reasons
+
+            if (updateVelocity) {
+                this._myLinearVelocity[0] = 0;
+                this._myLinearVelocity[1] = 0;
+                this._myLinearVelocity[2] = 0;
+
+                this._myAngularVelocityRadians[0] = 0;
+                this._myAngularVelocityRadians[1] = 0;
+                this._myAngularVelocityRadians[2] = 0;
+            }
+
+            this._myIsValid = false;
+            this._myIsLinearVelocityEmulated = true;
+            this._myIsAngularVelocityEmulated = true;
+
+            this._updateHook(dt, updateVelocity, null);
+        }
+
+        this._myPoseUpdatedCallbacks.forEach(function (callback) { callback(this); }.bind(this));
+    }
 
     _computeEmulatedLinearVelocity(dt) {
         if (dt > 0) {
@@ -252,10 +294,16 @@ PP.BasePose = class BasePose {
         }
     }
 
-    _onXRSessionStart(manualStart, session) {
-        session.requestReferenceSpace(WebXR.refSpace).then(function (referenceSpace) { this._myReferenceSpace = referenceSpace; }.bind(this));
+    _onXRSessionStart(manualCall, session) {
+        session.requestReferenceSpace(XRUtils.getReferenceSpaceType(this._myEngine)).then(function (referenceSpace) {
+            this._myReferenceSpace = referenceSpace;
 
-        this._onXRSessionStartHook(manualStart, session);
+            if (referenceSpace.addEventListener != null) {
+                referenceSpace.addEventListener("reset", this._onViewReset.bind(this));
+            }
+        }.bind(this));
+
+        this._onXRSessionStartHook(manualCall, session);
     }
 
     _onXRSessionEnd() {
@@ -263,11 +311,27 @@ PP.BasePose = class BasePose {
 
         this._myReferenceSpace = null;
     }
-};
 
-PP.BasePose.prototype.getPosition = function () {
-    let position = PP.vec3_create();
-    let transform = PP.mat4_create();
+    _onViewReset() {
+        if (this._myUpdateOnViewReset) {
+            this._update(0, false);
+        }
+
+        this._onViewResetHook();
+    }
+
+    _computeEmulatedAngularVelocity() {
+        // Implemented outside class definition
+    }
+}
+
+
+
+// IMPLEMENTATION
+
+BasePose.prototype.getPosition = function () {
+    let position = vec3_create();
+    let transform = mat4_create();
     return function getPosition() {
         if (this._myReferenceObject == null) {
             return this._myPosition;
@@ -277,12 +341,12 @@ PP.BasePose.prototype.getPosition = function () {
     };
 }();
 
-PP.BasePose.prototype.getRotationQuat = function () {
-    let rotationQuat = PP.quat_create();
-    let playerRotationQuat = PP.quat_create();
-    let up = PP.vec3_create();
+BasePose.prototype.getRotationQuat = function () {
+    let rotationQuat = quat_create();
+    let playerRotationQuat = quat_create();
+    let up = vec3_create();
     return function getRotationQuat() {
-        rotationQuat.quat_copy(this._myRotation);
+        rotationQuat.quat_copy(this._myRotationQuat);
 
         if (this._myFixForward) {
             rotationQuat.quat_rotateAxisRadians(Math.PI, rotationQuat.quat_getUp(up), rotationQuat);
@@ -296,16 +360,16 @@ PP.BasePose.prototype.getRotationQuat = function () {
     };
 }();
 
-PP.BasePose.prototype.getTransformMatrix = function () {
-    let transform = PP.mat4_create();
+BasePose.prototype.getTransformMatrix = function () {
+    let transform = mat4_create();
     return function getTransformMatrix() {
         return this.getTransformQuat().quat2_toMatrix(transform);
     };
 }();
 
-PP.BasePose.prototype.getTransformQuat = function () {
-    let transformQuat = PP.quat2_create();
-    let playerTransformQuat = PP.quat2_create();
+BasePose.prototype.getTransformQuat = function () {
+    let transformQuat = quat2_create();
+    let playerTransformQuat = quat2_create();
     return function getTransformQuat() {
         transformQuat.quat2_setPositionRotationQuat(this._myPosition, this.getRotationQuat());
 
@@ -317,9 +381,9 @@ PP.BasePose.prototype.getTransformQuat = function () {
     };
 }();
 
-PP.BasePose.prototype.getLinearVelocity = function () {
-    let position = PP.vec3_create();
-    let transform = PP.mat4_create();
+BasePose.prototype.getLinearVelocity = function () {
+    let position = vec3_create();
+    let transform = mat4_create();
     return function getLinearVelocity() {
         if (this._myReferenceObject == null) {
             return this._myLinearVelocity;
@@ -329,49 +393,38 @@ PP.BasePose.prototype.getLinearVelocity = function () {
     };
 }();
 
-PP.BasePose.prototype.getAngularVelocityDegrees = function () {
-    let rotationDegrees = PP.vec3_create();
+BasePose.prototype.getAngularVelocityDegrees = function () {
+    let rotationDegrees = vec3_create();
     return function getAngularVelocityDegrees() {
         this.getAngularVelocityRadians().vec3_toDegrees(rotationDegrees);
     };
 }();
 
-PP.BasePose.prototype.getAngularVelocityRadians = function () {
-    let rotationRadians = PP.vec3_create();
-    let transform = PP.mat4_create();
+BasePose.prototype.getAngularVelocityRadians = function () {
+    let rotationRadians = vec3_create();
+    let transform = mat4_create();
     return function getAngularVelocityRadians() {
         if (this._myReferenceObject == null) {
-            return this._myAngularVelocity;
+            return this._myAngularVelocityRadians;
         }
 
-        return this._myAngularVelocity.vec3_convertDirectionToWorld(this._myReferenceObject.pp_getTransform(transform), rotationRadians);
+        return this._myAngularVelocityRadians.vec3_convertDirectionToWorld(this._myReferenceObject.pp_getTransform(transform), rotationRadians);
     };
 }();
 
-PP.BasePose.prototype._computeEmulatedAngularVelocity = function () {
-    let rotationRadians = PP.vec3_create();
-    let prevRotationRadians = PP.vec3_create();
+BasePose.prototype._computeEmulatedAngularVelocity = function () {
+    let rotationRadians = vec3_create();
+    let prevRotationRadians = vec3_create();
     return function _computeEmulatedAngularVelocity(dt) {
         if (dt > 0) {
-            rotationRadians = this._myRotation.quat_toRadians(rotationRadians);
-            prevRotationRadians = this._myPrevRotation.quat_toRadians(prevRotationRadians);
-            rotationRadians.vec3_sub(prevRotationRadians, this._myAngularVelocity);
-            this._myAngularVelocity.vec3_scale(1 / dt, this._myAngularVelocity);
+            rotationRadians = this._myRotationQuat.quat_toRadians(rotationRadians);
+            prevRotationRadians = this._myPrevRotationQuat.quat_toRadians(prevRotationRadians);
+            rotationRadians.vec3_sub(prevRotationRadians, this._myAngularVelocityRadians);
+            this._myAngularVelocityRadians.vec3_scale(1 / dt, this._myAngularVelocityRadians);
         } else {
-            this._myAngularVelocity[0] = 0;
-            this._myAngularVelocity[1] = 0;
-            this._myAngularVelocity[2] = 0;
+            this._myAngularVelocityRadians[0] = 0;
+            this._myAngularVelocityRadians[1] = 0;
+            this._myAngularVelocityRadians[2] = 0;
         }
     };
 }();
-
-
-
-Object.defineProperty(PP.BasePose.prototype, "getPosition", { enumerable: false });
-Object.defineProperty(PP.BasePose.prototype, "getRotationQuat", { enumerable: false });
-Object.defineProperty(PP.BasePose.prototype, "getTransformMatrix", { enumerable: false });
-Object.defineProperty(PP.BasePose.prototype, "getTransformQuat", { enumerable: false });
-Object.defineProperty(PP.BasePose.prototype, "getLinearVelocity", { enumerable: false });
-Object.defineProperty(PP.BasePose.prototype, "getAngularVelocityDegrees", { enumerable: false });
-Object.defineProperty(PP.BasePose.prototype, "getAngularVelocityRadians", { enumerable: false });
-Object.defineProperty(PP.BasePose.prototype, "_computeEmulatedAngularVelocity", { enumerable: false });

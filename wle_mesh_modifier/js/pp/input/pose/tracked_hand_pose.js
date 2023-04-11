@@ -1,34 +1,44 @@
-PP.TrackedHandPoseParams = class TrackedHandPoseParams extends PP.BasePoseParams {
-    constructor(addAllJointTypes = true) {
-        super();
+import { getMainEngine } from "../../cauldron/wl/engine_globals";
+import { TrackedHandJointID } from "../cauldron/input_types";
+import { InputUtils } from "../cauldron/input_utils";
+import { BasePoseParams } from "./base_pose";
+import { TrackedHandJointPose } from "./tracked_hand_joint_pose";
 
-        this.myTrackedHandJointTypeList = [];
+export class TrackedHandPoseParams extends BasePoseParams {
 
-        if (addAllJointTypes) {
-            for (let typeKey in PP.TrackedHandJointType) {
-                this.myTrackedHandJointTypeList.push([PP.TrackedHandJointType[typeKey]]);
+    constructor(addAllJointIDs = true, engine = getMainEngine()) {
+        super(engine);
+
+        this.myTrackedHandJointIDList = [];
+
+        if (addAllJointIDs) {
+            for (let key in TrackedHandJointID) {
+                this.myTrackedHandJointIDList.push([TrackedHandJointID[key]]);
             }
         }
     }
-};
+}
 
-PP.TrackedHandPose = class TrackedHandPose {
-    constructor(handedness, trackedHandPoseParams = new PP.TrackedHandPoseParams()) {
+export class TrackedHandPose {
+
+    constructor(handedness, trackedHandPoseParams = new TrackedHandPoseParams()) {
         this._myHandedness = handedness;
 
         this._myFixForward = trackedHandPoseParams.myFixForward;
         this._myForceEmulatedVelocities = trackedHandPoseParams.myForceEmulatedVelocities;
         this._myReferenceObject = trackedHandPoseParams.myReferenceObject;
 
-        this._myTrackedHandJointPoseParams = new PP.BasePoseParams();
+        this._myEngine = trackedHandPoseParams.myEngine;
+
+        this._myTrackedHandJointPoseParams = new BasePoseParams(this._myEngine);
         this._myTrackedHandJointPoseParams.myFixForward = this._myFixForward;
         this._myTrackedHandJointPoseParams.myForceEmulatedVelocities = this._myForceEmulatedVelocities;
         this._myTrackedHandJointPoseParams.myReferenceObject = this._myReferenceObject;
 
         this._myTrackedHandJointPoseList = [];
-        for (let jointType of trackedHandPoseParams.myTrackedHandJointTypeList) {
-            let trackedHandJointPose = new PP.TrackedHandJointPose(this._myHandedness, jointType, this._myTrackedHandJointPoseParams);
-            this._myTrackedHandJointPoseList[jointType] = trackedHandJointPose;
+        for (let jointID of trackedHandPoseParams.myTrackedHandJointIDList) {
+            let trackedHandJointPose = new TrackedHandJointPose(this._myHandedness, jointID, this._myTrackedHandJointPoseParams);
+            this._myTrackedHandJointPoseList[jointID] = trackedHandJointPose;
         }
     }
 
@@ -46,23 +56,35 @@ PP.TrackedHandPose = class TrackedHandPose {
         }
     }
 
-    getJointPose(jointType) {
-        return this._myTrackedHandJointPoseList[jointType];
+    getEngine() {
+        this._myEngine;
     }
 
-    getJointPoseByIndex(jointPoseTypeIndex) {
-        return this._myTrackedHandJointPoseList[PP.InputUtils.getJointTypeByIndex(jointPoseTypeIndex)];
+    getHandedness() {
+        return this._myHandedness;
     }
 
-    addTrackedHandJointType(jointType) {
-        if (!this._myTrackedHandJointPoseList.pp_has(element => element.getTrackedHandJointType() == jointType)) {
-            let trackedHandJointPose = new PP.TrackedHandJointPose(this._myHandedness, jointType, this._myTrackedHandJointPoseParams);
+    getJointPoseList() {
+        return this._myTrackedHandJointPoseList;
+    }
+
+    getJointPose(jointID) {
+        return this._myTrackedHandJointPoseList[jointID];
+    }
+
+    getJointPoseByIndex(jointIDIndex) {
+        return this._myTrackedHandJointPoseList[InputUtils.getJointIDByIndex(jointIDIndex)];
+    }
+
+    addTrackedHandJointID(jointID) {
+        if (!this._myTrackedHandJointPoseList.pp_has(element => element.getTrackedHandJointID() == jointID)) {
+            let trackedHandJointPose = new TrackedHandJointPose(this._myHandedness, jointID, this._myTrackedHandJointPoseParams);
             this._myTrackedHandJointPoseList.push(trackedHandJointPose);
         }
     }
 
-    removeTrackedHandJointType(jointType) {
-        this._myTrackedHandJointPoseList.pp_remove(element => element.getTrackedHandJointType() == jointType);
+    removeTrackedHandJointID(jointID) {
+        this._myTrackedHandJointPoseList.pp_remove(element => element.getTrackedHandJointID() == jointID);
     }
 
     setReferenceObject(referenceObject) {
@@ -103,4 +125,4 @@ PP.TrackedHandPose = class TrackedHandPose {
     isForceEmulatedVelocities() {
         return this._myForceEmulatedVelocities;
     }
-};
+}
