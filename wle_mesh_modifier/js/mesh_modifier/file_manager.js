@@ -14,7 +14,7 @@ export function downloadFileText(filename, text) {
     document.body.removeChild(element);
 
     return true;
-};
+}
 
 export function downloadFileJSON(filename, object) {
     let json = null;
@@ -27,15 +27,19 @@ export function downloadFileJSON(filename, object) {
     }
 
     return false;
-};
+}
 
 export function loadFileText(filepath, loadCallback, errorCallback) {
     loadFile("text", filepath, loadCallback, errorCallback);
-};
+}
 
 export function loadFileJSON(filepath, loadCallback, errorCallback) {
     loadFile("json", filepath, loadCallback, errorCallback);
-};
+}
+
+export function loadFileBlob(filepath, loadCallback, errorCallback) {
+    loadFile("blob", filepath, loadCallback, errorCallback);
+}
 
 export function loadFile(responseBodyConversionFunction, filepath, loadCallback, errorCallback) {
     fetch(filepath)
@@ -66,4 +70,4 @@ export function loadFile(responseBodyConversionFunction, filepath, loadCallback,
                 }
             }
         );
-};
+}

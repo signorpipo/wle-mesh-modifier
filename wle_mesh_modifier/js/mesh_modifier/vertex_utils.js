@@ -193,38 +193,6 @@ export let VertexUtils = {
             }
         }
     },
-    moveSelectedVertexesAlongNormals(meshObject, selectedVertexes, movement, useOriginalNormals) {
-        if (selectedVertexes.length == 0) {
-            return;
-        }
-
-        let meshComponent = meshObject.pp_getComponent(MeshComponent);
-        let meshTransform = meshComponent.object.pp_getTransform();
-
-        let vertexPosition = [0, 0, 0];
-        for (let selectedVertex of selectedVertexes) {
-            let normal = null;
-            if (useOriginalNormals) {
-                normal = selectedVertex.getOriginalNormal();
-            } else {
-                normal = selectedVertex.getNormal();
-            }
-            normal.vec3_convertDirectionToLocal(meshTransform, normal);
-
-            let movementToApply = normal.vec3_scale(movement);
-
-            let mesh = selectedVertex.getMesh();
-            let indexes = selectedVertex.getIndexes();
-
-            let positionAttribute = mesh.attribute(MeshAttribute.Position);
-
-            positionAttribute.get(indexes[0], vertexPosition);
-            vertexPosition.vec3_add(movementToApply, vertexPosition);
-            for (let index of indexes) {
-                VertexUtils.setVertexPosition(vertexPosition, index, positionAttribute);
-            }
-        }
-    },
     changeSelectedVertexesWeight(meshObject, selectedVertexes, amount) {
         if (selectedVertexes.length == 0) {
             return;
