@@ -80,3 +80,13 @@ export function getWASM(engine = getMainEngine()) {
 
     return wasm;
 }
+
+export function getXR(engine = getMainEngine()) {
+    let xr = null;
+
+    if (engine != null) {
+        xr = engine.xr;
+    }
+
+    return xr;
+}

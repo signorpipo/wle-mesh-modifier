@@ -1,20 +1,53 @@
-import { getMainEngine } from "../wl/engine_globals";
+import { getMainEngine, getXR } from "../wl/engine_globals";
 
 export function getSession(engine = getMainEngine()) {
-    return engine.xrSession;
+    let xr = getXR(engine);
+    return xr != null ? xr.session : null;
+}
+
+export function getSessionMode(engine = getMainEngine()) {
+    let xr = getXR(engine);
+    return xr != null ? xr.sessionMode : null;
+}
+
+export function getReferenceSpace(engine = getMainEngine()) {
+    let xr = getXR(engine);
+    return xr != null ? xr.currentReferenceSpace : null;
+}
+
+export function getReferenceSpaceType(engine = getMainEngine()) {
+    let type = "local";
+
+    try {
+        let xr = getXR(engine);
+        type = xr != null ? xr.currentReferenceSpaceType : null;
+    } catch (error) {
+
+    }
+
+    return type;
+}
+
+export function getFrame(engine = getMainEngine()) {
+    let xr = getXR(engine);
+    return xr != null ? xr.frame : null;
 }
 
 export function isSessionActive(engine = getMainEngine()) {
     return getSession(engine) != null;
 }
 
+export function isReferenceSpaceFloorBased(engine = getMainEngine()) {
+    return getReferenceSpaceType(engine).includes("floor");
+}
+
 export function registerSessionStartEventListener(id, callback, manuallyCallSessionStartIfSessionAlreadyActive = false, addManualCallFlagToStartCallback = false, engine = getMainEngine()) {
     if (callback != null) {
         if (manuallyCallSessionStartIfSessionAlreadyActive && isSessionActive(engine)) {
             if (addManualCallFlagToStartCallback) {
-                callback(true, getSession(engine));
+                callback(true, getSession(engine), getSessionMode(engine));
             } else {
-                callback(getSession(engine));
+                callback(getSession(engine), getSessionMode(engine));
             }
         }
 
@@ -50,30 +83,6 @@ export function unregisterSessionStartEndEventListeners(id, engine = getMainEngi
     unregisterSessionEndEventListener(id, engine);
 }
 
-export function isReferenceSpaceLocalFloor(engine = getMainEngine()) {
-    return !["local", "viewer"].includes(getReferenceSpaceType(engine));
-}
-
-export function getReferenceSpaceType(engine = getMainEngine()) {
-    let refSpace = "local";
-
-    try {
-        refSpace = getWebXR(engine).refSpace;;
-    } catch (error) {
-
-    }
-
-    return refSpace;
-}
-
-export function getWebXR(engine = getMainEngine()) {
-    return engine.wasm.WebXR;
-}
-
-export function getFrame(engine = getMainEngine()) {
-    return engine.xrFrame;
-}
-
 export function isVRSupported(engine = getMainEngine()) {
     return engine.vrSupported;
 }
@@ -89,6 +98,10 @@ export function isDeviceEmulated() {
 
 export let XRUtils = {
     getSession,
+    getSessionMode,
+    getReferenceSpace,
+    getReferenceSpaceType,
+    getFrame,
     isSessionActive,
     registerSessionStartEventListener,
     unregisterSessionStartEventListener,
@@ -96,9 +109,7 @@ export let XRUtils = {
     unregisterSessionEndEventListener,
     registerSessionStartEndEventListeners,
     unregisterSessionStartEndEventListeners,
-    isReferenceSpaceLocalFloor,
-    getReferenceSpaceType,
-    getFrame,
+    isReferenceSpaceFloorBased,
     isVRSupported,
     isARSupported,
     isDeviceEmulated

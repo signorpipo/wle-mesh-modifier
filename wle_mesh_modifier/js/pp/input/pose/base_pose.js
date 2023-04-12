@@ -295,13 +295,11 @@ export class BasePose {
     }
 
     _onXRSessionStart(manualCall, session) {
-        session.requestReferenceSpace(XRUtils.getReferenceSpaceType(this._myEngine)).then(function (referenceSpace) {
-            this._myReferenceSpace = referenceSpace;
+        this._myReferenceSpace = XRUtils.getReferenceSpace(this._myEngine);
 
-            if (referenceSpace.addEventListener != null) {
-                referenceSpace.addEventListener("reset", this._onViewReset.bind(this));
-            }
-        }.bind(this));
+        if (this._myReferenceSpace.addEventListener != null) {
+            this._myReferenceSpace.addEventListener("reset", this._onViewReset.bind(this));
+        }
 
         this._onXRSessionStartHook(manualCall, session);
     }

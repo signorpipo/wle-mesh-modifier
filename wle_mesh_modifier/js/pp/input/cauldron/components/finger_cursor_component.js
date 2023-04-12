@@ -146,7 +146,7 @@ export class FingerCursorComponent extends Component {
     }
 
     _onXRSessionStart(session) {
-        session.requestReferenceSpace(XRUtils.getReferenceSpaceType(this.engine)).then(function (referenceSpace) { this._myReferenceSpace = referenceSpace; }.bind(this));
+        this._myReferenceSpace = XRUtils.getReferenceSpace(this.engine);
     }
 
     _onXRSessionEnd(session) {
