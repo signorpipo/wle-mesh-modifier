@@ -58,6 +58,15 @@ export class PlayerLocomotionParams {
 
         this.myTeleportPositionObject = null;
 
+        this.myColliderAccuracy = null;
+        this.myColliderCheckOnlyFeet = false;
+        this.myColliderSlideAgainstWall = false;
+        this.myColliderMaxWalkableGroundAngle = 0;
+        this.myColliderSnapOnGround = false;
+        this.myColliderMaxDistanceToSnapOnGround = 0;
+        this.myColliderMaxWalkableGroundStepHeight = 0;
+        this.myColliderPreventFallingFromEdges = false;
+
         this.myDebugHorizontalEnabled = false;
         this.myDebugVerticalEnabled = false;
 

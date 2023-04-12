@@ -1,5 +1,5 @@
 import { AnimationComponent } from "@wonderlandengine/api";
-import { GamepadButtonID, MeshUtils, getLeftGamepad, getRightGamepad } from "../../../pp";
+import { GamepadButtonID, MeshUtils, XRUtils, getLeftGamepad, getRightGamepad } from "../../../pp";
 import { VertexUtils } from "../../vertex_utils";
 
 export class IndexToolData {
@@ -53,7 +53,7 @@ export class IndexTool {
     end() { }
 
     update(dt) {
-        if (getRightGamepad().getButtonInfo(GamepadButtonID.THUMBSTICK).isPressEnd()) {
+        if (getRightGamepad().getButtonInfo(GamepadButtonID.THUMBSTICK).isPressEnd() && XRUtils.isSessionActive()) {
             this._myToolData.myLeftControlScheme.setVisible(!this._myToolData.myLeftControlScheme.isVisible());
             this._myToolData.myRightControlScheme.setVisible(!this._myToolData.myRightControlScheme.isVisible());
         }

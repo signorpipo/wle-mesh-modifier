@@ -20,9 +20,9 @@ export class PlayerLocomotionComponent extends Component {
     static Properties = {
         _myPhysicsBlockLayerFlags: Property.string("0, 0, 0, 0, 0, 0, 0, 0"),
         _myDefaultHeight: Property.float(1.75),
+        _myCharacterRadius: Property.float(0.3),
         _myMaxSpeed: Property.float(2),
         _myMaxRotationSpeed: Property.float(100),
-        _myCharacterRadius: Property.float(0.3),
         _myIsSnapTurn: Property.bool(true),
         _mySnapTurnOnlyVR: Property.bool(true),
         _mySnapTurnAngle: Property.float(30),
@@ -39,6 +39,16 @@ export class PlayerLocomotionComponent extends Component {
         _myVRDirectionReferenceObject: Property.object(),
         _myTeleportParableStartReferenceObject: Property.object(),
         _myTeleportPositionObject: Property.object(),
+
+        _myColliderAccuracy: Property.enum(["Very Low", "Low", "Medium", "High", "Very High"], "High"),
+        _myColliderCheckOnlyFeet: Property.bool(false),
+        _myColliderSlideAgainstWall: Property.bool(true),
+        _myColliderMaxWalkableGroundAngle: Property.float(30),
+        _myColliderSnapOnGround: Property.bool(true),
+        _myColliderMaxDistanceToSnapOnGround: Property.float(0.1),
+        _myColliderMaxWalkableGroundStepHeight: Property.float(0.1),
+        _myColliderPreventFallingFromEdges: Property.bool(false),
+
         _myDebugHorizontalEnabled: Property.bool(false),
         _myDebugVerticalEnabled: Property.bool(false),
         _myUseCleanedVersion: Property.bool(true),
@@ -80,6 +90,15 @@ export class PlayerLocomotionComponent extends Component {
         params.myForeheadExtraHeight = 0.1;
 
         params.myTeleportPositionObject = this._myTeleportPositionObject;
+
+        params.myColliderAccuracy = this._myColliderAccuracy;
+        params.myColliderCheckOnlyFeet = this._myColliderCheckOnlyFeet;
+        params.myColliderSlideAgainstWall = this._myColliderSlideAgainstWall;
+        params.myColliderMaxWalkableGroundAngle = this._myColliderMaxWalkableGroundAngle;
+        params.myColliderSnapOnGround = this._myColliderSnapOnGround;
+        params.myColliderMaxDistanceToSnapOnGround = this._myColliderMaxDistanceToSnapOnGround;
+        params.myColliderMaxWalkableGroundStepHeight = this._myColliderMaxWalkableGroundStepHeight;
+        params.myColliderPreventFallingFromEdges = this._myColliderPreventFallingFromEdges;
 
         params.myMoveThroughCollisionShortcutEnabled = this._myMoveThroughCollisionShortcutEnabled;
         params.myMoveHeadShortcutEnabled = this._myMoveHeadShortcutEnabled;

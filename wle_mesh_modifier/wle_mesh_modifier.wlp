@@ -54,6 +54,9 @@
                         "_myEnableDownload": false
                     },
                     "active": true
+                },
+                {
+                    "type": "fixed-foveation"
                 }
             ]
         },
@@ -70,7 +73,14 @@
                         "_myMinAngleToFlyUpVR": 90.0,
                         "_myMinAngleToFlyDownVR": 90.0,
                         "_myMinAngleToFlyRight": 90.0,
-                        "_myStartFlying": true
+                        "_myStartFlying": true,
+                        "_myColliderCheckOnlyFeet": false,
+                        "_myColliderAccuracy": "Very Low",
+                        "_myColliderSlideAgainstWall": false,
+                        "_myColliderSnapOnGround": false,
+                        "_myColliderMaxWalkableGroundAngle": 0.0,
+                        "_myColliderMaxDistanceToSnapOnGround": 0.0,
+                        "_myColliderMaxWalkableGroundStepHeight": 0.0
                     },
                     "active": true
                 }

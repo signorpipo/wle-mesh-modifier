@@ -380,24 +380,24 @@ export class CleanedPlayerLocomotion {
         simplifiedParams.myHeight = this._myParams.myDefaultHeight;
         simplifiedParams.myRadius = this._myParams.myCharacterRadius;
 
-        simplifiedParams.myAccuracyLevel = CharacterColliderSetupSimplifiedCreationAccuracyLevel.HIGH;
+        simplifiedParams.myAccuracyLevel = this._myParams.myColliderAccuracy;
 
         simplifiedParams.myIsPlayer = true;
 
-        simplifiedParams.myCheckOnlyFeet = false;
+        simplifiedParams.myCheckOnlyFeet = this._myParams.myColliderCheckOnlyFeet;
 
         simplifiedParams.myAverageSpeed = this._myParams.myMaxSpeed;
 
         simplifiedParams.myCanFly = this._myParams.myFlyEnabled;
 
-        simplifiedParams.myShouldSlideAgainstWall = true;
+        simplifiedParams.myShouldSlideAgainstWall = this._myParams.myColliderSlideAgainstWall;
 
         simplifiedParams.myCollectGroundInfo = true;
-        simplifiedParams.myShouldSnapOnGround = true;
-        simplifiedParams.myMaxDistanceToSnapOnGround = 0.1;
-        simplifiedParams.myMaxWalkableGroundAngle = 30;
-        simplifiedParams.myMaxWalkableGroundStepHeight = 0.1;
-        simplifiedParams.myShouldNotFallFromEdges = false;
+        simplifiedParams.myMaxWalkableGroundAngle = this._myParams.myColliderMaxWalkableGroundAngle;
+        simplifiedParams.myShouldSnapOnGround = this._myParams.myColliderSnapOnGround;
+        simplifiedParams.myMaxDistanceToSnapOnGround = this._myParams.myColliderMaxDistanceToSnapOnGround;
+        simplifiedParams.myMaxWalkableGroundStepHeight = this._myParams.myColliderMaxWalkableGroundStepHeight;
+        simplifiedParams.myShouldNotFallFromEdges = this._myParams.myColliderPreventFallingFromEdges;
 
         simplifiedParams.myHorizontalCheckBlockLayerFlags.copy(this._myParams.myPhysicsBlockLayerFlags);
         let physXComponents = getPlayerObjects(this._myParams.myEngine).myPlayer.pp_getComponents(PhysXComponent);

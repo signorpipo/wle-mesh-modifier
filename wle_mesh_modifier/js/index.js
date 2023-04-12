@@ -12,6 +12,7 @@
  */
 
 /* wle:auto-imports:start */
+import {FixedFoveation} from '@wonderlandengine/components';
 import {MouseLookComponent} from '@wonderlandengine/components';
 import {LoadVariantComponent} from './mesh_modifier/load_variants_component.js';
 import {MeshModifierGatewayComponent} from './mesh_modifier/mesh_modifier_gateway_component.js';
@@ -93,6 +94,7 @@ if (document.readyState === 'loading') {
 }
 
 /* wle:auto-register:start */
+engine.registerComponent(FixedFoveation);
 engine.registerComponent(MouseLookComponent);
 engine.registerComponent(LoadVariantComponent);
 engine.registerComponent(MeshModifierGatewayComponent);

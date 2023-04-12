@@ -159,9 +159,12 @@ export function createCharacterColliderSetupSimplified(simplifiedCreationParams,
         outCharacterColliderSetup.myVerticalCheckSetup.myVerticalMovementCheckEnabled = true;
         outCharacterColliderSetup.myVerticalCheckSetup.myVerticalMovementCheckReductionEnabled = true;
 
-        outCharacterColliderSetup.myVerticalCheckSetup.myVerticalPositionCheckEnabled = true;
-
         outCharacterColliderSetup.myVerticalCheckSetup.myVerticalCheckAllowHitsInsideCollisionIfOneValid = true;
+
+        if (simplifiedCreationParams.myIsPlayer) {
+            outCharacterColliderSetup.myWallSlideSetup.myWallSlideMaxAttempts = 2;
+            outCharacterColliderSetup.myWallSlideSetup.my90DegreesWallSlideAdjustDirectionSign = true;
+        }
     }
 
     if (simplifiedCreationParams.myAccuracyLevel >= CharacterColliderSetupSimplifiedCreationAccuracyLevel.LOW) {
@@ -178,16 +181,12 @@ export function createCharacterColliderSetupSimplified(simplifiedCreationParams,
 
 
 
-        outCharacterColliderSetup.myWallSlideSetup.myWallSlideMaxAttempts = 1;
+        outCharacterColliderSetup.myWallSlideSetup.myWallSlideMaxAttempts = 2;
         outCharacterColliderSetup.myWallSlideSetup.myCheckBothWallSlideDirections = false;
         outCharacterColliderSetup.myWallSlideSetup.myWallSlideFlickerPreventionMode = CharacterColliderSlideFlickerPreventionMode.NONE;
         outCharacterColliderSetup.myWallSlideSetup.myWallSlideFlickerPreventionCheckOnlyIfAlreadySliding = false;
         outCharacterColliderSetup.myWallSlideSetup.myWallSlideFlickerPreventionForceCheckCounter = 0;
         outCharacterColliderSetup.myWallSlideSetup.my90DegreesWallSlideAdjustDirectionSign = false;
-
-
-
-        outCharacterColliderSetup.myWallSlideSetup.myWallSlideMaxAttempts = 2;
     }
 
     if (simplifiedCreationParams.myAccuracyLevel >= CharacterColliderSetupSimplifiedCreationAccuracyLevel.MEDIUM) {
