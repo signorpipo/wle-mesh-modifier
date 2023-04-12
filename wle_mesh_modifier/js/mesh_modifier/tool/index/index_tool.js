@@ -1,5 +1,5 @@
 import { AnimationComponent } from "@wonderlandengine/api";
-import { GamepadButtonID, getLeftGamepad, getRightGamepad } from "../../../pp";
+import { GamepadButtonID, MeshUtils, getLeftGamepad, getRightGamepad } from "../../../pp";
 import { VertexUtils } from "../../vertex_utils";
 
 export class IndexToolData {
@@ -17,8 +17,7 @@ export class IndexToolData {
         this.myIsPlayingAnimation = false;
 
         this.mySelectedVertexes = [];
-        this.myVertexDataBackup = mesh.vertexData.pp_clone();
-        this.myIndexDataBackup = mesh.indexData.pp_clone();
+        this.myMeshBackup = MeshUtils.cloneMesh(mesh);
 
         this.myLeftControlScheme = null;
         this.myRightControlScheme = null;
@@ -83,7 +82,7 @@ export class IndexTool {
 
         let pointerPosition = this._myToolData.myPointerObject.pp_getPosition();
 
-        let selectedVertexParams = VertexUtils.getClosestSelectedVertex(this._myToolData.myMeshObject, pointerPosition, this._myToolData.myVertexDataBackup);
+        let selectedVertexParams = VertexUtils.getClosestSelectedVertex(this._myToolData.myMeshObject, pointerPosition);
 
         let vertexPositionWorld = selectedVertexParams.getPosition();
         if (vertexPositionWorld.vec3_distance(pointerPosition) < this._myMinDistanceToSelect) {
@@ -102,7 +101,7 @@ export class IndexTool {
     _selectVertex() {
         let pointerPosition = this._myToolData.myPointerObject.pp_getPosition();
 
-        let selectedVertexParams = VertexUtils.getClosestSelectedVertex(this._myToolData.myMeshObject, pointerPosition, this._myToolData.myVertexDataBackup);
+        let selectedVertexParams = VertexUtils.getClosestSelectedVertex(this._myToolData.myMeshObject, pointerPosition);
 
         let vertexPositionWorld = selectedVertexParams.getPosition();
         if (vertexPositionWorld.vec3_distance(pointerPosition) < this._myMinDistanceToSelect) {
@@ -119,7 +118,7 @@ export class IndexTool {
     _deselectVertex() {
         let pointerPosition = this._myToolData.myPointerObject.pp_getPosition();
 
-        let selectedVertexParams = VertexUtils.getClosestSelectedVertex(this._myToolData.myMeshObject, pointerPosition, this._myToolData.myVertexDataBackup);
+        let selectedVertexParams = VertexUtils.getClosestSelectedVertex(this._myToolData.myMeshObject, pointerPosition);
 
         let vertexPositionWorld = selectedVertexParams.getPosition();
         if (vertexPositionWorld.vec3_distance(pointerPosition) < this._myMinDistanceToSelect) {
@@ -136,7 +135,7 @@ export class IndexTool {
             let vertexPosition = VertexUtils.getVertexPosition(i, this._myToolData.myMeshComponent.mesh);
             let vertexPositionWorld = vertexPosition.vec3_convertPositionToWorld(meshTransform);
 
-            let selectedVertexParams = VertexUtils.getClosestSelectedVertex(this._myToolData.myMeshObject, vertexPositionWorld, this._myToolData.myVertexDataBackup);
+            let selectedVertexParams = VertexUtils.getClosestSelectedVertex(this._myToolData.myMeshObject, vertexPositionWorld);
             this._myToolData.mySelectedVertexes.pp_pushUnique(selectedVertexParams, element => element.equals(selectedVertexParams));
         }
     }
@@ -144,7 +143,7 @@ export class IndexTool {
 
     // Reset
     _resetAllIndexes() {
-        VertexUtils.resetMeshIndexData(this._myToolData.myMeshComponent, this._myToolData.myIndexDataBackup);
+        VertexUtils.resetMeshIndexData(this._myToolData.myMeshComponent, this._myToolData.myMeshBackup);
 
         this._myToolData.myMeshObject.pp_setActive(false);
     }

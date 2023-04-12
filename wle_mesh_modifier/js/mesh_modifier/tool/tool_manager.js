@@ -1,7 +1,7 @@
 import { MeshComponent, TextComponent } from "@wonderlandengine/api";
-import { GamepadButtonID, Timer, VisualElementType, getDebugVisualManager, getLeftGamepad, getScene } from "../../pp";
+import { GamepadAxesID, GamepadButtonID, Timer, VisualElementType, getDebugVisualManager, getLeftGamepad, getScene } from "../../pp";
 import { jsonParse, jsonStringify } from "../cauldron_utils";
-import { downloadFileText } from "../file_manager";
+import { downloadFileText, loadFileText } from "../file_manager";
 import { VertexGroupConfig } from "../vertex_group_config";
 import { IndexFreeEditTool } from "./index/index_free_edit_tool";
 import { IndexToolData } from "./index/index_tool";
@@ -119,7 +119,7 @@ export class ToolManager {
             this._myRefresher.active = true;
             this._myRefresher.active = false;
 
-            let axes = getLeftGamepad().getAxesInfo().getAxes();
+            let axes = getLeftGamepad().getAxesInfo(GamepadAxesID.THUMBSTICK).getAxes();
             if (!getLeftGamepad().getButtonInfo(GamepadButtonID.SQUEEZE).isPressed()) {
                 if (Math.abs(axes[0]) > 0.5) {
                     if (this._myScrollEnabled) {

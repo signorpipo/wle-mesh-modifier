@@ -1,4 +1,4 @@
-import { GamepadButtonID, getLeftGamepad } from "../../../pp";
+import { GamepadAxesID, GamepadButtonID, getLeftGamepad, getRightGamepad } from "../../../pp";
 import { VertexTool } from "./vertex_tool";
 
 export class VertexFreeEditTool extends VertexTool {
@@ -40,7 +40,7 @@ export class VertexFreeEditTool extends VertexTool {
             }
         }
 
-        let axes = getRightGamepad().getAxesInfo().getAxes();
+        let axes = getRightGamepad().getAxesInfo(GamepadAxesID.THUMBSTICK).getAxes();
         if (Math.abs(axes[0]) > 0.2) {
             let movement = axes[0] * 0.2 * dt;
             if (!getLeftGamepad().getButtonInfo(GamepadButtonID.SELECT).isPressed()) {

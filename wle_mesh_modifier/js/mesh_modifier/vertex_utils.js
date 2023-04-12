@@ -1,26 +1,24 @@
-import { Mesh, MeshAttribute, MeshComponent } from "@wonderlandengine/api";
+import { MeshAttribute, MeshComponent } from "@wonderlandengine/api";
 import { vec3_create, vec4_create } from "../pp";
 import { SelectedVertexParams } from "./selected_vertex_params";
 
 export let VertexUtils = {
-    getClosestSelectedVertex: function (meshObject, pointerPosition, originalMeshVertexData) {
+    getClosestSelectedVertex(meshObject, pointerPosition) {
         let meshComponent = meshObject.pp_getComponent(MeshComponent);
         let meshTransform = meshComponent.object.pp_getTransform();
 
         let closestVertexIndex = VertexUtils.getClosestVertexIndex(meshComponent.mesh, meshTransform, pointerPosition);
         let selectedVertexIndexes = VertexUtils.getSameVertexIndexes(meshComponent.mesh, closestVertexIndex);
 
-        return new SelectedVertexParams(meshComponent, selectedVertexIndexes, originalMeshVertexData);
+        return new SelectedVertexParams(meshComponent, selectedVertexIndexes);
     },
-    getClosestVertexIndex: function (mesh, meshTransform, position, indexToIgnore = []) {
+    getClosestVertexIndex(mesh, meshTransform, position) {
         let minDistance = -1;
         let vertexIndex = -1;
-
-        let vertexCount = mesh.vertexCount;
-        for (let i = 0; i < vertexCount; i++) {
-            if (indexToIgnore.pp_hasEqual(i)) continue;
-
-            let vertexPosition = VertexUtils.getVertexPosition(i, mesh);
+        let positionAttribute = mesh.attribute(MeshAttribute.Position);
+        let vertexPosition = vec3_create();
+        for (let i = 0; i < mesh.vertexCount; i++) {
+            positionAttribute.get(i, vertexPosition);
             let vertexPositionWorld = vertexPosition.vec3_convertPositionToWorld(meshTransform);
 
             let distanceToPointer = vertexPositionWorld.vec3_distance(position);
@@ -32,33 +30,36 @@ export let VertexUtils = {
 
         return vertexIndex;
     },
-    getSameVertexIndexes: function (mesh, vertexIndex) {
-        let sameVertexIndexes = [];
-        let closestVertexPosition = VertexUtils.getVertexPosition(vertexIndex, mesh);
+    getSameVertexIndexes(mesh, vertexIndex) {
+        let selectedVertexIndexes = [];
 
-        let vertexCount = mesh.vertexCount;
-        for (let i = 0; i < vertexCount; i++) {
-            let vertexPosition = VertexUtils.getVertexPosition(i, mesh);
+        let positionAttribute = mesh.attribute(MeshAttribute.Position);
+        let closestVertexPosition = vec3_create();
+        positionAttribute.get(vertexIndex, closestVertexPosition);
+
+        let vertexPosition = vec3_create();
+        for (let i = 0; i < mesh.vertexCount; i++) {
+            positionAttribute.get(i, vertexPosition);
 
             if (closestVertexPosition.pp_equals(vertexPosition)) {
-                sameVertexIndexes.push(i);
+                selectedVertexIndexes.push(i);
             }
         }
 
-        return sameVertexIndexes;
+        return selectedVertexIndexes;
     },
-    setVertexPositionWithAttribute: function (position, vertexIndex, positionAttribute) {
+    setVertexPosition(position, vertexIndex, positionAttribute) {
         positionAttribute.set(vertexIndex, position);
     },
-    getVertexPosition: function (vertexIndex, mesh) {
-        let vertexPosition = vec3_create();
+    getVertexPosition(vertexIndex, mesh) {
+        let position = vec3_create();
 
         let positionAttribute = mesh.attribute(MeshAttribute.Position);
-        positionAttribute.get(vertexIndex, vertexPosition);
+        positionAttribute.get(vertexIndex, position);
 
-        return vertexPosition;
+        return position;
     },
-    getVertexNormal: function (vertexIndex, mesh) {
+    getVertexNormal(vertexIndex, mesh) {
         let vertexNormal = vec3_create();
 
         let positionAttribute = mesh.attribute(MeshAttribute.Normal);
@@ -66,10 +67,10 @@ export let VertexUtils = {
 
         return vertexNormal;
     },
-    setVertexNormalWithAttribute: function (normal, vertexIndex, normalAttribute) {
+    setVertexNormal(normal, vertexIndex, normalAttribute) {
         normalAttribute.set(vertexIndex, normal);
     },
-    getJointWeight: function (vertexIndex, mesh) {
+    getJointWeight(vertexIndex, mesh) {
         let jointWeight = vec4_create();
 
         try {
@@ -79,13 +80,13 @@ export let VertexUtils = {
 
         return jointWeight;
     },
-    setJointWeight: function (jointWeight, vertexIndex, mesh) {
+    setJointWeight(jointWeight, vertexIndex, mesh) {
         try {
             let jointWeightAttribute = mesh.attribute(MeshAttribute.JointWeight);
             jointWeightAttribute.set(vertexIndex, jointWeight);
         } catch (e) { }
     },
-    getJointID: function (vertexIndex, mesh) {
+    getJointID(vertexIndex, mesh) {
         let jointID = [0, 0, 0, 0];
 
         try {
@@ -95,51 +96,46 @@ export let VertexUtils = {
 
         return jointID;
     },
-    setJointID: function (jointID, vertexIndex, mesh) {
+    setJointID(jointID, vertexIndex, mesh) {
         try {
             let jointIDAttribute = mesh.attribute(MeshAttribute.JointId);
             jointIDAttribute.set(vertexIndex, jointID);
         } catch (e) { }
     },
-    resetMeshVertexData(meshComponent, originalVertexData) {
+    resetMeshVertexData(meshComponent, originalMesh) {
         let mesh = meshComponent.mesh;
         let positionAttribute = mesh.attribute(MeshAttribute.Position);
         let normalAttribute = mesh.attribute(MeshAttribute.Normal);
 
-        let vertexDataSize = Mesh.VERTEX_FLOAT_SIZE;
-        let vertexCount = originalVertexData.length / vertexDataSize;
+        let originalPositionAttribute = originalMesh.attribute(MeshAttribute.Position);
+        let originalNormalAttribute = originalMesh.attribute(MeshAttribute.Normal);
+
+        let vertexPositionReset = vec3_create();
+        let vertexNormalReset = vec3_create();
+        let vertexCount = originalMesh.vertexCount;
         for (let index = 0; index < vertexCount; index++) {
-            let vertexPositionReset = [
-                originalVertexData[index * vertexDataSize + Mesh.POS.X],
-                originalVertexData[index * vertexDataSize + Mesh.POS.Y],
-                originalVertexData[index * vertexDataSize + Mesh.POS.Z]];
+            originalPositionAttribute.get(index, vertexPositionReset);
+            originalNormalAttribute.get(index, vertexNormalReset);
 
-            let vertexNormalReset = [
-                originalVertexData[index * vertexDataSize + Mesh.NORMAL.X],
-                originalVertexData[index * vertexDataSize + Mesh.NORMAL.Y],
-                originalVertexData[index * vertexDataSize + Mesh.NORMAL.Z]];
-
-            VertexUtils.setVertexPositionWithAttribute(vertexPositionReset, index, positionAttribute);
-            VertexUtils.setVertexNormalWithAttribute(vertexNormalReset, index, normalAttribute);
+            VertexUtils.setVertexPosition(vertexPositionReset, index, positionAttribute);
+            VertexUtils.setVertexNormal(vertexNormalReset, index, normalAttribute);
         }
     },
-    resetMeshIndexData(meshComponent, originalIndexData) {
+    resetMeshIndexData(meshComponent, originalMesh) {
         let mesh = meshComponent.mesh;
-        mesh.indexData.pp_copy(originalIndexData);
+        mesh.indexData.pp_copy(originalMesh.indexData);
     },
-    resetVertexes(meshComponent, vertexIndexList, originalVertexData, isFlatShading) {
+    resetVertexes(meshComponent, vertexIndexList, originalMesh, isFlatShading) {
         let mesh = meshComponent.mesh;
         let positionAttribute = mesh.attribute(MeshAttribute.Position);
 
-        let vertexDataSize = Mesh.VERTEX_FLOAT_SIZE;
+        let originalPositionAttribute = originalMesh.attribute(MeshAttribute.Position);
+
+        let vertexPositionReset = vec3_create();
         for (let index of vertexIndexList) {
-            let vertexPositionReset = [
-                originalVertexData[index * vertexDataSize + Mesh.POS.X],
-                originalVertexData[index * vertexDataSize + Mesh.POS.Y],
-                originalVertexData[index * vertexDataSize + Mesh.POS.Z]];
+            originalPositionAttribute.get(index, vertexPositionReset);
 
-            VertexUtils.setVertexPositionWithAttribute(vertexPositionReset, index, positionAttribute);
-
+            VertexUtils.setVertexPosition(vertexPositionReset, index, positionAttribute);
             VertexUtils.updateVertexNormals(index, mesh, isFlatShading);
         }
     },
@@ -161,7 +157,7 @@ export let VertexUtils = {
             positionAttribute.get(indexes[0], vertexPosition);
             vertexPosition.vec3_add(localMovement, vertexPosition);
             for (let index of indexes) {
-                VertexUtils.setVertexPositionWithAttribute(vertexPosition, index, positionAttribute);
+                VertexUtils.setVertexPosition(vertexPosition, index, positionAttribute);
             }
         }
     },
@@ -193,7 +189,39 @@ export let VertexUtils = {
             positionAttribute.get(indexes[0], vertexPosition);
             vertexPosition.vec3_add(movementToApply, vertexPosition);
             for (let index of indexes) {
-                VertexUtils.setVertexPositionWithAttribute(vertexPosition, index, positionAttribute);
+                VertexUtils.setVertexPosition(vertexPosition, index, positionAttribute);
+            }
+        }
+    },
+    moveSelectedVertexesAlongNormals(meshObject, selectedVertexes, movement, useOriginalNormals) {
+        if (selectedVertexes.length == 0) {
+            return;
+        }
+
+        let meshComponent = meshObject.pp_getComponent(MeshComponent);
+        let meshTransform = meshComponent.object.pp_getTransform();
+
+        let vertexPosition = [0, 0, 0];
+        for (let selectedVertex of selectedVertexes) {
+            let normal = null;
+            if (useOriginalNormals) {
+                normal = selectedVertex.getOriginalNormal();
+            } else {
+                normal = selectedVertex.getNormal();
+            }
+            normal.vec3_convertDirectionToLocal(meshTransform, normal);
+
+            let movementToApply = normal.vec3_scale(movement);
+
+            let mesh = selectedVertex.getMesh();
+            let indexes = selectedVertex.getIndexes();
+
+            let positionAttribute = mesh.attribute(MeshAttribute.Position);
+
+            positionAttribute.get(indexes[0], vertexPosition);
+            vertexPosition.vec3_add(movementToApply, vertexPosition);
+            for (let index of indexes) {
+                VertexUtils.setVertexPosition(vertexPosition, index, positionAttribute);
             }
         }
     },
@@ -268,7 +296,7 @@ export let VertexUtils = {
             }
         }
 
-        let newIndexData = new Uint32Array(indexDataArray.length);
+        let newIndexData = mesh.indexData.pp_clone();
         newIndexData.pp_copy(indexDataArray);
         mesh.indexData = newIndexData;
     },
@@ -292,7 +320,7 @@ export let VertexUtils = {
             }
         }
 
-        let newIndexData = new Uint32Array(indexDataArray.length);
+        let newIndexData = meshComponent.mesh.indexData.pp_clone();
         newIndexData.pp_copy(indexDataArray);
 
         return newIndexData;
@@ -334,7 +362,7 @@ export let VertexUtils = {
             VertexUtils.updateVertexNormalSmooth(vertexIndex, mesh, true);
         }
     },
-    updateVertexNormalFlat: function (vertexIndex, mesh) {
+    updateVertexNormalFlat(vertexIndex, mesh) {
         // if flat take all the triangles in the "flat chunk" and compute the average normal and set it for every vertex
         let processedVertexIndexList = [];
         let vertexIndexListToProcess = [vertexIndex];
@@ -367,10 +395,10 @@ export let VertexUtils = {
 
         let normalAttribute = mesh.attribute(MeshAttribute.Normal);
         for (let currentVertexIndex of processedVertexIndexList) {
-            VertexUtils.setVertexNormalWithAttribute(normal, currentVertexIndex, normalAttribute);
+            VertexUtils.setVertexNormal(normal, currentVertexIndex, normalAttribute);
         }
     },
-    updateVertexNormalSmooth: function (vertexIndex, mesh, updateAllTriangles) {
+    updateVertexNormalSmooth(vertexIndex, mesh, updateAllTriangles) {
         // if smooth, vertexIndexList is supposed to be the list of all the vertexes in the same position
         // take all the triangles of all those vertexes and smooth all their normals
 
@@ -403,7 +431,7 @@ export let VertexUtils = {
             normal.vec3_normalize(normal);
 
             let normalAttribute = mesh.attribute(MeshAttribute.Normal);
-            VertexUtils.setVertexNormalWithAttribute(normal, vertexIndex, normalAttribute);
+            VertexUtils.setVertexNormal(normal, vertexIndex, normalAttribute);
         }
     },
     computeTriangleNormal(mesh, triangle) {
@@ -421,6 +449,7 @@ export let VertexUtils = {
     getVertexTrianglesVertexData(vertexIndex, mesh) {
         let triangles = [];
 
+        this.mesh = mesh;
         let vertexIndexDataIndexList = mesh.indexData.pp_findAllIndexesEqual(vertexIndex);
 
         for (let vertexIndexDataIndex of vertexIndexDataIndexList) {

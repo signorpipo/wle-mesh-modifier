@@ -1,5 +1,5 @@
 import { MeshAttribute } from "@wonderlandengine/api";
-import { ColorUtils, getDebugVisualManager, vec4_create } from "../pp";
+import { ColorUtils, getDebugVisualManager, vec3_create, vec4_create } from "../pp";
 import { VertexUtils } from "./vertex_utils";
 
 export function setSelectedVertexColor(color) {
@@ -7,10 +7,9 @@ export function setSelectedVertexColor(color) {
 }
 
 export class SelectedVertexParams {
-    constructor(meshComponent, indexes, originalMeshVertexData) {
+    constructor(meshComponent, indexes) {
         this._myMeshComponent = meshComponent;
         this._myIndexes = indexes;
-        this._myOriginalMeshVertexData = originalMeshVertexData;
     }
 
     getMeshComponent() {
@@ -26,21 +25,25 @@ export class SelectedVertexParams {
     }
 
     getPosition() {
-        let vertexPosition = VertexUtils.getVertexPosition(this._myIndexes[0], this._myMeshComponent.mesh);
-
         let meshTransform = this._myMeshComponent.object.pp_getTransform();
+
+        let positionAttribute = this._myMeshComponent.mesh.attribute(MeshAttribute.Position);
+        let vertexPosition = vec3_create();
+        positionAttribute.get(this._myIndexes[0], vertexPosition);
+
         let vertexPositionWorld = vertexPosition.vec3_convertPositionToWorld(meshTransform);
 
         return vertexPositionWorld;
     }
 
     getNormal() {
-        let normal = [0, 0, 0];
+        let normal = vec3_create();
         let meshTransform = this._myMeshComponent.object.pp_getTransform();
 
+        let normalAttribute = this._myMeshComponent.mesh.attribute(MeshAttribute.Normal);
         for (let vertexIndex of this._myIndexes) {
-            let vertexNormal = VertexUtils.getVertexNormal(vertexIndex, this._myMeshComponent.mesh);
-
+            let vertexNormal = vec3_create();
+            normalAttribute.get(vertexIndex, vertexNormal);
             normal.vec3_add(vertexNormal, normal);
         }
 
@@ -52,12 +55,13 @@ export class SelectedVertexParams {
     }
 
     getOriginalNormal() {
-        let normal = [0, 0, 0];
+        let normal = vec3_create();
         let meshTransform = this._myMeshComponent.object.pp_getTransform();
 
+        let normalAttribute = this._myMeshComponent.mesh.attribute(MeshAttribute.Normal);
         for (let vertexIndex of this._myIndexes) {
-            let vertexNormal = VertexUtils.getVertexNormal(vertexIndex, this._myMeshComponent.mesh);
-
+            let vertexNormal = vec3_create();
+            normalAttribute.get(vertexIndex, vertexNormal);
             normal.vec3_add(vertexNormal, normal);
         }
 
@@ -92,7 +96,7 @@ export class SelectedVertexParams {
 
         let actualColor = color;
         if (color == null) {
-            actualColor = ColorUtils.color255To1([selectedVertexColor, selectedVertexColor, selectedVertexColor, 255]);
+            actualColor = ColorUtils.color255To1([_selectedVertexColor, _selectedVertexColor, _selectedVertexColor, 255]);
         }
 
         let vertexPositionWorld = this.getPosition(meshTransform);

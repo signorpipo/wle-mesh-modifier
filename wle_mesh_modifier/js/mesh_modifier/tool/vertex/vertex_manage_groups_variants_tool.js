@@ -1,4 +1,4 @@
-import { GamepadButtonID, getLeftGamepad, getRightGamepad } from "../../../pp";
+import { GamepadAxesID, GamepadButtonID, getLeftGamepad, getRightGamepad } from "../../../pp";
 import { randomColor } from "../../cauldron_utils";
 import { VertexTool } from "./vertex_tool";
 
@@ -26,7 +26,7 @@ export class VertexManageGroupsVariantsTool extends VertexTool {
     update(dt) {
         super.update(dt);
 
-        let axes = getRightGamepad().getAxesInfo().getAxes();
+        let axes = getRightGamepad().getAxesInfo(GamepadAxesID.THUMBSTICK).getAxes();
         if (Math.abs(axes[0]) > 0.5 && !getLeftGamepad().getButtonInfo(GamepadButtonID.SQUEEZE).isPressed()) {
             if (this._myScrollEnabled) {
                 this._selectNextVariant(Math.pp_sign(axes[0]));
