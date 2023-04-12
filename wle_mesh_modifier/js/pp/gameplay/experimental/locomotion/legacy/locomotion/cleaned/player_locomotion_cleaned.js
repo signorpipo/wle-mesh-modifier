@@ -32,6 +32,7 @@ export class CleanedPlayerLocomotion {
 
         this._myCollisionRuntimeParams = new CollisionRuntimeParams();
         this._myMovementRuntimeParams = new PlayerLocomotionMovementRuntimeParams();
+        this._myMovementRuntimeParams.myIsFlying = this._myParams.myStartFlying;
         this._myMovementRuntimeParams.myCollisionRuntimeParams = this._myCollisionRuntimeParams;
 
         {
@@ -51,8 +52,8 @@ export class CleanedPlayerLocomotion {
             params.myExitSessionMaxVerticalAngle = 90;
 
             params.myHeightOffsetVRWithFloor = 0;
-            params.myHeightOffsetVRWithoutFloor = 1.75;
-            params.myHeightOffsetNonVR = 1.75;
+            params.myHeightOffsetVRWithoutFloor = this._myParams.myDefaultHeight;
+            params.myHeightOffsetNonVR = this._myParams.myDefaultHeight;
 
             params.myForeheadExtraHeight = this._myParams.myForeheadExtraHeight;
 
@@ -376,7 +377,7 @@ export class CleanedPlayerLocomotion {
     _setupCollisionCheckParamsMovement() {
         let simplifiedParams = new CharacterColliderSetupSimplifiedCreationParams();
 
-        simplifiedParams.myHeight = 1.75;
+        simplifiedParams.myHeight = this._myParams.myDefaultHeight;
         simplifiedParams.myRadius = this._myParams.myCharacterRadius;
 
         simplifiedParams.myAccuracyLevel = CharacterColliderSetupSimplifiedCreationAccuracyLevel.HIGH;

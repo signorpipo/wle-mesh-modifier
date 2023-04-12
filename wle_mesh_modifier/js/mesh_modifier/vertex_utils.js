@@ -264,7 +264,7 @@ export let VertexUtils = {
             }
         }
 
-        let newIndexData = mesh.indexData.pp_clone();
+        let newIndexData = new Uint32Array(indexDataArray.length);
         newIndexData.pp_copy(indexDataArray);
         mesh.indexData = newIndexData;
     },
@@ -288,7 +288,7 @@ export let VertexUtils = {
             }
         }
 
-        let newIndexData = meshComponent.mesh.indexData.pp_clone();
+        let newIndexData = new Uint32Array(indexDataArray.length);
         newIndexData.pp_copy(indexDataArray);
 
         return newIndexData;

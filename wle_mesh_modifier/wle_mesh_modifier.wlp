@@ -69,9 +69,10 @@
                         "_myMinAngleToFlyDownNonVR": 90.0,
                         "_myMinAngleToFlyUpVR": 90.0,
                         "_myMinAngleToFlyDownVR": 90.0,
-                        "_myMinAngleToFlyRight": 90.0
+                        "_myMinAngleToFlyRight": 90.0,
+                        "_myStartFlying": true
                     },
-                    "active": false
+                    "active": true
                 }
             ]
         },
@@ -6554,7 +6555,7 @@
                     "local-floor": true
                 },
                 "requiredFeatures": {
-                    "local-floor": true
+                    "local-floor": false
                 }
             },
             "enableRuntimeGltf": true

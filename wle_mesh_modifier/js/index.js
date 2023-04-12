@@ -47,7 +47,7 @@ const RuntimeBaseName = 'WonderlandRuntime';
 const WithPhysX = true;
 const WithLoader = true;
 const WebXRFramebufferScaleFactor = 1;
-const WebXRRequiredFeatures = ['local','local-floor',];
+const WebXRRequiredFeatures = ['local',];
 const WebXROptionalFeatures = ['local','local-floor','hand-tracking','hit-test',];
 /* wle:auto-constants:end */
 

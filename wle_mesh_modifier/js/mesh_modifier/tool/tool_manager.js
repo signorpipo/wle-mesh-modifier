@@ -1,5 +1,5 @@
 import { MeshComponent, TextComponent } from "@wonderlandengine/api";
-import { GamepadAxesID, GamepadButtonID, Timer, VisualElementType, getDebugVisualManager, getLeftGamepad, getScene } from "../../pp";
+import { GamepadAxesID, GamepadButtonID, PlayerLocomotionComponent, Timer, VisualElementType, XRUtils, getDebugVisualManager, getLeftGamepad, getScene } from "../../pp";
 import { jsonParse, jsonStringify } from "../cauldron_utils";
 import { downloadFileText, loadFileText } from "../file_manager";
 import { VertexGroupConfig } from "../vertex_group_config";
@@ -112,6 +112,9 @@ export class ToolManager {
         this._mySetMeshActiveCounter = 0;
         this._mySetMeshActiveFalse = false;
         this._mySetMeshActiveFalseUsed = false;
+
+        this._myLocomotionComponent = getScene().pp_getComponent(PlayerLocomotionComponent);
+        this._myFirstUpdateSession = 60;
     }
 
     update(dt) {
@@ -161,8 +164,14 @@ export class ToolManager {
                 } else {
                     this._myScrollEnabled = true;
                 }
+
+                if (this._myFirstUpdateSession == 0) {
+                    this._myLocomotionComponent.active = false;
+                }
             } else {
                 this._myScrollEnabled = Math.abs(axes[0]) < 0.5 && Math.abs(axes[1]) < 0.5;
+
+                this._myLocomotionComponent.active = true;
             }
 
             let currentGroup = this._myToolGroupOrder[this._myActiveToolGroupIndex];
@@ -198,6 +207,10 @@ export class ToolManager {
 
             if (!this._myParams.myForceMeshRefresh) {
                 this._myParams.myMeshObject.pp_setActive(true);
+            }
+
+            if (XRUtils.isSessionActive() && this._myFirstUpdateSession > 0) {
+                this._myFirstUpdateSession--;
             }
         }
     }

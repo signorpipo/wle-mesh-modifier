@@ -26,6 +26,8 @@ export let PlayerLocomotionDirectionReferenceType = {
 export class PlayerLocomotionParams {
 
     constructor(engine = getMainEngine()) {
+        this.myDefaultHeight = 0;
+
         this.myMaxSpeed = 0;
         this.myMaxRotationSpeed = 0;
 
@@ -37,6 +39,8 @@ export class PlayerLocomotionParams {
         this.mySnapTurnSpeedDegrees = 0;
 
         this.myFlyEnabled = false;
+        this.myStartFlying = false;
+
         this.myMinAngleToFlyUpNonVR = 0;
         this.myMinAngleToFlyDownNonVR = 0;
         this.myMinAngleToFlyUpVR = 0;
@@ -82,6 +86,7 @@ export class PlayerLocomotion {
 
         this._myCollisionRuntimeParams = new CollisionRuntimeParams();
         this._myMovementRuntimeParams = new PlayerLocomotionMovementRuntimeParams();
+        this._myMovementRuntimeParams.myIsFlying = this._myParams.myStartFlying;
         this._myMovementRuntimeParams.myCollisionRuntimeParams = this._myCollisionRuntimeParams;
 
         {
@@ -101,8 +106,8 @@ export class PlayerLocomotion {
             params.myExitSessionMaxVerticalAngle = 90;
 
             params.myHeightOffsetVRWithFloor = 0;
-            params.myHeightOffsetVRWithoutFloor = 1.75;
-            params.myHeightOffsetNonVR = 1.75;
+            params.myHeightOffsetVRWithoutFloor = this._myParams.myDefaultHeight;
+            params.myHeightOffsetNonVR = this._myParams.myDefaultHeight;
 
             params.myForeheadExtraHeight = this._myParams.myForeheadExtraHeight;
 

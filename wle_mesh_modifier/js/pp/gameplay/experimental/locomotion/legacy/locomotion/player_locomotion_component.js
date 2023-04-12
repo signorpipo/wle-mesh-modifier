@@ -18,7 +18,8 @@ export function setCollisionCheck(collisionCheck, engine = getMainEngine()) {
 export class PlayerLocomotionComponent extends Component {
     static TypeName = "pp-player-locomotion";
     static Properties = {
-        _myPhysicsBlockLayerFlags: Property.string("1, 0, 0, 0, 0, 0, 0, 0"),
+        _myPhysicsBlockLayerFlags: Property.string("0, 0, 0, 0, 0, 0, 0, 0"),
+        _myDefaultHeight: Property.float(1.75),
         _myMaxSpeed: Property.float(2),
         _myMaxRotationSpeed: Property.float(100),
         _myCharacterRadius: Property.float(0.3),
@@ -27,6 +28,7 @@ export class PlayerLocomotionComponent extends Component {
         _mySnapTurnAngle: Property.float(30),
         _mySnapTurnSpeedDegrees: Property.float(0),
         _myFlyEnabled: Property.bool(false),
+        _myStartFlying: Property.bool(false),
         _myMinAngleToFlyUpNonVR: Property.float(30),
         _myMinAngleToFlyDownNonVR: Property.float(50),
         _myMinAngleToFlyUpVR: Property.float(60),
@@ -48,6 +50,8 @@ export class PlayerLocomotionComponent extends Component {
         setCollisionCheck(new CollisionCheck(this.engine), this.engine);
 
         let params = new PlayerLocomotionParams(this.engine);
+        params.myDefaultHeight = this._myDefaultHeight;
+
         params.myMaxSpeed = this._myMaxSpeed;
         params.myMaxRotationSpeed = this._myMaxRotationSpeed;
 
@@ -59,6 +63,7 @@ export class PlayerLocomotionComponent extends Component {
         params.mySnapTurnSpeedDegrees = this._mySnapTurnSpeedDegrees;
 
         params.myFlyEnabled = this._myFlyEnabled;
+        params.myStartFlying = this._myStartFlying;
         params.myMinAngleToFlyUpNonVR = this._myMinAngleToFlyUpNonVR;
         params.myMinAngleToFlyDownNonVR = this._myMinAngleToFlyDownNonVR;
         params.myMinAngleToFlyUpVR = this._myMinAngleToFlyUpVR;

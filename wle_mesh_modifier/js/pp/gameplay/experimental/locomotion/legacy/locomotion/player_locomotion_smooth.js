@@ -76,8 +76,6 @@ export class PlayerLocomotionSmooth extends PlayerLocomotionMovement {
         this._myDirectionConverterVR = new Direction2DTo3DConverter(directionConverterVRParams);
         this._myCurrentDirectionConverter = this._myDirectionConverterNonVR;
 
-        this._myLocomotionRuntimeParams.myIsFlying = false;
-
         XRUtils.registerSessionStartEndEventListeners(this, this._onXRSessionStart.bind(this), this._onXRSessionEnd.bind(this), true, false, this._myParams.myEngine);
     }
 
