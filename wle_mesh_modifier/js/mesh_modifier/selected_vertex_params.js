@@ -96,7 +96,7 @@ export class SelectedVertexParams {
 
         let actualColor = color;
         if (color == null) {
-            actualColor = ColorUtils.color255To1([_selectedVertexColor, _selectedVertexColor, _selectedVertexColor, 255]);
+            actualColor = ColorUtils.color255To1(vec4_create(_selectedVertexColor, _selectedVertexColor, _selectedVertexColor, 255));
         }
 
         let vertexPositionWorld = this.getPosition(meshTransform);

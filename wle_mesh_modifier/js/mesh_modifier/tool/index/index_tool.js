@@ -130,7 +130,7 @@ export class IndexTool {
         this._myToolData.mySelectedVertexes = [];
         let meshTransform = this._myToolData.myMeshComponent.object.pp_getTransform();
 
-        let vertexCount = mesh.vertexCount;
+        let vertexCount = this._myToolData.myMeshComponent.mesh.vertexCount;
         for (let i = 0; i < vertexCount; i++) {
             let vertexPosition = VertexUtils.getVertexPosition(i, this._myToolData.myMeshComponent.mesh);
             let vertexPositionWorld = vertexPosition.vec3_convertPositionToWorld(meshTransform);
