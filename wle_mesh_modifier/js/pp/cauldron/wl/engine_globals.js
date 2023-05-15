@@ -1,3 +1,5 @@
+import { SceneUtils } from "./utils/scene_utils";
+
 let _myMainEngine = null;
 let _myEngines = [];
 
@@ -49,6 +51,17 @@ export function getScene(engine = getMainEngine()) {
     }
 
     return scene;
+}
+
+export function getRoot(engine = getMainEngine()) {
+    let root = null;
+
+    let scene = getScene(engine);
+    if (scene != null) {
+        root = SceneUtils.getRoot(scene);
+    }
+
+    return root;
 }
 
 export function getPhysics(engine = getMainEngine()) {

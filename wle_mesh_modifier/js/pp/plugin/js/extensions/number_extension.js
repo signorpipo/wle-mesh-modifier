@@ -15,5 +15,5 @@ export function initNumberExtensionPrototype() {
 
 
 
-    PluginUtils.assignProperties(numberExtension, Number.prototype, false, true, true);
+    PluginUtils.injectProperties(numberExtension, Number.prototype, false, true, true);
 }

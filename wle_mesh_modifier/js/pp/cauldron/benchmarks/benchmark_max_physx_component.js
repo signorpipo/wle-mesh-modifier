@@ -1,11 +1,10 @@
-import { Component, PhysXComponent, Property } from "@wonderlandengine/api";
-import { getDebugVisualManager } from "../../debug/debug_globals";
+import { Component, PhysXComponent, Property, Shape } from "@wonderlandengine/api";
 import { vec3_create } from "../../plugin/js/extensions/array_extension";
+import { Globals } from "../../pp/globals";
 import { Timer } from "../cauldron/timer";
 import { PhysicsCollisionCollector } from "../physics/physics_collision_collector";
-import { RaycastParams, RaycastResults } from "../physics/physics_raycast_data";
+import { RaycastParams, RaycastResults } from "../physics/physics_raycast_params";
 import { PhysicsUtils } from "../physics/physics_utils";
-import { getPhysics } from "../wl/engine_globals";
 
 // Adjust the gravity to a low value like -0.05 to have better results, since the dynamic objects will move slowly instead of quickly falling far away
 export class BenchmarkMaxPhysXComponent extends Component {
@@ -27,11 +26,16 @@ export class BenchmarkMaxPhysXComponent extends Component {
         _myShapeIndex: Property.int(0),
         _myShapeScaleMultiplier: Property.float(1), // Used to adjust the scale of the convex mesh if too big or small based on how u imported it
 
-        _myLogActive: Property.bool(true),
+        _myLogEnabled: Property.bool(true),
         _myClearConsoleBeforeLog: Property.bool(true)
     };
 
     start() {
+        this._myValid = false;
+
+        if (!Globals.isDebugEnabled(this.engine)) return;
+
+        this._myValid = true;
         this._myStarted = false;
         this._myPreStartTimer = new Timer(1);
     }
@@ -39,7 +43,7 @@ export class BenchmarkMaxPhysXComponent extends Component {
     _start() {
         this._myParentObject = this.object.pp_addObject();
 
-        this._myRaycastParams = new RaycastParams(getPhysics(this.engine));
+        this._myRaycastParams = new RaycastParams(Globals.getPhysics(this.engine));
         this._myRaycastResults = new RaycastResults();
 
         this._myStaticPhysXObjects = [];
@@ -59,7 +63,7 @@ export class BenchmarkMaxPhysXComponent extends Component {
         this._myStartTimer = new Timer(1);
         this._myTimer = new Timer(0);
         this._myDebugTimer = new Timer(this._myVisualizeRaycastDelay);
-        this._myLogActiveTimer = new Timer(1);
+        this._myLogEnabledTimer = new Timer(1);
         this._myFPSHistory = [];
         for (let i = 0; i < 7; i++) {
             this._myFPSHistory.push(0);
@@ -74,6 +78,8 @@ export class BenchmarkMaxPhysXComponent extends Component {
     }
 
     update(dt) {
+        if (!this._myValid) return;
+
         if (!this._myStarted) {
             this._myPreStartTimer.update(dt);
             if (this._myPreStartTimer.isDone()) {
@@ -84,26 +90,26 @@ export class BenchmarkMaxPhysXComponent extends Component {
             if (this._myStartTimer.isDone()) {
                 this._myTimer.update(dt);
                 this._myDebugTimer.update(dt);
-                this._myLogActiveTimer.update(dt);
+                this._myLogEnabledTimer.update(dt);
                 if (this._myTimer.isDone()) {
                     this._myTimer.start();
 
-                    let debugActive = false;
+                    let debugEnabled = false;
                     if (this._myDebugTimer.isDone()) {
                         this._myDebugTimer.start();
-                        debugActive = true;
+                        debugEnabled = true;
                     }
 
-                    debugActive = debugActive && this._myVisualizeRaycast;
-                    this._raycastTest(debugActive);
+                    debugEnabled = debugEnabled && this._myVisualizeRaycast;
+                    this._raycastTest(debugEnabled);
                 }
 
                 this._myFPSHistory.pop();
                 this._myFPSHistory.unshift(Math.round(1 / dt));
 
-                if (this._myLogActive) {
-                    if (this._myLogActiveTimer.isDone()) {
-                        this._myLogActiveTimer.start();
+                if (this._myLogEnabled) {
+                    if (this._myLogEnabledTimer.isDone()) {
+                        this._myLogEnabledTimer.start();
                         if (this._myClearConsoleBeforeLog) {
                             console.clear();
                         }
@@ -165,7 +171,7 @@ export class BenchmarkMaxPhysXComponent extends Component {
         }
     }
 
-    _raycastTest(debugActive) {
+    _raycastTest(debugEnabled) {
         let raycastCount = this._myRaycastCount;
 
         let distance = 10000;
@@ -182,18 +188,18 @@ export class BenchmarkMaxPhysXComponent extends Component {
 
             let raycastResults = PhysicsUtils.raycast(this._myRaycastParams, this._myRaycastResults);
 
-            if (debugActive) {
-                getDebugVisualManager(this.engine).drawRaycast(this._myDebugTimer.getDuration(), raycastResults, true, 5, 0.015);
+            if (debugEnabled && Globals.isDebugEnabled(this.engine)) {
+                Globals.getDebugVisualManager(this.engine).drawRaycast(this._myDebugTimer.getDuration(), raycastResults, true, 5, 0.015);
             }
         }
     }
 
-    _spawnDome(isStatic, isDynamic) {
+    _spawnDome(staticDome, dynamicDome) {
         let maxCount = this._myStaticPhysXCount;
         let physXList = this._myStaticPhysXObjects;
         let cloves = Math.ceil(Math.sqrt(this._myStaticPhysXCount));
-        if (!isStatic) {
-            if (isDynamic) {
+        if (!staticDome) {
+            if (dynamicDome) {
                 cloves = Math.ceil(Math.sqrt(this._myDynamicPhysXCount));
                 maxCount = this._myDynamicPhysXCount;
                 physXList = this._myDynamicPhysXObjects;
@@ -209,8 +215,8 @@ export class BenchmarkMaxPhysXComponent extends Component {
         let minDistance = Math.max(0, this._myStaticDomeSize - 20);
         let maxDistance = this._myStaticDomeSize + 20;
 
-        if (!isStatic) {
-            if (isDynamic) {
+        if (!staticDome) {
+            if (dynamicDome) {
                 minDistance = Math.max(0, this._myDynamicDomeSize - 20);
                 maxDistance = this._myDynamicDomeSize + 20;
             } else {
@@ -244,7 +250,7 @@ export class BenchmarkMaxPhysXComponent extends Component {
 
                     physXDirection.vec3_scale(distance, physXDirection);
 
-                    this._addPhysX(physXDirection, isStatic, isDynamic);
+                    this._addPhysX(physXDirection, staticDome, dynamicDome);
                 }
 
                 verticalDirection.vec3_rotateAxisRadians(angleForClove / 2, rotationAxis, verticalDirection);
@@ -260,7 +266,7 @@ export class BenchmarkMaxPhysXComponent extends Component {
 
                     physXDirection.vec3_scale(distance, physXDirection);
 
-                    this._addPhysX(physXDirection, isStatic, isDynamic);
+                    this._addPhysX(physXDirection, staticDome, dynamicDome);
                 }
 
                 verticalDirection.vec3_rotateAxisRadians(angleForClove / 2, rotationAxis, verticalDirection);
@@ -271,12 +277,12 @@ export class BenchmarkMaxPhysXComponent extends Component {
         }
     }
 
-    _addPhysX(physXDirection, isStatic, isDynamic) {
+    _addPhysX(physXDirection, staticDome, dynamicDome) {
         let position = physXDirection;
         let scale = Math.pp_random(1, 10);
-        let shape = Math.pp_randomPick(this.engine.Shape.Sphere, this.engine.Shape.Box);
+        let shape = Math.pp_randomPick(Shape.Sphere, Shape.Box);
         if (this._myUseConvexMesh) {
-            shape = this.engine.Shape.ConvexMesh;
+            shape = Shape.ConvexMesh;
             scale *= this._myShapeScaleMultiplier;
         }
 
@@ -287,16 +293,16 @@ export class BenchmarkMaxPhysXComponent extends Component {
             "shape": shape,
             "shapeData": { index: this._myShapeIndex },
             "extents": vec3_create(scale, scale, scale),
-            "static": isStatic,
-            "kinematic": !isDynamic,
+            "static": staticDome,
+            "kinematic": !dynamicDome,
             "mass": 1
         });
 
-        if (isStatic) {
+        if (staticDome) {
             this._myStaticPhysXObjects.push(physX);
             this._myStaticPhysXComponents.push(physXComponent);
             this._myStaticPhysXCollectors.push(new PhysicsCollisionCollector(physXComponent));
-        } else if (isDynamic) {
+        } else if (dynamicDome) {
             this._myDynamicPhysXObjects.push(physX);
             this._myDynamicPhysXComponents.push(physXComponent);
             this._myDynamicPhysXCollectors.push(new PhysicsCollisionCollector(physXComponent));
@@ -304,6 +310,20 @@ export class BenchmarkMaxPhysXComponent extends Component {
             this._myKinematicPhysXObjects.push(physX);
             this._myKinematicPhysXComponents.push(physXComponent);
             this._myKinematicPhysXCollectors.push(new PhysicsCollisionCollector(physXComponent));
+        }
+    }
+
+    onDestroy() {
+        for (let collector of this._myStaticPhysXCollectors) {
+            collector.destroy();
+        }
+
+        for (let collector of this._myDynamicPhysXCollectors) {
+            collector.destroy();
+        }
+
+        for (let collector of this._myKinematicPhysXCollectors) {
+            collector.destroy();
         }
     }
 }

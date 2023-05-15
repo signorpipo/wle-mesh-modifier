@@ -1,12 +1,11 @@
 import { PhysXComponent } from "@wonderlandengine/api";
 import { FSM } from "../../../../../cauldron/fsm/fsm";
+import { EasingFunction } from "../../../../../cauldron/js/utils/math_utils";
 import { PhysicsLayerFlags } from "../../../../../cauldron/physics/physics_layer_flags";
-import { getMainEngine } from "../../../../../cauldron/wl/engine_globals";
-import { getLeftGamepad } from "../../../../../input/cauldron/input_globals";
 import { Handedness } from "../../../../../input/cauldron/input_types";
 import { InputUtils } from "../../../../../input/cauldron/input_utils";
 import { GamepadButtonID } from "../../../../../input/gamepad/gamepad_buttons";
-import { EasingFunction } from "../../../../../plugin/js/extensions/math_extension";
+import { Globals } from "../../../../../pp/globals";
 import { CollisionCheckUtils } from "../../../character_controller/collision/legacy/collision_check/collision_check";
 import { CollisionCheckParams, CollisionRuntimeParams } from "../../../character_controller/collision/legacy/collision_check/collision_params";
 import { PlayerHeadManager, PlayerHeadManagerParams } from "./player_head_manager";
@@ -25,7 +24,7 @@ export let PlayerLocomotionDirectionReferenceType = {
 
 export class PlayerLocomotionParams {
 
-    constructor(engine = getMainEngine()) {
+    constructor(engine = Globals.getMainEngine()) {
         this.myDefaultHeight = 0;
 
         this.myMaxSpeed = 0;
@@ -57,6 +56,8 @@ export class PlayerLocomotionParams {
         this.myForeheadExtraHeight = 0;
 
         this.myTeleportPositionObject = null;
+        this.myTeleportMaxDistance = 0;
+        this.myTeleportMaxHeightDifference = 0;
 
         this.myColliderAccuracy = null;
         this.myColliderCheckOnlyFeet = false;
@@ -122,7 +123,7 @@ export class PlayerLocomotion {
 
             params.myFeetRotationKeepUp = true;
 
-            params.myDebugActive = false;
+            params.myDebugEnabled = false;
 
             this._myPlayerHeadManager = new PlayerHeadManager(params);
         }
@@ -149,7 +150,7 @@ export class PlayerLocomotion {
 
             params.myHeadRadius = 0.15;
 
-            params.myIsMaxDistanceFromRealToSyncEnabled = true;
+            params.myMaxDistanceFromRealToSyncEnabled = true;
             params.myMaxDistanceFromRealToSync = 100;
 
             params.myIsFloatingValidIfVerticalMovement = false;
@@ -191,7 +192,7 @@ export class PlayerLocomotion {
 
             params.myResetRealOnMove = true;
 
-            params.myDebugActive = true;
+            params.myDebugEnabled = true;
 
             this._myPlayerTransformManager = new PlayerTransformManager(params);
         }
@@ -236,10 +237,10 @@ export class PlayerLocomotion {
             params.mySnapTurnAngle = this._myParams.mySnapTurnAngle;
 
             if (this._myParams.mySnapTurnSpeedDegrees > Math.PP_EPSILON) {
-                params.mySmoothSnapActive = true;
+                params.mySmoothSnapEnabled = true;
                 params.mySmoothSnapSpeedDegrees = this._myParams.mySnapTurnSpeedDegrees;
             } else {
-                params.mySmoothSnapActive = false;
+                params.mySmoothSnapEnabled = false;
             }
 
             params.myRotationMinStickIntensityThreshold = 0.1;
@@ -297,8 +298,8 @@ export class PlayerLocomotion {
 
                 params.myHandedness = this._myParams.myMainHand;
 
-                params.myDetectionParams.myMaxDistance = 3;
-                params.myDetectionParams.myMaxHeightDifference = 4;
+                params.myDetectionParams.myMaxDistance = this._myParams.myTeleportMaxDistance;
+                params.myDetectionParams.myMaxHeightDifference = this._myParams.myTeleportMaxHeightDifference;
                 params.myDetectionParams.myGroundAngleToIgnoreUpward = this._myCollisionCheckParamsMovement.myGroundAngleToIgnore;
                 params.myDetectionParams.myMustBeOnGround = true;
 
@@ -320,10 +321,10 @@ export class PlayerLocomotion {
 
                 params.myGravityAcceleration = 0;
 
-                params.myDebugActive = false;
-                params.myDebugDetectActive = true;
-                params.myDebugShowActive = true;
-                params.myDebugVisibilityActive = false;
+                params.myDebugEnabled = false;
+                params.myDebugDetectEnabled = true;
+                params.myDebugShowEnabled = true;
+                params.myDebugVisibilityEnabled = false;
 
                 this._myPlayerLocomotionTeleport = new PlayerLocomotionTeleport(params, this._myMovementRuntimeParams);
             }
@@ -332,6 +333,8 @@ export class PlayerLocomotion {
         this._setupLocomotionMovementFSM();
 
         this._myIdle = false;
+
+        this._myDestroyed = false;
     }
 
     start() {
@@ -351,7 +354,7 @@ export class PlayerLocomotion {
         this._myPlayerHeadManager.update(dt);
         this._myPlayerTransformManager.update(dt);
 
-        if (getLeftGamepad(this._myParams.myEngine).getButtonInfo(GamepadButtonID.THUMBSTICK).isPressEnd(2)) {
+        if (Globals.getLeftGamepad(this._myParams.myEngine).getButtonInfo(GamepadButtonID.THUMBSTICK).isPressEnd(2)) {
             if (this._myLocomotionMovementFSM.isInState("smooth") && this._myPlayerLocomotionSmooth.canStop()) {
                 this._myLocomotionMovementFSM.perform("next");
             } else if (this._myLocomotionMovementFSM.isInState("teleport") && this._myPlayerLocomotionTeleport.canStop()) {
@@ -370,11 +373,11 @@ export class PlayerLocomotion {
         }
 
         //this._myPlayerObscureManager.update(dt);
-        if (getLeftGamepad(this._myParams.myEngine).getButtonInfo(GamepadButtonID.SELECT).isPressEnd(2)) {
+        if (Globals.getLeftGamepad(this._myParams.myEngine).getButtonInfo(GamepadButtonID.SELECT).isPressEnd(2)) {
             if (this._myPlayerObscureManager.isFading()) {
-                this._myPlayerObscureManager.obscureLevelOverride(this._myPlayerObscureManager.isFadingOut() ? Math.pp_random(0, 0) : Math.pp_random(1, 1));
+                this._myPlayerObscureManager.overrideObscureLevel(this._myPlayerObscureManager.isFadingOut() ? Math.pp_random(0, 0) : Math.pp_random(1, 1));
             } else {
-                this._myPlayerObscureManager.obscureLevelOverride(this._myPlayerObscureManager.isObscured() ? Math.pp_random(0, 0) : Math.pp_random(1, 1));
+                this._myPlayerObscureManager.overrideObscureLevel(this._myPlayerObscureManager.isObscured() ? Math.pp_random(0, 0) : Math.pp_random(1, 1));
             }
         }
     }
@@ -525,7 +528,7 @@ export class PlayerLocomotion {
         this._myCollisionCheckParamsMovement.mySlidingAdjustSign90Degrees = true;
 
         this._myCollisionCheckParamsMovement.myHorizontalBlockLayerFlags.copy(this._myParams.myPhysicsBlockLayerFlags);
-        let physXComponents = getPlayerObjects(this._myParams.myEngine).myPlayer.pp_getComponents(PhysXComponent);
+        let physXComponents = Globals.getPlayerObjects(this._myParams.myEngine).myPlayer.pp_getComponents(PhysXComponent);
         for (let physXComponent of physXComponents) {
             this._myCollisionCheckParamsMovement.myHorizontalObjectsToIgnore.pp_pushUnique(physXComponent.object, (first, second) => first.pp_equals(second));
         }
@@ -533,17 +536,17 @@ export class PlayerLocomotion {
         this._myCollisionCheckParamsMovement.myVerticalBlockLayerFlags.copy(this._myCollisionCheckParamsMovement.myHorizontalBlockLayerFlags);
         this._myCollisionCheckParamsMovement.myVerticalObjectsToIgnore.pp_copy(this._myCollisionCheckParamsMovement.myHorizontalObjectsToIgnore);
 
-        this._myCollisionCheckParamsMovement.myDebugActive = false;
+        this._myCollisionCheckParamsMovement.myDebugEnabled = false;
 
-        this._myCollisionCheckParamsMovement.myDebugHorizontalMovementActive = false;
-        this._myCollisionCheckParamsMovement.myDebugHorizontalPositionActive = true;
-        this._myCollisionCheckParamsMovement.myDebugVerticalMovementActive = false;
-        this._myCollisionCheckParamsMovement.myDebugVerticalPositionActive = false;
-        this._myCollisionCheckParamsMovement.myDebugSlidingActive = false;
-        this._myCollisionCheckParamsMovement.myDebugGroundInfoActive = false;
-        this._myCollisionCheckParamsMovement.myDebugCeilingInfoActive = false;
-        this._myCollisionCheckParamsMovement.myDebugRuntimeParamsActive = false;
-        this._myCollisionCheckParamsMovement.myDebugMovementActive = false;
+        this._myCollisionCheckParamsMovement.myDebugHorizontalMovementEnabled = false;
+        this._myCollisionCheckParamsMovement.myDebugHorizontalPositionEnabled = true;
+        this._myCollisionCheckParamsMovement.myDebugVerticalMovementEnabled = false;
+        this._myCollisionCheckParamsMovement.myDebugVerticalPositionEnabled = false;
+        this._myCollisionCheckParamsMovement.myDebugSlidingEnabled = false;
+        this._myCollisionCheckParamsMovement.myDebugGroundInfoEnabled = false;
+        this._myCollisionCheckParamsMovement.myDebugCeilingInfoEnabled = false;
+        this._myCollisionCheckParamsMovement.myDebugRuntimeParamsEnabled = false;
+        this._myCollisionCheckParamsMovement.myDebugMovementEnabled = false;
     }
 
     _setupCollisionCheckParamsTeleport() {
@@ -583,30 +586,30 @@ export class PlayerLocomotion {
         //this._myCollisionCheckParamsTeleport.mySplitMovementEnabled = true;
         //this._myCollisionCheckParamsTeleport.mySplitMovementMaxLength = 0.2;
 
-        //this._myCollisionCheckParamsTeleport.myDebugActive = true;
+        //this._myCollisionCheckParamsTeleport.myDebugEnabled = true;
     }
 
     _fixAlmostUp() {
         // Get rotation on y and adjust if it's slightly tilted when it's almsot 0,1,0
 
         let defaultUp = vec3_create(0, 1, 0);
-        let angleWithDefaultUp = getPlayerObjects(this._myParams.myEngine).myPlayer.pp_getUp().vec3_angle(defaultUp);
+        let angleWithDefaultUp = Globals.getPlayerObjects(this._myParams.myEngine).myPlayer.pp_getUp().vec3_angle(defaultUp);
         if (angleWithDefaultUp < 1) {
-            let forward = getPlayerObjects(this._myParams.myEngine).myPlayer.pp_getForward();
+            let forward = Globals.getPlayerObjects(this._myParams.myEngine).myPlayer.pp_getForward();
             let flatForward = forward.vec3_clone();
             flatForward[1] = 0;
 
             let defaultForward = vec3_create(0, 0, 1);
             let angleWithDefaultForward = defaultForward.vec3_angleSigned(flatForward, defaultUp);
 
-            getPlayerObjects(this._myParams.myEngine).myPlayer.pp_resetRotation();
-            getPlayerObjects(this._myParams.myEngine).myPlayer.pp_rotateAxis(angleWithDefaultForward, defaultUp);
+            Globals.getPlayerObjects(this._myParams.myEngine).myPlayer.pp_resetRotation();
+            Globals.getPlayerObjects(this._myParams.myEngine).myPlayer.pp_rotateAxis(angleWithDefaultForward, defaultUp);
         }
     }
 
     _setupLocomotionMovementFSM() {
         this._myLocomotionMovementFSM = new FSM();
-        //this._myLocomotionMovementFSM.setDebugLogActive(true, "Locomotion Movement");
+        //this._myLocomotionMovementFSM.setLogEnabled(true, "Locomotion Movement");
 
         this._myLocomotionMovementFSM.addState("init");
         this._myLocomotionMovementFSM.addState("smooth", (dt) => this._myPlayerLocomotionSmooth.update(dt));
@@ -645,5 +648,19 @@ export class PlayerLocomotion {
         }.bind(this));
 
         this._myLocomotionMovementFSM.init("init");
+    }
+
+    destroy() {
+        this._myDestroyed = true;
+
+        this._myPlayerHeadManager.destroy();
+        this._myPlayerLocomotionSmooth.destroy();
+        this._myPlayerTransformManager.destroy();
+        this._myPlayerObscureManager.destroy();
+        this._myPlayerLocomotionTeleport.destroy();
+    }
+
+    isDestroyed() {
+        return this._myDestroyed;
     }
 }

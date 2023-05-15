@@ -9,7 +9,7 @@ export class PlayerLocomotionTeleportTeleportShiftState extends PlayerLocomotion
         super(teleportParams, teleportRuntimeParams, locomotionRuntimeParams);
 
         this._myFSM = new FSM();
-        //this._myFSM.setDebugLogActive(true, "Locomotion Teleport Teleport Shift");
+        //this._myFSM.setLogEnabled(true, "Locomotion Teleport Teleport Shift");
 
         this._myFSM.addState("init");
         this._myFSM.addState("idle");
@@ -35,9 +35,9 @@ export class PlayerLocomotionTeleportTeleportShiftState extends PlayerLocomotion
         this._myCurrentRotationOnUp = 0;
         this._myStartRotationOnUp = 0;
 
-        //getEasyTuneVariables(this._myTeleportParams.myEngine).add(new EasyTuneNumber("Shift Movement Seconds", this._myTeleportParams.myTeleportParams.myShiftMovementSeconds, 0.5, 3, 0, undefined, this._myTeleportParams.myEngine));
-        //getEasyTuneVariables(this._myTeleportParams.myEngine).add(new EasyTuneNumber("Shift Rotate Seconds", this._myTeleportParams.myTeleportParams.myShiftRotateSeconds, 0.5, 3, 0, undefined, this._myTeleportParams.myEngine));
-        //getEasyTuneVariables(this._myTeleportParams.myEngine).add(new EasyTuneNumber("Shift Rotate Start Percentage", this._myTeleportParams.myTeleportParams.myShiftRotateStartAfterMovementPercentage, 0.5, 3, 0, 1, this._myTeleportParams.myEngine));
+        //Globals.getEasyTuneVariables(this._myTeleportParams.myEngine).add(new EasyTuneNumber("Shift Movement Seconds", this._myTeleportParams.myTeleportParams.myShiftMovementSeconds, 0.5, 3, 0, undefined, this._myTeleportParams.myEngine));
+        //Globals.getEasyTuneVariables(this._myTeleportParams.myEngine).add(new EasyTuneNumber("Shift Rotate Seconds", this._myTeleportParams.myTeleportParams.myShiftRotateSeconds, 0.5, 3, 0, undefined, this._myTeleportParams.myEngine));
+        //Globals.getEasyTuneVariables(this._myTeleportParams.myEngine).add(new EasyTuneNumber("Shift Rotate Start Percentage", this._myTeleportParams.myTeleportParams.myShiftRotateStartAfterMovementPercentage, 0.5, 3, 0, 1, this._myTeleportParams.myEngine));
     }
 
     start(fsm) {
@@ -51,9 +51,9 @@ export class PlayerLocomotionTeleportTeleportShiftState extends PlayerLocomotion
     }
 
     update(dt, fsm) {
-        //this._myTeleportParams.myTeleportParams.myShiftMovementSeconds = getEasyTuneVariables(this._myTeleportParams.myEngine).get("Shift Movement Seconds");
-        //this._myTeleportParams.myTeleportParams.myShiftRotateSeconds = getEasyTuneVariables(this._myTeleportParams.myEngine).get("Shift Rotate Seconds");
-        //this._myTeleportParams.myTeleportParams.myShiftRotateStartAfterMovementPercentage = getEasyTuneVariables(this._myTeleportParams.myEngine).get("Shift Rotate Start Percentage");
+        //this._myTeleportParams.myTeleportParams.myShiftMovementSeconds = Globals.getEasyTuneVariables(this._myTeleportParams.myEngine).get("Shift Movement Seconds");
+        //this._myTeleportParams.myTeleportParams.myShiftRotateSeconds = Globals.getEasyTuneVariables(this._myTeleportParams.myEngine).get("Shift Rotate Seconds");
+        //this._myTeleportParams.myTeleportParams.myShiftRotateStartAfterMovementPercentage = Globals.getEasyTuneVariables(this._myTeleportParams.myEngine).get("Shift Rotate Start Percentage");
 
         this._myFSM.update(dt);
     }

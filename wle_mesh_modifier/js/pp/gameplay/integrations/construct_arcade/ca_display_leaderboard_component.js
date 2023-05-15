@@ -1,5 +1,5 @@
 import { Component, Property, TextComponent } from "@wonderlandengine/api";
-import { CloneUtils } from "../../../cauldron/utils/clone_utils";
+import { ComponentUtils } from "../../../cauldron/wl/utils/component_utils";
 import { CADummyServer } from "./ca_dummy_server";
 import { CAUtils } from "./ca_utils";
 
@@ -7,8 +7,8 @@ export class CADisplayLeaderboardComponent extends Component {
     static TypeName = "pp-ca-display-leaderboard";
     static Properties = {
         _myLeaderboardID: Property.string(""),
-        _myIsLocal: Property.bool(false),
-        _myIsAscending: Property.bool(false),
+        _myLocal: Property.bool(false),
+        _myAscending: Property.bool(false),
         _myScoresAmount: Property.int(10),
         _myScoreFormat: Property.enum(["Value", "Hours:Minutes:Seconds", "Minutes:Seconds", "Seconds", "Hours:Minutes", "Minutes"], "Value"),
         _myPositionAndUsernameSeparator: Property.string(" - "),
@@ -21,6 +21,7 @@ export class CADisplayLeaderboardComponent extends Component {
         this._myScoresTextComponent = null;
 
         this._myStarted = false;
+        this._myDestroyed = false;
     }
 
     start() {
@@ -48,10 +49,12 @@ export class CADisplayLeaderboardComponent extends Component {
     }
 
     updateLeaderboard() {
-        CAUtils.getLeaderboard(this._myLeaderboardID, this._myIsAscending, this._myIsLocal, this._myScoresAmount, this._onLeaderboardRetrieved.bind(this));
+        CAUtils.getLeaderboard(this._myLeaderboardID, this._myAscending, this._myLocal, this._myScoresAmount, this._onLeaderboardRetrieved.bind(this), undefined, undefined, this.engine);
     }
 
     _onLeaderboardRetrieved(leaderboard) {
+        if (this._myDestroyed) return;
+
         let namesText = "";
         let scoresText = "";
 
@@ -143,8 +146,12 @@ export class CADisplayLeaderboardComponent extends Component {
     }
 
     pp_clone(targetObject) {
-        let clonedComponent = CloneUtils.cloneComponentBase(this, targetObject);
+        let clonedComponent = ComponentUtils.cloneDefault(this, targetObject);
 
         return clonedComponent;
+    }
+
+    onDestroy() {
+        this._myDestroyed = true;
     }
 }

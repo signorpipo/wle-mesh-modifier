@@ -1,5 +1,5 @@
 import { vec3_create } from "../../plugin/js/extensions/array_extension";
-import { RaycastHit, RaycastParams, RaycastResults } from "./physics_raycast_data";
+import { RaycastHit, RaycastParams, RaycastResults } from "./physics_raycast_params";
 
 let _myLayerFlagsNames = ["0", "1", "2", "3", "4", "5", "6", "7"];
 
@@ -12,7 +12,7 @@ export function getLayerFlagsNames() {
 }
 
 export let raycast = function () {
-    let isInsideSubVector = vec3_create();
+    let insideCheckSubVector = vec3_create();
     let invertedRaycastDirection = vec3_create();
     let objectsEqualCallback = (first, second) => first.pp_equals(second);
     return function raycast(raycastParams, raycastResults = new RaycastResults()) {
@@ -51,24 +51,24 @@ export let raycast = function () {
                     distances = internalRaycastResults.distances;
                 }
 
-                let isHitInsideCollision = distances[i] == 0;
-                if (isHitInsideCollision) {
+                let hitInsideCollision = distances[i] == 0;
+                if (hitInsideCollision) {
                     if (locations == null) {
                         locations = internalRaycastResults.locations;
                     }
 
-                    isHitInsideCollision &&= raycastParams.myOrigin.vec3_sub(locations[i], isInsideSubVector).vec3_isZero(Math.PP_EPSILON);
+                    hitInsideCollision &&= raycastParams.myOrigin.vec3_sub(locations[i], insideCheckSubVector).vec3_isZero(Math.PP_EPSILON);
 
-                    if (isHitInsideCollision) {
+                    if (hitInsideCollision) {
                         if (!normals) {
                             normals = internalRaycastResults.normals;
                         }
 
-                        isHitInsideCollision &&= invertedRaycastDirection.vec3_equals(normals[i], Math.PP_EPSILON_DEGREES);
+                        hitInsideCollision &&= invertedRaycastDirection.vec3_equals(normals[i], Math.PP_EPSILON_DEGREES);
                     }
                 }
 
-                if (!raycastParams.myIgnoreHitsInsideCollision || !isHitInsideCollision) {
+                if (!raycastParams.myIgnoreHitsInsideCollision || !hitInsideCollision) {
                     let hit = null;
 
                     if (currentValidHitIndex < raycastResults.myHits.length) {
@@ -97,7 +97,7 @@ export let raycast = function () {
                     hit.myNormal.vec3_copy(normals[i]);
                     hit.myDistance = distances[i];
                     hit.myObject = objects[i];
-                    hit.myIsInsideCollision = isHitInsideCollision;
+                    hit.myInsideCollision = hitInsideCollision;
 
                     validHitsCount++;
                     currentValidHitIndex++;

@@ -1,14 +1,15 @@
 import { CollisionComponent, MeshComponent, TextComponent } from "@wonderlandengine/api";
 import { CursorTarget } from "@wonderlandengine/components";
 import { XRUtils } from "../../../../cauldron/utils/xr_utils";
-import { getMainEngine } from "../../../../cauldron/wl/engine_globals";
-import { getDefaultMeshes } from "../../../../pp/default_resources_globals";
+import { Globals } from "../../../../pp/globals";
 import { ToolHandedness } from "../../../cauldron/tool_types";
 
 export class EasyTuneBaseWidgetUI {
 
-    constructor(engine = getMainEngine()) {
+    constructor(engine = Globals.getMainEngine()) {
         this._myEngine = engine;
+
+        this._myDestroyed = false;
     }
 
     build(parentObject, config, params) {
@@ -16,9 +17,9 @@ export class EasyTuneBaseWidgetUI {
         this._myConfig = config;
         this._myParams = params;
 
-        this._myImportExportButtonsActive = true;
+        this._myImportExportButtonsVisible = true;
 
-        this._myPlaneMesh = getDefaultMeshes(this._myEngine).myPlane;
+        this._myPlaneMesh = Globals.getDefaultMeshes(this._myEngine).myPlane;
 
         this._buildHook();
 
@@ -35,16 +36,16 @@ export class EasyTuneBaseWidgetUI {
         this.myPivotObject.pp_setActive(visible);
 
         if (visible) {
-            this.setImportExportButtonsActive(this._myImportExportButtonsActive);
+            this.setImportExportButtonsVisible(this._myImportExportButtonsVisible);
         }
 
         this._setVisibleHook(visible);
     }
 
-    setImportExportButtonsActive(active) {
-        this._myImportExportButtonsActive = active;
+    setImportExportButtonsVisible(visible) {
+        this._myImportExportButtonsVisible = visible;
 
-        this.myImportExportPanel.pp_setActive(this._myImportExportButtonsActive);
+        this.myImportExportPanel.pp_setActive(this._myImportExportButtonsVisible);
     }
 
     // Hooks
@@ -283,5 +284,15 @@ export class EasyTuneBaseWidgetUI {
 
     _setTransformForNonXR() {
         this.myPivotObject.pp_setPositionLocal(this._myConfig.myPivotObjectPositions[ToolHandedness.NONE]);
+    }
+
+    destroy() {
+        this._myDestroyed = true;
+
+        XRUtils.unregisterSessionStartEndEventListeners(this, this._myEngine);
+    }
+
+    isDestroyed() {
+        return this._myDestroyed;
     }
 }

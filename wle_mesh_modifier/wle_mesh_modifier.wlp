@@ -6,7 +6,7 @@
                 {
                     "type": "pp-gateway",
                     "pp-gateway": {
-                        "_myAddWLToWindow": false,
+                        "_myAddWLToWindow": true,
                         "_myScene": "18",
                         "_myPlayer": "19",
                         "_myPlayerPivot": "20",
@@ -34,7 +34,7 @@
                         "_myMeshObject": null,
                         "_myPointer": "82",
                         "_myToolLabel": "87",
-                        "_myVertexGroupConfigPath": "female_ski_rigged_streamed_config.json",
+                        "_myVertexGroupConfigPath": "male_ski_rigged_streamed_config.json",
                         "_myGroupLabel": "106",
                         "_myVariantLabel": "108",
                         "_myLeftControlScheme": "23",
@@ -46,9 +46,9 @@
                         "_myAPoseAnimation": "399",
                         "_myRestPoseAnimation": null,
                         "_mySelectedVertexColor": 200,
-                        "_myMeshFilePath": "./models/female_ski_rigged.glb",
+                        "_myMeshFilePath": "./models/male_ski_rigged.glb",
                         "_myPropsObject": "72",
-                        "_myMeshFileMaterial": "570",
+                        "_myMeshFileMaterial": "488",
                         "_myForceMeshRefresh": false,
                         "_myUpdateNormals": false,
                         "_myEnableDownload": false
@@ -303,13 +303,15 @@
                 {
                     "type": "light",
                     "light": {
-                        "attenuation": 0.05
+                        "attenuation": 0.05,
+                        "type": "spot",
+                        "intensity": 10.0
                     }
                 }
             ],
             "translation": [
                 2.0,
-                -2.0,
+                4.0,
                 2.0
             ],
             "rotation": [
@@ -331,13 +333,15 @@
                 {
                     "type": "light",
                     "light": {
-                        "attenuation": 0.05
+                        "attenuation": 0.05,
+                        "type": "point",
+                        "intensity": 10.0
                     }
                 }
             ],
             "translation": [
                 -2.0,
-                2.0,
+                4.0,
                 -2.0
             ],
             "rotation": [
@@ -905,110 +909,6 @@
                 0.9999994,
                 0.9999997,
                 0.9999998
-            ]
-        },
-        "116": {
-            "name": "Grabbable",
-            "parent": "119",
-            "components": [
-                {
-                    "type": "mesh",
-                    "mesh": {
-                        "mesh": "p1",
-                        "material": "35"
-                    }
-                },
-                {
-                    "type": "physx",
-                    "physx": {
-                        "shape": "box",
-                        "box": {
-                            "extents": [
-                                0.05,
-                                0.05,
-                                0.05
-                            ]
-                        },
-                        "kinematic": true
-                    }
-                },
-                {
-                    "type": "pp-grabbable"
-                }
-            ],
-            "translation": [
-                0.0,
-                1.0,
-                -0.3
-            ],
-            "rotation": [
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "scaling": [
-                0.05,
-                0.05,
-                0.05
-            ]
-        },
-        "118": {
-            "name": "Grabber Hand",
-            "parent": "119",
-            "components": [
-                {
-                    "type": "pp-grabber-hand",
-                    "pp-grabber-hand": {
-                        "_myHandedness": "Right"
-                    }
-                },
-                {
-                    "type": "pp-copy-hand-transform",
-                    "pp-copy-hand-transform": {
-                        "_myHandedness": "Right"
-                    }
-                },
-                {
-                    "type": "physx",
-                    "physx": {
-                        "sphere": {
-                            "radius": 0.05
-                        },
-                        "kinematic": true,
-                        "gravity": false,
-                        "trigger": true,
-                        "allowSimulation": false
-                    }
-                }
-            ],
-            "translation": [
-                0.0,
-                0.0,
-                0.0
-            ],
-            "rotation": [
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "scaling": [
-                1.0,
-                1.0,
-                1.0
-            ]
-        },
-        "119": {
-            "name": "Grab Test",
-            "parent": "101",
-            "components": [
-                {
-                    "type": "pp-set-active",
-                    "pp-set-active": {
-                        "_myActive": false
-                    }
-                }
             ]
         },
         "143": {
@@ -4953,6 +4853,12 @@
                     1.0,
                     1.0,
                     0.4472135
+                ],
+                "ambientColor": [
+                    0.5,
+                    0.5,
+                    0.5,
+                    1.0
                 ]
             }
         },
@@ -4976,7 +4882,13 @@
                     0.7843137
                 ],
                 "ambientFactor": 0.5,
-                "shininess": 2
+                "shininess": 2,
+                "ambientColor": [
+                    0.5,
+                    0.5,
+                    0.5,
+                    1.0
+                ]
             }
         },
         "74": {
@@ -5097,9 +5009,9 @@
             "name": "Low Poly Character Textured",
             "Phong": {
                 "diffuseColor": [
-                    0.0,
-                    0.0,
-                    0.0,
+                    1.0,
+                    1.0,
+                    1.0,
                     1.0
                 ],
                 "ambientFactor": 0.5,
@@ -5110,7 +5022,13 @@
                     0.7843137
                 ],
                 "diffuseTexture": "127",
-                "shininess": 2
+                "shininess": 2,
+                "ambientColor": [
+                    0.5,
+                    0.5,
+                    0.5,
+                    1.0
+                ]
             },
             "pipeline": "14"
         },
@@ -5134,6 +5052,12 @@
                     1.0,
                     1.0,
                     0.1960784
+                ],
+                "ambientColor": [
+                    0.5,
+                    0.5,
+                    0.5,
+                    1.0
                 ]
             }
         },
@@ -5245,6 +5169,12 @@
                     1.0,
                     1.0,
                     0.1960784
+                ],
+                "ambientColor": [
+                    0.5,
+                    0.5,
+                    0.5,
+                    1.0
                 ]
             },
             "name": "Fem Hero 01 "
@@ -5279,7 +5209,13 @@
                 "file": "assets\\models\\male_rigged.glb"
             },
             "Phong": {
-                "ambientFactor": 0.5
+                "ambientFactor": 0.5,
+                "ambientColor": [
+                    0.5,
+                    0.5,
+                    0.5,
+                    1.0
+                ]
             }
         },
         "489": {
@@ -5288,7 +5224,13 @@
                 "file": "assets\\models\\male_rigged.glb"
             },
             "Phong": {
-                "ambientFactor": 0.5
+                "ambientFactor": 0.5,
+                "ambientColor": [
+                    0.5,
+                    0.5,
+                    0.5,
+                    1.0
+                ]
             }
         },
         "570": {
@@ -5297,7 +5239,13 @@
                 "file": "assets\\models\\female_rigged.glb"
             },
             "Phong": {
-                "ambientFactor": 0.5
+                "ambientFactor": 0.5,
+                "ambientColor": [
+                    0.5,
+                    0.5,
+                    0.5,
+                    1.0
+                ]
             }
         },
         "571": {
@@ -5306,7 +5254,13 @@
                 "file": "assets\\models\\female_rigged.glb"
             },
             "Phong": {
-                "ambientFactor": 0.5
+                "ambientFactor": 0.5,
+                "ambientColor": [
+                    0.5,
+                    0.5,
+                    0.5,
+                    1.0
+                ]
             }
         },
         "936": {
@@ -6545,7 +6499,7 @@
             "version": [
                 1,
                 0,
-                0
+                1
             ]
         },
         "rendering": {

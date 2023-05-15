@@ -21,12 +21,9 @@ import {TestDownloadComponent} from './mesh_modifier/test/test_download_componen
 import {TestLoasFileComponent} from './mesh_modifier/test/test_loadFile_component.js';
 import {TestSetAxisComponent} from './mesh_modifier/test/test_set_axis_component.js';
 import {ConsoleVRToolComponent} from './pp/index.js';
-import {CopyHandTransformComponent} from './pp/index.js';
 import {EasyTuneToolComponent} from './pp/index.js';
 import {GamepadControlSchemeComponent} from './pp/index.js';
 import {GamepadMeshAnimatorComponent} from './pp/index.js';
-import {GrabbableComponent} from './pp/index.js';
-import {GrabberHandComponent} from './pp/index.js';
 import {PPGatewayComponent} from './pp/index.js';
 import {PlayerLocomotionComponent} from './pp/index.js';
 import {SetActiveComponent} from './pp/index.js';
@@ -38,28 +35,25 @@ import {ToolCursorComponent} from './pp/index.js';
 import {TrackedHandDrawAllJointsComponent} from './pp/index.js';
 /* wle:auto-imports:end */
 
-import * as API from '@wonderlandengine/api'; // Deprecated: Backward compatibility.
 import { loadRuntime } from '@wonderlandengine/api';
-import { initPP } from './pp/index.js';
 
 /* wle:auto-constants:start */
-const ProjectName = 'wle_mesh_modifier';
-const RuntimeBaseName = 'WonderlandRuntime';
-const WithPhysX = true;
-const WithLoader = true;
-const WebXRFramebufferScaleFactor = 1;
-const WebXRRequiredFeatures = ['local',];
-const WebXROptionalFeatures = ['local','local-floor','hand-tracking','hit-test',];
+const RuntimeOptions = {
+    physx: true,
+    loader: true,
+    xrFramebufferScaleFactor: 1,
+    canvas: 'canvas',
+};
+const Constants = {
+    ProjectName: 'wle_mesh_modifier',
+    RuntimeBaseName: 'WonderlandRuntime',
+    WebXRRequiredFeatures: ['local',],
+    WebXROptionalFeatures: ['local','local-floor','hand-tracking','hit-test',],
+};
 /* wle:auto-constants:end */
 
-const engine = await loadRuntime(RuntimeBaseName, {
-    physx: WithPhysX,
-    loader: WithLoader,
-});
-Object.assign(engine, API); // Deprecated: Backward compatibility.
-window.WL = engine; // Deprecated: Backward compatibility.
+const engine = await loadRuntime(Constants.RuntimeBaseName, RuntimeOptions);
 
-engine.xrFramebufferScaleFactor = WebXRFramebufferScaleFactor;
 engine.onSceneLoaded.once(() => {
     const el = document.getElementById('version');
     if (el) setTimeout(() => el.remove(), 2000);
@@ -69,7 +63,7 @@ engine.onSceneLoaded.once(() => {
 
 function requestSession(mode) {
     engine
-        .requestXRSession(mode, WebXRRequiredFeatures, WebXROptionalFeatures)
+        .requestXRSession(mode, Constants.WebXRRequiredFeatures, Constants.WebXROptionalFeatures)
         .catch((e) => console.error(e));
 }
 
@@ -103,12 +97,9 @@ engine.registerComponent(TestDownloadComponent);
 engine.registerComponent(TestLoasFileComponent);
 engine.registerComponent(TestSetAxisComponent);
 engine.registerComponent(ConsoleVRToolComponent);
-engine.registerComponent(CopyHandTransformComponent);
 engine.registerComponent(EasyTuneToolComponent);
 engine.registerComponent(GamepadControlSchemeComponent);
 engine.registerComponent(GamepadMeshAnimatorComponent);
-engine.registerComponent(GrabbableComponent);
-engine.registerComponent(GrabberHandComponent);
 engine.registerComponent(PPGatewayComponent);
 engine.registerComponent(PlayerLocomotionComponent);
 engine.registerComponent(SetActiveComponent);
@@ -120,9 +111,7 @@ engine.registerComponent(ToolCursorComponent);
 engine.registerComponent(TrackedHandDrawAllJointsComponent);
 /* wle:auto-register:end */
 
-initPP(engine);
-
-engine.scene.load(`${ProjectName}.bin`);
+engine.scene.load(`${Constants.ProjectName}.bin`);
 
 /* wle:auto-benchmark:start */
 /* wle:auto-benchmark:end */

@@ -1,6 +1,6 @@
 import { Component, Property } from "@wonderlandengine/api";
-import { CloneUtils } from "../../../../cauldron/utils/clone_utils";
-import { isToolEnabled } from "../../../cauldron/tool_globals";
+import { ComponentUtils } from "../../../../cauldron/wl/utils/component_utils";
+import { Globals } from "../../../../pp/globals";
 import { EasyMeshColor } from "../easy_mesh_color";
 
 export class EasyMeshColorComponent extends Component {
@@ -16,13 +16,13 @@ export class EasyMeshColorComponent extends Component {
     init() {
         this._myEasyObjectTuner = null;
 
-        if (isToolEnabled(this.engine)) {
+        if (Globals.isToolEnabled(this.engine)) {
             this._myEasyObjectTuner = new EasyMeshColor(this._myColorModel, this._myColorType, this.object, this._myVariableName, this._mySetAsDefault, this._myUseTuneTarget);
         }
     }
 
     start() {
-        if (isToolEnabled(this.engine)) {
+        if (Globals.isToolEnabled(this.engine)) {
             if (this._myEasyObjectTuner != null) {
                 this._myEasyObjectTuner.start();
             }
@@ -30,7 +30,7 @@ export class EasyMeshColorComponent extends Component {
     }
 
     update(dt) {
-        if (isToolEnabled(this.engine)) {
+        if (Globals.isToolEnabled(this.engine)) {
             if (this._myEasyObjectTuner != null) {
                 this._myEasyObjectTuner.update(dt);
             }
@@ -38,7 +38,7 @@ export class EasyMeshColorComponent extends Component {
     }
 
     pp_clone(targetObject) {
-        let clonedComponent = CloneUtils.cloneComponentBase(this, targetObject);
+        let clonedComponent = ComponentUtils.cloneDefault(this, targetObject);
 
         return clonedComponent;
     }

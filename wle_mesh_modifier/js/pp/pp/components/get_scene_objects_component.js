@@ -1,7 +1,7 @@
 import { Component, Property } from "@wonderlandengine/api";
 import { Handedness } from "../../input/cauldron/input_types";
+import { Globals } from "../globals";
 import { SceneObjects } from "../scene_objects";
-import { getSceneObjects, hasSceneObjects, removeSceneObjects, setSceneObjects } from "../scene_objects_global";
 
 export class GetSceneObjectsComponent extends Component {
     static TypeName = "pp-get-scene-objects";
@@ -22,7 +22,7 @@ export class GetSceneObjectsComponent extends Component {
         this._mySceneObjects = null;
 
         // Prevents double global from same engine
-        if (!hasSceneObjects(this.engine)) {
+        if (!Globals.hasSceneObjects(this.engine)) {
             this._mySceneObjects = new SceneObjects();
 
             this._mySceneObjects.myScene = this._myScene;
@@ -66,13 +66,13 @@ export class GetSceneObjectsComponent extends Component {
             this._mySceneObjects.myPlayerObjects.myPlayerCauldron = this._mySceneObjects.myPlayerObjects.myPlayer.pp_addObject();
             this._mySceneObjects.myPlayerObjects.myPlayerCauldron.pp_setName("Player Cauldron");
 
-            setSceneObjects(this._mySceneObjects, this.engine);
+            Globals.setSceneObjects(this._mySceneObjects, this.engine);
         }
     }
 
     onDestroy() {
-        if (this._mySceneObjects != null && getSceneObjects(this.engine) == this._mySceneObjects) {
-            removeSceneObjects(this.engine);
+        if (this._mySceneObjects != null && Globals.getSceneObjects(this.engine) == this._mySceneObjects) {
+            Globals.removeSceneObjects(this.engine);
         }
     }
 }

@@ -8,17 +8,17 @@ export class EasyTuneBoolArrayWidgetUI extends EasyTuneBaseWidgetUI {
         super(engine);
     }
 
-    setAdditionalButtonsActive(active) {
-        this._myAdditionalButtonsActive = active;
+    setAdditionalButtonsVisible(visible) {
+        this._myAdditionalButtonsVisible = visible;
 
         for (let i = 0; i < this._myConfig.myArraySize; i++) {
-            this.myValueIncreaseButtonPanels[i].pp_setActive(this._myAdditionalButtonsActive);
-            this.myValueDecreaseButtonPanels[i].pp_setActive(this._myAdditionalButtonsActive);
+            this.myValueIncreaseButtonPanels[i].pp_setActive(this._myAdditionalButtonsVisible);
+            this.myValueDecreaseButtonPanels[i].pp_setActive(this._myAdditionalButtonsVisible);
         }
     }
 
     _buildHook() {
-        this._myAdditionalButtonsActive = true;
+        this._myAdditionalButtonsVisible = true;
     }
 
     _createSkeletonHook() {
@@ -138,7 +138,7 @@ export class EasyTuneBoolArrayWidgetUI extends EasyTuneBaseWidgetUI {
 
     _setVisibleHook(visible) {
         if (visible) {
-            this.setAdditionalButtonsActive(this._myAdditionalButtonsActive);
+            this.setAdditionalButtonsVisible(this._myAdditionalButtonsVisible);
         }
     }
 }

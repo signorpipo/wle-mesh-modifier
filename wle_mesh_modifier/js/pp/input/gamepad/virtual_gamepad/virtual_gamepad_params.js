@@ -1,4 +1,4 @@
-import { getMainEngine } from "../../../cauldron/wl/engine_globals";
+import { Globals } from "../../../pp/globals";
 import { Handedness } from "../../cauldron/input_types";
 import { GamepadAxesID, GamepadButtonID } from "../gamepad_buttons";
 import { VirtualGamepadIconParams, VirtualGamepadIconType } from "./virtual_gamepad_icon";
@@ -28,7 +28,7 @@ export class VirtualGamepadThumbstickParams {
 
 export class VirtualGamepadParams {
 
-    constructor(engine = getMainEngine()) {
+    constructor(engine = Globals.getMainEngine()) {
         this.myShowOnDesktop = false;
         this.myShowOnMobile = false;
         this.myShowOnHeadset = false;   // Not 100% reliable, this is true if the device supports XR and it is Desktop

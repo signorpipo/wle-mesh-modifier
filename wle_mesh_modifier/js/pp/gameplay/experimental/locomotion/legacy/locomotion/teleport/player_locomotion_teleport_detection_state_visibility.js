@@ -1,8 +1,7 @@
-import { RaycastParams, RaycastResults } from "../../../../../../cauldron/physics/physics_raycast_data";
+import { RaycastParams, RaycastResults } from "../../../../../../cauldron/physics/physics_raycast_params";
 import { PhysicsUtils } from "../../../../../../cauldron/physics/physics_utils";
-import { getPhysics } from "../../../../../../cauldron/wl/engine_globals";
-import { getDebugVisualManager } from "../../../../../../debug/debug_globals";
 import { vec3_create } from "../../../../../../plugin/js/extensions/array_extension";
+import { Globals } from "../../../../../../pp/globals";
 import { PlayerLocomotionTeleportDetectionState } from "./player_locomotion_teleport_detection_state";
 
 PlayerLocomotionTeleportDetectionState.prototype._isTeleportPositionVisible = function () {
@@ -94,7 +93,7 @@ PlayerLocomotionTeleportDetectionState.prototype._isPositionVisible = function (
             raycastParams.myOrigin.vec3_copy(checkPosition);
             raycastParams.myDirection.vec3_copy(fixedForward);
             raycastParams.myDistance = distance;
-            raycastParams.myPhysics = getPhysics(this._myTeleportParams.myEngine);
+            raycastParams.myPhysics = Globals.getPhysics(this._myTeleportParams.myEngine);
 
             raycastParams.myBlockLayerFlags.setMask(this._myTeleportParams.myDetectionParams.myVisibilityBlockLayerFlags.getMask());
 
@@ -107,8 +106,8 @@ PlayerLocomotionTeleportDetectionState.prototype._isPositionVisible = function (
 
             raycastResult = PhysicsUtils.raycast(raycastParams, raycastResult);
 
-            if (this._myTeleportParams.myDebugActive && this._myTeleportParams.myDebugVisibilityActive) {
-                getDebugVisualManager(this._myTeleportParams.myEngine).drawRaycast(0, raycastResult);
+            if (this._myTeleportParams.myDebugEnabled && this._myTeleportParams.myDebugVisibilityEnabled && Globals.isDebugEnabled(this._myTeleportParams.myEngine)) {
+                Globals.getDebugVisualManager(this._myTeleportParams.myEngine).drawRaycast(0, raycastResult);
             }
 
             if (raycastResult.isColliding()) {

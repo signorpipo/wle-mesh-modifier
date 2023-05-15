@@ -1,24 +1,24 @@
-import { getMainEngine } from "../cauldron/wl/engine_globals";
+import { Globals } from "./globals";
 
 let _myDefaultResourcesContainer = new WeakMap();
 
-export function getDefaultResources(engine = getMainEngine()) {
+export function getDefaultResources(engine = Globals.getMainEngine()) {
     return _myDefaultResourcesContainer.get(engine);
 }
 
-export function setDefaultResources(defaultResources, engine = getMainEngine()) {
+export function setDefaultResources(defaultResources, engine = Globals.getMainEngine()) {
     _myDefaultResourcesContainer.set(engine, defaultResources);
 }
 
-export function removeDefaultResources(engine = getMainEngine()) {
+export function removeDefaultResources(engine = Globals.getMainEngine()) {
     _myDefaultResourcesContainer.delete(engine);
 }
 
-export function hasDefaultResources(engine = getMainEngine()) {
+export function hasDefaultResources(engine = Globals.getMainEngine()) {
     return _myDefaultResourcesContainer.has(engine);
 }
 
-export function getDefaultMeshes(engine = getMainEngine()) {
+export function getDefaultMeshes(engine = Globals.getMainEngine()) {
     let defaultResources = getDefaultResources(engine);
 
     if (defaultResources != null) {
@@ -28,7 +28,7 @@ export function getDefaultMeshes(engine = getMainEngine()) {
     return null;
 }
 
-export function getDefaultMaterials(engine = getMainEngine()) {
+export function getDefaultMaterials(engine = Globals.getMainEngine()) {
     let defaultResources = getDefaultResources(engine);
 
     if (defaultResources != null) {

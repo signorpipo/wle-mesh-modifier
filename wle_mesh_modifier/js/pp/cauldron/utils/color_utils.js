@@ -58,19 +58,19 @@ export function hsvToRGB(hsv) {
 }
 
 export function rgbCodeToHuman(rgb) {
-    return color1To255(rgb);
+    return ColorUtils.color1To255(rgb);
 }
 
 export function rgbHumanToCode(rgb) {
-    return color255To1(rgb);
+    return ColorUtils.color255To1(rgb);
 }
 
 export function hsvCodeToHuman(hsv) {
-    return color1To255(hsv);
+    return ColorUtils.color1To255(hsv);
 }
 
 export function hsvHumanToCode(hsv) {
-    return color255To1(hsv);
+    return ColorUtils.color255To1(hsv);
 }
 
 export function color255To1(color) {

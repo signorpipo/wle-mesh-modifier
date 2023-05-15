@@ -1,19 +1,9 @@
 import { Component, Property } from "@wonderlandengine/api";
 import { PhysicsLayerFlags } from "../../../../../cauldron/physics/physics_layer_flags";
 import { InputUtils } from "../../../../../input/cauldron/input_utils";
-import { CollisionCheck } from "../../../character_controller/collision/legacy/collision_check/collision_check";
+import { CollisionCheckBridge, getCollisionCheck } from "../../../character_controller/collision/collision_check_bridge";
 import { CleanedPlayerLocomotion } from "./cleaned/player_locomotion_cleaned";
 import { PlayerLocomotion, PlayerLocomotionParams } from "./player_locomotion";
-
-let _myCollisionChecks = new WeakMap();
-
-export function getCollisionCheck(engine = getMainEngine()) {
-    return _myCollisionChecks.get(engine);
-}
-
-export function setCollisionCheck(collisionCheck, engine = getMainEngine()) {
-    _myCollisionChecks.set(engine, collisionCheck);
-}
 
 export class PlayerLocomotionComponent extends Component {
     static TypeName = "pp-player-locomotion";
@@ -37,8 +27,11 @@ export class PlayerLocomotionComponent extends Component {
         _myMainHand: Property.enum(["Left", "Right"], "Left"),
         _myVRDirectionReferenceType: Property.enum(["Head", "Hand", "Custom Object"], "Hand"),
         _myVRDirectionReferenceObject: Property.object(),
+
         _myTeleportParableStartReferenceObject: Property.object(),
         _myTeleportPositionObject: Property.object(),
+        _myTeleportMaxDistance: Property.float(3),
+        _myTeleportMaxHeightDifference: Property.float(3),
 
         _myColliderAccuracy: Property.enum(["Very Low", "Low", "Medium", "High", "Very High"], "High"),
         _myColliderCheckOnlyFeet: Property.bool(false),
@@ -49,15 +42,17 @@ export class PlayerLocomotionComponent extends Component {
         _myColliderMaxWalkableGroundStepHeight: Property.float(0.1),
         _myColliderPreventFallingFromEdges: Property.bool(false),
 
+        _myUseCleanedVersion: Property.bool(true),
+
         _myDebugHorizontalEnabled: Property.bool(false),
         _myDebugVerticalEnabled: Property.bool(false),
-        _myUseCleanedVersion: Property.bool(true),
         _myMoveThroughCollisionShortcutEnabled: Property.bool(false),
-        _myMoveHeadShortcutEnabled: Property.bool(false)
+        _myMoveHeadShortcutEnabled: Property.bool(false),
+        _myTripleSpeedShortcutEnabled: Property.bool(false)
     };
 
     start() {
-        setCollisionCheck(new CollisionCheck(this.engine), this.engine);
+        CollisionCheckBridge.initBridge(this.engine);
 
         let params = new PlayerLocomotionParams(this.engine);
         params.myDefaultHeight = this._myDefaultHeight;
@@ -90,6 +85,8 @@ export class PlayerLocomotionComponent extends Component {
         params.myForeheadExtraHeight = 0.1;
 
         params.myTeleportPositionObject = this._myTeleportPositionObject;
+        params.myTeleportMaxDistance = this._myTeleportMaxDistance;
+        params.myTeleportMaxHeightDifference = this._myTeleportMaxHeightDifference;
 
         params.myColliderAccuracy = this._myColliderAccuracy;
         params.myColliderCheckOnlyFeet = this._myColliderCheckOnlyFeet;
@@ -102,6 +99,7 @@ export class PlayerLocomotionComponent extends Component {
 
         params.myMoveThroughCollisionShortcutEnabled = this._myMoveThroughCollisionShortcutEnabled;
         params.myMoveHeadShortcutEnabled = this._myMoveHeadShortcutEnabled;
+        params.myTripleSpeedShortcutEnabled = this._myTripleSpeedShortcutEnabled;
 
         params.myDebugHorizontalEnabled = this._myDebugHorizontalEnabled;
         params.myDebugVerticalEnabled = this._myDebugVerticalEnabled;
@@ -164,5 +162,9 @@ export class PlayerLocomotionComponent extends Component {
         }
 
         return physicsFlags;
+    }
+
+    onDestroy() {
+        this._myPlayerLocomotion?.destroy();
     }
 }

@@ -17,7 +17,7 @@ export class IndexToolData {
         this.myIsPlayingAnimation = false;
 
         this.mySelectedVertexes = [];
-        this.myMeshBackup = MeshUtils.cloneMesh(mesh);
+        this.myMeshBackup = MeshUtils.clone(mesh);
 
         this.myLeftControlScheme = null;
         this.myRightControlScheme = null;

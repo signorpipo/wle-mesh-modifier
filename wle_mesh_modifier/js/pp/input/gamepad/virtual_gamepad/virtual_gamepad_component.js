@@ -1,5 +1,5 @@
 import { Component, Property } from "@wonderlandengine/api";
-import { getLeftGamepad, getRightGamepad } from "../../cauldron/input_globals";
+import { Globals } from "../../../pp/globals";
 import { Handedness } from "../../cauldron/input_types";
 import { GamepadButtonID } from "../gamepad_buttons";
 import { VirtualGamepadGamepadCore } from "../gamepad_cores/virtual_gamepad_gamepad_core";
@@ -120,13 +120,14 @@ export class VirtualGamepadComponent extends Component {
         this._advancedConfig(params);
 
         this._myVirtualGamepad = new VirtualGamepad(params);
-        if (!params.myAutoUpdateVisibility) {
-            this._myVirtualGamepad.setVisible(false);
-        }
+        this._myVirtualGamepad.setVisible(false);
 
         this._myVirtualGamepad.start();
 
         this._myFirstUpdate = true;
+
+        this._myLeftVirtualGamepadGamepadCore = null;
+        this._myRightVirtualGamepadGamepadCore = null;
     }
 
     update(dt) {
@@ -134,11 +135,11 @@ export class VirtualGamepadComponent extends Component {
             this._myFirstUpdate = false;
 
             if (this._myAddToUniversalGamepad) {
-                let leftVirtualGamepadGamepadCore = new VirtualGamepadGamepadCore(this._myVirtualGamepad, getLeftGamepad(this.engine).getGamepadCore("pp_left_xr_gamepad").getHandPose());
-                let rightVirtualGamepadGamepadCore = new VirtualGamepadGamepadCore(this._myVirtualGamepad, getRightGamepad(this.engine).getGamepadCore("pp_right_xr_gamepad").getHandPose());
+                this._myLeftVirtualGamepadGamepadCore = new VirtualGamepadGamepadCore(this._myVirtualGamepad, Globals.getLeftGamepad(this.engine).getGamepadCore("pp_left_xr_gamepad").getHandPose());
+                this._myRightVirtualGamepadGamepadCore = new VirtualGamepadGamepadCore(this._myVirtualGamepad, Globals.getRightGamepad(this.engine).getGamepadCore("pp_right_xr_gamepad").getHandPose());
 
-                getLeftGamepad(this.engine).addGamepadCore("pp_left_virtual_gamepad", leftVirtualGamepadGamepadCore);
-                getRightGamepad(this.engine).addGamepadCore("pp_right_virtual_gamepad", rightVirtualGamepadGamepadCore);
+                Globals.getLeftGamepad(this.engine).addGamepadCore("pp_left_virtual_gamepad", this._myLeftVirtualGamepadGamepadCore);
+                Globals.getRightGamepad(this.engine).addGamepadCore("pp_right_virtual_gamepad", this._myRightVirtualGamepadGamepadCore);
             }
         }
 
@@ -298,5 +299,15 @@ export class VirtualGamepadComponent extends Component {
                 params.myButtonsOrder[Handedness.RIGHT][this._myRightBottomButtonOrderIndex] = [Handedness.RIGHT, GamepadButtonID.BOTTOM_BUTTON];
             }
         }
+    }
+
+    onDestroy() {
+        Globals.getLeftGamepad(this.engine)?.removeGamepadCore("pp_left_virtual_gamepad");
+        Globals.getRightGamepad(this.engine)?.removeGamepadCore("pp_right_virtual_gamepad");
+
+        this._myLeftVirtualGamepadGamepadCore.destroy();
+        this._myRightVirtualGamepadGamepadCore.destroy();
+
+        this._myVirtualGamepad.destroy();
     }
 }

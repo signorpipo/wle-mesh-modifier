@@ -43,7 +43,7 @@ export class EasyTuneBoolArrayWidgetConfig extends EasyTuneBaseWidgetConfig {
     }
 
     _setupRuntimeConfigHook() {
-        this.myTextHoverScaleMultiplier = vec3_create(1.25, 1.25, 1.25);
+        this.myTextHoverScaleMultiplier = vec3_create(1.1, 1.1, 1.1);
 
         this.myThumbstickToggleThreshold = 0.6;
         this.myButtonEditDelay = 0;

@@ -1,32 +1,32 @@
 import { CollisionComponent, MeshComponent, TextComponent } from "@wonderlandengine/api";
 import { CursorTarget } from "@wonderlandengine/components";
 import { XRUtils } from "../../cauldron/utils/xr_utils";
-import { getMainEngine } from "../../cauldron/wl/engine_globals";
 import { InputUtils } from "../../input/cauldron/input_utils";
 import { vec3_create } from "../../plugin/js/extensions/array_extension";
-import { getDefaultMeshes } from "../../pp/default_resources_globals";
-import { getPlayerObjects, getSceneObjects } from "../../pp/scene_objects_global";
+import { Globals } from "../../pp/globals";
 import { ToolHandedness, ToolInputSourceType } from "../cauldron/tool_types";
 
 export class WidgetFrameUI {
 
-    constructor(engine = getMainEngine()) {
+    constructor(engine = Globals.getMainEngine()) {
         this._myInputSourceType = null;
 
         this._myParentObject = null;
-        this._myIsPinned = false;
+        this._myPinned = false;
 
         this._myWidgetVisible = true;
         this._myVisibilityButtonVisible = true;
 
         this._myEngine = engine;
+
+        this._myDestroyed = false;
     }
 
     build(parentObject, config, params) {
         this._myParentObject = parentObject;
         this._myConfig = config;
         this._myParams = params;
-        this._myPlaneMesh = getDefaultMeshes(this._myEngine).myPlane;
+        this._myPlaneMesh = Globals.getDefaultMeshes(this._myEngine).myPlane;
 
         this._createSkeleton();
         this._setTransforms();
@@ -51,10 +51,10 @@ export class WidgetFrameUI {
     }
 
     setPinned(pinned) {
-        if (pinned != this._myIsPinned) {
-            this._myIsPinned = pinned;
-            if (this._myIsPinned) {
-                this.myPivotObject.pp_setParent(getSceneObjects(this._myEngine).myTools);
+        if (pinned != this._myPinned) {
+            this._myPinned = pinned;
+            if (this._myPinned) {
+                this.myPivotObject.pp_setParent(Globals.getSceneObjects(this._myEngine).myTools);
             } else {
                 this.myPivotObject.pp_setParent(this.myFixForwardObject);
 
@@ -78,7 +78,7 @@ export class WidgetFrameUI {
             if (inputSourceType != this._myInputSourceType || forceRefreshObjectsTransforms) {
                 this._myInputSourceType = inputSourceType;
 
-                if (!this._myIsPinned) {
+                if (!this._myPinned) {
                     this.myPivotObject.pp_setPositionLocal(this._myConfig.myPivotObjectTransforms[this._myInputSourceType][this._myParams.myHandedness].myPosition);
                     this.myPivotObject.pp_resetRotationLocal();
                     this.myPivotObject.pp_rotateObjectQuat(this._myConfig.myPivotObjectTransforms[this._myInputSourceType][this._myParams.myHandedness].myRotation);
@@ -99,7 +99,11 @@ export class WidgetFrameUI {
     // Skeleton
     _createSkeleton() {
         this.myFixForwardObject = this._myParentObject.pp_addObject();
-        this.myFixForwardObject.pp_rotateObject(vec3_create(0, 180, 0));
+
+        if (Globals.isPoseForwardFixed(this._myEngine)) {
+            this.myFixForwardObject.pp_rotateObject(vec3_create(0, 180, 0));
+        }
+
         this.myPivotObject = this.myFixForwardObject.pp_addObject();
         this.myWidgetObject = this.myPivotObject.pp_addObject();
 
@@ -115,7 +119,7 @@ export class WidgetFrameUI {
         this.myPinButtonText = this.myPinButtonPanel.pp_addObject();
         this.myPinButtonCursorTarget = this.myPinButtonPanel.pp_addObject();
 
-        this.myNonXRParentObject = getPlayerObjects(this._myEngine).myCameraNonXR.pp_addObject();
+        this.myNonXRParentObject = Globals.getPlayerObjects(this._myEngine).myCameraNonXR.pp_addObject();
         this.myNonXRParentObject.pp_translateLocal(vec3_create(0, 0, -this._myConfig._myPivotObjectDistanceFromHeadNonXR));
         this.myNonXRParentObject.pp_lookToLocal(vec3_create(0, 0, 1), vec3_create(0, 1, 0));
 
@@ -196,13 +200,16 @@ export class WidgetFrameUI {
         this.myFixForwardObject.pp_setParent(this._myParentObject);
 
         this.myFixForwardObject.pp_resetTransformLocal();
-        this.myFixForwardObject.pp_rotateObject(vec3_create(0, 180, 0));
+
+        if (Globals.isPoseForwardFixed(this._myEngine)) {
+            this.myFixForwardObject.pp_rotateObject(vec3_create(0, 180, 0));
+        }
 
         this._updateObjectsTransforms(true);
     }
 
     _setTransformForNonXR() {
-        if (!this._myIsPinned) {
+        if (!this._myPinned) {
             this.myFixForwardObject.pp_setParent(this.myNonXRParentObject);
             this.myFixForwardObject.pp_resetTransformLocal();
 
@@ -217,5 +224,15 @@ export class WidgetFrameUI {
             this.myVisibilityButtonPanel.pp_setPositionLocal(this._myConfig.myVisibilityButtonPosition[ToolHandedness.NONE].myPosition);
             this.myPinButtonPanel.pp_setPositionLocal(this._myConfig.myPinButtonPosition[ToolHandedness.NONE].myPosition);
         }
+    }
+
+    destroy() {
+        this._myDestroyed = true;
+
+        XRUtils.unregisterSessionStartEndEventListeners(this, this._myEngine);
+    }
+
+    isDestroyed() {
+        return this._myDestroyed;
     }
 }

@@ -8,33 +8,33 @@ export class EasyTuneTransformWidgetUI extends EasyTuneBaseWidgetUI {
         super(engine);
     }
 
-    setAdditionalButtonsActive(active) {
-        this._myAdditionalButtonsActive = active;
+    setAdditionalButtonsVisible(visible) {
+        this._myAdditionalButtonsVisible = visible;
 
         for (let i = 0; i < 3; i++) {
-            this.myPositionIncreaseButtonPanels[i].pp_setActive(this._myAdditionalButtonsActive);
-            this.myPositionDecreaseButtonPanels[i].pp_setActive(this._myAdditionalButtonsActive);
+            this.myPositionIncreaseButtonPanels[i].pp_setActive(this._myAdditionalButtonsVisible);
+            this.myPositionDecreaseButtonPanels[i].pp_setActive(this._myAdditionalButtonsVisible);
         }
-        this.myPositionStepIncreaseButtonPanel.pp_setActive(this._myAdditionalButtonsActive);
-        this.myPositionStepDecreaseButtonPanel.pp_setActive(this._myAdditionalButtonsActive);
+        this.myPositionStepIncreaseButtonPanel.pp_setActive(this._myAdditionalButtonsVisible);
+        this.myPositionStepDecreaseButtonPanel.pp_setActive(this._myAdditionalButtonsVisible);
 
         for (let i = 0; i < 3; i++) {
-            this.myRotationIncreaseButtonPanels[i].pp_setActive(this._myAdditionalButtonsActive);
-            this.myRotationDecreaseButtonPanels[i].pp_setActive(this._myAdditionalButtonsActive);
+            this.myRotationIncreaseButtonPanels[i].pp_setActive(this._myAdditionalButtonsVisible);
+            this.myRotationDecreaseButtonPanels[i].pp_setActive(this._myAdditionalButtonsVisible);
         }
-        this.myRotationStepIncreaseButtonPanel.pp_setActive(this._myAdditionalButtonsActive);
-        this.myRotationStepDecreaseButtonPanel.pp_setActive(this._myAdditionalButtonsActive);
+        this.myRotationStepIncreaseButtonPanel.pp_setActive(this._myAdditionalButtonsVisible);
+        this.myRotationStepDecreaseButtonPanel.pp_setActive(this._myAdditionalButtonsVisible);
 
         for (let i = 0; i < 3; i++) {
-            this.myScaleIncreaseButtonPanels[i].pp_setActive(this._myAdditionalButtonsActive);
-            this.myScaleDecreaseButtonPanels[i].pp_setActive(this._myAdditionalButtonsActive);
+            this.myScaleIncreaseButtonPanels[i].pp_setActive(this._myAdditionalButtonsVisible);
+            this.myScaleDecreaseButtonPanels[i].pp_setActive(this._myAdditionalButtonsVisible);
         }
-        this.myScaleStepIncreaseButtonPanel.pp_setActive(this._myAdditionalButtonsActive);
-        this.myScaleStepDecreaseButtonPanel.pp_setActive(this._myAdditionalButtonsActive);
+        this.myScaleStepIncreaseButtonPanel.pp_setActive(this._myAdditionalButtonsVisible);
+        this.myScaleStepDecreaseButtonPanel.pp_setActive(this._myAdditionalButtonsVisible);
     }
 
     _buildHook() {
-        this._myAdditionalButtonsActive = true;
+        this._myAdditionalButtonsVisible = true;
     }
 
     _createSkeletonHook() {

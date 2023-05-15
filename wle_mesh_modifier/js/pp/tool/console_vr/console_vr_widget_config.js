@@ -49,7 +49,7 @@ export class ConsoleVRWidgetConfig {
         this.myMessagesTextJustification = Justification.Top;
 
         this.myMessagesTextPositions = [];
-        this.myMessagesTextPositions[ConsoleVRWidgetMessageType.LOG] = vec3_create(0, 0, 0.00001);
+        this.myMessagesTextPositions[ConsoleVRWidgetMessageType.LOG] = vec3_create(0, 0, 0.0002);
         this.myMessagesTextPositions[ConsoleVRWidgetMessageType.ERROR] = vec3_create(0, 0, 0);
         this.myMessagesTextPositions[ConsoleVRWidgetMessageType.WARN] = vec3_create(0, 0, 0);
         this.myMessagesTextPositions[ConsoleVRWidgetMessageType.DEBUG] = vec3_create(0, 0, 0);

@@ -58,7 +58,7 @@ export class EasyTuneBaseWidgetConfig {
         this.myTextJustification = Justification.Middle;
         this.myTextColor = this.myDefaultTextColor;
 
-        this.myLabelTextScale = vec3_create(0.19, 0.19, 0.19);
+        this.myLabelTextScale = vec3_create(0.18, 0.18, 0.18);
         this.myButtonTextScale = vec3_create(0.18, 0.18, 0.18);
 
         this._myPanelZOffset = 0.01;

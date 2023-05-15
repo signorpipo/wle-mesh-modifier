@@ -1,5 +1,5 @@
 import { Component, Property } from "@wonderlandengine/api";
-import { getPlayerObjects } from "../../../pp/scene_objects_global";
+import { Globals } from "../../../pp/globals";
 import { InputUtils } from "../../cauldron/input_utils";
 
 export class CopyHandTransformComponent extends Component {
@@ -13,7 +13,7 @@ export class CopyHandTransformComponent extends Component {
     }
 
     update(dt) {
-        let hand = getPlayerObjects(this.engine).myHands[this._myHandednessType];
+        let hand = Globals.getPlayerObjects(this.engine).myHands[this._myHandednessType];
         this.object.pp_setTransformQuat(hand.pp_getTransformQuat());
         this.object.pp_setScale(hand.pp_getScale());
     }

@@ -7,9 +7,12 @@ import { EnableDebugsComponent } from "../../debug/components/enable_debugs_comp
 import { InputManagerComponent } from "../../input/cauldron/components/input_manager_component";
 import { EnableToolsComponent } from "../../tool/cauldron/components/enable_tools_component";
 import { InitEasyTuneVariablesComponent } from "../../tool/easy_tune/components/init_easy_tune_variables_component";
+import { initPP } from "../init_pp";
 import { AddPPToWindowComponent } from "./add_pp_to_window_component";
 import { GetDefaultResourcesComponent } from "./get_default_resources_component";
 import { GetSceneObjectsComponent } from "./get_scene_objects_component";
+
+let _alreadyRegisteredEngines = [];
 
 export class PPGatewayComponent extends Component {
     static TypeName = "pp-gateway";
@@ -26,6 +29,13 @@ export class PPGatewayComponent extends Component {
         ...GetSceneObjectsComponent.Properties,
         ...GetDefaultResourcesComponent.Properties
     };
+
+    static onRegister(engine) {
+        if (!_alreadyRegisteredEngines.includes(engine)) {
+            _alreadyRegisteredEngines.push(engine)
+            initPP(engine);
+        }
+    }
 
     init() {
         this._myGetDefaultResourcesComponent = this.object.pp_addComponent(GetDefaultResourcesComponent, this._getProperties(GetDefaultResourcesComponent.Properties));

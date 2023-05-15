@@ -12,9 +12,13 @@ export function initCursorTargetComponentModPrototype() {
     // New Functions 
 
     cursorTargetComponentMod.init = function init() {
+        this.onSingleClick = new Emitter();
         this.onDoubleClick = new Emitter();
         this.onTripleClick = new Emitter();
+
         this.onDownOnHover = new Emitter();
+
+        this.onUpWithDown = new Emitter();
         this.onUpWithNoDown = new Emitter();
 
         this.isSurface = false; // Just a way to specify if this target is just used as a surface between buttons 
@@ -28,5 +32,5 @@ export function initCursorTargetComponentModPrototype() {
 
 
 
-    PluginUtils.assignProperties(cursorTargetComponentMod, CursorTarget.prototype, false, true, true);
+    PluginUtils.injectProperties(cursorTargetComponentMod, CursorTarget.prototype, false, true, true);
 }

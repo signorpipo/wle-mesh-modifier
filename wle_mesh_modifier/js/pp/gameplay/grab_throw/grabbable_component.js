@@ -1,7 +1,7 @@
-import { Component, PhysXComponent, Property } from "@wonderlandengine/api";
-import { CloneUtils } from "../../cauldron/utils/clone_utils";
+import { Component, Emitter, PhysXComponent, Property } from "@wonderlandengine/api";
+import { ComponentUtils } from "../../cauldron/wl/utils/component_utils";
 import { vec3_create } from "../../plugin/js/extensions/array_extension";
-import { getSceneObjects } from "../../pp/scene_objects_global";
+import { Globals } from "../../pp/globals";
 
 export class GrabbableComponent extends Component {
     static TypeName = "pp-grabbable";
@@ -13,7 +13,7 @@ export class GrabbableComponent extends Component {
     };
 
     init() {
-        this._myIsGrabbed = false;
+        this._myGrabbed = false;
 
         this._myGrabber = null;
 
@@ -21,9 +21,9 @@ export class GrabbableComponent extends Component {
         this._myPhysX = null;
         this._myOldKinematicValue = null;
 
-        this._myGrabCallbacks = new Map();      // Signature: callback(grabber, grabbable)
-        this._myThrowCallbacks = new Map();     // Signature: callback(grabber, grabbable)
-        this._myReleaseCallbacks = new Map();   // Signature: callback(grabber, grabbable, isThrow)
+        this._myGrabEmitter = new Emitter();      // Signature: listener(grabber, grabbable)
+        this._myThrowEmitter = new Emitter();     // Signature: listener(grabber, grabbable)
+        this._myReleaseEmitter = new Emitter();   // Signature: listener(grabber, grabbable, isThrow)
     }
 
     start() {
@@ -47,13 +47,13 @@ export class GrabbableComponent extends Component {
         this._myOldParent = this.object.pp_getParent();
         this.object.pp_setParent(grabber);
 
-        this._myIsGrabbed = true;
+        this._myGrabbed = true;
 
-        this._myGrabCallbacks.forEach(function (callback) { callback(grabber, this); }.bind(this));
+        this._myGrabEmitter.notify(grabber, this);
     }
 
     throw(linearVelocity, angularVelocity) {
-        if (this._myIsGrabbed) {
+        if (this._myGrabbed) {
             let grabber = this._myGrabber;
 
             this._release();
@@ -64,18 +64,18 @@ export class GrabbableComponent extends Component {
             this._myPhysX.angularVelocity = angularVelocity.vec3_scale(this._myThrowAngularVelocityMultiplier);
             //}
 
-            this._myThrowCallbacks.forEach(function (callback) { callback(grabber, this); }.bind(this));
-            this._myReleaseCallbacks.forEach(function (callback) { callback(grabber, this, true); }.bind(this));
+            this._myThrowEmitter.notify(grabber, this);
+            this._myReleaseEmitter.notify(grabber, this, true);
         }
     }
 
     release() {
-        if (this._myIsGrabbed) {
+        if (this._myGrabbed) {
             let grabber = this._myGrabber;
 
             this._release();
 
-            this._myReleaseCallbacks.forEach(function (callback) { callback(grabber, this, false); }.bind(this));
+            this._myReleaseEmitter.notify(grabber, this, false);
         }
     }
 
@@ -108,45 +108,45 @@ export class GrabbableComponent extends Component {
     }
 
     isGrabbed() {
-        return this._myIsGrabbed;
+        return this._myGrabbed;
     }
 
     getGrabber() {
         return this._myGrabber;
     }
 
-    registerGrabEventListener(id, callback) {
-        this._myGrabCallbacks.set(id, callback);
+    registerGrabEventListener(id, listener) {
+        this._myGrabEmitter.add(listener, { id: id });
     }
 
     unregisterGrabEventListener(id) {
-        this._myGrabCallbacks.delete(id);
+        this._myGrabEmitter.remove(id);
     }
 
-    registerThrowEventListener(id, callback) {
-        this._myThrowCallbacks.set(id, callback);
+    registerThrowEventListener(id, listener) {
+        this._myThrowEmitter.add(listener, { id: id });
     }
 
     unregisterThrowEventListener(id) {
-        this._myThrowCallbacks.delete(id);
+        this._myThrowEmitter.remove(id);
     }
 
-    registerReleaseEventListener(id, callback) {
-        this._myReleaseCallbacks.set(id, callback);
+    registerReleaseEventListener(id, listener) {
+        this._myReleaseEmitter.add(listener, { id: id });
     }
 
     unregisterReleaseEventListener(id) {
-        this._myReleaseCallbacks.delete(id);
+        this._myReleaseEmitter.remove(id);
     }
 
     _release() {
         if (this._myParentOnRelease == 0) {
-            this.object.pp_setParent(getSceneObjects(this.engine).myDynamics);
+            this.object.pp_setParent(Globals.getSceneObjects(this.engine).myDynamics);
         } else {
             this.object.pp_setParent(this._myOldParent);
         }
 
-        this._myIsGrabbed = false;
+        this._myGrabbed = false;
         this._myGrabber = null;
 
         if (this._myKinematicValueOnRelease == 0) {
@@ -164,12 +164,12 @@ export class GrabbableComponent extends Component {
     }
 
     pp_clone(targetObject) {
-        let clonedComponent = CloneUtils.cloneComponentBase(this, targetObject);
+        let clonedComponent = ComponentUtils.cloneDefault(this, targetObject);
 
         return clonedComponent;
     }
 
-    pp_clonePostProcess() {
-        this.start();
+    pp_clonePostProcess(clonedComponent) {
+        clonedComponent.start();
     }
 }

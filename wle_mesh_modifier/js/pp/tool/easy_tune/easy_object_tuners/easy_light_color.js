@@ -1,8 +1,8 @@
 import { LightComponent } from "@wonderlandengine/api";
 import { ColorUtils } from "../../../cauldron/utils/color_utils";
-import { getLeftGamepad, getRightGamepad } from "../../../input/cauldron/input_globals";
 import { GamepadButtonID } from "../../../input/gamepad/gamepad_buttons";
 import { vec3_create } from "../../../plugin/js/extensions/array_extension";
+import { Globals } from "../../../pp/globals";
 import { EasyTuneIntArray } from "../easy_tune_variable_types";
 import { EasyObjectTuner } from "./easy_object_tuner";
 
@@ -67,8 +67,8 @@ export class EasyLightColor extends EasyObjectTuner {
             light.color[3] = light.color[3];
         }
 
-        if ((getRightGamepad(this._myEngine).getButtonInfo(GamepadButtonID.TOP_BUTTON).isPressStart() && getLeftGamepad(this._myEngine).getButtonInfo(GamepadButtonID.TOP_BUTTON).myIsPressed) ||
-            (getLeftGamepad(this._myEngine).getButtonInfo(GamepadButtonID.TOP_BUTTON).isPressStart() && getRightGamepad(this._myEngine).getButtonInfo(GamepadButtonID.TOP_BUTTON).myIsPressed)) {
+        if ((Globals.getRightGamepad(this._myEngine).getButtonInfo(GamepadButtonID.TOP_BUTTON).isPressStart() && Globals.getLeftGamepad(this._myEngine).getButtonInfo(GamepadButtonID.TOP_BUTTON).isPressed()) ||
+            (Globals.getLeftGamepad(this._myEngine).getButtonInfo(GamepadButtonID.TOP_BUTTON).isPressStart() && Globals.getRightGamepad(this._myEngine).getButtonInfo(GamepadButtonID.TOP_BUTTON).isPressed())) {
 
             let hsvColor = ColorUtils.color1To255(ColorUtils.rgbToHSV(color));
             let rgbColor = ColorUtils.color1To255(color);
